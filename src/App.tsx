@@ -50,7 +50,7 @@ export default function App() {
               <Route path="/terms" element={<TermsOfService />} />
               <Route path="/refund-policy" element={<RefundPolicy />} />
               <Route path="/disclaimer" element={<Disclaimer />} />
-              <Route path="/admin" element={<Admin />} />
+              <Route path="/vc-portal-x7" element={<Admin />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>

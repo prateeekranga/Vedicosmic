@@ -87,7 +87,7 @@ export function Footer() {
 
       <div className="border-t border-white/8 py-5">
         <div className="container-vc flex flex-col items-center justify-between gap-3 text-xs text-white/40 sm:flex-row">
-          <p>© {new Date().getFullYear()} VediCosmic — vedicosmic.com. All rights reserved. <Link to="/admin" className="text-white/30 transition-colors hover:text-gold-300">· Admin</Link></p>
+          <p>© {new Date().getFullYear()} VediCosmic — vedicosmic.com. All rights reserved.</p>
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
             <Link to="/privacy-policy" className="transition-colors hover:text-white/70">Privacy</Link>
             <Link to="/terms" className="transition-colors hover:text-white/70">Terms</Link>

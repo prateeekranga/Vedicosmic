@@ -21,7 +21,7 @@ const K = {
   ann: 'vc.announcement',
   customCourses: 'vc.courses.custom',
 };
-export const DEFAULT_PASSCODE = 'vedicosmic';
+export const DEFAULT_PASSCODE = 'VediCosmic@1616';
 
 export const getCourseOverrides = () => read<Record<string, CourseOverride>>(K.courses, {});
 export const getToolOverrides = () => read<Record<string, ToolOverride>>(K.tools, {});

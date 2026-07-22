@@ -1,0 +1,76 @@
+import { createServer, preview } from 'vite';
+import { chromium } from 'playwright-core';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+import fs from 'node:fs/promises';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const root = path.resolve(__dirname, '..');
+const configFile = path.join(root, 'vite.config.ts');
+
+async function loadRoutes() {
+  const vite = await createServer({
+    root,
+    configFile,
+    server: { middlewareMode: true },
+    appType: 'custom',
+  });
+  const { TOOLS } = await vite.ssrLoadModule('/src/data/tools.tsx');
+  const { COURSES } = await vite.ssrLoadModule('/src/data/courses.ts');
+  const { STATIC_ROUTES } = await vite.ssrLoadModule('/src/data/routes.ts');
+  await vite.close();
+  // '/' must be prerendered LAST: Vite preview's SPA fallback serves dist/index.html
+  // for any route whose own static file doesn't exist yet, so overwriting it early
+  // would corrupt the fallback shell every other in-progress route still depends on.
+  const rest = STATIC_ROUTES.map((r) => r.path).filter((p) => p !== '/');
+  return [
+    ...rest,
+    ...TOOLS.map((t) => `/tools/${t.slug}`),
+    ...COURSES.map((c) => `/courses/${c.slug}`),
+    '/',
+  ];
+}
+
+function filePathFor(route) {
+  return route === '/'
+    ? path.join(root, 'dist', 'index.html')
+    : path.join(root, 'dist', route, 'index.html');
+}
+
+async function main() {
+  const routes = await loadRoutes();
+  const server = await preview({ root, configFile, preview: {} });
+  const baseURL = server.resolvedUrls.local[0].replace(/\/$/, '');
+
+  const browser = await chromium.launch({ channel: 'chrome' });
+  const context = await browser.newContext();
+  const page = await context.newPage();
+
+  let failures = 0;
+  for (const route of routes) {
+    try {
+      await page.goto(baseURL + route, { waitUntil: 'load' });
+      await page.waitForFunction(() => window.__PRERENDER_READY__ === true, { timeout: 8000 });
+      const html = await page.content();
+      const filePath = filePathFor(route);
+      await fs.mkdir(path.dirname(filePath), { recursive: true });
+      await fs.writeFile(filePath, html);
+      console.log(`[prerender] ${route} -> ${path.relative(root, filePath)}`);
+    } catch (err) {
+      failures++;
+      console.warn(`[prerender] FAILED ${route}: ${err.message}`);
+    }
+  }
+
+  await browser.close();
+  await server.close();
+
+  if (failures > 0) {
+    console.error(`[prerender] ${failures} route(s) failed to prerender.`);
+    process.exitCode = 1;
+  } else {
+    console.log(`[prerender] done — ${routes.length} routes prerendered.`);
+  }
+}
+
+main().catch((err) => { console.error(err); process.exitCode = 1; });

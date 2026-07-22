@@ -1,0 +1,142 @@
+import type { Config } from 'tailwindcss';
+
+export default {
+  content: ['./index.html', './src/**/*.{ts,tsx}'],
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        cosmic: {
+          dark: '#0A0A1A',
+          darker: '#050510',
+          mid: '#121228',
+          light: '#1E1E40',
+          surface: '#191938',
+          900: '#0A0A1A',
+          950: '#050510',
+        },
+        gold: {
+          bright: '#FFD700',
+          soft: '#E6B84A',
+          pale: '#F0D080',
+          300: '#F0D080',
+          400: '#FFD700',
+          500: '#E6B84A',
+          600: '#C9982F',
+        },
+        // pulled from the VediCosmic wordmark
+        brand: {
+          cyan: '#39B7F0',
+          'cyan-soft': '#7DD3FC',
+          'cyan-300': '#7DD3FC',
+          'cyan-400': '#39B7F0',
+          bindi: '#E63427',
+        },
+        indigo: { 400: '#818CF8', 500: '#6366F1' },
+        violet: { chakra: '#8B5CF6' },
+        teal: { cosmic: '#0D9488' },
+        error: '#F87171',
+        success: '#34D399',
+        warning: '#FBBF24',
+        info: '#60A5FA',
+      },
+      fontFamily: {
+        display: ['"Cinzel Decorative"', 'serif'],
+        heading: ['Cinzel', 'serif'],
+        body: ['Inter', 'system-ui', 'sans-serif'],
+        sacred: ['"Noto Sans Devanagari"', 'serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
+      },
+      fontSize: {
+        hero: ['clamp(2.5rem, 6vw, 4.5rem)', { lineHeight: '1.08', fontWeight: '700' }],
+        h1: ['clamp(2rem, 4.5vw, 3rem)', { lineHeight: '1.2', fontWeight: '700' }],
+        h2: ['clamp(1.6rem, 3vw, 2.25rem)', { lineHeight: '1.25', fontWeight: '600' }],
+        h3: ['1.5rem', { lineHeight: '1.35', fontWeight: '600' }],
+      },
+      boxShadow: {
+        'glow-gold': '0 0 24px 2px rgba(255, 215, 0, 0.20)',
+        'glow-cyan': '0 0 24px 2px rgba(57, 183, 240, 0.25)',
+        'glow-violet': '0 0 24px 2px rgba(139, 92, 246, 0.25)',
+        'glow-teal': '0 0 24px 2px rgba(13, 148, 136, 0.20)',
+        card: '0 4px 32px rgba(0, 0, 0, 0.40)',
+        'card-hover': '0 8px 48px rgba(0, 0, 0, 0.60)',
+      },
+      backgroundImage: {
+        'cosmic-radial': 'radial-gradient(ellipse at top, #15153a 0%, #0A0A1A 55%, #050510 100%)',
+        'gold-sheen': 'linear-gradient(135deg, #FFD700 0%, #E6B84A 50%, #F0D080 100%)',
+        'cyan-sheen': 'linear-gradient(135deg, #39B7F0 0%, #7DD3FC 100%)',
+      },
+      keyframes: {
+        'spin-slow': { to: { transform: 'rotate(360deg)' } },
+        breathe: {
+          '0%, 100%': { transform: 'scale(1)', opacity: '0.9' },
+          '50%': { transform: 'scale(1.06)', opacity: '1' },
+        },
+        twinkle: {
+          '0%, 100%': { opacity: '0.2' },
+          '50%': { opacity: '1' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-12px)' },
+        },
+        'fade-up': {
+          from: { opacity: '0', transform: 'translateY(20px)' },
+          to: { opacity: '1', transform: 'translateY(0)' },
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+        aurora: {
+          '0%, 100%': { transform: 'translate3d(-6%, -3%, 0) scale(1)', opacity: '0.5' },
+          '33%': { transform: 'translate3d(5%, 4%, 0) scale(1.15)', opacity: '0.75' },
+          '66%': { transform: 'translate3d(-3%, 6%, 0) scale(1.05)', opacity: '0.6' },
+        },
+        'pulse-glow': {
+          '0%, 100%': { opacity: '0.4' },
+          '50%': { opacity: '0.75' },
+        },
+        flicker: {
+          '0%, 100%': { transform: 'scale(1) translateY(0) skewX(0deg)', opacity: '0.95' },
+          '25%': { transform: 'scale(1.04, 0.98) translateY(-1px) skewX(1.5deg)', opacity: '1' },
+          '50%': { transform: 'scale(0.97, 1.05) translateY(0) skewX(-1deg)', opacity: '0.9' },
+          '75%': { transform: 'scale(1.03, 0.99) translateY(-0.5px) skewX(1deg)', opacity: '1' },
+        },
+        'breath-cycle': {
+          '0%, 100%': { transform: 'scale(0.82)', opacity: '0.35' },
+          '40%': { transform: 'scale(1.25)', opacity: '0.6' },
+          '55%': { transform: 'scale(1.25)', opacity: '0.6' },
+        },
+        'gradient-flow': {
+          '0%, 100%': { backgroundPosition: '0% 0%' },
+          '50%': { backgroundPosition: '100% 100%' },
+        },
+        'spin3d-x': { from: { transform: 'rotateX(0deg)' }, to: { transform: 'rotateX(360deg)' } },
+        'spin3d-y': { from: { transform: 'rotateY(0deg)' }, to: { transform: 'rotateY(360deg)' } },
+        'spin3d-z': { from: { transform: 'rotateZ(0deg)' }, to: { transform: 'rotateZ(360deg)' } },
+        'spin3d-tilt': { from: { transform: 'rotateX(70deg) rotateZ(0deg)' }, to: { transform: 'rotateX(70deg) rotateZ(360deg)' } },
+      },
+      animation: {
+        'spin-slow': 'spin-slow 60s linear infinite',
+        'spin-slower': 'spin-slow 120s linear infinite',
+        breathe: 'breathe 6s ease-in-out infinite',
+        twinkle: 'twinkle 4s ease-in-out infinite',
+        float: 'float 6s ease-in-out infinite',
+        'fade-up': 'fade-up 0.7s ease-out forwards',
+        shimmer: 'shimmer 2.5s linear infinite',
+        aurora: 'aurora 22s ease-in-out infinite',
+        'aurora-slow': 'aurora 34s ease-in-out infinite',
+        'pulse-glow': 'pulse-glow 8s ease-in-out infinite',
+        flicker: 'flicker 0.45s ease-in-out infinite',
+        'breath-cycle': 'breath-cycle 10s ease-in-out infinite',
+        'gradient-flow': 'gradient-flow 28s ease-in-out infinite',
+        'spin3d-x': 'spin3d-x 16s linear infinite',
+        'spin3d-y': 'spin3d-y 22s linear infinite',
+        'spin3d-z': 'spin3d-z 30s linear infinite',
+        'spin3d-tilt': 'spin3d-tilt 26s linear infinite',
+      },
+    },
+  },
+  plugins: [],
+} satisfies Config;

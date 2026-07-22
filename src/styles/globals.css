@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: 'Cinzel Decorative', serif;
+  --font-heading: 'Cinzel', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-sacred: 'Noto Sans Devanagari', serif;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background-color: #0a0a1a;
+  color: #e7e7f4;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    letter-spacing: 0.01em;
+  }
+  ::selection {
+    background: rgba(57, 183, 240, 0.35);
+    color: #fff;
+  }
+}
+
+@layer components {
+  .text-gradient-gold {
+    @apply bg-gold-sheen bg-clip-text text-transparent;
+  }
+  .text-gradient-cyan {
+    @apply bg-cyan-sheen bg-clip-text text-transparent;
+  }
+  .glass {
+    @apply border border-white/10 bg-cosmic-light/40 backdrop-blur-md;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-gold-soft/80;
+  }
+  .container-vc {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #050510;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2a55;
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #39b7f0;
+}
+
+/* Hide scrollbar utility for horizontal scrollers */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Focus visibility (accessibility floor) */
+:focus-visible {
+  outline: 2px solid #39b7f0;
+  outline-offset: 2px;
+  border-radius: 4px;
+}

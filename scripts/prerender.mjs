@@ -42,7 +42,21 @@ async function main() {
   const server = await preview({ root, configFile, preview: {} });
   const baseURL = server.resolvedUrls.local[0].replace(/\/$/, '');
 
-  const browser = await chromium.launch({ channel: 'chrome' });
+  // Try 'chrome' channel first, fall back to default chromium
+  let browser;
+  try {
+    browser = await chromium.launch({ channel: 'chrome' });
+  } catch {
+    try {
+      browser = await chromium.launch();
+    } catch (err) {
+      await server.close();
+      console.warn(`[prerender] skipped — no browser available in this environment: ${err.message}`);
+      console.warn('[prerender] The site will work as a client-side SPA. Prerendering can be run locally.');
+      return;
+    }
+  }
+
   const context = await browser.newContext();
   const page = await context.newPage();
 

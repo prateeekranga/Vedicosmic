@@ -19,8 +19,8 @@ import { Input, Textarea } from '@/components/ui/Field';
 import { ArrayEditor } from '@/components/admin/ArrayEditor';
 import { CourseEditorModal, blankCourse } from '@/components/admin/CourseEditorModal';
 import {
-  verifyPasscode, setPasscode, getCourseOverrides, setCourseOverride, getToolOverrides, setToolOverride,
-  getAnnouncement, setAnnouncement, resetCourseOverrides, resetToolOverrides, exportOverrides, DEFAULT_PASSCODE,
+  verifyPasscode, setPasscode, hasPasscode, currentPasscodeHash, getCourseOverrides, setCourseOverride, getToolOverrides, setToolOverride,
+  getAnnouncement, setAnnouncement, resetCourseOverrides, resetToolOverrides, exportOverrides,
   mergedCourses, isCustomCourseId, addCustomCourse, deleteCustomCourse,
   type Announcement,
 } from '@/lib/overrides';
@@ -36,40 +36,80 @@ import type { CourseLevel, Course } from '@/types/course.types';
 import type { HomeContent, AboutContent, ContactContent } from '@/types/content.types';
 
 const ACCENT = ['#FFD700', '#39B7F0', '#8B5CF6', '#0D9488', '#F0D080', '#E63427'];
+const SESSION_KEY = 'vc.admin.session';
 
 export default function Admin() {
-  const [authed, setAuthed] = useState(() => sessionStorage.getItem('vc.admin.session') === '1');
-  if (!authed) return <AdminLogin onOk={() => setAuthed(true)} />;
-  return <AdminShell onLogout={() => { sessionStorage.removeItem('vc.admin.session'); setAuthed(false); }} />;
+  const [status, setStatus] = useState<'checking' | 'authed' | 'unauthed'>('checking');
+
+  useEffect(() => {
+    (async () => {
+      const token = sessionStorage.getItem(SESSION_KEY);
+      const expected = await currentPasscodeHash();
+      setStatus(token && expected && token === expected ? 'authed' : 'unauthed');
+    })();
+  }, []);
+
+  if (status === 'checking') return null;
+  if (status === 'unauthed') {
+    return <AdminLogin onOk={(hash) => { sessionStorage.setItem(SESSION_KEY, hash); setStatus('authed'); }} />;
+  }
+  return <AdminShell onLogout={() => { sessionStorage.removeItem(SESSION_KEY); setStatus('unauthed'); }} />;
 }
 
-function AdminLogin({ onOk }: { onOk: () => void }) {
+function AdminLogin({ onOk }: { onOk: (hash: string) => void }) {
+  const [needsSetup] = useState(() => !hasPasscode());
   const [pass, setPass] = useState('');
+  const [confirmPass, setConfirmPass] = useState('');
   const [err, setErr] = useState('');
   const [busy, setBusy] = useState(false);
+
   const submit = async () => {
+    setErr('');
+    if (needsSetup) {
+      if (pass.length < 8) { setErr('Use at least 8 characters.'); return; }
+      if (pass !== confirmPass) { setErr('Passcodes do not match.'); return; }
+      setBusy(true);
+      const hash = await setPasscode(pass);
+      setBusy(false);
+      onOk(hash);
+      return;
+    }
     setBusy(true);
-    const ok = await verifyPasscode(pass);
+    const hash = await verifyPasscode(pass);
     setBusy(false);
-    if (ok) { sessionStorage.setItem('vc.admin.session', '1'); onOk(); }
+    if (hash) onOk(hash);
     else setErr('Incorrect passcode.');
   };
+
   return (
     <div className="container-vc flex min-h-[80vh] items-center justify-center py-20">
       <div className="w-full max-w-sm rounded-3xl border border-white/12 bg-cosmic-light/40 p-8 backdrop-blur-md">
         <div className="mb-6 flex justify-center"><Logo /></div>
         <div className="mb-6 text-center">
           <span className="grid mx-auto mb-3 h-12 w-12 place-items-center rounded-full bg-gold-400/10 text-gold-300"><Lock className="h-6 w-6" /></span>
-          <h1 className="font-heading text-h3 text-white">Admin Access</h1>
-          <p className="mt-1 text-sm text-white/50">Enter the passcode to manage VediCosmic.</p>
+          <h1 className="font-heading text-h3 text-white">{needsSetup ? 'Create Admin Passcode' : 'Admin Access'}</h1>
+          <p className="mt-1 text-sm text-white/50">
+            {needsSetup
+              ? 'No passcode is set yet on this browser. Choose one to protect the dashboard.'
+              : 'Enter the passcode to manage VediCosmic.'}
+          </p>
         </div>
-        <Input id="admin-pass" type="password" label="Passcode" value={pass} error={err}
+        <Input id="admin-pass" type="password" label={needsSetup ? 'New passcode' : 'Passcode'} value={pass} error={err}
           onChange={(e) => { setPass(e.target.value); setErr(''); }}
-          onKeyDown={(e) => { if (e.key === 'Enter') submit(); }} placeholder="••••••••" />
+          onKeyDown={(e) => { if (e.key === 'Enter' && !needsSetup) submit(); }} placeholder="••••••••" />
+        {needsSetup && (
+          <div className="mt-4">
+            <Input id="admin-pass-confirm" type="password" label="Confirm passcode" value={confirmPass}
+              onChange={(e) => { setConfirmPass(e.target.value); setErr(''); }}
+              onKeyDown={(e) => { if (e.key === 'Enter') submit(); }} placeholder="••••••••" />
+          </div>
+        )}
         <Button className="mt-5 w-full" onClick={submit} disabled={busy}>
-          <ShieldCheck className="mr-2 h-4 w-4" /> {busy ? 'Checking…' : 'Enter dashboard'}
+          <ShieldCheck className="mr-2 h-4 w-4" /> {busy ? 'Checking…' : needsSetup ? 'Create & enter dashboard' : 'Enter dashboard'}
         </Button>
-        <p className="mt-4 text-center text-xs text-white/35">Default passcode: <code className="text-white/55">{DEFAULT_PASSCODE}</code> — change it in Settings.</p>
+        {needsSetup && (
+          <p className="mt-4 text-center text-xs text-white/35">This passcode only protects this browser — it's not sent anywhere. Store it safely; it can be changed later in Settings.</p>
+        )}
       </div>
     </div>
   );
@@ -635,9 +675,11 @@ function AnnouncementManager() {
 function SettingsPanel({ onLogout }: { onLogout: () => void }) {
   const [p1, setP1] = useState(''); const [p2, setP2] = useState(''); const [msg, setMsg] = useState('');
   const changePass = async () => {
-    if (p1.length < 4) { setMsg('Use at least 4 characters.'); return; }
+    if (p1.length < 8) { setMsg('Use at least 8 characters.'); return; }
     if (p1 !== p2) { setMsg('Passcodes do not match.'); return; }
-    await setPasscode(p1); setMsg('Passcode updated.'); setP1(''); setP2('');
+    const hash = await setPasscode(p1);
+    sessionStorage.setItem(SESSION_KEY, hash);
+    setMsg('Passcode updated.'); setP1(''); setP2('');
   };
   const doExport = () => {
     const merged = { ...JSON.parse(exportOverrides()), ...JSON.parse(exportSiteContent()) };

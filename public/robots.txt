@@ -1,34 +1,34 @@
 User-agent: *
 Allow: /
-Disallow: /admin
+Disallow: /vc-portal-x7
 
 # AI answer-engine / GEO crawlers — explicitly welcomed
 User-agent: GPTBot
 Allow: /
-Disallow: /admin
+Disallow: /vc-portal-x7
 
 User-agent: ChatGPT-User
 Allow: /
-Disallow: /admin
+Disallow: /vc-portal-x7
 
 User-agent: Google-Extended
 Allow: /
-Disallow: /admin
+Disallow: /vc-portal-x7
 
 User-agent: anthropic-ai
 Allow: /
-Disallow: /admin
+Disallow: /vc-portal-x7
 
 User-agent: ClaudeBot
 Allow: /
-Disallow: /admin
+Disallow: /vc-portal-x7
 
 User-agent: PerplexityBot
 Allow: /
-Disallow: /admin
+Disallow: /vc-portal-x7
 
 User-agent: CCBot
 Allow: /
-Disallow: /admin
+Disallow: /vc-portal-x7
 
 Sitemap: https://vedicosmic.com/sitemap.xml

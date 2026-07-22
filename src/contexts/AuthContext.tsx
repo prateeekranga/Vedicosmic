@@ -50,10 +50,17 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 const STORAGE_KEY = 'vedicosmic:auth';
 const USERS_KEY = 'vedicosmic:users';
 
-type UserRecord = Record<string, { user: User; passwordHash: string }>;
+type UserRecord = Record<string, { user: User; passwordHash: string; salt?: string }>;
 
-async function hashPassword(password: string): Promise<string> {
-  const data = new TextEncoder().encode(password + 'vc-salt-2026');
+const LEGACY_SALT = 'vc-salt-2026';
+
+function randomSalt(): string {
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+  return Array.from(bytes).map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function hashPassword(password: string, salt: string): Promise<string> {
+  const data = new TextEncoder().encode(password + salt);
   const hash = await crypto.subtle.digest('SHA-256', data);
   return Array.from(new Uint8Array(hash)).map((b) => b.toString(16).padStart(2, '0')).join('');
 }
@@ -89,10 +96,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = useCallback(async (email: string, password: string) => {
     dispatch({ type: 'SET_LOADING', payload: true });
     const users = readUsers();
-    const rec = users[email.toLowerCase()];
+    const key = email.toLowerCase();
+    const rec = users[key];
     if (!rec) { dispatch({ type: 'SET_ERROR', payload: 'No account found for that email.' }); return false; }
-    if ((await hashPassword(password)) !== rec.passwordHash) {
+    const salt = rec.salt ?? LEGACY_SALT;
+    if ((await hashPassword(password, salt)) !== rec.passwordHash) {
       dispatch({ type: 'SET_ERROR', payload: 'That password is incorrect.' }); return false;
+    }
+    if (!rec.salt) {
+      const upgradedSalt = randomSalt();
+      users[key] = { ...rec, salt: upgradedSalt, passwordHash: await hashPassword(password, upgradedSalt) };
+      writeUsers(users);
     }
     dispatch({ type: 'LOGIN_SUCCESS', payload: rec.user });
     persistSession(rec.user);
@@ -111,7 +125,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       enrolledCourses: [], savedReadings: [], journalEntries: [], crystalKit: [],
       mantraStreak: { lastSessionDate: '', currentStreak: 0, totalSessions: 0, totalRepetitions: 0 },
     };
-    users[email.toLowerCase()] = { user: newUser, passwordHash: await hashPassword(password) };
+    const salt = randomSalt();
+    users[email.toLowerCase()] = { user: newUser, passwordHash: await hashPassword(password, salt), salt };
     writeUsers(users);
     persistSession(newUser);
     dispatch({ type: 'LOGIN_SUCCESS', payload: newUser });

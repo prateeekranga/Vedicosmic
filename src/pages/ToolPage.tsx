@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Share2, GraduationCap } from 'lucide-react';
+import { ArrowLeft, GraduationCap } from 'lucide-react';
 import { getTool } from '@/data/tools';
 import { getCourse } from '@/data/courses';
 import { getToolFaqs } from '@/data/toolFaqs';
@@ -9,15 +9,18 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Accordion } from '@/components/ui/Accordion';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { useToast } from '@/contexts/ToastContext';
+import { ShareBar } from '@/components/ShareBar';
+import { ShareResultProvider, useShareText } from '@/contexts/ShareContext';
 import { useSound } from '@/contexts/SoundContext';
 import { useSEO } from '@/hooks/useSEO';
 import { breadcrumbList, faqPageSchema, softwareApplicationSchema } from '@/lib/schema';
+import type { ToolMeta } from '@/types/tool.types';
+import type { Course } from '@/types/course.types';
+import type { FAQItem } from '@/types/content.types';
 
 export default function ToolPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const { notify } = useToast();
   const { enterTool, exitTool } = useSound();
   const tool = slug ? getTool(slug) : undefined;
 
@@ -48,17 +51,8 @@ export default function ToolPage() {
 
   if (!tool) return null;
 
-  const Tool = tool.Component;
   const course = tool.relatedCourseSlug ? getCourse(tool.relatedCourseSlug) : undefined;
   const faqs = getToolFaqs(tool.id);
-
-  const share = async () => {
-    const url = window.location.href;
-    try {
-      if (navigator.share) await navigator.share({ title: `${tool.name} · VediCosmic`, url });
-      else { await navigator.clipboard.writeText(url); notify('Link copied to clipboard'); }
-    } catch { /* user cancelled */ }
-  };
 
   return (
     <div className="container-vc pb-12 pt-20">
@@ -68,6 +62,22 @@ export default function ToolPage() {
         <span className="text-white/70">{tool.name}</span>
       </div>
 
+      {/* keyed by slug so a stale result's share text can't leak into the next tool navigated to */}
+      <ShareResultProvider key={tool.slug}>
+        <ToolBody tool={tool} course={course} faqs={faqs} />
+      </ShareResultProvider>
+    </div>
+  );
+}
+
+function ToolBody({ tool, course, faqs }: { tool: ToolMeta; course: Course | undefined; faqs: FAQItem[] }) {
+  const Tool = tool.Component;
+  const shareText = useShareText();
+  const url = window.location.href;
+  const title = `${tool.name} · VediCosmic`;
+
+  return (
+    <>
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
         className="mb-10 flex flex-wrap items-start justify-between gap-4">
         <div className="max-w-2xl">
@@ -81,7 +91,7 @@ export default function ToolPage() {
           <p className="mt-2 text-body text-white/60">{tool.subtitle}</p>
         </div>
         <div className="flex gap-3">
-          <Button variant="ghost" onClick={share}><Share2 className="h-4 w-4" /> Share</Button>
+          <ShareBar url={url} title={title} text={shareText ?? `Check out the ${tool.name} on VediCosmic — free Vedic tools`} />
           <Button variant="ghost" to="/tools"><ArrowLeft className="h-4 w-4" /> All tools</Button>
         </div>
       </motion.div>
@@ -107,6 +117,6 @@ export default function ToolPage() {
           <Button to={`/courses/${course.slug}`} variant="outline">Explore course</Button>
         </motion.div>
       )}
-    </div>
+    </>
   );
 }

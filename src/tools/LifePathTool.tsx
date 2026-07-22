@@ -11,6 +11,8 @@ import {
 } from '@/data/predictions';
 import { Button } from '@/components/ui/Button';
 import { Input, Select } from '@/components/ui/Field';
+import { ShareBar } from '@/components/ShareBar';
+import { useShareResult } from '@/contexts/ShareContext';
 
 interface Result {
   calc: CalculatorId;
@@ -23,6 +25,24 @@ interface Result {
 
 const todayLabel = () => new Date().toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' });
 
+function shareLineFor(r: Result): string {
+  switch (r.calc) {
+    case 'free-dob':
+      return `My Lo Shu Driver number is ${r.driver} (${LOSHU_NUMBERS[r.driver]?.keyword}) ✨`;
+    case 'name-number':
+      return `${r.name} vibrates to ${r.nameRoot} — ${LOSHU_NUMBERS[r.nameRoot]?.planet} ✨`;
+    case 'lucky-color':
+    case 'lucky-number':
+      return `My Driver number is ${r.driver} (${LOSHU_NUMBERS[r.driver]?.keyword}) — here's what's lucky for me ✨`;
+    case 'today':
+    case 'month':
+    case 'year':
+      return `${r.calc === 'today' ? 'Today' : r.calc === 'month' ? 'This month' : 'This year'} carries a ${r.personal}-vibration for me ✨`;
+    default:
+      return 'My numerology reading, from VediCosmic ✨';
+  }
+}
+
 export default function LifePathTool() {
   const [name, setName] = useState('');
   const [dob, setDob] = useState('');
@@ -30,6 +50,7 @@ export default function LifePathTool() {
   const [calc, setCalc] = useState<CalculatorId | ''>('');
   const [result, setResult] = useState<Result | null>(null);
   const [error, setError] = useState('');
+  useShareResult(result ? shareLineFor(result) : null);
 
   const needsDob: CalculatorId[] = ['free-dob', 'lucky-color', 'lucky-number', 'today', 'month', 'year'];
   const needsName: CalculatorId[] = ['name-number'];
@@ -102,6 +123,11 @@ export default function LifePathTool() {
               Your {CALCULATORS.find((c) => c.id === result.calc)?.label}
             </p>
             <ReportBody r={result} />
+            <div className="mt-6 flex flex-wrap items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.02] px-5 py-3.5">
+              <p className="text-sm text-white/60">Share your result</p>
+              <ShareBar url={window.location.href} title="Numerology & Lo Shu Calculator · VediCosmic"
+                text={shareLineFor(result)} className="ml-auto" />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

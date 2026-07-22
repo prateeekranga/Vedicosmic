@@ -9,6 +9,8 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Input } from '@/components/ui/Field';
 import { DateSelect } from '@/components/ui/DateSelect';
+import { ShareBar } from '@/components/ShareBar';
+import { useShareResult } from '@/contexts/ShareContext';
 
 const VERDICT_TONE: Record<MobileResult['verdict'], 'success' | 'warning' | 'cyan'> = {
   'Highly Auspicious': 'success',
@@ -42,6 +44,7 @@ export default function MobileNumerologyTool() {
 
   const meaning = result ? NUMBER_MEANINGS[result.root] : null;
   const maxCount = result ? Math.max(...result.frequency.map((f) => f.count), 1) : 1;
+  useShareResult(result && meaning ? `My mobile number's vibration is ${result.root} — ${meaning.name} (${result.verdict}) ✨` : null);
 
   return (
     <div className="space-y-10">
@@ -91,6 +94,11 @@ export default function MobileNumerologyTool() {
                   </div>
                 </div>
               )}
+              <div className="mt-2 flex flex-wrap items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.02] px-5 py-3.5">
+                <p className="text-sm text-white/60">Share your result</p>
+                <ShareBar url={window.location.href} title="Mobile Number Numerology · VediCosmic"
+                  text={`My mobile number's vibration is ${result.root} — ${meaning.name} (${result.verdict}) ✨`} className="ml-auto" />
+              </div>
             </Card>
 
             <div className="grid gap-6 md:grid-cols-2">

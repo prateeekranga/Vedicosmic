@@ -11,6 +11,8 @@ import {
 } from '@/data/predictions';
 import { Input, Select } from '@/components/ui/Field';
 import { Card } from '@/components/ui/Card';
+import { ShareBar } from '@/components/ShareBar';
+import { useShareResult } from '@/contexts/ShareContext';
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const NOW = new Date().getFullYear();
@@ -47,6 +49,8 @@ export default function BlueprintTool() {
     const kua = kuaNumber(submitted.y, submitted.gender);
     return { bp, chart, kua };
   }, [submitted]);
+
+  useShareResult(data ? `My Life Path is ${data.bp.lifePath.value} — ${LOSHU_NUMBERS[data.bp.lifePath.root]?.keyword} ✨` : null);
 
   if (!data || !submitted) {
     return (
@@ -131,6 +135,16 @@ export default function BlueprintTool() {
           className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-sm text-white/70 transition-colors hover:text-white">
           <RotateCcw className="h-4 w-4" /> Recalculate
         </button>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.02] px-5 py-3.5">
+        <p className="text-sm text-white/60">Share your result</p>
+        <ShareBar
+          url={window.location.href}
+          title="Numerology Blueprint · VediCosmic"
+          text={`My Life Path is ${bp.lifePath.value} — ${LOSHU_NUMBERS[lp]?.keyword} ✨`}
+          className="ml-auto"
+        />
       </div>
 
       {/* core number orbs */}

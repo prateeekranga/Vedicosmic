@@ -8,6 +8,8 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/contexts/ToastContext';
+import { ShareBar } from '@/components/ShareBar';
+import { useShareResult } from '@/contexts/ShareContext';
 
 export default function TarotTool() {
   const [flipped, setFlipped] = useState(false);
@@ -20,6 +22,8 @@ export default function TarotTool() {
     const rnd = seededRandom('vedicosmic-' + todayKey());
     return TAROT_DECK[Math.floor(rnd() * TAROT_DECK.length)];
   }, []);
+
+  useShareResult(flipped ? `My daily contemplation card is ${card.name} (${card.sanskrit}) ✨` : null);
 
   const alreadyJournaled = user?.journalEntries.some(
     (e) => e.tarotCardId === String(card.id) && e.date.slice(0, 10) === todayKey(),
@@ -72,6 +76,11 @@ export default function TarotTool() {
             <Card className="p-6 text-center">
               <span className="eyebrow">Today’s message</span>
               <p className="mt-3 text-lg leading-relaxed text-white/80">{card.message}</p>
+              <div className="mt-5 flex flex-wrap items-center justify-center gap-3 rounded-2xl border border-white/8 bg-white/[0.02] px-5 py-3.5">
+                <p className="text-sm text-white/60">Share your card</p>
+                <ShareBar url={window.location.href} title="Daily Contemplation Card · VediCosmic"
+                  text={`My daily contemplation card is ${card.name} (${card.sanskrit}) ✨`} />
+              </div>
             </Card>
             <Card className="p-6">
               <div className="flex items-center gap-2"><BookOpen className="h-4 w-4 text-brand-cyan" />

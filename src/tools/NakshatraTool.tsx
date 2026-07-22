@@ -6,6 +6,8 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { DateSelect } from '@/components/ui/DateSelect';
 import { NAKSHATRAS as NAKS, RULER_COLOR } from '@/data/nakshatras';
+import { ShareBar } from '@/components/ShareBar';
+import { useShareResult } from '@/contexts/ShareContext';
 
 /* ─────────────── approximate Moon sidereal longitude ─────────────── */
 const rad = Math.PI / 180;
@@ -46,6 +48,7 @@ export default function NakshatraTool() {
   };
 
   const nak = NAKS[sel];
+  useShareResult(result ? `My Moon Nakshatra is ${NAKS[result.idx].name} (${NAKS[result.idx].dev}), pada ${result.pada} 🌙` : null);
 
   /* wheel geometry */
   const C = 150, R1 = 96, R2 = 138;
@@ -83,6 +86,13 @@ export default function NakshatraTool() {
             Your janma nakshatra is <b className="text-gold-300">{NAKS[result.idx].name} · {NAKS[result.idx].dev}</b>, pada {result.pada}
             <span className="text-white/40"> (sidereal Moon ≈ {result.lon.toFixed(1)}°)</span>
           </motion.p>
+        )}
+        {result && (
+          <div className="mt-4 flex flex-wrap items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.02] px-5 py-3.5">
+            <p className="text-sm text-white/60">Share your result</p>
+            <ShareBar url={window.location.href} title="Nakshatra Explorer · VediCosmic"
+              text={`My Moon Nakshatra is ${NAKS[result.idx].name} (${NAKS[result.idx].dev}), pada ${result.pada} 🌙`} className="ml-auto" />
+          </div>
         )}
       </Card>
 

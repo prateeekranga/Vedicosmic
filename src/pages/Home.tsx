@@ -21,16 +21,18 @@ import { SITE_DESCRIPTION } from '@/config/site';
 
 const stagger = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
+  show: { transition: { staggerChildren: 0.10, delayChildren: 0.05 } },
 };
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const } },
+  hidden: { opacity: 0, y: 18 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const } },
 };
 
+// LCP FIX: hero words start at opacity:1 (visible immediately for LCP measurement).
+// Animation is purely a position/transform settle — never invisible.
 const wordUp = {
-  hidden: { opacity: 0, y: 70, rotateX: -75, filter: 'blur(10px)' },
-  show: { opacity: 1, y: 0, rotateX: 0, filter: 'blur(0px)', transition: { type: 'spring', stiffness: 130, damping: 14, mass: 0.9 } },
+  hidden: { opacity: 1, y: 28, rotateX: -15 },
+  show: { opacity: 1, y: 0, rotateX: 0, transition: { type: 'spring', stiffness: 140, damping: 16, mass: 0.8 } },
 };
 
 const cardFlyIn = (i: number) => ({

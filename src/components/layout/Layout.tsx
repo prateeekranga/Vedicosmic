@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Navbar } from './Navbar';
@@ -15,12 +15,29 @@ export function Layout() {
   const { pathname } = useLocation();
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior }); }, [pathname]);
 
+  // Defer heavy background effects until after first paint — keeps main thread
+  // free during React hydration, directly improving FCP and LCP.
+  const [effectsMounted, setEffectsMounted] = useState(false);
+  useEffect(() => {
+    const cb = () => setEffectsMounted(true);
+    if ('requestIdleCallback' in window) {
+      const id = (window as Window & { requestIdleCallback: (cb: () => void, opts?: object) => number })
+        .requestIdleCallback(cb, { timeout: 300 });
+      return () => (window as Window & { cancelIdleCallback: (id: number) => void })
+        .cancelIdleCallback(id);
+    }
+    // Fallback for Safari
+    const id = setTimeout(cb, 150);
+    return () => clearTimeout(id);
+  }, []);
+
   return (
     <div className="relative min-h-screen">
       <CosmicGate />
       <CosmicCursor />
-      <CosmicBackground />
-      <Starfield />
+      {/* Render background effects only after first paint */}
+      {effectsMounted && <CosmicBackground />}
+      {effectsMounted && <Starfield />}
       <AnnouncementBanner />
       <SiteJsonLd />
       <Navbar />

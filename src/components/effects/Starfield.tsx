@@ -30,7 +30,8 @@ export function Starfield({ density = 1 }: { density?: number }) {
       cv.style.width = window.innerWidth + 'px';
       cv.style.height = window.innerHeight + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const base = isMobile ? 80 : 170;
+      // Fewer stars on mobile for better performance
+      const base = isMobile ? 55 : 130;
       const count = Math.round(base * density);
       const palette = ['#FFFFFF', '#F0D080', '#7DD3FC', '#FFD700', '#C9B8FF'];
       stars = Array.from({ length: count }, () => ({
@@ -97,7 +98,22 @@ export function Starfield({ density = 1 }: { density?: number }) {
     }
 
     resize();
-    raf = requestAnimationFrame(draw);
+
+    // Delay animation start until idle — frees main thread for React's first paint
+    let started = false;
+    const startLoop = () => {
+      if (started) return;
+      started = true;
+      raf = requestAnimationFrame(draw);
+    };
+
+    if ('requestIdleCallback' in window) {
+      (window as Window & { requestIdleCallback: (cb: () => void, opts?: object) => void })
+        .requestIdleCallback(startLoop, { timeout: 400 });
+    } else {
+      setTimeout(startLoop, 200);
+    }
+
     window.addEventListener('resize', resize);
     return () => {
       cancelAnimationFrame(raf);

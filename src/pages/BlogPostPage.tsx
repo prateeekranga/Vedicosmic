@@ -1,16 +1,18 @@
 import { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Calendar, Clock } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, RefreshCw } from 'lucide-react';
 import { getBlogPost } from '@/data/blog';
 import { getBlogCategory } from '@/data/blogCategories';
-import { getTool } from '@/data/tools';
-import { getCourse } from '@/data/courses';
+import { getAuthor } from '@/data/authors';
 import { estimateReadingTime } from '@/lib/blogUtils';
 import { useSEO } from '@/hooks/useSEO';
 import { breadcrumbList, blogPostingSchema, faqPageSchema } from '@/lib/schema';
 import { BlogContentRenderer } from '@/components/blog/BlogContentRenderer';
 import { BlogPostCard } from '@/components/blog/BlogPostCard';
+import { AuthorBio } from '@/components/blog/AuthorBio';
+import { EditorialDisclaimer } from '@/components/blog/EditorialDisclaimer';
+import { AdSlot } from '@/components/ads/AdSlot';
 import { Accordion } from '@/components/ui/Accordion';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -64,8 +66,11 @@ export default function BlogPostPage() {
 
 function BlogPostBody({ post }: { post: BlogPost }) {
   const category = getBlogCategory(post.category);
+  const author = post.authorId ? getAuthor(post.authorId) : undefined;
   const readingTime = post.readingTimeMin ?? estimateReadingTime(post.content);
-  const date = new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const dateFmt = (iso: string) => new Date(iso).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const publishedDate = dateFmt(post.publishedAt);
+  const updatedDate = post.updatedAt && post.updatedAt !== post.publishedAt ? dateFmt(post.updatedAt) : undefined;
   const more = visibleBlogPosts().filter((p) => p.category === post.category && p.slug !== post.slug).slice(0, 3);
 
   return (
@@ -75,14 +80,34 @@ function BlogPostBody({ post }: { post: BlogPost }) {
         {post.isFeatured && <Badge tone="neutral">Featured</Badge>}
       </div>
       <h1 className="font-display text-h1 text-white">{post.title}</h1>
+      <p data-speakable className="mt-4 text-lg leading-relaxed text-white/70">{post.excerpt}</p>
       <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-white/45">
-        {post.author && <span>{post.author.name}</span>}
-        <span className="inline-flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> {date}</span>
+        {author && <span>{author.name}</span>}
+        <span className="inline-flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> Published {publishedDate}</span>
+        {updatedDate && <span className="inline-flex items-center gap-1.5"><RefreshCw className="h-3.5 w-3.5" /> Updated {updatedDate}</span>}
         <span className="inline-flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> {readingTime} min read</span>
       </div>
 
-      <div className="mt-10">
+      <div className="mt-8">
+        <AdSlot slot="blog-post-top" />
+      </div>
+
+      <div className="mt-8">
         <BlogContentRenderer blocks={post.content} />
+      </div>
+
+      <div className="mt-10">
+        <AdSlot slot="blog-post-bottom" />
+      </div>
+
+      {author && post.authorId && (
+        <div className="mt-10">
+          <AuthorBio author={author} slug={post.authorId} />
+        </div>
+      )}
+
+      <div className="mt-6">
+        <EditorialDisclaimer />
       </div>
 
       {post.faqs && post.faqs.length > 0 && (

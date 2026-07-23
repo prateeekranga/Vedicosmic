@@ -3,6 +3,9 @@ import type { FAQItem } from '@/types/content.types';
 import type { Course } from '@/types/course.types';
 import type { ToolMeta } from '@/types/tool.types';
 import type { BlogPost } from '@/types/blog.types';
+import { getAuthor } from '@/data/authors';
+import { getBlogCategory } from '@/data/blogCategories';
+import { estimateWordCount } from '@/lib/blogUtils';
 
 export function faqPageSchema(faqs: FAQItem[]) {
   return {
@@ -71,6 +74,8 @@ export function blogPostingSchema(post: BlogPost) {
   const image = post.heroImage
     ? (post.heroImage.startsWith('http') ? post.heroImage : SITE_URL + post.heroImage)
     : SITE_URL + DEFAULT_OG_IMAGE;
+  const author = post.authorId ? getAuthor(post.authorId) : undefined;
+  const category = getBlogCategory(post.category);
   return {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -79,9 +84,17 @@ export function blogPostingSchema(post: BlogPost) {
     image,
     datePublished: post.publishedAt,
     dateModified: post.updatedAt ?? post.publishedAt,
-    author: { '@type': 'Person', name: post.author?.name ?? SITE_NAME },
+    // An unattributed post is credited to the Organization, not a fabricated Person named after the site.
+    author: author
+      ? { '@type': 'Person', name: author.name, jobTitle: author.title, description: author.bio, url: `${SITE_URL}/about` }
+      : { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
     publisher: { '@type': 'Organization', name: SITE_NAME, logo: { '@type': 'ImageObject', url: SITE_URL + DEFAULT_OG_IMAGE } },
     mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}/blog/${post.slug}` },
     url: `${SITE_URL}/blog/${post.slug}`,
+    articleSection: category?.label,
+    keywords: post.tags.join(', '),
+    wordCount: estimateWordCount(post.content),
+    inLanguage: 'en',
+    speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '[data-speakable]'] },
   };
 }

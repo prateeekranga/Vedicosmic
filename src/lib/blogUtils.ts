@@ -14,8 +14,16 @@ function textOf(block: BlogContentBlock): string {
   }
 }
 
+function wordCountOf(blocks: BlogContentBlock[]): number {
+  return blocks.reduce((sum, b) => sum + textOf(b).split(/\s+/).filter(Boolean).length, 0);
+}
+
 /** ~200 wpm over every text-bearing block, so reading time can never go stale relative to the content. */
 export function estimateReadingTime(blocks: BlogContentBlock[]): number {
-  const words = blocks.reduce((sum, b) => sum + textOf(b).split(/\s+/).filter(Boolean).length, 0);
-  return Math.max(1, Math.round(words / WORDS_PER_MINUTE));
+  return Math.max(1, Math.round(wordCountOf(blocks) / WORDS_PER_MINUTE));
+}
+
+/** Total word count across all text-bearing blocks — feeds BlogPosting JSON-LD's `wordCount`. */
+export function estimateWordCount(blocks: BlogContentBlock[]): number {
+  return wordCountOf(blocks);
 }

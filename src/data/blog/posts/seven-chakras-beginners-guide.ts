@@ -9,7 +9,7 @@ export default {
     'A calm, practical guide to the 7 chakras — their traditional location, element and core meaning, from the grounding Root to the expansive Crown.',
   category: 'energy',
   tags: ['chakras', 'energy healing', 'root chakra', 'crown chakra', 'subtle body', 'chakra balancing'],
-  author: { name: 'Vasanti Rao', role: 'Energy Healer & Chakra Therapist' },
+  authorId: 'vasanti',
   publishedAt: '2026-06-24',
   content: [
     {

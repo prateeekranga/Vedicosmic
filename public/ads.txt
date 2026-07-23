@@ -1,0 +1,6 @@
+# Google AdSense authorized-sellers file (IAB ads.txt spec).
+# This site is not yet enrolled in AdSense — no publisher ID exists yet, so
+# no active entry is declared below. Once approved, uncomment and fill in
+# the real values from your AdSense account (Sites > vedicosmic.com):
+#
+# google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0

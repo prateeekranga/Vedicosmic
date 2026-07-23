@@ -26,7 +26,8 @@ export interface BlogPost {
   excerpt: string;
   category: BlogCategoryId;
   tags: string[];
-  author?: { name: string; role?: string };
+  /** References a key in AUTHORS (src/data/authors.ts) — shared with course instructors for consistent E-E-A-T bios. */
+  authorId?: string;
   /** ISO date, e.g. '2026-01-15'. */
   publishedAt: string;
   updatedAt?: string;

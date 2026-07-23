@@ -8,7 +8,7 @@ export default {
   excerpt: 'A clear guide to the Hindu Panchang and its five limbs — Tithi, Vara, Nakshatra, Yoga, and Karana — and why they still guide Muhurta and Vrat dates.',
   category: 'cosmology',
   tags: ['panchang', 'hindu calendar', 'tithi', 'muhurta', 'vedic calendar', 'nakshatra'],
-  author: { name: 'Acharya Ananya Devi', role: 'Vedic Astrologer & Jyotish Teacher' },
+  authorId: 'ananya',
   publishedAt: '2026-06-29',
   content: [
     {

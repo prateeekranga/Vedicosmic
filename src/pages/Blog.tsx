@@ -1,13 +1,15 @@
 import { useDeferredValue, useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Search, X } from 'lucide-react';
 import { BLOG_CATEGORIES, getBlogCategory } from '@/data/blogCategories';
+import { getAuthor } from '@/data/authors';
 import { visibleBlogPosts } from '@/lib/blogOverrides';
 import { useOverridesVersion } from '@/hooks/useOverridesVersion';
 import { useSEO } from '@/hooks/useSEO';
 import { breadcrumbList } from '@/lib/schema';
 import { BlogPostCard } from '@/components/blog/BlogPostCard';
+import { AdSlot } from '@/components/ads/AdSlot';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 
 export default function Blog() {
@@ -16,6 +18,9 @@ export default function Blog() {
   const ov = useOverridesVersion();
   const [query, setQuery] = useState('');
   const deferredQuery = useDeferredValue(query);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const authorId = searchParams.get('author');
+  const author = authorId ? getAuthor(authorId) : undefined;
 
   const category = categoryId ? getBlogCategory(categoryId) : undefined;
   useEffect(() => {
@@ -49,14 +54,18 @@ export default function Blog() {
     () => (categoryId ? allPosts.filter((p) => p.category === categoryId) : allPosts),
     [categoryId, ov], // eslint-disable-line react-hooks/exhaustive-deps
   );
+  const byAuthor = useMemo(
+    () => (authorId ? byCategory.filter((p) => p.authorId === authorId) : byCategory),
+    [byCategory, authorId],
+  );
   const filtered = useMemo(() => {
     const terms = deferredQuery.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    if (!terms.length) return byCategory;
-    return byCategory.filter((p) => {
+    if (!terms.length) return byAuthor;
+    return byAuthor.filter((p) => {
       const haystack = [p.title, p.excerpt, p.category, ...p.tags].join(' ').toLowerCase();
       return terms.every((t) => haystack.includes(t));
     });
-  }, [byCategory, deferredQuery]);
+  }, [byAuthor, deferredQuery]);
 
   if (categoryId && !category) return null;
 
@@ -67,6 +76,18 @@ export default function Blog() {
         title={category ? <>{category.label} <span className="text-gradient-gold">articles</span></> : <>Guides for <span className="text-gradient-gold">the inner journey</span></>}
         subtitle={category ? category.description : 'In-depth, practical guides on numerology, Vedic astrology, energy healing, cosmology, rituals and meditation.'}
       />
+
+      {author && (
+        <div className="mx-auto mt-8 flex max-w-xl items-center justify-center gap-3 rounded-full border border-white/10 bg-cosmic-light/40 px-5 py-2.5 text-sm text-white/60">
+          <span>Showing articles by <span className="text-white">{author.name}</span></span>
+          <button
+            onClick={() => setSearchParams((prev) => { prev.delete('author'); return prev; })}
+            className="inline-flex items-center gap-1 text-brand-cyan-soft hover:underline"
+          >
+            <X className="h-3.5 w-3.5" /> Clear
+          </button>
+        </div>
+      )}
 
       <div className="mx-auto mt-10 max-w-xl">
         <div className="relative">
@@ -101,6 +122,10 @@ export default function Blog() {
             </button>
           );
         })}
+      </div>
+
+      <div className="mx-auto mt-10 max-w-3xl">
+        <AdSlot slot="blog-hub" />
       </div>
 
       {filtered.length > 0 ? (

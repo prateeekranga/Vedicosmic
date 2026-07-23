@@ -15,7 +15,7 @@ export default {
     'birth date numerology',
     'numerology calculator',
   ],
-  author: { name: 'Pandit Kabir Sharma', role: 'Numerologist & Vedic Scholar' },
+  authorId: 'kabir',
   publishedAt: '2026-06-01',
   content: [
     {

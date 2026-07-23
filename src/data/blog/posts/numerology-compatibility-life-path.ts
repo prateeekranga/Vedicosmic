@@ -16,7 +16,7 @@ export default {
     'kundali matching',
     'anka shastra',
   ],
-  author: { name: 'Pandit Kabir Sharma', role: 'Numerologist & Vedic Scholar' },
+  authorId: 'kabir',
   publishedAt: '2026-06-10',
   content: [
     {

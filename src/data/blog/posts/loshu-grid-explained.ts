@@ -9,7 +9,7 @@ export default {
     "Learn to plot your birth date into the ancient Lo Shu Grid, decode its nine planetary numbers, and read the classic arrows of strength and weakness.",
   category: 'numerology',
   tags: ['lo shu grid', 'numerology', 'magic square', 'birth date numbers', 'vedic numerology'],
-  author: { name: 'Pandit Kabir Sharma', role: 'Numerologist & Vedic Scholar' },
+  authorId: 'kabir',
   publishedAt: '2026-06-05',
   content: [
     {

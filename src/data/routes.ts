@@ -11,6 +11,7 @@ export const STATIC_ROUTES: StaticRoute[] = [
   { path: '/courses', seoLabel: 'Courses' },
   { path: '/about', seoLabel: 'About' },
   { path: '/contact', seoLabel: 'Contact' },
+  { path: '/blog', seoLabel: 'Blog' },
   { path: '/privacy-policy', seoLabel: 'Privacy Policy' },
   { path: '/terms', seoLabel: 'Terms of Service' },
   { path: '/refund-policy', seoLabel: 'Refund Policy' },

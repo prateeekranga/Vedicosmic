@@ -18,6 +18,8 @@ async function loadRoutes() {
   const { TOOLS } = await vite.ssrLoadModule('/src/data/tools.tsx');
   const { COURSES } = await vite.ssrLoadModule('/src/data/courses.ts');
   const { STATIC_ROUTES } = await vite.ssrLoadModule('/src/data/routes.ts');
+  const { BLOG_POSTS } = await vite.ssrLoadModule('/src/data/blog/index.ts');
+  const { BLOG_CATEGORIES } = await vite.ssrLoadModule('/src/data/blogCategories.ts');
   await vite.close();
   // '/' must be prerendered LAST: Vite preview's SPA fallback serves dist/index.html
   // for any route whose own static file doesn't exist yet, so overwriting it early
@@ -27,6 +29,8 @@ async function loadRoutes() {
     ...rest,
     ...TOOLS.map((t) => `/tools/${t.slug}`),
     ...COURSES.map((c) => `/courses/${c.slug}`),
+    ...BLOG_POSTS.map((p) => `/blog/${p.slug}`),
+    ...BLOG_CATEGORIES.filter((c) => c.id !== 'all').map((c) => `/blog/category/${c.id}`),
     '/',
   ];
 }
@@ -64,7 +68,9 @@ async function main() {
   for (const route of routes) {
     try {
       await page.goto(baseURL + route, { waitUntil: 'load' });
-      await page.waitForFunction(() => window.__PRERENDER_READY__ === true, { timeout: 8000 });
+      // Wait for app signal, but fall back to whatever HTML is ready
+      await page.waitForFunction(() => window.__PRERENDER_READY__ === true, { timeout: 5000 })
+        .catch(() => {/* timeout: snapshot anyway */});
       const html = await page.content();
       const filePath = filePathFor(route);
       await fs.mkdir(path.dirname(filePath), { recursive: true });

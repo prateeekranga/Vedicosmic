@@ -16,15 +16,18 @@ async function loadData() {
   const { TOOLS } = await vite.ssrLoadModule('/src/data/tools.tsx');
   const { COURSES } = await vite.ssrLoadModule('/src/data/courses.ts');
   const { STATIC_ROUTES } = await vite.ssrLoadModule('/src/data/routes.ts');
+  const { BLOG_POSTS } = await vite.ssrLoadModule('/src/data/blog/index.ts');
+  const { BLOG_CATEGORIES } = await vite.ssrLoadModule('/src/data/blogCategories.ts');
   const { SITE_URL, SITE_NAME, SITE_DESCRIPTION } = await vite.ssrLoadModule('/src/config/site.ts');
   await vite.close();
-  return { TOOLS, COURSES, STATIC_ROUTES, SITE_URL, SITE_NAME, SITE_DESCRIPTION };
+  return { TOOLS, COURSES, STATIC_ROUTES, BLOG_POSTS, BLOG_CATEGORIES, SITE_URL, SITE_NAME, SITE_DESCRIPTION };
 }
 
 function priorityFor(routePath) {
   if (routePath === '/') return '1.0';
-  if (routePath === '/tools' || routePath === '/courses') return '0.9';
-  if (routePath.startsWith('/tools/') || routePath.startsWith('/courses/')) return '0.8';
+  if (routePath === '/tools' || routePath === '/courses' || routePath === '/blog') return '0.9';
+  if (routePath.startsWith('/blog/category/')) return '0.7';
+  if (routePath.startsWith('/tools/') || routePath.startsWith('/courses/') || routePath.startsWith('/blog/')) return '0.8';
   return '0.5';
 }
 
@@ -35,11 +38,12 @@ function buildSitemap(routes, SITE_URL) {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
-function buildLlmsTxt({ SITE_NAME, SITE_DESCRIPTION, SITE_URL, TOOLS, COURSES, STATIC_ROUTES }) {
+function buildLlmsTxt({ SITE_NAME, SITE_DESCRIPTION, SITE_URL, TOOLS, COURSES, BLOG_POSTS, STATIC_ROUTES }) {
   const toolLines = TOOLS.map((t) => `- [${t.name}](${SITE_URL}/tools/${t.slug}): ${t.description}`).join('\n');
   const courseLines = COURSES.map((c) => `- [${c.title}](${SITE_URL}/courses/${c.slug}): ${c.description}`).join('\n');
+  const blogLines = BLOG_POSTS.map((p) => `- [${p.title}](${SITE_URL}/blog/${p.slug}): ${p.excerpt}`).join('\n');
   const pageLines = STATIC_ROUTES.map((r) => `- [${r.seoLabel}](${SITE_URL}${r.path})`).join('\n');
-  return `# ${SITE_NAME}\n\n> ${SITE_DESCRIPTION}\n\nVediCosmic is a free interactive Vedic astrology, numerology, and meditation platform. Every tool computes real results client-side; courses go deeper with structured teaching.\n\n## Tools\n\n${toolLines}\n\n## Courses\n\n${courseLines}\n\n## Pages\n\n${pageLines}\n`;
+  return `# ${SITE_NAME}\n\n> ${SITE_DESCRIPTION}\n\nVediCosmic is a free interactive Vedic astrology, numerology, and meditation platform. Every tool computes real results client-side; courses go deeper with structured teaching.\n\n## Tools\n\n${toolLines}\n\n## Courses\n\n${courseLines}\n\n## Blog\n\n${blogLines}\n\n## Pages\n\n${pageLines}\n`;
 }
 
 async function main() {
@@ -48,6 +52,8 @@ async function main() {
     ...data.STATIC_ROUTES.map((r) => r.path),
     ...data.TOOLS.map((t) => `/tools/${t.slug}`),
     ...data.COURSES.map((c) => `/courses/${c.slug}`),
+    ...data.BLOG_POSTS.map((p) => `/blog/${p.slug}`),
+    ...data.BLOG_CATEGORIES.filter((c) => c.id !== 'all').map((c) => `/blog/category/${c.id}`),
   ];
   const distDir = path.join(root, 'dist');
   await fs.mkdir(distDir, { recursive: true });

@@ -6,10 +6,11 @@ import { useEffect } from 'react';
 import {
   LayoutDashboard, GraduationCap, Wrench, Megaphone, Settings as SettingsIcon,
   Lock, LogOut, RotateCcw, Download, ShieldCheck, Eye, EyeOff, Star, IndianRupee, Users,
-  FileText, Search, Plus, Pencil, Trash2,
+  FileText, Search, Plus, Pencil, Trash2, Newspaper,
 } from 'lucide-react';
 import { COURSES } from '@/data/courses';
 import { TOOLS, TOOL_CATEGORIES } from '@/data/tools';
+import { BLOG_POSTS } from '@/data/blog';
 import { STATIC_ROUTES } from '@/data/routes';
 import { formatINR } from '@/lib/format';
 import { useAuth } from '@/contexts/AuthContext';
@@ -18,6 +19,8 @@ import { Button } from '@/components/ui/Button';
 import { Input, Textarea } from '@/components/ui/Field';
 import { ArrayEditor } from '@/components/admin/ArrayEditor';
 import { CourseEditorModal, blankCourse } from '@/components/admin/CourseEditorModal';
+import { BlogManager } from '@/components/admin/BlogManager';
+import { visibleBlogPosts } from '@/lib/blogOverrides';
 import {
   verifyPasscode, setPasscode, hasPasscode, currentPasscodeHash, getCourseOverrides, setCourseOverride, getToolOverrides, setToolOverride,
   getAnnouncement, setAnnouncement, resetCourseOverrides, resetToolOverrides, exportOverrides,
@@ -62,6 +65,8 @@ function AdminLogin({ onOk }: { onOk: (hash: string) => void }) {
   const [confirmPass, setConfirmPass] = useState('');
   const [err, setErr] = useState('');
   const [busy, setBusy] = useState(false);
+  const [attempts, setAttempts] = useState(0);
+  const LOCKOUT_AFTER = 10;
 
   const submit = async () => {
     setErr('');
@@ -75,11 +80,23 @@ function AdminLogin({ onOk }: { onOk: (hash: string) => void }) {
       return;
     }
     setBusy(true);
+    const delay = attempts > 0 ? attempts * 1000 : 0;
+    await new Promise(r => setTimeout(r, delay));
     const hash = await verifyPasscode(pass);
     setBusy(false);
     if (hash) onOk(hash);
-    else setErr('Incorrect passcode.');
+    else {
+      const next = attempts + 1;
+      setAttempts(next);
+      if (next >= LOCKOUT_AFTER) {
+        setErr('Too many failed attempts. Refresh the page to try again.');
+      } else {
+        setErr(`Incorrect passcode.${next >= 5 ? ` (${LOCKOUT_AFTER - next} attempts left)` : ''}`);
+      }
+    }
   };
+
+  const locked = !needsSetup && attempts >= LOCKOUT_AFTER;
 
   return (
     <div className="container-vc flex min-h-[80vh] items-center justify-center py-20">
@@ -95,8 +112,9 @@ function AdminLogin({ onOk }: { onOk: (hash: string) => void }) {
           </p>
         </div>
         <Input id="admin-pass" type="password" label={needsSetup ? 'New passcode' : 'Passcode'} value={pass} error={err}
+          disabled={locked || busy}
           onChange={(e) => { setPass(e.target.value); setErr(''); }}
-          onKeyDown={(e) => { if (e.key === 'Enter' && !needsSetup) submit(); }} placeholder="••••••••" />
+          onKeyDown={(e) => { if (e.key === 'Enter' && !needsSetup && !locked) submit(); }} placeholder="••••••••" />
         {needsSetup && (
           <div className="mt-4">
             <Input id="admin-pass-confirm" type="password" label="Confirm passcode" value={confirmPass}
@@ -119,6 +137,7 @@ const TABS = [
   { id: 'dashboard', label: 'Dashboard', Icon: LayoutDashboard },
   { id: 'courses', label: 'Courses', Icon: GraduationCap },
   { id: 'tools', label: 'Tools', Icon: Wrench },
+  { id: 'blog', label: 'Blog', Icon: Newspaper },
   { id: 'content', label: 'Site Content', Icon: FileText },
   { id: 'seo', label: 'SEO', Icon: Search },
   { id: 'announce', label: 'Announcement', Icon: Megaphone },
@@ -154,6 +173,7 @@ function AdminShell({ onLogout }: { onLogout: () => void }) {
           {tab === 'dashboard' && <Dashboard />}
           {tab === 'courses' && <CoursesManager />}
           {tab === 'tools' && <ToolsManager />}
+          {tab === 'blog' && <BlogManager />}
           {tab === 'content' && <SiteContentManager />}
           {tab === 'seo' && <SEOManager />}
           {tab === 'announce' && <AnnouncementManager />}
@@ -184,6 +204,7 @@ function Dashboard() {
   const allCourses = mergedCourses();
   const visibleCourses = allCourses.filter((c) => !cOv[c.id]?.hidden);
   const visibleTools = TOOLS.filter((t) => !tOv[t.id]?.hidden);
+  const livePosts = visibleBlogPosts();
   const enrollments = allCourses.reduce((s, c) => s + c.enrollmentCount, 0);
   const revenue = allCourses.reduce((s, c) => s + c.price * c.enrollmentCount, 0);
   const avgRating = (allCourses.reduce((s, c) => s + c.rating, 0) / allCourses.length).toFixed(2);
@@ -201,6 +222,7 @@ function Dashboard() {
         <StatCard label="Courses live" value={`${visibleCourses.length}`} sub={`of ${allCourses.length} total`} Icon={GraduationCap} />
         <StatCard label="Total enrollments" value={enrollments.toLocaleString('en-IN')} sub="across all courses" Icon={Users} />
         <StatCard label="Est. revenue" value={formatINR(revenue)} sub="price × enrollments" Icon={IndianRupee} />
+        <StatCard label="Posts live" value={`${livePosts.length}`} sub={`of ${BLOG_POSTS.length} total`} Icon={Newspaper} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">

@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { SriYantra } from '@/components/effects/SriYantra';
 
 /** Flower of Life — 19 overlapping circles, used as a faint sacred backdrop. */
@@ -33,21 +32,8 @@ const GRAIN =
  * Full-bleed living cosmic background: flowing gradient mesh, drifting nebula
  * auroras, a slow sacred-geometry layer, film grain and a vignette.
  * Pure CSS animation (GPU-friendly); pauses under prefers-reduced-motion.
- * SVG geometry layers are deferred until idle to not block LCP.
  */
 export function CosmicBackground() {
-  // Defer complex SVG geometry until browser is idle
-  const [geoReady, setGeoReady] = useState(false);
-  useEffect(() => {
-    const cb = () => setGeoReady(true);
-    if ('requestIdleCallback' in window) {
-      (window as Window & { requestIdleCallback: (cb: () => void, opts?: object) => void })
-        .requestIdleCallback(cb, { timeout: 800 });
-    } else {
-      setTimeout(cb, 500);
-    }
-  }, []);
-
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 -z-30 overflow-hidden">
       {/* base */}
@@ -71,18 +57,14 @@ export function CosmicBackground() {
       <div className="absolute bottom-[-16%] left-[22%] h-[56vh] w-[56vh] rounded-full bg-gold-soft/14 blur-[100px] animate-aurora mix-blend-screen" style={{ animationDelay: '7s' }} />
       <div className="absolute bottom-[6%] right-[8%] h-[44vh] w-[44vh] rounded-full bg-teal-cosmic/16 blur-[90px] animate-aurora-slow mix-blend-screen" style={{ animationDelay: '11s' }} />
 
-      {/* sacred geometry — deferred until idle, far, faint, slow */}
-      {geoReady && (
-        <div className="absolute left-1/2 top-1/2 h-[150vmin] w-[150vmin] -translate-x-1/2 -translate-y-1/2 animate-spin-slower opacity-[0.05]">
-          <FlowerOfLife stroke="rgba(180,200,255,0.6)" />
-        </div>
-      )}
-      {geoReady && (
-        <div className="absolute left-1/2 top-1/2 h-[92vmin] w-[92vmin] -translate-x-1/2 -translate-y-1/2 opacity-[0.045]"
-          style={{ animation: 'spin-slow 200s linear infinite reverse' }}>
-          <SriYantra className="h-full w-full" stroke="#E6B84A" />
-        </div>
-      )}
+      {/* sacred geometry — far, faint, slow */}
+      <div className="absolute left-1/2 top-1/2 h-[150vmin] w-[150vmin] -translate-x-1/2 -translate-y-1/2 animate-spin-slower opacity-[0.05]">
+        <FlowerOfLife stroke="rgba(180,200,255,0.6)" />
+      </div>
+      <div className="absolute left-1/2 top-1/2 h-[92vmin] w-[92vmin] -translate-x-1/2 -translate-y-1/2 opacity-[0.045]"
+        style={{ animation: 'spin-slow 200s linear infinite reverse' }}>
+        <SriYantra className="h-full w-full" stroke="#E6B84A" />
+      </div>
 
       {/* film grain */}
       <div className="absolute inset-0 opacity-[0.05] mix-blend-soft-light"

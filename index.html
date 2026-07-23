@@ -23,29 +23,37 @@
     <meta name="twitter:title" content="VediCosmic — The Inner Journey" />
     <meta name="twitter:description" content="Explore the cosmic blueprint of your existence with interactive Vedic tools and courses." />
 
-    <!-- Critical inline CSS: paint background instantly, prevent FOUC -->
-    <style>
-      html,body{margin:0;padding:0;background:#050510;color:#fff;-webkit-font-smoothing:antialiased}
-      #root{min-height:100vh}
-    </style>
+    <!-- DNS prefetch for external origins -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
 
-    <!-- Font preconnects -->
+    <!-- Critical font preconnects -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Non-blocking font loading (print media trick — no render block) -->
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    <!--
+      Non-blocking font load: rel="preload" + onload swap trick.
+      Split into two requests: critical display fonts first, secondary fonts deferred.
+    -->
+    <!-- 1) Critical: heading + body fonts (Cinzel + Inter) -->
+    <link rel="preload" as="style"
+      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap"
       onload="this.onload=null;this.rel='stylesheet'"
     />
     <noscript>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap"
-        rel="stylesheet"
-      />
+      <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" />
     </noscript>
+
+    <!-- 2) Secondary: Devanagari + Mono (defer via JS, optional for LCP) -->
+    <script>
+      ;(function(){
+        var l=document.createElement('link');
+        l.rel='stylesheet';
+        l.href='https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=optional';
+        document.head.appendChild(l);
+      })()
+    </script>
 
     <title>VediCosmic — The Inner Journey</title>
   </head>

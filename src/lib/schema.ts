@@ -1,7 +1,8 @@
-import { SITE_URL, SITE_NAME } from '@/config/site';
+import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from '@/config/site';
 import type { FAQItem } from '@/types/content.types';
 import type { Course } from '@/types/course.types';
 import type { ToolMeta } from '@/types/tool.types';
+import type { BlogPost } from '@/types/blog.types';
 
 export function faqPageSchema(faqs: FAQItem[]) {
   return {
@@ -63,5 +64,24 @@ export function courseSchema(course: Course) {
         url: `${SITE_URL}/courses/${course.slug}`,
       },
     } : {}),
+  };
+}
+
+export function blogPostingSchema(post: BlogPost) {
+  const image = post.heroImage
+    ? (post.heroImage.startsWith('http') ? post.heroImage : SITE_URL + post.heroImage)
+    : SITE_URL + DEFAULT_OG_IMAGE;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    image,
+    datePublished: post.publishedAt,
+    dateModified: post.updatedAt ?? post.publishedAt,
+    author: { '@type': 'Person', name: post.author?.name ?? SITE_NAME },
+    publisher: { '@type': 'Organization', name: SITE_NAME, logo: { '@type': 'ImageObject', url: SITE_URL + DEFAULT_OG_IMAGE } },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}/blog/${post.slug}` },
+    url: `${SITE_URL}/blog/${post.slug}`,
   };
 }

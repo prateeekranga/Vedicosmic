@@ -9,14 +9,18 @@ export function Starfield({ density = 1 }: { density?: number }) {
   const reduced = usePrefersReducedMotion();
 
   useEffect(() => {
+    // Skip canvas entirely when user prefers reduced motion
+    if (reduced) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const context = canvas.getContext('2d');
+    const context = canvas.getContext('2d', { alpha: true });
     if (!context) return;
-    const cv: HTMLCanvasElement = canvas;
-    const ctx: CanvasRenderingContext2D = context;
+    const cv = canvas;
+    const ctx = context;
 
     let raf = 0;
+    let isVisible = true;
     let stars: Star[] = [];
     let comets: Comet[] = [];
     let nextComet = 2500 + Math.random() * 4000;
@@ -30,8 +34,8 @@ export function Starfield({ density = 1 }: { density?: number }) {
       cv.style.width = window.innerWidth + 'px';
       cv.style.height = window.innerHeight + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      // Fewer stars on mobile for better performance
-      const base = isMobile ? 55 : 130;
+      // Fewer stars on mobile for better GPU performance
+      const base = isMobile ? 60 : 150;
       const count = Math.round(base * density);
       const palette = ['#FFFFFF', '#F0D080', '#7DD3FC', '#FFD700', '#C9B8FF'];
       stars = Array.from({ length: count }, () => ({
@@ -46,6 +50,7 @@ export function Starfield({ density = 1 }: { density?: number }) {
     }
 
     function spawnComet() {
+      if (isMobile) return; // skip comets on mobile
       const fromLeft = Math.random() > 0.5;
       const speed = 7 + Math.random() * 5;
       const ang = (Math.random() * 18 + 18) * (Math.PI / 180);
@@ -60,12 +65,15 @@ export function Starfield({ density = 1 }: { density?: number }) {
     }
 
     function draw(now: number) {
+      // Skip rendering when off-screen but keep the loop alive
+      if (!isVisible) { raf = requestAnimationFrame(draw); return; }
+
       const dt = Math.min(40, now - last); last = now;
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
       for (const s of stars) {
         s.phase += s.tw;
-        s.y += s.drift;                       // gentle parallax drift
+        s.y += s.drift;
         if (s.y > window.innerHeight + 2) { s.y = -2; s.x = Math.random() * window.innerWidth; }
         const alpha = 0.35 + Math.sin(s.phase) * 0.4;
         ctx.beginPath();
@@ -82,8 +90,9 @@ export function Starfield({ density = 1 }: { density?: number }) {
       comets = comets.filter((c) => c.life > 0 && c.x > -200 && c.x < window.innerWidth + 200);
       for (const c of comets) {
         c.x += c.vx; c.y += c.vy; c.life -= 0.004;
-        const tx = c.x - c.vx / Math.hypot(c.vx, c.vy) * c.len;
-        const ty = c.y - c.vy / Math.hypot(c.vx, c.vy) * c.len;
+        const hypot = Math.hypot(c.vx, c.vy);
+        const tx = c.x - c.vx / hypot * c.len;
+        const ty = c.y - c.vy / hypot * c.len;
         const grad = ctx.createLinearGradient(c.x, c.y, tx, ty);
         grad.addColorStop(0, `rgba(255,255,255,${0.9 * c.life})`);
         grad.addColorStop(0.4, `rgba(125,211,252,${0.4 * c.life})`);
@@ -94,30 +103,23 @@ export function Starfield({ density = 1 }: { density?: number }) {
         ctx.fillStyle = `rgba(255,255,255,${c.life})`; ctx.fill();
       }
 
-      if (!reduced) raf = requestAnimationFrame(draw);
+      raf = requestAnimationFrame(draw);
     }
+
+    // Pause rendering when the canvas is scrolled off-screen
+    const observer = new IntersectionObserver(
+      (entries) => { isVisible = entries[0].isIntersecting; },
+      { threshold: 0 }
+    );
+    observer.observe(cv);
 
     resize();
-
-    // Delay animation start until idle — frees main thread for React's first paint
-    let started = false;
-    const startLoop = () => {
-      if (started) return;
-      started = true;
-      raf = requestAnimationFrame(draw);
-    };
-
-    if ('requestIdleCallback' in window) {
-      (window as Window & { requestIdleCallback: (cb: () => void, opts?: object) => void })
-        .requestIdleCallback(startLoop, { timeout: 400 });
-    } else {
-      setTimeout(startLoop, 200);
-    }
-
-    window.addEventListener('resize', resize);
+    raf = requestAnimationFrame(draw);
+    window.addEventListener('resize', resize, { passive: true });
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', resize);
+      observer.disconnect();
     };
   }, [density, reduced]);
 

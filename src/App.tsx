@@ -10,6 +10,8 @@ const Tools = lazy(() => import('@/pages/Tools'));
 const ToolPage = lazy(() => import('@/pages/ToolPage'));
 const Courses = lazy(() => import('@/pages/Courses'));
 const CourseDetail = lazy(() => import('@/pages/CourseDetail'));
+const Blog = lazy(() => import('@/pages/Blog'));
+const BlogPostPage = lazy(() => import('@/pages/BlogPostPage'));
 const About = lazy(() => import('@/pages/About'));
 const Contact = lazy(() => import('@/pages/Contact'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
@@ -44,6 +46,9 @@ export default function App() {
               <Route path="/tools/:slug" element={<ToolPage />} />
               <Route path="/courses" element={<Courses />} />
               <Route path="/courses/:slug" element={<CourseDetail />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/category/:categoryId" element={<Blog />} />
+              <Route path="/blog/:slug" element={<BlogPostPage />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />

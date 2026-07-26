@@ -6,13 +6,15 @@ import { createClient } from '@supabase/supabase-js';
  * throws — an unreachable Supabase project degrades to "static posts only", mirroring the existing
  * Playwright-unavailable fallback already used elsewhere in these build scripts.
  */
+// Same defaults as src/lib/supabaseClient.ts — the anon key isn't a secret (RLS gates every
+// write), so falling back to the real project rather than skipping DB posts keeps this working
+// in deploy environments (e.g. Hostinger's Node.js build panel) that don't have these set.
+const DEFAULT_URL = 'https://sghuhnhylmalbuowggwk.supabase.co';
+const DEFAULT_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNnaHVobmh5bG1hbGJ1b3dnZ3drIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwNTgwNTEsImV4cCI6MjEwMDYzNDA1MX0.Qs0XBqrXdzf-uPoMto77LuZIWLbqVXT9POqLK7RSgEw';
+
 export async function fetchDbPosts() {
-  const url = process.env.VITE_SUPABASE_URL;
-  const anonKey = process.env.VITE_SUPABASE_ANON_KEY;
-  if (!url || !anonKey) {
-    console.warn('[build] VITE_SUPABASE_URL/VITE_SUPABASE_ANON_KEY not set — skipping DB-authored posts.');
-    return [];
-  }
+  const url = process.env.VITE_SUPABASE_URL || DEFAULT_URL;
+  const anonKey = process.env.VITE_SUPABASE_ANON_KEY || DEFAULT_ANON_KEY;
   try {
     const supabase = createClient(url, anonKey);
     // RLS restricts the anon role to `hidden = false` rows automatically.

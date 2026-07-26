@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Search, X } from 'lucide-react';
 import { BLOG_CATEGORIES, getBlogCategory } from '@/data/blogCategories';
 import { getAuthor } from '@/data/authors';
-import { visibleBlogPosts } from '@/lib/blogOverrides';
+import { useAllBlogPosts } from '@/hooks/useAllBlogPosts';
 import { useOverridesVersion } from '@/hooks/useOverridesVersion';
 import { useSEO } from '@/hooks/useSEO';
 import { breadcrumbList } from '@/lib/schema';
@@ -27,6 +27,8 @@ export default function Blog() {
     if (categoryId && !category) navigate('/blog', { replace: true });
   }, [categoryId, category, navigate]);
 
+  const { posts: allPosts, loading: postsLoading } = useAllBlogPosts();
+
   useSEO(
     categoryId && category
       ? {
@@ -34,6 +36,7 @@ export default function Blog() {
           path: `/blog/category/${categoryId}`,
           title: `${category.label} Articles · VediCosmic Blog`,
           description: category.description,
+          ready: !postsLoading,
           jsonLd: breadcrumbList([
             { name: 'Home', path: '/' },
             { name: 'Blog', path: '/blog' },
@@ -45,14 +48,14 @@ export default function Blog() {
           path: '/blog',
           title: 'Blog · VediCosmic — Vedic Astrology, Numerology & Spiritual Living',
           description: 'In-depth guides on numerology, Vedic astrology, energy healing, cosmology, rituals, and meditation — free to read, grounded in tradition.',
+          ready: !postsLoading,
           jsonLd: breadcrumbList([{ name: 'Home', path: '/' }, { name: 'Blog', path: '/blog' }]),
         },
   );
 
-  const allPosts = visibleBlogPosts();
   const byCategory = useMemo(
     () => (categoryId ? allPosts.filter((p) => p.category === categoryId) : allPosts),
-    [categoryId, ov], // eslint-disable-line react-hooks/exhaustive-deps
+    [categoryId, allPosts, ov], // eslint-disable-line react-hooks/exhaustive-deps
   );
   const byAuthor = useMemo(
     () => (authorId ? byCategory.filter((p) => p.authorId === authorId) : byCategory),

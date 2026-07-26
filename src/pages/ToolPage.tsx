@@ -5,7 +5,7 @@ import { ArrowLeft, GraduationCap } from 'lucide-react';
 import { getTool } from '@/data/tools';
 import { getCourse } from '@/data/courses';
 import { getToolFaqs } from '@/data/toolFaqs';
-import { BLOG_POSTS } from '@/data/blog';
+import { useAllBlogPosts } from '@/hooks/useAllBlogPosts';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Accordion } from '@/components/ui/Accordion';
@@ -19,6 +19,7 @@ import { breadcrumbList, faqPageSchema, softwareApplicationSchema } from '@/lib/
 import type { ToolMeta } from '@/types/tool.types';
 import type { Course } from '@/types/course.types';
 import type { FAQItem } from '@/types/content.types';
+import type { BlogPost } from '@/types/blog.types';
 
 export default function ToolPage() {
   const { slug } = useParams();
@@ -35,11 +36,14 @@ export default function ToolPage() {
       return () => exitTool();
     }
   }, [tool?.slug]); // eslint-disable-line react-hooks/exhaustive-deps
+  const { posts: allPosts, loading: postsLoading } = useAllBlogPosts();
+
   useSEO({
     key: `tool:${slug}`,
     path: `/tools/${slug}`,
     title: tool ? (tool.seoTitle ?? `${tool.name} · VediCosmic`) : 'Tool · VediCosmic',
     description: tool?.description ?? '',
+    ready: !postsLoading,
     jsonLd: tool ? [
       breadcrumbList([
         { name: 'Home', path: '/' },
@@ -55,6 +59,7 @@ export default function ToolPage() {
 
   const course = tool.relatedCourseSlug ? getCourse(tool.relatedCourseSlug) : undefined;
   const faqs = getToolFaqs(tool.id);
+  const relatedPosts = allPosts.filter((p) => p.relatedToolSlugs?.includes(tool.slug));
 
   return (
     <div className="container-vc pb-12 pt-20">
@@ -66,18 +71,17 @@ export default function ToolPage() {
 
       {/* keyed by slug so a stale result's share text can't leak into the next tool navigated to */}
       <ShareResultProvider key={tool.slug}>
-        <ToolBody tool={tool} course={course} faqs={faqs} />
+        <ToolBody tool={tool} course={course} faqs={faqs} relatedPosts={relatedPosts} />
       </ShareResultProvider>
     </div>
   );
 }
 
-function ToolBody({ tool, course, faqs }: { tool: ToolMeta; course: Course | undefined; faqs: FAQItem[] }) {
+function ToolBody({ tool, course, faqs, relatedPosts }: { tool: ToolMeta; course: Course | undefined; faqs: FAQItem[]; relatedPosts: BlogPost[] }) {
   const Tool = tool.Component;
   const shareText = useShareText();
   const url = window.location.href;
   const title = `${tool.name} · VediCosmic`;
-  const relatedPosts = BLOG_POSTS.filter((p) => p.relatedToolSlugs?.includes(tool.slug));
 
   return (
     <>

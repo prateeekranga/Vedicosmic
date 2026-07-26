@@ -8,3 +8,4 @@ dist-standalone
 .vscode/*
 !.vscode/extensions.json
 tsconfig.tsbuildinfo
+graphify-out/

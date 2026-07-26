@@ -2,6 +2,7 @@ import { createServer } from 'vite';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import fs from 'node:fs/promises';
+import { fetchDbPosts } from './lib/fetchDbPosts.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
@@ -49,6 +50,8 @@ function buildLlmsTxt({ SITE_NAME, SITE_DESCRIPTION, SITE_URL, TOOLS, COURSES, B
 
 async function main() {
   const data = await loadData();
+  const dbPosts = await fetchDbPosts();
+  data.BLOG_POSTS = [...data.BLOG_POSTS, ...dbPosts]; // merge so buildLlmsTxt's blogLines picks them up too
   const routes = [
     ...data.STATIC_ROUTES.map((r) => ({ path: r.path })),
     ...data.TOOLS.map((t) => ({ path: `/tools/${t.slug}`, isNew: !!t.isNew })),

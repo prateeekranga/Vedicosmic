@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Calendar, Clock, RefreshCw } from 'lucide-react';
-import { getBlogPost } from '@/data/blog';
+import { useBlogPost } from '@/hooks/useBlogPost';
+import { useAllBlogPosts } from '@/hooks/useAllBlogPosts';
 import { getBlogCategory } from '@/data/blogCategories';
 import { getAuthor } from '@/data/authors';
 import { estimateReadingTime } from '@/lib/blogUtils';
@@ -21,16 +22,15 @@ import { Accordion } from '@/components/ui/Accordion';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { visibleBlogPosts } from '@/lib/blogOverrides';
 import { SITE_URL } from '@/config/site';
 import type { BlogPost } from '@/types/blog.types';
 
 export default function BlogPostPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const post = slug ? getBlogPost(slug) : undefined;
+  const { post, loading, notFound } = useBlogPost(slug);
 
-  useEffect(() => { if (!post) navigate('/blog', { replace: true }); }, [post, navigate]);
+  useEffect(() => { if (notFound) navigate('/blog', { replace: true }); }, [notFound, navigate]);
 
   const category = post ? getBlogCategory(post.category) : undefined;
 
@@ -41,6 +41,7 @@ export default function BlogPostPage() {
     description: post?.excerpt ?? '',
     image: post?.heroImage,
     type: 'article',
+    ready: !loading,
     jsonLd: post ? [
       breadcrumbList([
         { name: 'Home', path: '/' },
@@ -54,7 +55,7 @@ export default function BlogPostPage() {
     ] : undefined,
   });
 
-  if (!post) return null;
+  if (loading || !post) return null;
 
   return (
     <div className="container-vc pb-12 pt-20">
@@ -77,7 +78,8 @@ function BlogPostBody({ post }: { post: BlogPost }) {
   const dateFmt = (iso: string) => new Date(iso).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   const publishedDate = dateFmt(post.publishedAt);
   const updatedDate = post.updatedAt && post.updatedAt !== post.publishedAt ? dateFmt(post.updatedAt) : undefined;
-  const more = visibleBlogPosts().filter((p) => p.category === post.category && p.slug !== post.slug).slice(0, 3);
+  const { posts: allPosts } = useAllBlogPosts();
+  const more = allPosts.filter((p) => p.category === post.category && p.slug !== post.slug).slice(0, 3);
 
   const shareUrl = `${SITE_URL}/blog/${post.slug}`;
 

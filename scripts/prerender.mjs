@@ -3,6 +3,7 @@ import { chromium } from 'playwright-core';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import fs from 'node:fs/promises';
+import { fetchDbPosts } from './lib/fetchDbPosts.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
@@ -21,6 +22,7 @@ async function loadRoutes() {
   const { BLOG_POSTS } = await vite.ssrLoadModule('/src/data/blog/index.ts');
   const { BLOG_CATEGORIES } = await vite.ssrLoadModule('/src/data/blogCategories.ts');
   await vite.close();
+  const dbPosts = await fetchDbPosts();
   // '/' must be prerendered LAST: Vite preview's SPA fallback serves dist/index.html
   // for any route whose own static file doesn't exist yet, so overwriting it early
   // would corrupt the fallback shell every other in-progress route still depends on.
@@ -30,6 +32,7 @@ async function loadRoutes() {
     ...TOOLS.map((t) => `/tools/${t.slug}`),
     ...COURSES.map((c) => `/courses/${c.slug}`),
     ...BLOG_POSTS.map((p) => `/blog/${p.slug}`),
+    ...dbPosts.map((p) => `/blog/${p.slug}`),
     ...BLOG_CATEGORIES.filter((c) => c.id !== 'all').map((c) => `/blog/category/${c.id}`),
     '/',
   ];

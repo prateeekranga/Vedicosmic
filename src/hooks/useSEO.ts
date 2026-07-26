@@ -15,6 +15,10 @@ export interface SEOInput {
   jsonLd?: object | object[];
   noindex?: boolean;
   type?: 'website' | 'article';
+  /** When false, defers setting window.__PRERENDER_READY__ until it flips true — for pages
+   *  still waiting on an async data fetch (e.g. a DB-backed blog post). Defaults to true, so
+   *  every other call site's timing is unaffected. */
+  ready?: boolean;
 }
 
 function upsertMeta(attr: 'name' | 'property', key: string, content: string) {
@@ -63,9 +67,11 @@ export function useSEO(input: SEOInput): void {
       return s;
     });
 
-    (window as unknown as { __PRERENDER_READY__?: boolean }).__PRERENDER_READY__ = true;
+    if (input.ready ?? true) {
+      (window as unknown as { __PRERENDER_READY__?: boolean }).__PRERENDER_READY__ = true;
+    }
 
     return () => { scripts.forEach((s) => s.remove()); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [version, input.key, input.path, input.title, input.description, input.image, input.noindex, input.type, jsonLdKey]);
+  }, [version, input.key, input.path, input.title, input.description, input.image, input.noindex, input.type, input.ready, jsonLdKey]);
 }

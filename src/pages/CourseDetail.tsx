@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import {
   Star, Users, Clock, Check, Lock, PlayCircle, BookOpen, HelpCircle, Dumbbell, ArrowLeft,
 } from 'lucide-react';
-import { mergedCourse } from '@/lib/overrides';
+import { mergedCourse, getFeatureFlags } from '@/lib/overrides';
 import { getCourse } from '@/data/courses';
 import type { Lesson } from '@/types/course.types';
 import { Button } from '@/components/ui/Button';
@@ -32,7 +32,8 @@ export default function CourseDetail() {
   const { user, isEnrolled, toggleEnrollment } = useAuth();
   const { notify } = useToast();
 
-  useEffect(() => { if (!course) navigate('/courses', { replace: true }); }, [course, navigate]);
+  const coursesComingSoon = getFeatureFlags().coursesComingSoon;
+  useEffect(() => { if (!course || coursesComingSoon) navigate('/courses', { replace: true }); }, [course, coursesComingSoon, navigate]);
   useEffect(() => { window.scrollTo(0, 0); }, [slug]);
   useSEO({
     key: `course:${slug}`,
@@ -49,7 +50,7 @@ export default function CourseDetail() {
       ]),
     ] : undefined,
   });
-  if (!course) return null;
+  if (!course || coursesComingSoon) return null;
 
   const enrolled = isEnrolled(course.id);
 

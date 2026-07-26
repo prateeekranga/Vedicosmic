@@ -14,6 +14,8 @@ import { TOOLS } from '@/data/tools';
 import { COURSES } from '@/data/courses';
 import { formatINR } from '@/lib/format';
 import { mergedHomeContent } from '@/lib/siteContent';
+import { getFeatureFlags } from '@/lib/overrides';
+import { ComingSoon } from '@/components/ui/ComingSoon';
 import { useOverridesVersion } from '@/hooks/useOverridesVersion';
 import { useSEO } from '@/hooks/useSEO';
 import { faqPageSchema } from '@/lib/schema';
@@ -89,6 +91,7 @@ export default function Home() {
   });
   const featuredTools = TOOLS.filter((t) => t.isNew).slice(0, 3);
   const featuredCourses = COURSES.filter((c) => c.isFeatured).slice(0, 3);
+  const coursesComingSoon = getFeatureFlags().coursesComingSoon;
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress: heroProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
   const heroFade = useTransform(heroProgress, [0, 0.9], [1, 0]);
@@ -273,6 +276,13 @@ export default function Home() {
       <section className="container-vc py-16 sm:py-24">
         <SectionHeading eyebrow="Learn the Craft" title="Courses to deepen your practice"
           subtitle="Go beyond the tools. Study with experienced teachers and learn to read the cosmos yourself." />
+        {coursesComingSoon ? (
+          <div className="mt-12">
+            <ComingSoon title="Courses are on their way"
+              blurb="We're building structured, practitioner-led paths in Vedic astrology, numerology, meditation, and sacred geometry. Check back soon." />
+          </div>
+        ) : (
+        <>
         <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}
           className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {featuredCourses.map((c) => (
@@ -300,6 +310,8 @@ export default function Home() {
         <div className="mt-10 text-center">
           <Button to="/courses" variant="ghost">Browse all courses <ArrowRight className="h-4 w-4" /></Button>
         </div>
+        </>
+        )}
       </section>
 
       {/* TESTIMONIALS */}

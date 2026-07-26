@@ -14,6 +14,8 @@ import { COURSES } from '@/data/courses';
 import { BLOG_POSTS } from '@/data/blog';
 import { BLOG_CATEGORIES } from '@/data/blogCategories';
 import { formatINR } from '@/lib/format';
+import { getFeatureFlags } from '@/lib/overrides';
+import { useOverridesVersion } from '@/hooks/useOverridesVersion';
 
 function SoundToggle({ className = '' }: { className?: string }) {
   const { enabled, toggle } = useSound();
@@ -135,7 +137,17 @@ function BlogPanel() {
   );
 }
 
-function CoursesPanel() {
+function CoursesPanel({ comingSoon }: { comingSoon: boolean }) {
+  if (comingSoon) {
+    return (
+      <div className="w-[min(90vw,320px)] py-2 text-center">
+        <Badge tone="gold">Coming Soon</Badge>
+        <p className="mt-3 text-sm text-cosmic-darker/70">
+          Structured courses are in the works — check back soon.
+        </p>
+      </div>
+    );
+  }
   return (
     <div className="w-[min(90vw,380px)]">
       <ul className="space-y-1">
@@ -173,6 +185,8 @@ export function Navbar() {
   const mobileListRef = useRef<HTMLUListElement>(null);
   const { user, logout } = useAuth();
   const location = useLocation();
+  useOverridesVersion();
+  const coursesComingSoon = getFeatureFlags().coursesComingSoon;
 
   useEffect(() => {
     let ticking = false;
@@ -247,7 +261,7 @@ export function Navbar() {
               </NavLink>
             </li>
             <li><NavDropdown label="Tools" active={location.pathname.startsWith('/tools')} panel={<ToolsPanel />} onOpenChange={setToolsMenuOpen} wide /></li>
-            <li><NavDropdown label="Courses" active={location.pathname.startsWith('/courses')} panel={<CoursesPanel />} onOpenChange={setCoursesMenuOpen} /></li>
+            <li><NavDropdown label="Courses" active={location.pathname.startsWith('/courses')} panel={<CoursesPanel comingSoon={coursesComingSoon} />} onOpenChange={setCoursesMenuOpen} /></li>
             <li><NavDropdown label="Blog" active={location.pathname.startsWith('/blog')} panel={<BlogPanel />} onOpenChange={setBlogMenuOpen} wide /></li>
             {LINKS.slice(1).map((l) => (
               <li key={l.to}>
@@ -312,7 +326,9 @@ export function Navbar() {
               exit={{ opacity: 0, height: 0 }}
               className="relative overflow-hidden border-t border-white/8 bg-cosmic-darker/95 backdrop-blur-lg md:hidden"
             >
-              <ul ref={mobileListRef} className="container-vc flex max-h-[calc(100vh-68px)] flex-col gap-1 overflow-y-auto py-4">
+              <ul ref={mobileListRef}
+                className="container-vc flex max-h-[calc(100vh-68px)] flex-col gap-1 overflow-y-auto py-4"
+                style={{ maxHeight: 'calc(100dvh - 68px)' }}>
                 <li>
                   <NavLink to="/" end
                     className={({ isActive }) => `block rounded-xl px-4 py-3 text-base ${isActive ? 'bg-white/5 text-gold-pale' : 'text-white/80'}`}>
@@ -343,15 +359,24 @@ export function Navbar() {
                   label="Courses" open={mobileSection === 'courses'}
                   onToggle={() => setMobileSection((s) => (s === 'courses' ? null : 'courses'))}
                 >
-                  {FEATURED_COURSES.map((c) => (
-                    <Link key={c.slug} to={`/courses/${c.slug}`} className="flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm text-white/70 hover:bg-white/5 hover:text-white">
-                      <span className="truncate">{c.title}</span>
-                      <Badge tone="gold" className="shrink-0">{c.price === 0 ? 'Free' : formatINR(c.price)}</Badge>
-                    </Link>
-                  ))}
-                  <Link to="/courses" className="mt-1 flex items-center gap-1.5 rounded-lg px-3 py-2.5 text-sm text-brand-cyan-soft">
-                    View all courses <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
+                  {coursesComingSoon ? (
+                    <div className="flex items-center gap-2 px-3 py-2.5">
+                      <Badge tone="gold">Coming Soon</Badge>
+                      <span className="text-xs text-white/50">Structured courses are in the works.</span>
+                    </div>
+                  ) : (
+                    <>
+                      {FEATURED_COURSES.map((c) => (
+                        <Link key={c.slug} to={`/courses/${c.slug}`} className="flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm text-white/70 hover:bg-white/5 hover:text-white">
+                          <span className="truncate">{c.title}</span>
+                          <Badge tone="gold" className="shrink-0">{c.price === 0 ? 'Free' : formatINR(c.price)}</Badge>
+                        </Link>
+                      ))}
+                      <Link to="/courses" className="mt-1 flex items-center gap-1.5 rounded-lg px-3 py-2.5 text-sm text-brand-cyan-soft">
+                        View all courses <ArrowRight className="h-3.5 w-3.5" />
+                      </Link>
+                    </>
+                  )}
                 </MobileAccordion>
 
                 <MobileAccordion

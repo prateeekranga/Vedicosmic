@@ -15,7 +15,7 @@
  */
 export const audioConfig = {
   background: {
-    enabled: true,                 // play ambient music across the site
+    enabled: false,                // play ambient music across the site
     mode: 'generative' as 'generative' | 'file',
     preset: 'temple' as 'temple' | 'cosmos' | 'river',
     fileUrl: '',                   // e.g. '/audio/ambient.mp3'

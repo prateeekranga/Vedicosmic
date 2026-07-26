@@ -1,12 +1,9 @@
-import { SriYantra } from '@/components/effects/SriYantra';
-import { FlowerOfLife } from '@/components/effects/FlowerOfLife';
-
 const GRAIN =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E";
 
 /**
  * Full-bleed living cosmic background: flowing gradient mesh, drifting nebula
- * auroras, a slow sacred-geometry layer, film grain and a vignette.
+ * auroras, film grain and a vignette.
  * Pure CSS animation (GPU-friendly); pauses under prefers-reduced-motion.
  */
 export function CosmicBackground() {
@@ -32,15 +29,6 @@ export function CosmicBackground() {
       <div className="absolute right-[-12%] top-[14%] h-[52vh] w-[52vh] rounded-full bg-brand-cyan/18 blur-[90px] animate-aurora-slow mix-blend-screen" />
       <div className="absolute bottom-[-16%] left-[22%] h-[56vh] w-[56vh] rounded-full bg-gold-soft/14 blur-[100px] animate-aurora mix-blend-screen" style={{ animationDelay: '7s' }} />
       <div className="absolute bottom-[6%] right-[8%] h-[44vh] w-[44vh] rounded-full bg-teal-cosmic/16 blur-[90px] animate-aurora-slow mix-blend-screen" style={{ animationDelay: '11s' }} />
-
-      {/* sacred geometry — far, faint, slow */}
-      <div className="absolute left-1/2 top-1/2 h-[150vmin] w-[150vmin] -translate-x-1/2 -translate-y-1/2 animate-spin-slower opacity-[0.05]">
-        <FlowerOfLife stroke="rgba(180,200,255,0.6)" />
-      </div>
-      <div className="absolute left-1/2 top-1/2 h-[92vmin] w-[92vmin] -translate-x-1/2 -translate-y-1/2 opacity-[0.045]"
-        style={{ animation: 'spin-slow 200s linear infinite reverse' }}>
-        <SriYantra className="h-full w-full" stroke="#E6B84A" />
-      </div>
 
       {/* film grain */}
       <div className="absolute inset-0 opacity-[0.05] mix-blend-soft-light"

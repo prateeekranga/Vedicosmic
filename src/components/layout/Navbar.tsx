@@ -324,7 +324,8 @@ export function Navbar() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="relative overflow-hidden border-t border-white/8 bg-cosmic-darker/95 backdrop-blur-lg md:hidden"
+              className="relative min-h-[calc(100vh-68px)] overflow-hidden border-t border-white/8 bg-cosmic-darker/95 backdrop-blur-lg md:hidden"
+              style={{ minHeight: 'calc(100dvh - 68px)' }}
             >
               <ul ref={mobileListRef}
                 className="container-vc flex max-h-[calc(100vh-68px)] flex-col gap-1 overflow-y-auto py-4"

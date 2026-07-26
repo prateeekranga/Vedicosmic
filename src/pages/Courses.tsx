@@ -2,13 +2,14 @@ import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Star, Users, Clock, Check } from 'lucide-react';
-import { visibleCourses } from '@/lib/overrides';
+import { visibleCourses, getFeatureFlags } from '@/lib/overrides';
 import { useOverridesVersion } from '@/hooks/useOverridesVersion';
 import { useSEO } from '@/hooks/useSEO';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Select } from '@/components/ui/Field';
+import { ComingSoon } from '@/components/ui/ComingSoon';
 import { formatINR } from '@/lib/format';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -23,6 +24,8 @@ export default function Courses() {
     key: '/courses', path: '/courses', title: 'Courses · VediCosmic',
     description: 'Structured courses in Vedic astrology, numerology, meditation, and sacred geometry — taught by experienced practitioners.',
   });
+
+  const comingSoon = getFeatureFlags().coursesComingSoon;
 
   const list = useMemo(() => {
     const all = visibleCourses();
@@ -40,6 +43,13 @@ export default function Courses() {
         title={<>Learn to read the <span className="text-gradient-gold">cosmos</span> yourself</>}
         subtitle="Structured paths taught by experienced practitioners — from your first birth chart to advanced sadhana." />
 
+      {comingSoon ? (
+        <div className="mt-12">
+          <ComingSoon title="Courses are on their way"
+            blurb="We're building structured, practitioner-led paths in Vedic astrology, numerology, meditation, and sacred geometry. Check back soon." />
+        </div>
+      ) : (
+      <>
       <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-wrap gap-2">
           {LEVELS.map((l) => (
@@ -91,6 +101,8 @@ export default function Courses() {
           })}
         </AnimatePresence>
       </motion.div>
+      </>
+      )}
     </div>
   );
 }

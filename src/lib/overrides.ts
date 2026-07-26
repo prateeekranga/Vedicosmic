@@ -11,8 +11,15 @@ import { read, write } from './storage';
  */
 /** Patch applied over a course's base fields (built-in or custom) — covers every editable field. */
 export type CourseOverride = Partial<Omit<Course, 'id' | 'slug'>> & { hidden?: boolean };
-export interface ToolOverride { hidden?: boolean; isNew?: boolean }
+export interface ToolOverride { hidden?: boolean; isNew?: boolean; comingSoon?: boolean }
 export interface Announcement { text: string; active: boolean; tone: 'gold' | 'cyan' | 'info' }
+
+/** Site-wide "Coming Soon" gates. Baked-in defaults apply to every visitor;
+ *  the admin panel can flip them per-browser like every other override here. */
+export interface FeatureFlags { coursesComingSoon: boolean }
+const DEFAULT_FEATURE_FLAGS: FeatureFlags = { coursesComingSoon: true };
+/** Tools shipped with a baseline "Coming Soon" default (independent of the per-tool override above). */
+export const DEFAULT_COMING_SOON_TOOL_IDS: string[] = ['kundali-matching'];
 
 const K = {
   pass: 'vc.admin.pass',
@@ -20,11 +27,13 @@ const K = {
   tools: 'vc.overrides.tools',
   ann: 'vc.announcement',
   customCourses: 'vc.courses.custom',
+  features: 'vc.features',
 };
 
 export const getCourseOverrides = () => read<Record<string, CourseOverride>>(K.courses, {});
 export const getToolOverrides = () => read<Record<string, ToolOverride>>(K.tools, {});
 export const getAnnouncement = () => read<Announcement>(K.ann, { text: '', active: false, tone: 'gold' });
+export const getFeatureFlags = (): FeatureFlags => ({ ...DEFAULT_FEATURE_FLAGS, ...read<Partial<FeatureFlags>>(K.features, {}) });
 
 export function setCourseOverride(id: string, patch: CourseOverride) {
   const all = getCourseOverrides();
@@ -37,8 +46,15 @@ export function setToolOverride(id: string, patch: ToolOverride) {
   write(K.tools, all);
 }
 export function setAnnouncement(a: Announcement) { write(K.ann, a); }
+export function setFeatureFlag(patch: Partial<FeatureFlags>) { write(K.features, { ...getFeatureFlags(), ...patch }); }
 export function resetCourseOverrides() { write(K.courses, {}); }
 export function resetToolOverrides() { write(K.tools, {}); }
+export function resetFeatureFlags() { write(K.features, {}); }
+/** A tool is "Coming Soon" if the admin explicitly set it, or (absent an override) it ships with that baseline default. */
+export function isToolComingSoon(id: string): boolean {
+  const o = getToolOverrides()[id];
+  return o?.comingSoon ?? DEFAULT_COMING_SOON_TOOL_IDS.includes(id);
+}
 
 // ---- custom (admin-created) courses, stored as full Course objects ----
 export const getCustomCourses = (): Record<string, Course> => read(K.customCourses, {});

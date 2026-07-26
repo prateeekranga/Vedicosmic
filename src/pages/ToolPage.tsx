@@ -6,10 +6,13 @@ import { getTool } from '@/data/tools';
 import { getCourse } from '@/data/courses';
 import { getToolFaqs } from '@/data/toolFaqs';
 import { useAllBlogPosts } from '@/hooks/useAllBlogPosts';
+import { isToolComingSoon } from '@/lib/overrides';
+import { useOverridesVersion } from '@/hooks/useOverridesVersion';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Accordion } from '@/components/ui/Accordion';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { ComingSoon } from '@/components/ui/ComingSoon';
 import { BlogPostCard } from '@/components/blog/BlogPostCard';
 import { ShareBar } from '@/components/ShareBar';
 import { ShareResultProvider, useShareText } from '@/contexts/ShareContext';
@@ -82,6 +85,8 @@ function ToolBody({ tool, course, faqs, relatedPosts }: { tool: ToolMeta; course
   const shareText = useShareText();
   const url = window.location.href;
   const title = `${tool.name} · VediCosmic`;
+  useOverridesVersion();
+  const comingSoon = isToolComingSoon(tool.id);
 
   return (
     <>
@@ -92,7 +97,7 @@ function ToolBody({ tool, course, faqs, relatedPosts }: { tool: ToolMeta; course
             <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gold-bright/10 text-gold-soft">
               <tool.Icon className="h-6 w-6" />
             </span>
-            {tool.isNew && <Badge tone="cyan">New</Badge>}
+            {comingSoon ? <Badge tone="gold">Coming Soon</Badge> : tool.isNew && <Badge tone="cyan">New</Badge>}
           </div>
           <h1 className="font-display text-h1 text-white">{tool.name}</h1>
           <p className="mt-2 text-body text-white/60">{tool.subtitle}</p>
@@ -103,7 +108,10 @@ function ToolBody({ tool, course, faqs, relatedPosts }: { tool: ToolMeta; course
         </div>
       </motion.div>
 
-      <Tool />
+      {comingSoon ? (
+        <ComingSoon title={`${tool.name} is on its way`}
+          blurb="We're polishing this tool before it goes live. Check back soon — or explore the rest of our free Vedic tools in the meantime." />
+      ) : <Tool />}
 
       <div className="mx-auto mt-16 max-w-3xl">
         <SectionHeading eyebrow="Good to Know" title="Frequently Asked" />

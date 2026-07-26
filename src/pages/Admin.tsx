@@ -25,6 +25,7 @@ import {
   verifyPasscode, setPasscode, hasPasscode, currentPasscodeHash, getCourseOverrides, setCourseOverride, getToolOverrides, setToolOverride,
   getAnnouncement, setAnnouncement, resetCourseOverrides, resetToolOverrides, exportOverrides,
   mergedCourses, isCustomCourseId, addCustomCourse, deleteCustomCourse,
+  getFeatureFlags, setFeatureFlag, isToolComingSoon,
   type Announcement,
 } from '@/lib/overrides';
 import {
@@ -275,6 +276,7 @@ function CoursesManager() {
   const levels: CourseLevel[] = ['Beginner', 'Intermediate', 'Advanced'];
   const [editorSeed, setEditorSeed] = useState<Course | null>(null);
   const rows = mergedCourses();
+  const flags = getFeatureFlags();
 
   const saveCourse = (course: Course) => {
     if (COURSES.some((bc) => bc.id === course.id)) {
@@ -295,6 +297,17 @@ function CoursesManager() {
             <RotateCcw className="mr-2 h-4 w-4" /> Reset
           </Button>
         </div>
+      </div>
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-cosmic-light/40 p-5">
+        <div>
+          <p className="font-medium text-white">Show "Coming Soon" on the public Courses page</p>
+          <p className="mt-0.5 text-xs text-white/45">When on, visitors see a Coming Soon notice instead of the course catalog at /courses.</p>
+        </div>
+        <label className="flex items-center gap-2 text-sm text-white/70">
+          <input type="checkbox" checked={flags.coursesComingSoon}
+            onChange={(e) => setFeatureFlag({ coursesComingSoon: e.target.checked })}
+            className="h-4 w-4 accent-gold-400" /> Coming Soon
+        </label>
       </div>
       <div className="overflow-x-auto rounded-2xl border border-white/10 bg-cosmic-light/40">
         <table className="w-full min-w-[720px] text-left text-sm">
@@ -367,18 +380,22 @@ function ToolsManager() {
       <div className="overflow-x-auto rounded-2xl border border-white/10 bg-cosmic-light/40">
         <table className="w-full min-w-[560px] text-left text-sm">
           <thead className="border-b border-white/10 text-xs uppercase tracking-wider text-white/40">
-            <tr><th className="p-3">Tool</th><th className="p-3">Category</th><th className="p-3 text-center">"New" badge</th><th className="p-3 text-center">Visible</th></tr>
+            <tr><th className="p-3">Tool</th><th className="p-3">Category</th><th className="p-3 text-center">"New" badge</th><th className="p-3 text-center">Coming Soon</th><th className="p-3 text-center">Visible</th></tr>
           </thead>
           <tbody>
             {TOOLS.map((t) => {
               const o = ov[t.id] ?? {};
               const hidden = !!o.hidden;
+              const comingSoon = isToolComingSoon(t.id);
               return (
                 <tr key={t.id} className="border-b border-white/5">
                   <td className="p-3"><p className="font-medium text-white">{t.name}</p><p className="text-xs text-white/40">{t.slug}</p></td>
                   <td className="p-3 capitalize text-white/60">{t.category}</td>
                   <td className="p-3 text-center">
                     <input type="checkbox" checked={o.isNew ?? !!t.isNew} onChange={(e) => setToolOverride(t.id, { isNew: e.target.checked })} className="h-4 w-4 accent-brand-cyan-400" />
+                  </td>
+                  <td className="p-3 text-center">
+                    <input type="checkbox" checked={comingSoon} onChange={(e) => setToolOverride(t.id, { comingSoon: e.target.checked })} className="h-4 w-4 accent-gold-400" />
                   </td>
                   <td className="p-3 text-center">
                     <button onClick={() => setToolOverride(t.id, { hidden: !hidden })} className={hidden ? 'text-white/30' : 'text-brand-cyan-300'}>
@@ -391,7 +408,7 @@ function ToolsManager() {
           </tbody>
         </table>
       </div>
-      <p className="text-xs text-white/40">Hidden tools disappear from the public Tools page. Changes are instant.</p>
+      <p className="text-xs text-white/40">Hidden tools disappear from the public Tools page. A tool marked "Coming Soon" stays listed but shows a Coming Soon notice instead of the tool. Changes are instant.</p>
     </div>
   );
 }

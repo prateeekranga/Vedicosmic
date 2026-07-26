@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { TOOL_CATEGORIES } from '@/data/tools';
-import { visibleTools } from '@/lib/overrides';
+import { visibleTools, isToolComingSoon } from '@/lib/overrides';
 import { useOverridesVersion } from '@/hooks/useOverridesVersion';
 import { useSEO } from '@/hooks/useSEO';
 import { Card } from '@/components/ui/Card';
@@ -62,7 +62,7 @@ export default function Tools() {
                     <span className={`flex h-12 w-12 items-center justify-center rounded-xl ${ACCENT_BG[t.accent]}`}>
                       <t.Icon className="h-6 w-6" />
                     </span>
-                    {t.isNew && <Badge tone="cyan">New</Badge>}
+                    {isToolComingSoon(t.id) ? <Badge tone="neutral">Coming Soon</Badge> : t.isNew && <Badge tone="cyan">New</Badge>}
                   </div>
                   <h3 className="mt-5 font-heading text-h3 text-white group-hover:text-gold-pale">{t.name}</h3>
                   <p className="mt-1 text-xs uppercase tracking-wide text-white/40">{t.subtitle}</p>

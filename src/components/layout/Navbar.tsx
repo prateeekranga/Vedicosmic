@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, User as UserIcon, X, Volume2, VolumeX, ArrowRight, ChevronDown } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/Button';
@@ -169,6 +169,8 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [mobileSection, setMobileSection] = useState<'tools' | 'courses' | 'blog' | null>(null);
+  const [mobileMenuOverflowing, setMobileMenuOverflowing] = useState(false);
+  const mobileListRef = useRef<HTMLUListElement>(null);
   const { user, logout } = useAuth();
   const location = useLocation();
 
@@ -185,6 +187,19 @@ export function Navbar() {
   }, []);
 
   useEffect(() => { setMobileOpen(false); setMobileSection(null); }, [location.pathname]);
+
+  // Shows a bottom fade + keeps it in sync with actual scroll position, so the
+  // long mobile menu never looks abruptly "cut off" without a scroll affordance.
+  useEffect(() => {
+    const el = mobileListRef.current;
+    if (!mobileOpen || !el) { setMobileMenuOverflowing(false); return; }
+    const check = () => setMobileMenuOverflowing(el.scrollHeight - el.scrollTop - el.clientHeight > 4);
+    check();
+    el.addEventListener('scroll', check, { passive: true });
+    const ro = new ResizeObserver(check);
+    ro.observe(el);
+    return () => { el.removeEventListener('scroll', check); ro.disconnect(); };
+  }, [mobileOpen, mobileSection]);
 
   const [toolsMenuOpen, setToolsMenuOpen] = useState(false);
   const [coursesMenuOpen, setCoursesMenuOpen] = useState(false);
@@ -295,9 +310,9 @@ export function Navbar() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="overflow-hidden border-t border-white/8 bg-cosmic-darker/95 backdrop-blur-lg md:hidden"
+              className="relative overflow-hidden border-t border-white/8 bg-cosmic-darker/95 backdrop-blur-lg md:hidden"
             >
-              <ul className="container-vc flex max-h-[calc(100vh-68px)] flex-col gap-1 overflow-y-auto py-4">
+              <ul ref={mobileListRef} className="container-vc flex max-h-[calc(100vh-68px)] flex-col gap-1 overflow-y-auto py-4">
                 <li>
                   <NavLink to="/" end
                     className={({ isActive }) => `block rounded-xl px-4 py-3 text-base ${isActive ? 'bg-white/5 text-gold-pale' : 'text-white/80'}`}>
@@ -384,6 +399,9 @@ export function Navbar() {
                   ))}
                 </li>
               </ul>
+              {mobileMenuOverflowing && (
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-cosmic-darker/95 to-transparent" />
+              )}
             </motion.div>
           )}
         </AnimatePresence>

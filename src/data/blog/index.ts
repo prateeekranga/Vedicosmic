@@ -8,6 +8,14 @@ import panchang101 from './posts/panchang-101-tithi-nakshatra';
 import startDailySpiritualPracticeSadhana from './posts/start-daily-spiritual-practice-sadhana';
 import ekadashiFastingGuide from './posts/ekadashi-fasting-guide';
 import pranayamaForBeginners from './posts/pranayama-for-beginners';
+import mobileNumberNumerology from './posts/mobile-number-numerology';
+import chaldeanNumerologyExplained from './posts/chaldean-numerology-explained';
+import navagrahaNinePlanetsGuide from './posts/navagraha-nine-planets-guide';
+import dailyCardContemplationRitual from './posts/daily-card-contemplation-ritual';
+import whatIsAYantraSacredGeometry from './posts/what-is-a-yantra-sacred-geometry';
+import whatAreBiorhythmsExplained from './posts/what-are-biorhythms-explained';
+import vastuShastraBasics from './posts/vastu-shastra-basics';
+import urdhvaretasBrahmacharyaYogicView from './posts/urdhvaretas-brahmacharya-yogic-view';
 import type { BlogPost } from '@/types/blog.types';
 
 // Post slugs must never literally be "category" — it would collide with the
@@ -23,6 +31,14 @@ export const BLOG_POSTS: BlogPost[] = [
   startDailySpiritualPracticeSadhana,
   ekadashiFastingGuide,
   pranayamaForBeginners,
+  mobileNumberNumerology,
+  chaldeanNumerologyExplained,
+  navagrahaNinePlanetsGuide,
+  dailyCardContemplationRitual,
+  whatIsAYantraSacredGeometry,
+  whatAreBiorhythmsExplained,
+  vastuShastraBasics,
+  urdhvaretasBrahmacharyaYogicView,
 ];
 
 export function getBlogPost(slug: string) {

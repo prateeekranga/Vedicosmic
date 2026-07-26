@@ -11,6 +11,13 @@ export default {
   tags: ['chakras', 'energy healing', 'root chakra', 'crown chakra', 'subtle body', 'chakra balancing'],
   authorId: 'vasanti',
   publishedAt: '2026-06-24',
+  heroImage: '/og/blog/seven-chakras-beginners-guide.png',
+  keyTakeaways: [
+    'The 7 chakras are a symbolic map of the subtle body, from the grounding Root (Muladhara) to the expansive Crown (Sahasrara).',
+    'A chakra is "balanced" when its theme moves through life with relative ease, and "blocked" when that theme feels stuck — not a diagnosis, but a lens for reflection.',
+    'Complementary practices — pranayama, yoga postures, meditation, mantra and crystals — are traditionally paired with each chakra.',
+    'The chakra system is a traditional wellness framework, not anatomically verified — it never replaces qualified medical or mental health care.',
+  ],
   content: [
     {
       type: 'paragraph',
@@ -45,6 +52,12 @@ export default {
       type: 'paragraph',
       text:
         "Traditional texts describe each chakra with its own presiding deity, seed sound (bija mantra) and lotus-petal count, and different schools within the tantric tradition don't always agree on every detail. What's shared across most modern presentations is this simple base-to-crown progression — from matter to meaning, from ground to sky.",
+    },
+    { type: 'diagram', id: 'chakra-column', caption: 'The 7 chakras, root to crown, along the body\'s central axis.' },
+    {
+      type: 'cta-tool',
+      toolSlug: 'kundalini',
+      label: 'Take the guided Kundalini journey',
     },
     { type: 'cta-tool', toolSlug: 'chakra-assessment', label: 'Take the Free Chakra Assessment' },
     { type: 'heading', level: 2, text: "What 'Blocked' vs 'Balanced' Means" },
@@ -89,7 +102,7 @@ export default {
     },
     { type: 'cta-course', courseSlug: 'chakra-healing', label: 'Explore the Chakra Healing Course' },
   ],
-  relatedToolSlugs: ['chakra-assessment', 'crystals'],
+  relatedToolSlugs: ['chakra-assessment', 'crystals', 'kundalini'],
   relatedCourseSlugs: ['chakra-healing'],
   faqs: [
     {

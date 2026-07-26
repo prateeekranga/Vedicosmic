@@ -10,6 +10,13 @@ export default {
   tags: ['panchang', 'hindu calendar', 'tithi', 'muhurta', 'vedic calendar', 'nakshatra'],
   authorId: 'ananya',
   publishedAt: '2026-06-29',
+  heroImage: '/og/blog/panchang-101-tithi-nakshatra.png',
+  keyTakeaways: [
+    'The Panchang combines five limbs — Tithi, Vara, Nakshatra, Yoga and Karana — to describe the character of a single day.',
+    'A Tithi is defined by a fixed 12-degree Sun-Moon angle, not by clock time, so it can run 19 to 26 hours and occasionally be skipped or repeated.',
+    'Muhurta uses all five limbs together to choose an auspicious moment for weddings, housewarmings and other important events.',
+    'Festival and Vrat dates shift on the Gregorian calendar every year because they\'re defined by a Tithi, not a fixed solar date.',
+  ],
   content: [
     {
       type: 'paragraph',
@@ -33,6 +40,11 @@ export default {
     {
       type: 'paragraph',
       text: 'Vara is the familiar seven-day week, but in Jyotish each day is understood as ruled by a specific planet: Sunday by the Sun, Monday by the Moon, Tuesday by Mars, Wednesday by Mercury, Thursday by Jupiter, Friday by Venus, and Saturday by Saturn. That ruling planet is thought to color the general temperament of the day and is one factor weighed alongside the other four limbs when selecting a time for an activity.',
+    },
+    {
+      type: 'cta-tool',
+      toolSlug: 'planetary-hours',
+      label: 'See which planet rules this exact hour',
     },
     { type: 'heading', level: 3, text: '3. Nakshatra — the Moon\'s Lunar Mansion' },
     {
@@ -96,7 +108,7 @@ export default {
       label: 'Learn to read a Panchang and birth chart together',
     },
   ],
-  relatedToolSlugs: ['muhurta', 'vrat-calendar'],
+  relatedToolSlugs: ['muhurta', 'vrat-calendar', 'planetary-hours'],
   relatedCourseSlugs: ['intro-vedic-astrology'],
   faqs: [
     {

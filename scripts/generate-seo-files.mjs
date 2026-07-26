@@ -23,17 +23,18 @@ async function loadData() {
   return { TOOLS, COURSES, STATIC_ROUTES, BLOG_POSTS, BLOG_CATEGORIES, SITE_URL, SITE_NAME, SITE_DESCRIPTION };
 }
 
-function priorityFor(routePath) {
+function priorityFor(routePath, isNew) {
   if (routePath === '/') return '1.0';
   if (routePath === '/tools' || routePath === '/courses' || routePath === '/blog') return '0.9';
   if (routePath.startsWith('/blog/category/')) return '0.7';
-  if (routePath.startsWith('/tools/') || routePath.startsWith('/courses/') || routePath.startsWith('/blog/')) return '0.8';
+  if (routePath.startsWith('/tools/')) return isNew ? '0.85' : '0.8';
+  if (routePath.startsWith('/courses/') || routePath.startsWith('/blog/')) return '0.8';
   return '0.5';
 }
 
 function buildSitemap(routes, SITE_URL) {
   const urls = routes.map((r) =>
-    `  <url>\n    <loc>${SITE_URL}${r}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>${priorityFor(r)}</priority>\n  </url>`,
+    `  <url>\n    <loc>${SITE_URL}${r.path}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>${priorityFor(r.path, r.isNew)}</priority>\n  </url>`,
   ).join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
@@ -49,11 +50,11 @@ function buildLlmsTxt({ SITE_NAME, SITE_DESCRIPTION, SITE_URL, TOOLS, COURSES, B
 async function main() {
   const data = await loadData();
   const routes = [
-    ...data.STATIC_ROUTES.map((r) => r.path),
-    ...data.TOOLS.map((t) => `/tools/${t.slug}`),
-    ...data.COURSES.map((c) => `/courses/${c.slug}`),
-    ...data.BLOG_POSTS.map((p) => `/blog/${p.slug}`),
-    ...data.BLOG_CATEGORIES.filter((c) => c.id !== 'all').map((c) => `/blog/category/${c.id}`),
+    ...data.STATIC_ROUTES.map((r) => ({ path: r.path })),
+    ...data.TOOLS.map((t) => ({ path: `/tools/${t.slug}`, isNew: !!t.isNew })),
+    ...data.COURSES.map((c) => ({ path: `/courses/${c.slug}` })),
+    ...data.BLOG_POSTS.map((p) => ({ path: `/blog/${p.slug}` })),
+    ...data.BLOG_CATEGORIES.filter((c) => c.id !== 'all').map((c) => ({ path: `/blog/category/${c.id}` })),
   ];
   const distDir = path.join(root, 'dist');
   await fs.mkdir(distDir, { recursive: true });

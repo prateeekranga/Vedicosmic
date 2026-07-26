@@ -18,6 +18,13 @@ export default {
   ],
   authorId: 'kabir',
   publishedAt: '2026-06-10',
+  heroImage: '/og/blog/numerology-compatibility-life-path.png',
+  keyTakeaways: [
+    'Numerology compatibility compares each partner\'s Life Path number to describe relationship dynamics, not to predict fate.',
+    'Odd-Life-Path pairs tend toward independence; even-Life-Path pairs tend toward partnership and structure.',
+    'Pairings are read as "naturally harmonious" or "friction-prone but growth-rich," never as simply good or bad.',
+    'Kundali Matching (Ashtakoot Guna Milan) is a deeper, chart-based Vedic complement to Life Path compatibility, not a competing verdict.',
+  ],
   content: [
     {
       type: 'paragraph',

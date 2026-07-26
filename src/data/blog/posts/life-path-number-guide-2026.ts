@@ -17,6 +17,21 @@ export default {
   ],
   authorId: 'kabir',
   publishedAt: '2026-06-01',
+  heroImage: '/og/blog/life-path-number-guide-2026.png',
+  keyTakeaways: [
+    'Your Life Path number comes from reducing your full birth date to a single digit — no birth time or place needed.',
+    'Reduce month, day and year separately, then add the three results together and reduce once more.',
+    'Watch for Master Numbers (11, 22, 33) at every stage — if a partial sum hits one, keep it whole instead of reducing further.',
+    'Each number 1-9 carries a broad traditional theme, from 1 (The Initiator) to 9 (The Humanitarian) — a lens for reflection, not a fixed script.',
+  ],
+  howToSteps: [
+    { name: 'Write out your full birth date', text: 'Write your day, month and four-digit year — for example, 23 November 1990.' },
+    { name: 'Reduce the month', text: 'Add the month\'s digits together. November is the 11th month, so 1 + 1 = 2.' },
+    { name: 'Reduce the day', text: 'Add the day\'s digits together. 23 becomes 2 + 3 = 5.' },
+    { name: 'Reduce the year', text: 'Add all four digits of the year together, then reduce again if needed. 1990 becomes 1 + 9 + 9 + 0 = 19, and 19 reduces to 1 + 9 = 1.' },
+    { name: 'Add the three reduced numbers', text: 'Add month + day + year together.' },
+    { name: 'Reduce to a single digit', text: 'Reduce the final sum to one digit — unless it lands on 11, 22 or 33, in which case stop there and keep it whole.' },
+  ],
   content: [
     {
       type: 'paragraph',
@@ -62,6 +77,11 @@ export default {
       type: 'cta-tool',
       toolSlug: 'life-path',
       label: 'Skip the arithmetic — calculate your Life Path number free',
+    },
+    {
+      type: 'cta-tool',
+      toolSlug: 'numerology',
+      label: 'See your full Blueprint — Life Path, Expression & more',
     },
     {
       type: 'callout',
@@ -124,7 +144,7 @@ export default {
       label: 'Go deeper into numerology in Numerology Mastery',
     },
   ],
-  relatedToolSlugs: ['life-path'],
+  relatedToolSlugs: ['life-path', 'numerology'],
   relatedCourseSlugs: ['numerology-mastery'],
   faqs: [
     {

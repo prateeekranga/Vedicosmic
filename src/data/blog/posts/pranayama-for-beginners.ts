@@ -11,6 +11,21 @@ export default {
   tags: ['pranayama', 'breathing techniques', 'nadi shodhana', 'yoga breathing', 'breathwork', 'beginner yoga'],
   authorId: 'rajan',
   publishedAt: '2026-07-15',
+  heroImage: '/og/blog/pranayama-for-beginners.png',
+  keyTakeaways: [
+    'Pranayama is the yogic practice of consciously working with the breath — slowing, lengthening or pausing it to influence the mind.',
+    'Nadi Shodhana (alternate nostril breathing) is the most forgiving starting point — gentle, calming and safe for most healthy adults.',
+    'Kapalabhati and any breath-retention technique are more stimulating and are not recommended during pregnancy or with certain health conditions.',
+    'Five to ten minutes a day of one or two gentle techniques builds a stronger foundation than an occasional long session.',
+  ],
+  howToSteps: [
+    { name: 'Sit comfortably', text: 'Sit with a tall, relaxed spine and your shoulders soft.' },
+    { name: 'Position your right hand', text: 'Rest your left hand on your knee. Fold your right hand\'s index and middle fingers into your palm, leaving your thumb, ring finger and little finger free.' },
+    { name: 'Inhale through the left nostril', text: 'Close your right nostril gently with your thumb and inhale slowly through the left nostril.' },
+    { name: 'Exhale through the right nostril', text: 'Close your left nostril with your ring finger, release your thumb, and exhale slowly through the right nostril.' },
+    { name: 'Inhale through the right, exhale through the left', text: 'Inhale through the right nostril, close it, release your ring finger, and exhale through the left nostril — this completes one round.' },
+    { name: 'Continue alternating', text: 'Continue for 5-10 slow, quiet rounds, keeping each inhale and exhale smooth and unforced.' },
+  ],
   content: [
     {
       type: 'paragraph',
@@ -111,9 +126,10 @@ export default {
     },
     { type: 'cta-tool', toolSlug: 'pranayama', label: 'Try the Guided Pranayama Tool' },
     { type: 'cta-tool', toolSlug: 'soundbath', label: 'Explore the Soundbath Tool' },
+    { type: 'cta-tool', toolSlug: 'tratak', label: 'Try Trataka — candle-gazing meditation' },
     { type: 'cta-course', courseSlug: 'meditation-pranayama', label: 'Enroll in the Meditation & Pranayama Course' },
   ],
-  relatedToolSlugs: ['pranayama', 'soundbath'],
+  relatedToolSlugs: ['pranayama', 'soundbath', 'tratak'],
   relatedCourseSlugs: ['meditation-pranayama'],
   faqs: [
     {

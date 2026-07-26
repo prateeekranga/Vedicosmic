@@ -5,10 +5,12 @@ import { ArrowLeft, GraduationCap } from 'lucide-react';
 import { getTool } from '@/data/tools';
 import { getCourse } from '@/data/courses';
 import { getToolFaqs } from '@/data/toolFaqs';
+import { BLOG_POSTS } from '@/data/blog';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Accordion } from '@/components/ui/Accordion';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { BlogPostCard } from '@/components/blog/BlogPostCard';
 import { ShareBar } from '@/components/ShareBar';
 import { ShareResultProvider, useShareText } from '@/contexts/ShareContext';
 import { useSound } from '@/contexts/SoundContext';
@@ -75,6 +77,7 @@ function ToolBody({ tool, course, faqs }: { tool: ToolMeta; course: Course | und
   const shareText = useShareText();
   const url = window.location.href;
   const title = `${tool.name} · VediCosmic`;
+  const relatedPosts = BLOG_POSTS.filter((p) => p.relatedToolSlugs?.includes(tool.slug));
 
   return (
     <>
@@ -104,6 +107,15 @@ function ToolBody({ tool, course, faqs }: { tool: ToolMeta; course: Course | und
           <Accordion items={faqs} defaultOpen={faqs[0]?.id} />
         </div>
       </div>
+
+      {relatedPosts.length > 0 && (
+        <div className="mx-auto mt-16 max-w-3xl">
+          <SectionHeading eyebrow="Learn More" title="From the Blog" />
+          <div className="mt-8 grid gap-6 sm:grid-cols-2">
+            {relatedPosts.slice(0, 4).map((p) => <BlogPostCard key={p.id} post={p} />)}
+          </div>
+        </div>
+      )}
 
       {course && (
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}

@@ -11,6 +11,13 @@ export default {
   tags: ['sadhana', 'daily spiritual practice', 'meditation habit', 'spiritual discipline', 'habit formation', 'mindfulness'],
   authorId: 'leela',
   publishedAt: '2026-07-04',
+  heroImage: '/og/blog/start-daily-spiritual-practice-sadhana.png',
+  keyTakeaways: [
+    'Sadhana means a disciplined daily spiritual practice — consistency beats intensity, so a modest daily habit outlasts an occasional marathon session.',
+    'Anchor your practice to a fixed time, start absurdly small, and stack it onto a habit you already have.',
+    'Tracking your streak, simply, turns an invisible inner habit into something you can see building day by day.',
+    'A missed day is information, not a verdict — the whole practice is simply to begin again.',
+  ],
   content: [
     {
       type: 'paragraph',
@@ -68,6 +75,11 @@ export default {
       text:
         "A Sadhana can take many forms, and there's no single \"correct\" one. Some people sit in silent meditation. Others repeat a mantra, practice a few rounds of pranayama, read a few lines of a text they find meaningful, or simply light a lamp and sit quietly with their breath for a few minutes. What matters far more than which practice you choose is that you **choose one simple form and repeat it**, rather than reinventing your practice every day. Simplicity, repeated, is what builds depth over time.",
     },
+    {
+      type: 'cta-tool',
+      toolSlug: 'mantra-timer',
+      label: 'Count your japa mala — try the free counter',
+    },
     { type: 'heading', level: 2, text: 'When You Miss a Day (And You Will)' },
     {
       type: 'paragraph',
@@ -77,7 +89,7 @@ export default {
     { type: 'divider' },
     { type: 'cta-course', courseSlug: 'meditation-pranayama', label: 'Learn Meditation & Pranayama with Leela' },
   ],
-  relatedToolSlugs: ['sadhana'],
+  relatedToolSlugs: ['sadhana', 'mantra-timer'],
   relatedCourseSlugs: ['meditation-pranayama'],
   faqs: [
     {

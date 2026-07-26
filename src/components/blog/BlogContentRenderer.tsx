@@ -3,7 +3,19 @@ import { Link } from 'react-router-dom';
 import { Info, Lightbulb, TriangleAlert, ArrowRight } from 'lucide-react';
 import { getTool } from '@/data/tools';
 import { getCourse } from '@/data/courses';
+import { getBlogPost } from '@/data/blog';
+import { headingSlugs } from '@/lib/blogUtils';
+import { LoshuGridEmblem } from '@/components/blog/emblems/LoshuGridEmblem';
+import { NakshatraWheelEmblem } from '@/components/blog/emblems/NakshatraWheelEmblem';
+import { ChakraColumnEmblem } from '@/components/blog/emblems/ChakraColumnEmblem';
+import type { ComponentType } from 'react';
 import type { BlogContentBlock } from '@/types/blog.types';
+
+const DIAGRAM_COMPONENTS: Record<Extract<BlogContentBlock, { type: 'diagram' }>['id'], ComponentType<{ className?: string }>> = {
+  'loshu-grid': LoshuGridEmblem,
+  'nakshatra-wheel': NakshatraWheelEmblem,
+  'chakra-column': ChakraColumnEmblem,
+};
 
 /** Splits on `**bold**` and wraps matches in <strong> — no markdown parser, no dangerouslySetInnerHTML. */
 function renderInlineBold(text: string) {
@@ -23,15 +35,16 @@ const CALLOUT_STYLE: Record<'info' | 'tip' | 'warning', { box: string; Icon: typ
 };
 
 export function BlogContentRenderer({ blocks }: { blocks: BlogContentBlock[] }) {
-  return <div className="space-y-6">{blocks.map((b, i) => <Block key={i} block={b} />)}</div>;
+  const ids = headingSlugs(blocks);
+  return <div className="space-y-6">{blocks.map((b, i) => <Block key={i} block={b} headingId={ids[i]} />)}</div>;
 }
 
-function Block({ block }: { block: BlogContentBlock }) {
+function Block({ block, headingId }: { block: BlogContentBlock; headingId: string }) {
   switch (block.type) {
     case 'heading':
       return block.level === 2
-        ? <h2 className="mt-10 font-heading text-h3 text-white">{block.text}</h2>
-        : <h3 className="mt-8 font-heading text-h4 text-white">{block.text}</h3>;
+        ? <h2 id={headingId} className="mt-10 scroll-mt-24 font-heading text-h3 text-white">{block.text}</h2>
+        : <h3 id={headingId} className="mt-8 scroll-mt-24 font-heading text-h4 text-white">{block.text}</h3>;
 
     case 'paragraph':
       return <p className="text-body leading-relaxed text-white/70">{renderInlineBold(block.text)}</p>;
@@ -113,6 +126,36 @@ function Block({ block }: { block: BlogContentBlock }) {
             {block.label ?? 'Explore course'} <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
           </span>
         </Link>
+      );
+    }
+
+    case 'internal-link': {
+      const linked = getBlogPost(block.postSlug);
+      if (!linked) {
+        if (import.meta.env.DEV) console.warn(`BlogContentRenderer: unknown postSlug "${block.postSlug}"`);
+        return null;
+      }
+      return (
+        <Link to={`/blog/${linked.slug}`} className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-cosmic-light/40 p-5 transition-colors hover:border-gold-soft/30">
+          <div className="min-w-0 flex-1">
+            <p className="text-xs uppercase tracking-wide text-white/40">Related reading</p>
+            <p className="font-medium text-white">{linked.title}</p>
+            <p className="truncate text-sm text-white/50">{linked.excerpt}</p>
+          </div>
+          <span className="flex shrink-0 items-center gap-1 text-sm text-brand-cyan-soft">
+            {block.label ?? 'Read more'} <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+          </span>
+        </Link>
+      );
+    }
+
+    case 'diagram': {
+      const Diagram = DIAGRAM_COMPONENTS[block.id];
+      return (
+        <figure className="rounded-2xl border border-white/10 bg-cosmic-light/30 p-6">
+          <Diagram className="mx-auto h-56 w-56" />
+          {block.caption && <figcaption className="mt-3 text-center text-xs text-white/40">{block.caption}</figcaption>}
+        </figure>
       );
     }
 

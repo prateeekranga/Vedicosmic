@@ -10,6 +10,13 @@ export default {
   tags: ['vedic astrology', 'western astrology', 'sidereal zodiac', 'tropical zodiac', 'moon sign', 'ayanamsa'],
   authorId: 'ananya',
   publishedAt: '2026-06-15',
+  heroImage: '/og/blog/vedic-vs-western-astrology.png',
+  keyTakeaways: [
+    'Western astrology uses the tropical zodiac, anchored to the equinoxes; Vedic astrology uses the sidereal zodiac, anchored to the fixed stars.',
+    'The gap between them (ayanamsa) has grown to roughly 24 degrees due to the precession of the equinoxes — which is why a Vedic Moon sign often lands one sign "earlier" than a Western Sun sign.',
+    'Vedic astrology centers the Moon sign (Rashi) and Nakshatra as the primary personal placement, not the Sun sign.',
+    'Western astrology times events with transits and progressions; Vedic astrology uses Dashas, especially the 120-year Vimshottari cycle.',
+  ],
   content: [
     {
       type: 'paragraph',

@@ -11,6 +11,21 @@ export default {
   tags: ['lo shu grid', 'numerology', 'magic square', 'birth date numbers', 'vedic numerology'],
   authorId: 'kabir',
   publishedAt: '2026-06-05',
+  heroImage: '/og/blog/loshu-grid-explained.png',
+  keyTakeaways: [
+    'The Lo Shu Grid is a 3×3 magic square where every row, column and diagonal sums to 15.',
+    'String your birth date\'s digits together, drop any zeros, then plot each digit into its fixed home cell.',
+    'A digit that repeats two or more times is read as amplified; a digit that never appears is a "missing number" — a growth area, not a flaw.',
+    'Complete rows, columns and diagonals form named "arrows"; empty ones point to a lesson rather than a strength.',
+  ],
+  howToSteps: [
+    { name: 'Write your birth date as three numbers', text: 'Write day, month and full year separately — for 15 August 1990, that\'s 15, 8 and 1990.' },
+    { name: 'String every digit together', text: 'Combine all digits from those three numbers into one line — 1, 5, 8, 1, 9, 9, 0.' },
+    { name: 'Drop any zeros', text: 'The grid has no cell for 0, so set any zeros aside — leaving 1, 5, 8, 1, 9, 9.' },
+    { name: 'Count each digit\'s frequency', text: 'Count how many times each digit from 1 to 9 appears among your remaining digits.' },
+    { name: 'Place each digit in its fixed cell', text: 'Using the fixed layout (top row 4, 9, 2; middle row 3, 5, 7; bottom row 8, 1, 6), write each digit into its home cell once for every time it appeared.' },
+    { name: 'Leave absent digits blank', text: 'Any digit that never appeared stays as an empty cell — this is what you\'ll read as a "missing number."' },
+  ],
   content: [
     {
       type: 'paragraph',
@@ -40,6 +55,7 @@ export default {
         "Leave any digit that never appeared as an empty cell. In our example, the cells for 2, 3, 4, 6 and 7 stay blank — these are the numbers you'll read as \"missing\" in the next section.",
       ],
     },
+    { type: 'diagram', id: 'loshu-grid', caption: 'The Lo Shu Grid\'s fixed layout — top row 4, 9, 2; middle row 3, 5, 7; bottom row 8, 1, 6.' },
     { type: 'cta-tool', toolSlug: 'loshu-grid', label: 'Build Your Lo Shu Grid Instantly' },
     { type: 'heading', level: 2, text: 'What Each Number Means' },
     {

@@ -98,3 +98,18 @@ export function blogPostingSchema(post: BlogPost) {
     speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '[data-speakable]'] },
   };
 }
+
+export function howToSchema(post: BlogPost) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: post.title,
+    description: post.excerpt,
+    step: (post.howToSteps ?? []).map((s, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: s.name,
+      text: s.text,
+    })),
+  };
+}

@@ -10,6 +10,13 @@ export default {
   tags: ['nakshatra', 'birth star', 'vedic astrology', 'lunar mansion', 'jyotish', 'moon sign'],
   authorId: 'ananya',
   publishedAt: '2026-06-19',
+  heroImage: '/og/blog/nakshatras-explained-27-lunar-mansions.png',
+  keyTakeaways: [
+    'A Nakshatra is one of 27 lunar mansions the Moon passes through, each 13°20′ wide — far more precise than your 30-degree Moon sign (Rashi).',
+    'The Moon moves through roughly one Nakshatra per day, making your birth Nakshatra a sharp, personal marker.',
+    'Each Nakshatra is further divided into 4 Padas (quarters), giving 108 total divisions across the zodiac.',
+    'Exact birth time matters far more here than for a Rashi reading, since the boundary between two Nakshatras can fall within a single day.',
+  ],
   content: [
     {
       type: 'paragraph',
@@ -32,6 +39,7 @@ export default {
       type: 'paragraph',
       text: 'Each Nakshatra carries its own name, a ruling deity drawn from Vedic mythology, a symbol that captures its essential nature, and a planetary ruler (one of the nine grahas) that repeats in a fixed cycle across all 27. Traditionally, these layers of meaning are read together — deity, symbol, and ruling planet — to describe the temperament, gifts, and challenges associated with being born under that particular mansion.',
     },
+    { type: 'diagram', id: 'nakshatra-wheel', caption: 'The 27 Nakshatras ringing the sidereal zodiac, with the Moon at center.' },
     { type: 'heading', level: 2, text: 'A Few Nakshatras and Their Traditional Meaning' },
     {
       type: 'paragraph',

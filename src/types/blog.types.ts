@@ -13,6 +13,8 @@ export type BlogContentBlock =
   | { type: 'callout'; tone: 'info' | 'tip' | 'warning'; title?: string; text: string }
   | { type: 'cta-tool'; toolSlug: string; label?: string }
   | { type: 'cta-course'; courseSlug: string; label?: string }
+  | { type: 'internal-link'; postSlug: string; label?: string }
+  | { type: 'diagram'; id: 'loshu-grid' | 'nakshatra-wheel' | 'chakra-column'; caption?: string }
   | { type: 'divider' };
 
 export interface BlogPost {
@@ -42,4 +44,9 @@ export interface BlogPost {
   relatedCourseSlugs?: string[];
   /** Reuses existing FAQItem — feeds faqPageSchema() for AEO + an on-page Accordion. */
   faqs?: FAQItem[];
+  /** Always-visible TL;DR bullets, rendered above the fold and marked data-speakable. */
+  keyTakeaways?: string[];
+  /** A single coherent step-by-step procedure this post teaches — feeds howToSchema(). Populate for
+   *  exactly one canonical procedure per post; schema.org HowTo models one sequence, not parallel alternatives. */
+  howToSteps?: { name: string; text: string }[];
 }

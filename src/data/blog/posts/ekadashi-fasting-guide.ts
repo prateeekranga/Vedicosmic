@@ -11,6 +11,13 @@ export default {
   tags: ['ekadashi', 'vrat fasting', 'hindu fasting', 'vedic rituals', 'lunar calendar', 'lord vishnu'],
   authorId: 'kabir',
   publishedAt: '2026-07-10',
+  heroImage: '/og/blog/ekadashi-fasting-guide.png',
+  keyTakeaways: [
+    'Ekadashi falls twice a month, on the eleventh day of each lunar fortnight — roughly 24 times a year.',
+    'The vrat is built around detachment from excess, freeing energy for prayer and reflection rather than punishing the body.',
+    'Fasting styles range from strict Nirjala (waterless) to lighter Phalahar or grain-free observance — practice varies by family and tradition.',
+    'Pregnant/breastfeeding women, people with diabetes or heart conditions, and anyone on regular medication should check with a doctor before fasting.',
+  ],
   content: [
     {
       type: 'paragraph',

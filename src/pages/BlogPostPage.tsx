@@ -7,17 +7,22 @@ import { getBlogCategory } from '@/data/blogCategories';
 import { getAuthor } from '@/data/authors';
 import { estimateReadingTime } from '@/lib/blogUtils';
 import { useSEO } from '@/hooks/useSEO';
-import { breadcrumbList, blogPostingSchema, faqPageSchema } from '@/lib/schema';
+import { breadcrumbList, blogPostingSchema, faqPageSchema, howToSchema } from '@/lib/schema';
 import { BlogContentRenderer } from '@/components/blog/BlogContentRenderer';
 import { BlogPostCard } from '@/components/blog/BlogPostCard';
+import { BlogHero } from '@/components/blog/BlogHero';
+import { KeyTakeaways } from '@/components/blog/KeyTakeaways';
+import { TableOfContents } from '@/components/blog/TableOfContents';
 import { AuthorBio } from '@/components/blog/AuthorBio';
 import { EditorialDisclaimer } from '@/components/blog/EditorialDisclaimer';
 import { AdSlot } from '@/components/ads/AdSlot';
+import { ShareBar } from '@/components/ShareBar';
 import { Accordion } from '@/components/ui/Accordion';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { visibleBlogPosts } from '@/lib/blogOverrides';
+import { SITE_URL } from '@/config/site';
 import type { BlogPost } from '@/types/blog.types';
 
 export default function BlogPostPage() {
@@ -44,6 +49,7 @@ export default function BlogPostPage() {
         { name: post.title, path: `/blog/${post.slug}` },
       ]),
       blogPostingSchema(post),
+      ...(post.howToSteps?.length ? [howToSchema(post)] : []),
       ...(post.faqs?.length ? [faqPageSchema(post.faqs)] : []),
     ] : undefined,
   });
@@ -73,19 +79,30 @@ function BlogPostBody({ post }: { post: BlogPost }) {
   const updatedDate = post.updatedAt && post.updatedAt !== post.publishedAt ? dateFmt(post.updatedAt) : undefined;
   const more = visibleBlogPosts().filter((p) => p.category === post.category && p.slug !== post.slug).slice(0, 3);
 
+  const shareUrl = `${SITE_URL}/blog/${post.slug}`;
+
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mx-auto max-w-3xl">
+      <BlogHero category={post.category} />
       <div className="mb-4 flex flex-wrap items-center gap-3">
         {category && <Badge tone="gold">{category.label}</Badge>}
         {post.isFeatured && <Badge tone="neutral">Featured</Badge>}
       </div>
       <h1 className="font-display text-h1 text-white">{post.title}</h1>
       <p data-speakable className="mt-4 text-lg leading-relaxed text-white/70">{post.excerpt}</p>
-      <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-white/45">
-        {author && <span>{author.name}</span>}
-        <span className="inline-flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> Published {publishedDate}</span>
-        {updatedDate && <span className="inline-flex items-center gap-1.5"><RefreshCw className="h-3.5 w-3.5" /> Updated {updatedDate}</span>}
-        <span className="inline-flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> {readingTime} min read</span>
+      {post.keyTakeaways && post.keyTakeaways.length > 0 && <KeyTakeaways items={post.keyTakeaways} />}
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1.5">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-white/45">
+          {author && <span>{author.name}</span>}
+          <span className="inline-flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> Published {publishedDate}</span>
+          {updatedDate && <span className="inline-flex items-center gap-1.5"><RefreshCw className="h-3.5 w-3.5" /> Updated {updatedDate}</span>}
+          <span className="inline-flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> {readingTime} min read</span>
+        </div>
+        <ShareBar url={shareUrl} title={post.title} text={post.excerpt} />
+      </div>
+
+      <div className="mt-8">
+        <TableOfContents blocks={post.content} />
       </div>
 
       <div className="mt-8">
@@ -105,6 +122,11 @@ function BlogPostBody({ post }: { post: BlogPost }) {
           <AuthorBio author={author} slug={post.authorId} />
         </div>
       )}
+
+      <div className="mt-6 flex flex-col items-start gap-3 rounded-2xl border border-white/10 bg-cosmic-light/40 p-5 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-sm text-white/60">Found this useful? Share it with someone who'd enjoy it.</p>
+        <ShareBar url={shareUrl} title={post.title} text={post.excerpt} />
+      </div>
 
       <div className="mt-6">
         <EditorialDisclaimer />

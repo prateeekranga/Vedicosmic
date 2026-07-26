@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import WebSocket from 'ws';
 
 /**
  * Fetches DB-authored blog posts (Supabase `posts` table) during the Node build so they get
@@ -16,7 +17,10 @@ export async function fetchDbPosts() {
   const url = process.env.VITE_SUPABASE_URL || DEFAULT_URL;
   const anonKey = process.env.VITE_SUPABASE_ANON_KEY || DEFAULT_ANON_KEY;
   try {
-    const supabase = createClient(url, anonKey);
+    // Node builds on Hostinger run Node 18, which lacks the native WebSocket global that
+    // supabase-js needs even just to construct the client (it eagerly sets up a Realtime
+    // client, unused here) — supply the `ws` package explicitly so this doesn't throw.
+    const supabase = createClient(url, anonKey, { realtime: { transport: WebSocket } });
     // RLS restricts the anon role to `hidden = false` rows automatically.
     const { data, error } = await supabase
       .from('posts')

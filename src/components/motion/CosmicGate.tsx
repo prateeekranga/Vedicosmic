@@ -9,10 +9,10 @@ interface Mote { x: number; y: number; r: number; hue: string; phase: number; tw
 const PALETTE = ['#FFFFFF', '#FFD700', '#E6B84A', '#7DD3FC', '#39B7F0'];
 
 /**
- * A full-screen "portal" the site is entered through once per session: a comet
- * streaks across scattered stardust, the wordmark condenses out of the dust,
- * then an ENTER prompt invites a click which iris-wipes away to the site.
- * Skips entirely under reduced motion or on repeat visits within the tab.
+ * A full-screen "portal" shown once to first-time visitors on the home page: a
+ * comet streaks across scattered stardust, the wordmark condenses out of the
+ * dust, then an ENTER prompt invites a click which iris-wipes away to the site.
+ * Skips entirely under reduced motion or on any repeat visit.
  */
 export function CosmicGate() {
   const reduced = usePrefersReducedMotion();
@@ -23,7 +23,7 @@ export function CosmicGate() {
   useEffect(() => {
     if (reduced) return;
     try {
-      if (sessionStorage.getItem(SEEN_KEY)) return;
+      if (localStorage.getItem(SEEN_KEY)) return;
     } catch { /* private mode etc. */ }
     setVisible(true);
     const t = setTimeout(() => setPhase('ready'), 1900);
@@ -102,7 +102,7 @@ export function CosmicGate() {
   function enter() {
     if (phase !== 'ready') return;
     setPhase('leaving');
-    try { sessionStorage.setItem(SEEN_KEY, '1'); } catch { /* */ }
+    try { localStorage.setItem(SEEN_KEY, '1'); } catch { /* */ }
     setTimeout(() => setVisible(false), 900);
   }
 

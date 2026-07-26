@@ -25,7 +25,7 @@ export function Layout() {
       {/* Heavy cosmetic effects — lazy, desktop-only */}
       {isDesktop && (
         <Suspense fallback={null}>
-          <CosmicGate />
+          {pathname === '/' && <CosmicGate />}
           <CosmicCursor />
         </Suspense>
       )}

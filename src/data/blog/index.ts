@@ -16,6 +16,16 @@ import whatIsAYantraSacredGeometry from './posts/what-is-a-yantra-sacred-geometr
 import whatAreBiorhythmsExplained from './posts/what-are-biorhythms-explained';
 import vastuShastraBasics from './posts/vastu-shastra-basics';
 import urdhvaretasBrahmacharyaYogicView from './posts/urdhvaretas-brahmacharya-yogic-view';
+import chakras101CompleteGuide from './posts/chakras-101-complete-guide';
+import sevenChakrasChartColorsSymbolsMantras from './posts/seven-chakras-chart-colors-symbols-mantras';
+import howToCalculateMasterNumber from './posts/how-to-calculate-master-number';
+import all7ChakrasFunctionsBlockagesHealing from './posts/all-7-chakras-functions-blockages-healing';
+import whatIsAChakraMeaningOrigin from './posts/what-is-a-chakra-meaning-origin';
+import chakrasSubtleBodyPranaFlow from './posts/chakras-subtle-body-prana-flow';
+import sevenChakrasDailyBalancingPractice from './posts/7-chakras-daily-balancing-practice';
+import chakraInformationReferenceGuide from './posts/chakra-information-reference-guide';
+import whatAreChakrasUsedForBenefitsMyths from './posts/what-are-chakras-used-for-benefits-myths';
+import whatAreTheSevenChakrasSimpleDefinitions from './posts/what-are-the-7-chakras-simple-definitions';
 import type { BlogPost } from '@/types/blog.types';
 
 // Post slugs must never literally be "category" — it would collide with the
@@ -39,6 +49,16 @@ export const BLOG_POSTS: BlogPost[] = [
   whatAreBiorhythmsExplained,
   vastuShastraBasics,
   urdhvaretasBrahmacharyaYogicView,
+  chakras101CompleteGuide,
+  sevenChakrasChartColorsSymbolsMantras,
+  howToCalculateMasterNumber,
+  all7ChakrasFunctionsBlockagesHealing,
+  whatIsAChakraMeaningOrigin,
+  chakrasSubtleBodyPranaFlow,
+  sevenChakrasDailyBalancingPractice,
+  chakraInformationReferenceGuide,
+  whatAreChakrasUsedForBenefitsMyths,
+  whatAreTheSevenChakrasSimpleDefinitions,
 ];
 
 export function getBlogPost(slug: string) {

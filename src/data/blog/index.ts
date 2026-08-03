@@ -26,6 +26,10 @@ import sevenChakrasDailyBalancingPractice from './posts/7-chakras-daily-balancin
 import chakraInformationReferenceGuide from './posts/chakra-information-reference-guide';
 import whatAreChakrasUsedForBenefitsMyths from './posts/what-are-chakras-used-for-benefits-myths';
 import whatAreTheSevenChakrasSimpleDefinitions from './posts/what-are-the-7-chakras-simple-definitions';
+import vedicChakrasJyotishNavagrahaConnection from './posts/vedic-chakras-jyotish-navagraha-connection';
+import navagrahaRemediesMantrasGemstonesRituals from './posts/navagraha-remedies-mantras-gemstones-rituals';
+import howToCalculateBiorhythmCycles from './posts/how-to-calculate-biorhythm-cycles';
+import biorhythmCompatibilityBetweenTwoPeople from './posts/biorhythm-compatibility-between-two-people';
 import type { BlogPost } from '@/types/blog.types';
 
 // Post slugs must never literally be "category" — it would collide with the
@@ -59,6 +63,10 @@ export const BLOG_POSTS: BlogPost[] = [
   chakraInformationReferenceGuide,
   whatAreChakrasUsedForBenefitsMyths,
   whatAreTheSevenChakrasSimpleDefinitions,
+  vedicChakrasJyotishNavagrahaConnection,
+  navagrahaRemediesMantrasGemstonesRituals,
+  howToCalculateBiorhythmCycles,
+  biorhythmCompatibilityBetweenTwoPeople,
 ];
 
 export function getBlogPost(slug: string) {

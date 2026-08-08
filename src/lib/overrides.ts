@@ -22,7 +22,6 @@ const DEFAULT_FEATURE_FLAGS: FeatureFlags = { coursesComingSoon: true };
 export const DEFAULT_COMING_SOON_TOOL_IDS: string[] = ['kundali-matching'];
 
 const K = {
-  pass: 'vc.admin.pass',
   courses: 'vc.overrides.courses',
   tools: 'vc.overrides.tools',
   ann: 'vc.announcement',
@@ -94,34 +93,6 @@ export function mergedTools(): ToolMeta[] {
 export function visibleTools(): ToolMeta[] {
   const ov = getToolOverrides();
   return mergedTools().filter((t) => !ov[t.id]?.hidden);
-}
-
-// ---- admin auth (local demo gate) ----
-// There is no backend: this only gates the current browser, and anyone who reads the
-// shipped JS can see this logic. So there is no built-in default passcode to leak —
-// the first visit to the admin route requires *creating* a passcode, and every write
-// action re-checks the session token against the live passcode hash (see Admin.tsx),
-// so a forged sessionStorage flag alone can't grant access.
-async function sha256(s: string): Promise<string> {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
-  return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, '0')).join('');
-}
-export function hasPasscode(): boolean {
-  return !!localStorage.getItem(K.pass);
-}
-export async function currentPasscodeHash(): Promise<string | null> {
-  return localStorage.getItem(K.pass);
-}
-export async function verifyPasscode(input: string): Promise<string | null> {
-  const stored = localStorage.getItem(K.pass);
-  if (!stored) return null;
-  const hash = await sha256(input);
-  return hash === stored ? hash : null;
-}
-export async function setPasscode(next: string): Promise<string> {
-  const hash = await sha256(next);
-  localStorage.setItem(K.pass, hash);
-  return hash;
 }
 
 export function exportOverrides(): string {

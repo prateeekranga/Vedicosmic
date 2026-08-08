@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Eye, EyeOff, RotateCcw, ChevronUp, ChevronDown, Pencil, ExternalLink, Trash2, Plus, LogIn, LogOut, Search, X } from 'lucide-react';
+import { Eye, EyeOff, RotateCcw, ChevronUp, ChevronDown, Pencil, ExternalLink, Trash2, Plus, Search, X } from 'lucide-react';
 import { BLOG_POSTS } from '@/data/blog';
 import { getBlogCategory } from '@/data/blogCategories';
 import {
@@ -9,7 +9,6 @@ import {
 import { getSEOOverrides, setSEOOverride } from '@/lib/siteContent';
 import { useOverridesVersion } from '@/hooks/useOverridesVersion';
 import { useAllBlogPosts } from '@/hooks/useAllBlogPosts';
-import { isBlogAdminAuthed, onAdminAuthChange, adminLogin, adminLogout } from '@/lib/adminAuth';
 import {
   fetchAdminPosts, fetchAdminPostBySlug, createPost, updatePost, deletePost, setPostVisibility, reorderPosts,
 } from '@/lib/blogApi';
@@ -177,8 +176,11 @@ function BlogSEOModal({ post, onClose }: { post: BlogPost; onClose: () => void }
 
 /** Everything for live, database-published posts — a separate, server-verified login gates
  *  writes here (the localStorage passcode above only ever gated this browser). */
+/** No login gate of its own — Admin.tsx's outer Supabase auth gate already guarantees a
+ *  signed-in session before this component ever mounts (see adminAuth.ts). If that session
+ *  expires mid-use, Admin.tsx's onAdminAuthChange subscription unmounts the whole dashboard
+ *  (this section included) and shows the login screen again — no local handling needed here. */
 function DbPostsSection() {
-  const [authed, setAuthed] = useState<boolean | null>(null);
   const [posts, setPosts] = useState<DbPost[] | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [editor, setEditor] = useState<EditorState>(null);
@@ -192,17 +194,7 @@ function DbPostsSection() {
     fetchAdminPosts().then(setPosts).catch((err) => setLoadError(err instanceof Error ? err.message : 'Failed to load'));
   };
 
-  useEffect(() => {
-    isBlogAdminAuthed().then(setAuthed);
-    return onAdminAuthChange(setAuthed);
-  }, []);
-  useEffect(() => { if (authed) refresh(); }, [authed]);
-
-  if (authed === null) return null;
-
-  if (!authed) {
-    return <BlogAdminLoginForm onAuthed={() => setAuthed(true)} />;
-  }
+  useEffect(() => { refresh(); }, []);
 
   const openNew = () => { setEditorSeed(null); setEditor({ mode: 'new' }); };
   const openEdit = async (slug: string) => {
@@ -269,9 +261,6 @@ function DbPostsSection() {
         <div className="flex flex-1 flex-wrap items-center justify-end gap-3">
           {posts && posts.length > 0 && <TableSearchBox value={query} onChange={setQuery} placeholder="Search title, slug, category, tag…" />}
           <Button size="sm" onClick={openNew}><Plus className="mr-2 h-4 w-4" /> New Post</Button>
-          <Button variant="ghost" size="sm" onClick={() => adminLogout().then(() => setAuthed(false))}>
-            <LogOut className="mr-2 h-4 w-4" /> Log out
-          </Button>
         </div>
       </div>
 
@@ -343,41 +332,6 @@ function DbPostsSection() {
         </div>
       )}
       <p className="mt-2 text-xs text-white/40">Posts saved here publish to every visitor immediately once made visible — a hero image is generated automatically unless you supply your own.</p>
-    </div>
-  );
-}
-
-function BlogAdminLoginForm({ onAuthed }: { onAuthed: () => void }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-    const result = await adminLogin(email, password);
-    setLoading(false);
-    if (result.ok) onAuthed();
-    else setError(result.error);
-  };
-
-  return (
-    <div className="rounded-2xl border border-white/10 bg-cosmic-light/40 p-6">
-      <h2 className="font-heading text-h3 text-white">Database Posts</h2>
-      <p className="mt-1 text-sm text-white/50">
-        Writing and publishing new posts requires a separate, server-verified login — this keeps write
-        access to the live database gated by more than a browser-local passcode.
-      </p>
-      <form onSubmit={submit} className="mt-4 max-w-sm space-y-4">
-        <Input label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <Input label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        {error && <p className="text-sm text-error">{error}</p>}
-        <Button type="submit" disabled={loading}>
-          <LogIn className="mr-2 h-4 w-4" /> {loading ? 'Signing in…' : 'Sign in'}
-        </Button>
-      </form>
     </div>
   );
 }

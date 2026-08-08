@@ -73,9 +73,9 @@ export function CourseEditorModal({ open, onClose, seed, onSave }: Props) {
     onSave({
       ...c,
       slug: c.slug.trim() ? slugify(c.slug) : slugify(c.title),
-      tags: c.tags.filter((t) => t.trim()),
-      whatYouLearn: c.whatYouLearn.filter((t) => t.trim()),
-      requirements: c.requirements.filter((t) => t.trim()),
+      tags: linesToArray(c.tags.join('\n')),
+      whatYouLearn: linesToArray(c.whatYouLearn.join('\n')),
+      requirements: linesToArray(c.requirements.join('\n')),
       lessonCount: modules.reduce((s, m) => s + m.lessons.length, 0),
     });
     onClose();

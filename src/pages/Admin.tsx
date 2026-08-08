@@ -14,15 +14,16 @@ import { BLOG_POSTS } from '@/data/blog';
 import { STATIC_ROUTES } from '@/data/routes';
 import { formatINR } from '@/lib/format';
 import { useAuth } from '@/contexts/AuthContext';
+import { isBlogAdminAuthed, onAdminAuthChange, adminLogin, adminLogout, changeAdminPassword } from '@/lib/adminAuth';
 import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/Button';
 import { Input, Textarea } from '@/components/ui/Field';
 import { ArrayEditor } from '@/components/admin/ArrayEditor';
 import { CourseEditorModal, blankCourse } from '@/components/admin/CourseEditorModal';
 import { BlogManager } from '@/components/admin/BlogManager';
-import { visibleBlogPosts } from '@/lib/blogOverrides';
+import { useAllBlogPosts } from '@/hooks/useAllBlogPosts';
 import {
-  verifyPasscode, setPasscode, hasPasscode, currentPasscodeHash, getCourseOverrides, setCourseOverride, getToolOverrides, setToolOverride,
+  getCourseOverrides, setCourseOverride, getToolOverrides, setToolOverride,
   getAnnouncement, setAnnouncement, resetCourseOverrides, resetToolOverrides, exportOverrides,
   mergedCourses, isCustomCourseId, addCustomCourse, deleteCustomCourse,
   getFeatureFlags, setFeatureFlag, isToolComingSoon,
@@ -40,64 +41,42 @@ import type { CourseLevel, Course } from '@/types/course.types';
 import type { HomeContent, AboutContent, ContactContent } from '@/types/content.types';
 
 const ACCENT = ['#FFD700', '#39B7F0', '#8B5CF6', '#0D9488', '#F0D080', '#E63427'];
-const SESSION_KEY = 'vc.admin.session';
 
+/** Gates the *entire* dashboard (every tab, not just Blog → Database Posts) behind a single
+ *  server-verified Supabase session — replaces the old browser-local passcode, which had no
+ *  real enforcement (no rate limiting, first-visitor-wins passcode creation, a hash sitting in
+ *  localStorage) and only ever protected `localStorage`-only tabs anyway. `onAdminAuthChange`
+ *  means a session expiring or a manual sign-out anywhere (this tab, another tab, the Settings
+ *  panel) immediately drops the whole dashboard back to the login screen — no page reload needed. */
 export default function Admin() {
   const [status, setStatus] = useState<'checking' | 'authed' | 'unauthed'>('checking');
 
   useEffect(() => {
-    (async () => {
-      const token = sessionStorage.getItem(SESSION_KEY);
-      const expected = await currentPasscodeHash();
-      setStatus(token && expected && token === expected ? 'authed' : 'unauthed');
-    })();
+    isBlogAdminAuthed().then((ok) => setStatus(ok ? 'authed' : 'unauthed'));
+    return onAdminAuthChange((ok) => setStatus(ok ? 'authed' : 'unauthed'));
   }, []);
 
   if (status === 'checking') return null;
-  if (status === 'unauthed') {
-    return <AdminLogin onOk={(hash) => { sessionStorage.setItem(SESSION_KEY, hash); setStatus('authed'); }} />;
-  }
-  return <AdminShell onLogout={() => { sessionStorage.removeItem(SESSION_KEY); setStatus('unauthed'); }} />;
+  if (status === 'unauthed') return <AdminLogin />;
+  return <AdminShell onLogout={() => { adminLogout(); }} />;
 }
 
-function AdminLogin({ onOk }: { onOk: (hash: string) => void }) {
-  const [needsSetup] = useState(() => !hasPasscode());
-  const [pass, setPass] = useState('');
-  const [confirmPass, setConfirmPass] = useState('');
+function AdminLogin() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [err, setErr] = useState('');
   const [busy, setBusy] = useState(false);
-  const [attempts, setAttempts] = useState(0);
-  const LOCKOUT_AFTER = 10;
 
-  const submit = async () => {
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setErr('');
-    if (needsSetup) {
-      if (pass.length < 8) { setErr('Use at least 8 characters.'); return; }
-      if (pass !== confirmPass) { setErr('Passcodes do not match.'); return; }
-      setBusy(true);
-      const hash = await setPasscode(pass);
-      setBusy(false);
-      onOk(hash);
-      return;
-    }
     setBusy(true);
-    const delay = attempts > 0 ? attempts * 1000 : 0;
-    await new Promise(r => setTimeout(r, delay));
-    const hash = await verifyPasscode(pass);
+    const result = await adminLogin(email, password);
     setBusy(false);
-    if (hash) onOk(hash);
-    else {
-      const next = attempts + 1;
-      setAttempts(next);
-      if (next >= LOCKOUT_AFTER) {
-        setErr('Too many failed attempts. Refresh the page to try again.');
-      } else {
-        setErr(`Incorrect passcode.${next >= 5 ? ` (${LOCKOUT_AFTER - next} attempts left)` : ''}`);
-      }
-    }
+    // On success, the onAdminAuthChange subscription in Admin() flips status to 'authed'
+    // on its own — no local state to set here.
+    if (!result.ok) setErr(result.error);
   };
-
-  const locked = !needsSetup && attempts >= LOCKOUT_AFTER;
 
   return (
     <div className="container-vc flex min-h-[80vh] items-center justify-center py-20">
@@ -105,30 +84,22 @@ function AdminLogin({ onOk }: { onOk: (hash: string) => void }) {
         <div className="mb-6 flex justify-center"><Logo /></div>
         <div className="mb-6 text-center">
           <span className="grid mx-auto mb-3 h-12 w-12 place-items-center rounded-full bg-gold-400/10 text-gold-300"><Lock className="h-6 w-6" /></span>
-          <h1 className="font-heading text-h3 text-white">{needsSetup ? 'Create Admin Passcode' : 'Admin Access'}</h1>
-          <p className="mt-1 text-sm text-white/50">
-            {needsSetup
-              ? 'No passcode is set yet on this browser. Choose one to protect the dashboard.'
-              : 'Enter the passcode to manage VediCosmic.'}
-          </p>
+          <h1 className="font-heading text-h3 text-white">Admin Access</h1>
+          <p className="mt-1 text-sm text-white/50">Sign in with your VediCosmic admin account to manage the site.</p>
         </div>
-        <Input id="admin-pass" type="password" label={needsSetup ? 'New passcode' : 'Passcode'} value={pass} error={err}
-          disabled={locked || busy}
-          onChange={(e) => { setPass(e.target.value); setErr(''); }}
-          onKeyDown={(e) => { if (e.key === 'Enter' && !needsSetup && !locked) submit(); }} placeholder="••••••••" />
-        {needsSetup && (
-          <div className="mt-4">
-            <Input id="admin-pass-confirm" type="password" label="Confirm passcode" value={confirmPass}
-              onChange={(e) => { setConfirmPass(e.target.value); setErr(''); }}
-              onKeyDown={(e) => { if (e.key === 'Enter') submit(); }} placeholder="••••••••" />
-          </div>
-        )}
-        <Button className="mt-5 w-full" onClick={submit} disabled={busy}>
-          <ShieldCheck className="mr-2 h-4 w-4" /> {busy ? 'Checking…' : needsSetup ? 'Create & enter dashboard' : 'Enter dashboard'}
-        </Button>
-        {needsSetup && (
-          <p className="mt-4 text-center text-xs text-white/35">This passcode only protects this browser — it's not sent anywhere. Store it safely; it can be changed later in Settings.</p>
-        )}
+        <form onSubmit={submit} className="space-y-4">
+          <Input id="admin-email" type="email" label="Email" value={email} autoComplete="username" required
+            onChange={(e) => { setEmail(e.target.value); setErr(''); }} />
+          <Input id="admin-password" type="password" label="Password" value={password} error={err} required
+            autoComplete="current-password" placeholder="••••••••"
+            onChange={(e) => { setPassword(e.target.value); setErr(''); }} />
+          <Button type="submit" className="w-full" disabled={busy}>
+            <ShieldCheck className="mr-2 h-4 w-4" /> {busy ? 'Signing in…' : 'Sign in'}
+          </Button>
+        </form>
+        <p className="mt-4 text-center text-xs text-white/35">
+          Server-verified sign-in — the same account protects every tab here, including the blog's Database Posts.
+        </p>
       </div>
     </div>
   );
@@ -205,7 +176,11 @@ function Dashboard() {
   const allCourses = mergedCourses();
   const visibleCourses = allCourses.filter((c) => !cOv[c.id]?.hidden);
   const visibleTools = TOOLS.filter((t) => !tOv[t.id]?.hidden);
-  const livePosts = visibleBlogPosts();
+  // Merges the 32 static posts with live DB-authored ones, same source of truth the public
+  // Blog page uses — the static-only count this used to show (visibleBlogPosts()) silently
+  // under-reported once posts could also be written from the Database Posts editor.
+  const { posts: allPosts, loading: postsLoading } = useAllBlogPosts();
+  const livePosts = allPosts;
   const enrollments = allCourses.reduce((s, c) => s + c.enrollmentCount, 0);
   const revenue = allCourses.reduce((s, c) => s + c.price * c.enrollmentCount, 0);
   const avgRating = (allCourses.reduce((s, c) => s + c.rating, 0) / allCourses.length).toFixed(2);
@@ -223,7 +198,7 @@ function Dashboard() {
         <StatCard label="Courses live" value={`${visibleCourses.length}`} sub={`of ${allCourses.length} total`} Icon={GraduationCap} />
         <StatCard label="Total enrollments" value={enrollments.toLocaleString('en-IN')} sub="across all courses" Icon={Users} />
         <StatCard label="Est. revenue" value={formatINR(revenue)} sub="price × enrollments" Icon={IndianRupee} />
-        <StatCard label="Posts live" value={`${livePosts.length}`} sub={`of ${BLOG_POSTS.length} total`} Icon={Newspaper} />
+        <StatCard label="Posts live" value={postsLoading ? '…' : `${livePosts.length}`} sub={`${BLOG_POSTS.length} static + database`} Icon={Newspaper} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
@@ -667,7 +642,11 @@ function SEOManager() {
           );
         })}
       </div>
-      <p className="text-xs text-white/40">Blank fields fall back to each page's built-in title/description. These take effect immediately and are baked into the page at build time.</p>
+      <p className="text-xs text-white/40">
+        Blank fields fall back to each page's built-in title/description. Like the rest of this admin
+        panel, overrides apply immediately but only in <em>this browser</em> — they don't change what's
+        actually deployed, so search engines and other visitors won't see them.
+      </p>
     </div>
   );
 }
@@ -712,13 +691,17 @@ function AnnouncementManager() {
 }
 
 function SettingsPanel({ onLogout }: { onLogout: () => void }) {
-  const [p1, setP1] = useState(''); const [p2, setP2] = useState(''); const [msg, setMsg] = useState('');
+  const [p1, setP1] = useState(''); const [p2, setP2] = useState('');
+  const [msg, setMsg] = useState(''); const [msgOk, setMsgOk] = useState(false); const [busy, setBusy] = useState(false);
   const changePass = async () => {
-    if (p1.length < 8) { setMsg('Use at least 8 characters.'); return; }
-    if (p1 !== p2) { setMsg('Passcodes do not match.'); return; }
-    const hash = await setPasscode(p1);
-    sessionStorage.setItem(SESSION_KEY, hash);
-    setMsg('Passcode updated.'); setP1(''); setP2('');
+    setMsg('');
+    if (p1.length < 8) { setMsg('Use at least 8 characters.'); setMsgOk(false); return; }
+    if (p1 !== p2) { setMsg('Passwords do not match.'); setMsgOk(false); return; }
+    setBusy(true);
+    const result = await changeAdminPassword(p1);
+    setBusy(false);
+    if (result.ok) { setMsg('Password updated.'); setMsgOk(true); setP1(''); setP2(''); }
+    else { setMsg(result.error); setMsgOk(false); }
   };
   const doExport = () => {
     const merged = { ...JSON.parse(exportOverrides()), ...JSON.parse(exportSiteContent()) };
@@ -730,14 +713,15 @@ function SettingsPanel({ onLogout }: { onLogout: () => void }) {
     <div className="space-y-6">
       <h2 className="font-heading text-h3 text-white">Settings</h2>
       <div className="rounded-2xl border border-white/10 bg-cosmic-light/40 p-6 space-y-4">
-        <h3 className="font-heading text-h5 text-white">Change passcode</h3>
+        <h3 className="font-heading text-h5 text-white">Change password</h3>
+        <p className="text-xs text-white/45">This is a real, server-side change to the signed-in admin account — unlike the settings below, it isn't scoped to this browser.</p>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Input id="np1" type="password" label="New passcode" value={p1} onChange={(e) => { setP1(e.target.value); setMsg(''); }} />
-          <Input id="np2" type="password" label="Confirm passcode" value={p2} onChange={(e) => { setP2(e.target.value); setMsg(''); }} />
+          <Input id="np1" type="password" label="New password" value={p1} onChange={(e) => { setP1(e.target.value); setMsg(''); }} />
+          <Input id="np2" type="password" label="Confirm password" value={p2} onChange={(e) => { setP2(e.target.value); setMsg(''); }} />
         </div>
         <div className="flex items-center gap-3">
-          <Button size="sm" onClick={changePass}>Update passcode</Button>
-          {msg && <span className="text-sm text-white/60">{msg}</span>}
+          <Button size="sm" onClick={changePass} disabled={busy}>{busy ? 'Updating…' : 'Update password'}</Button>
+          {msg && <span className={`text-sm ${msgOk ? 'text-success' : 'text-error'}`}>{msg}</span>}
         </div>
       </div>
       <div className="rounded-2xl border border-white/10 bg-cosmic-light/40 p-6 space-y-3">
@@ -750,7 +734,11 @@ function SettingsPanel({ onLogout }: { onLogout: () => void }) {
           <Button variant="ghost" size="sm" onClick={onLogout}><LogOut className="mr-2 h-4 w-4" /> Log out</Button>
         </div>
       </div>
-      <p className="inline-flex items-center gap-1.5 text-xs text-white/35"><Star className="h-3 w-3" /> This is a client-side admin for the current MVP — settings persist in this browser. A future backend phase would sync them for all visitors.</p>
+      <p className="inline-flex items-center gap-1.5 text-xs text-white/35">
+        <Star className="h-3 w-3" /> Sign-in is real and server-verified, but Courses, Tools, Site Content, SEO and
+        Announcement still only save to this browser's localStorage — a different device sees the defaults, not your
+        edits. Blog → Database Posts is the one section backed by a real shared database.
+      </p>
     </div>
   );
 }

@@ -30,6 +30,11 @@ import vedicChakrasJyotishNavagrahaConnection from './posts/vedic-chakras-jyotis
 import navagrahaRemediesMantrasGemstonesRituals from './posts/navagraha-remedies-mantras-gemstones-rituals';
 import howToCalculateBiorhythmCycles from './posts/how-to-calculate-biorhythm-cycles';
 import biorhythmCompatibilityBetweenTwoPeople from './posts/biorhythm-compatibility-between-two-people';
+import chakraMeditationGuidedScriptSevenCenters from './posts/chakra-meditation-guided-script-seven-centers';
+import chakraVisualizationMeditationTechniques from './posts/chakra-visualization-meditation-techniques';
+import bestTimeToMeditateMorningVsEvening from './posts/best-time-to-meditate-morning-vs-evening';
+import chakraSoundHealingSolfeggioFrequencies from './posts/chakra-sound-healing-solfeggio-frequencies';
+import walkingMeditationRootChakraGrounding from './posts/walking-meditation-root-chakra-grounding';
 import type { BlogPost } from '@/types/blog.types';
 
 // Post slugs must never literally be "category" — it would collide with the
@@ -67,6 +72,11 @@ export const BLOG_POSTS: BlogPost[] = [
   navagrahaRemediesMantrasGemstonesRituals,
   howToCalculateBiorhythmCycles,
   biorhythmCompatibilityBetweenTwoPeople,
+  chakraMeditationGuidedScriptSevenCenters,
+  chakraVisualizationMeditationTechniques,
+  bestTimeToMeditateMorningVsEvening,
+  chakraSoundHealingSolfeggioFrequencies,
+  walkingMeditationRootChakraGrounding,
 ];
 
 export function getBlogPost(slug: string) {

@@ -240,6 +240,15 @@ export const TOOL_CATEGORIES: { id: ToolMeta['category'] | 'all'; label: string 
   { id: 'cosmology', label: 'Cosmology' },
 ];
 
+/** Single source of truth for a tool's accent → icon chip colour, shared by the Tools
+ *  hub grid, the tool detail header, and the "more tools like this" cross-sell. */
+export const TOOL_ACCENT_BG: Record<ToolMeta['accent'], string> = {
+  gold: 'bg-gold-bright/10 text-gold-soft',
+  cyan: 'bg-brand-cyan/10 text-brand-cyan-soft',
+  violet: 'bg-violet-chakra/10 text-violet-chakra',
+  teal: 'bg-teal-cosmic/15 text-teal-cosmic',
+};
+
 export function getTool(slug: string) {
   return TOOLS.find((t) => t.slug === slug);
 }

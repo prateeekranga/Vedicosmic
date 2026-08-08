@@ -9,9 +9,18 @@ const supportsFineHover = () =>
 const BORDER_CHASE =
   'conic-gradient(from 0deg, transparent 0%, #FFD700 12%, transparent 28%, #39B7F0 50%, transparent 68%, #E6B84A 88%, transparent 100%)';
 
+type Accent = 'gold' | 'cyan' | 'violet' | 'teal';
+
+const ACCENT_LINE: Record<Accent, string> = {
+  gold: 'via-gold-bright',
+  cyan: 'via-brand-cyan',
+  violet: 'via-violet-chakra',
+  teal: 'via-teal-cosmic',
+};
+
 export function Card({
-  children, className, hover = false,
-}: { children: ReactNode; className?: string; hover?: boolean }) {
+  children, className, hover = false, accent,
+}: { children: ReactNode; className?: string; hover?: boolean; accent?: Accent }) {
   const reduced = usePrefersReducedMotion();
   const mx = useMotionValue(50);
   const my = useMotionValue(50);
@@ -81,6 +90,12 @@ export function Card({
             className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
             style={{ background: spotlight }}
           />
+        )}
+        {accent && (
+          <span aria-hidden className={cn(
+            'pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent to-transparent',
+            ACCENT_LINE[accent],
+          )} />
         )}
         {children}
       </motion.div>

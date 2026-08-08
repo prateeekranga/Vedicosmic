@@ -1,15 +1,16 @@
 import { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, GraduationCap } from 'lucide-react';
-import { getTool } from '@/data/tools';
+import { ArrowLeft, ArrowRight, GraduationCap } from 'lucide-react';
+import { getTool, TOOL_CATEGORIES, TOOL_ACCENT_BG } from '@/data/tools';
 import { getCourse } from '@/data/courses';
 import { getToolFaqs } from '@/data/toolFaqs';
 import { useAllBlogPosts } from '@/hooks/useAllBlogPosts';
-import { isToolComingSoon } from '@/lib/overrides';
+import { isToolComingSoon, visibleTools } from '@/lib/overrides';
 import { useOverridesVersion } from '@/hooks/useOverridesVersion';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+import { Card } from '@/components/ui/Card';
 import { Accordion } from '@/components/ui/Accordion';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { ComingSoon } from '@/components/ui/ComingSoon';
@@ -63,6 +64,7 @@ export default function ToolPage() {
   const course = tool.relatedCourseSlug ? getCourse(tool.relatedCourseSlug) : undefined;
   const faqs = getToolFaqs(tool.id);
   const relatedPosts = allPosts.filter((p) => p.relatedToolSlugs?.includes(tool.slug));
+  const relatedTools = visibleTools().filter((t) => t.category === tool.category && t.slug !== tool.slug).slice(0, 4);
 
   return (
     <div className="container-vc pb-12 pt-20">
@@ -74,13 +76,15 @@ export default function ToolPage() {
 
       {/* keyed by slug so a stale result's share text can't leak into the next tool navigated to */}
       <ShareResultProvider key={tool.slug}>
-        <ToolBody tool={tool} course={course} faqs={faqs} relatedPosts={relatedPosts} />
+        <ToolBody tool={tool} course={course} faqs={faqs} relatedPosts={relatedPosts} relatedTools={relatedTools} />
       </ShareResultProvider>
     </div>
   );
 }
 
-function ToolBody({ tool, course, faqs, relatedPosts }: { tool: ToolMeta; course: Course | undefined; faqs: FAQItem[]; relatedPosts: BlogPost[] }) {
+function ToolBody({
+  tool, course, faqs, relatedPosts, relatedTools,
+}: { tool: ToolMeta; course: Course | undefined; faqs: FAQItem[]; relatedPosts: BlogPost[]; relatedTools: ToolMeta[] }) {
   const Tool = tool.Component;
   const shareText = useShareText();
   const url = window.location.href;
@@ -94,7 +98,7 @@ function ToolBody({ tool, course, faqs, relatedPosts }: { tool: ToolMeta; course
         className="mb-10 flex flex-wrap items-start justify-between gap-4">
         <div className="max-w-2xl">
           <div className="mb-3 flex items-center gap-3">
-            <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gold-bright/10 text-gold-soft">
+            <span className={`flex h-12 w-12 items-center justify-center rounded-xl ${TOOL_ACCENT_BG[tool.accent]}`}>
               <tool.Icon className="h-6 w-6" />
             </span>
             {comingSoon ? <Badge tone="gold">Coming Soon</Badge> : tool.isNew && <Badge tone="cyan">New</Badge>}
@@ -125,6 +129,28 @@ function ToolBody({ tool, course, faqs, relatedPosts }: { tool: ToolMeta; course
           <SectionHeading eyebrow="Learn More" title="From the Blog" />
           <div className="mt-8 grid gap-6 sm:grid-cols-2">
             {relatedPosts.slice(0, 4).map((p) => <BlogPostCard key={p.id} post={p} />)}
+          </div>
+        </div>
+      )}
+
+      {relatedTools.length > 0 && (
+        <div className="mx-auto mt-16 max-w-3xl">
+          <SectionHeading eyebrow="Keep Exploring" title={`More ${TOOL_CATEGORIES.find((c) => c.id === tool.category)?.label ?? ''} tools`} center={false} />
+          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+            {relatedTools.map((t) => (
+              <Link key={t.id} to={`/tools/${t.slug}`}>
+                <Card hover accent={t.accent} className="group flex items-center gap-4 p-5">
+                  <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${TOOL_ACCENT_BG[t.accent]}`}>
+                    <t.Icon className="h-5 w-5" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate font-heading text-base text-white group-hover:text-gold-pale">{t.name}</span>
+                    <span className="block truncate text-xs text-white/45">{t.subtitle}</span>
+                  </span>
+                  <ArrowRight className="h-4 w-4 shrink-0 text-white/30 transition-transform group-hover:translate-x-1 group-hover:text-brand-cyan-soft" />
+                </Card>
+              </Link>
+            ))}
           </div>
         </div>
       )}

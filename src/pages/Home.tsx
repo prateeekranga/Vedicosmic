@@ -10,6 +10,7 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Accordion } from '@/components/ui/Accordion';
 import { StardustText } from '@/components/motion/StardustText';
 import { SparkleUnderline } from '@/components/motion/SparkleUnderline';
+import { BlogPostCard } from '@/components/blog/BlogPostCard';
 import { TOOLS } from '@/data/tools';
 import { COURSES } from '@/data/courses';
 import { formatINR } from '@/lib/format';
@@ -17,6 +18,7 @@ import { mergedHomeContent } from '@/lib/siteContent';
 import { getFeatureFlags } from '@/lib/overrides';
 import { ComingSoon } from '@/components/ui/ComingSoon';
 import { useOverridesVersion } from '@/hooks/useOverridesVersion';
+import { useAllBlogPosts } from '@/hooks/useAllBlogPosts';
 import { useSEO } from '@/hooks/useSEO';
 import { faqPageSchema } from '@/lib/schema';
 import { SITE_DESCRIPTION } from '@/config/site';
@@ -92,6 +94,8 @@ export default function Home() {
   const featuredTools = TOOLS.filter((t) => t.isNew).slice(0, 3);
   const featuredCourses = COURSES.filter((c) => c.isFeatured).slice(0, 3);
   const coursesComingSoon = getFeatureFlags().coursesComingSoon;
+  const { posts: latestPosts } = useAllBlogPosts();
+  const featuredPosts = latestPosts.slice(0, 3);
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress: heroProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
   const heroFade = useTransform(heroProgress, [0, 0.9], [1, 0]);
@@ -206,7 +210,7 @@ export default function Home() {
           {featuredTools.map((t) => (
             <motion.div key={t.id} variants={fadeUp}>
               <Link to={`/tools/${t.slug}`}>
-                <Card hover className="group h-full p-7">
+                <Card hover accent={t.accent} className="group h-full p-7">
                   <div className="flex items-center justify-between">
                     <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gold-bright/10 text-gold-soft">
                       <t.Icon className="h-6 w-6" />
@@ -313,6 +317,25 @@ export default function Home() {
         </>
         )}
       </section>
+
+      {/* FROM THE BLOG */}
+      {featuredPosts.length > 0 && (
+        <section className="container-vc py-16 sm:py-24">
+          <SectionHeading eyebrow="The Blog" title="Fresh from the journal"
+            subtitle="In-depth guides on numerology, Vedic astrology, energy healing and the cosmic rhythms behind it all." />
+          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}
+            className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {featuredPosts.map((p) => (
+              <motion.div key={p.id} variants={fadeUp}>
+                <BlogPostCard post={p} />
+              </motion.div>
+            ))}
+          </motion.div>
+          <div className="mt-10 text-center">
+            <Button to="/blog" variant="ghost">Read all articles <ArrowRight className="h-4 w-4" /></Button>
+          </div>
+        </section>
+      )}
 
       {/* TESTIMONIALS */}
       <section className="container-vc py-16 sm:py-24">

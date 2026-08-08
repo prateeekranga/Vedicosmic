@@ -22,6 +22,7 @@ import { Accordion } from '@/components/ui/Accordion';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { ScrollProgress } from '@/components/ui/ScrollProgress';
 import { SITE_URL } from '@/config/site';
 import type { BlogPost } from '@/types/blog.types';
 
@@ -59,6 +60,7 @@ export default function BlogPostPage() {
 
   return (
     <div className="container-vc pb-12 pt-20">
+      <ScrollProgress />
       <div className="mx-auto mb-6 flex max-w-3xl flex-wrap items-center gap-x-2 gap-y-1 text-sm text-white/40">
         <Link to="/" className="hover:text-white/70">Home</Link><span>/</span>
         <Link to="/blog" className="hover:text-white/70">Blog</Link><span>/</span>
@@ -85,7 +87,7 @@ function BlogPostBody({ post }: { post: BlogPost }) {
 
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mx-auto max-w-3xl">
-      <BlogHero category={post.category} />
+      <BlogHero category={post.category} heroImage={post.heroImage} />
       <div className="mb-4 flex flex-wrap items-center gap-3">
         {category && <Badge tone="gold">{category.label}</Badge>}
         {post.isFeatured && <Badge tone="neutral">Featured</Badge>}

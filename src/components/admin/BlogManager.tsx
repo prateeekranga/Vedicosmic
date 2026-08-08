@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Eye, EyeOff, RotateCcw, ChevronUp, ChevronDown, Pencil, ExternalLink, Trash2, Plus, LogIn, LogOut } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { Eye, EyeOff, RotateCcw, ChevronUp, ChevronDown, Pencil, ExternalLink, Trash2, Plus, LogIn, LogOut, Search, X } from 'lucide-react';
 import { BLOG_POSTS } from '@/data/blog';
 import { getBlogCategory } from '@/data/blogCategories';
 import {
@@ -40,10 +40,40 @@ function moveRow(posts: BlogPost[], id: string, dir: -1 | 1) {
 type DbPost = BlogPost & { hidden: boolean; sortOrder: number };
 type EditorState = { mode: 'new' } | { mode: 'edit'; post: BlogPost } | null;
 
+function matchesSearch(p: BlogPost, query: string): boolean {
+  const q = query.trim().toLowerCase();
+  if (!q) return true;
+  return [p.title, p.slug, p.category, ...p.tags].join(' ').toLowerCase().includes(q);
+}
+
+/** Shared search box for both post tables below — plain text match against title, slug,
+ *  category and tags, so finding one post among a growing library doesn't mean scrolling. */
+function TableSearchBox({ value, onChange, placeholder }: { value: string; onChange: (v: string) => void; placeholder: string }) {
+  return (
+    <div className="relative max-w-sm flex-1">
+      <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" />
+      <input
+        type="search"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="w-full rounded-xl border border-white/12 bg-cosmic-darker/60 py-2 pl-9 pr-8 text-sm text-white placeholder-white/30 transition-colors focus:border-brand-cyan focus:outline-none"
+      />
+      {value && (
+        <button onClick={() => onChange('')} aria-label="Clear search" className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/35 hover:text-white/70">
+          <X className="h-3.5 w-3.5" />
+        </button>
+      )}
+    </div>
+  );
+}
+
 export function BlogManager() {
   const v = useOverridesVersion();
   const ov = getBlogOverrides();
-  const rows = rankedPosts(mergedBlogPosts(), ov);
+  const allRows = rankedPosts(mergedBlogPosts(), ov);
+  const [query, setQuery] = useState('');
+  const rows = useMemo(() => allRows.filter(({ post }) => matchesSearch(post, query)), [allRows, query]);
   const [seoSlug, setSeoSlug] = useState<string | null>(null);
   const seoPost = seoSlug ? BLOG_POSTS.find((p) => p.slug === seoSlug) : undefined;
 
@@ -52,10 +82,14 @@ export function BlogManager() {
       <div>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="font-heading text-h3 text-white">Blog</h2>
-          <Button variant="ghost" size="sm" onClick={() => { if (confirm('Reset all blog changes?')) resetBlogOverrides(); }}>
-            <RotateCcw className="mr-2 h-4 w-4" /> Reset
-          </Button>
+          <div className="flex flex-1 items-center justify-end gap-3">
+            <TableSearchBox value={query} onChange={setQuery} placeholder="Search title, slug, category, tag…" />
+            <Button variant="ghost" size="sm" onClick={() => { if (confirm('Reset all blog changes?')) resetBlogOverrides(); }}>
+              <RotateCcw className="mr-2 h-4 w-4" /> Reset
+            </Button>
+          </div>
         </div>
+        {query && <p className="mt-2 text-xs text-white/40">{rows.length} of {allRows.length} posts match "{query}"</p>}
         <div className="mt-4 overflow-x-auto rounded-2xl border border-white/10 bg-cosmic-light/40">
           <table className="w-full min-w-[720px] text-left text-sm">
             <thead className="border-b border-white/10 text-xs uppercase tracking-wider text-white/40">
@@ -150,7 +184,9 @@ function DbPostsSection() {
   const [editor, setEditor] = useState<EditorState>(null);
   const [editorSeed, setEditorSeed] = useState<BlogPost | null>(null);
   const [saving, setSaving] = useState(false);
+  const [query, setQuery] = useState('');
   const { posts: allPosts } = useAllBlogPosts(); // for the internal-link picker inside the editor
+  const filteredPosts = useMemo(() => (posts ?? []).filter((p) => matchesSearch(p, query)), [posts, query]);
 
   const refresh = () => {
     fetchAdminPosts().then(setPosts).catch((err) => setLoadError(err instanceof Error ? err.message : 'Failed to load'));
@@ -230,7 +266,8 @@ function DbPostsSection() {
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="font-heading text-h3 text-white">Database Posts</h2>
-        <div className="flex gap-3">
+        <div className="flex flex-1 flex-wrap items-center justify-end gap-3">
+          {posts && posts.length > 0 && <TableSearchBox value={query} onChange={setQuery} placeholder="Search title, slug, category, tag…" />}
           <Button size="sm" onClick={openNew}><Plus className="mr-2 h-4 w-4" /> New Post</Button>
           <Button variant="ghost" size="sm" onClick={() => adminLogout().then(() => setAuthed(false))}>
             <LogOut className="mr-2 h-4 w-4" /> Log out
@@ -242,6 +279,10 @@ function DbPostsSection() {
 
       {posts && posts.length === 0 && (
         <p className="mt-4 text-sm text-white/50">No database posts yet — click "New Post" to write one.</p>
+      )}
+
+      {query && posts && posts.length > 0 && (
+        <p className="mt-2 text-xs text-white/40">{filteredPosts.length} of {posts.length} posts match "{query}"</p>
       )}
 
       {posts && posts.length > 0 && (
@@ -259,8 +300,13 @@ function DbPostsSection() {
               </tr>
             </thead>
             <tbody>
-              {posts.map((p, i) => {
+              {filteredPosts.map((p) => {
                 const category = getBlogCategory(p.category);
+                // Reordering swaps adjacent positions in the *full* list, not the filtered view —
+                // using the filtered array's loop index here would silently collide sort_order
+                // with whatever the search box is currently hiding. Look up the true index instead,
+                // so up/down stay correct (and their disabled state stays accurate) while searching.
+                const trueIndex = posts.findIndex((x) => x.slug === p.slug);
                 return (
                   <tr key={p.slug} className="border-b border-white/5">
                     <td className="p-3"><p className="font-medium text-white">{p.title}</p><p className="text-xs text-white/40">{p.slug}</p></td>
@@ -278,8 +324,8 @@ function DbPostsSection() {
                     </td>
                     <td className="p-3">
                       <div className="flex items-center justify-center gap-1">
-                        <button onClick={() => move(posts, i, -1)} disabled={i === 0} className="text-white/50 hover:text-white disabled:opacity-20" aria-label="Move up"><ChevronUp className="h-4 w-4" /></button>
-                        <button onClick={() => move(posts, i, 1)} disabled={i === posts.length - 1} className="text-white/50 hover:text-white disabled:opacity-20" aria-label="Move down"><ChevronDown className="h-4 w-4" /></button>
+                        <button onClick={() => move(posts, trueIndex, -1)} disabled={trueIndex === 0} className="text-white/50 hover:text-white disabled:opacity-20" aria-label="Move up"><ChevronUp className="h-4 w-4" /></button>
+                        <button onClick={() => move(posts, trueIndex, 1)} disabled={trueIndex === posts.length - 1} className="text-white/50 hover:text-white disabled:opacity-20" aria-label="Move down"><ChevronDown className="h-4 w-4" /></button>
                       </div>
                     </td>
                     <td className="p-3">

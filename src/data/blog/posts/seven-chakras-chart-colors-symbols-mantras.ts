@@ -9,7 +9,7 @@ export default {
     'A quick-reference chart for the 7 chakras — colors, seed mantras, symbols and meanings for Root through Crown, side by side.',
   category: 'energy',
   tags: ['7 chakras', 'chakra colors', 'chakra symbols', 'bija mantra', 'chakra chart', 'chakras'],
-  authorId: 'vasanti',
+  authorId: 'parikshiva',
   publishedAt: '2026-07-28',
   heroImage: '/og/blog/seven-chakras-chart-colors-symbols-mantras.png',
   keyTakeaways: [

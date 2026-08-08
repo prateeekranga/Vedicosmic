@@ -9,7 +9,7 @@ export default {
     'How do the chakras relate to prana, the nadis and kundalini energy? A look at the chakras as part of the wider subtle-body system.',
   category: 'energy',
   tags: ['the chakras', 'subtle body', 'prana', 'nadis', 'kundalini', 'chakras'],
-  authorId: 'vasanti',
+  authorId: 'parikshiva',
   publishedAt: '2026-07-28',
   heroImage: '/og/blog/chakras-subtle-body-prana-flow.png',
   keyTakeaways: [

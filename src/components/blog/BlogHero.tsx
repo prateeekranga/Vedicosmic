@@ -7,7 +7,7 @@ import type { BlogCategoryId } from '@/types/blog.types';
 /** Live, per-post hero banner. Uses the post's own photo/OG art when set — a slow Ken
  *  Burns drift gives it life — falling back to the category's SVG emblem (the old
  *  behaviour) when no image exists or it fails to load, so this never renders blank. */
-export function BlogHero({ category, heroImage }: { category: BlogCategoryId; heroImage?: string }) {
+export function BlogHero({ category, heroImage, title }: { category: BlogCategoryId; heroImage?: string; title: string }) {
   const reduced = usePrefersReducedMotion();
   const [imgFailed, setImgFailed] = useState(false);
   const showImage = !!heroImage && !imgFailed;
@@ -17,7 +17,9 @@ export function BlogHero({ category, heroImage }: { category: BlogCategoryId; he
       {showImage ? (
         <motion.img
           src={heroImage}
-          alt=""
+          // There's no dedicated hero-image alt-text field (yet) — the post title is a
+          // reasonable, always-present description of what the image represents.
+          alt={title}
           loading="eager"
           decoding="async"
           className="absolute inset-0 h-full w-full object-cover"

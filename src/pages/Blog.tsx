@@ -31,7 +31,7 @@ function SpotlightPost({ post }: { post: BlogPost }) {
         <div className="relative aspect-[16/10] overflow-hidden bg-cosmic-light md:aspect-auto">
           {post.heroImage && (
             <img
-              src={post.heroImage} alt="" loading="eager" decoding="async"
+              src={post.heroImage} alt={post.title} loading="eager" decoding="async"
               className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
               onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.nextElementSibling?.classList.remove('hidden'); }}
             />

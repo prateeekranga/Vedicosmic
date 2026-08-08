@@ -9,7 +9,7 @@ export default {
     'A compassionate look at Brahmacharya and ūrdhvaretas — the yogic view of sexual energy — and how these ideas can gently support urge control.',
   category: 'spiritual-living',
   tags: ['brahmacharya', 'urdhvaretas', 'kundalini', 'urge control', 'yogic philosophy', 'subtle body'],
-  authorId: 'rajan',
+  authorId: 'parikshiva',
   publishedAt: '2026-08-03',
   heroImage: '/og/blog/urdhvaretas-brahmacharya-yogic-view.png',
   keyTakeaways: [

@@ -87,7 +87,7 @@ function BlogPostBody({ post }: { post: BlogPost }) {
 
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mx-auto max-w-3xl">
-      <BlogHero category={post.category} heroImage={post.heroImage} />
+      <BlogHero category={post.category} heroImage={post.heroImage} title={post.title} />
       <div className="mb-4 flex flex-wrap items-center gap-3">
         {category && <Badge tone="gold">{category.label}</Badge>}
         {post.isFeatured && <Badge tone="neutral">Featured</Badge>}

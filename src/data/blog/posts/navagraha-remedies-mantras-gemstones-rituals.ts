@@ -9,7 +9,7 @@ export default {
     'Traditional Navagraha remedies for each of the 9 planets — mantras, gemstones, colors and simple rituals used to pacify a difficult graha.',
   category: 'cosmology',
   tags: ['navagraha', 'navagraha remedies', 'vedic astrology', 'planetary mantras', 'gemstones', 'jyotish'],
-  authorId: 'ananya',
+  authorId: 'parikshiva',
   publishedAt: '2026-08-03',
   heroImage: 'https://images.pexels.com/photos/4094847/pexels-photo-4094847.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
   keyTakeaways: [

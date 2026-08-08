@@ -9,7 +9,7 @@ export default {
     "What are chakras, how many are there, and how do you actually work with them? A complete, no-hype overview of the chakra system in one place.",
   category: 'energy',
   tags: ['chakras', 'chakra basics', 'energy centers', 'subtle body', 'chakra system', 'energy healing'],
-  authorId: 'vasanti',
+  authorId: 'parikshiva',
   publishedAt: '2026-07-28',
   heroImage: '/og/blog/chakras-101-complete-guide.png',
   keyTakeaways: [

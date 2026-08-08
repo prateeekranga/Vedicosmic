@@ -9,7 +9,7 @@ export default {
     'What Ekadashi is, why it falls twice a month, and how the traditional fasting vrat works — including who should check with a doctor first.',
   category: 'rituals-festivals',
   tags: ['ekadashi', 'vrat fasting', 'hindu fasting', 'vedic rituals', 'lunar calendar', 'lord vishnu'],
-  authorId: 'kabir',
+  authorId: 'parikshiva',
   publishedAt: '2026-07-10',
   heroImage: '/og/blog/ekadashi-fasting-guide.png',
   keyTakeaways: [

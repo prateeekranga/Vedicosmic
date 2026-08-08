@@ -8,7 +8,7 @@ export default {
   excerpt: 'A clear, honest look at biorhythm theory\'s physical, emotional and intellectual cycles — its origins, its appeal, and why science has not confirmed it works.',
   category: 'cosmology',
   tags: ['biorhythms', 'self-reflection', 'pseudoscience', 'personal cycles', 'wellness tools', 'history of ideas'],
-  authorId: 'ananya',
+  authorId: 'parikshiva',
   publishedAt: '2026-07-30',
   heroImage: '/og/blog/what-are-biorhythms-explained.png',
   keyTakeaways: [

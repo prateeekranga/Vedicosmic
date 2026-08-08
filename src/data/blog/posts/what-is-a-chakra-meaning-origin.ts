@@ -9,7 +9,7 @@ export default {
     'What does "chakra" actually mean, where does the concept come from, and how did the seven-chakra system as we know it develop over time?',
   category: 'energy',
   tags: ['what is chakras', 'chakra meaning', 'chakra history', 'tantric tradition', 'yoga philosophy', 'chakras'],
-  authorId: 'vasanti',
+  authorId: 'parikshiva',
   publishedAt: '2026-07-28',
   heroImage: '/og/blog/what-is-a-chakra-meaning-origin.png',
   keyTakeaways: [

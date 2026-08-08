@@ -22,7 +22,9 @@ function CardThumb({ post }: { post: BlogPost }) {
       {post.heroImage && (
         <img
           src={post.heroImage}
-          alt=""
+          // No dedicated hero-image alt field exists yet — the post title is a reasonable,
+          // always-present description of what the image represents.
+          alt={post.title}
           loading="lazy"
           decoding="async"
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"

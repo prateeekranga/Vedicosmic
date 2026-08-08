@@ -9,7 +9,7 @@ export default {
     'A dense, at-a-glance reference for chakra information — Sanskrit name, location, element, seed sound and mudra for each of the 7 chakras.',
   category: 'energy',
   tags: ['chakra information', 'chakra reference', 'chakra facts', 'chakra mudra', 'chakras', 'subtle body'],
-  authorId: 'vasanti',
+  authorId: 'parikshiva',
   publishedAt: '2026-07-28',
   heroImage: '/og/blog/chakra-information-reference-guide.png',
   keyTakeaways: [

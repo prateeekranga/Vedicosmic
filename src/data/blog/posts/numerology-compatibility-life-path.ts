@@ -16,7 +16,7 @@ export default {
     'kundali matching',
     'anka shastra',
   ],
-  authorId: 'kabir',
+  authorId: 'parikshiva',
   publishedAt: '2026-06-10',
   heroImage: '/og/blog/numerology-compatibility-life-path.png',
   keyTakeaways: [

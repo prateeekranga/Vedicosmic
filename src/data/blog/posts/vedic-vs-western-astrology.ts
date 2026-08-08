@@ -8,7 +8,7 @@ export default {
   excerpt: 'Why your Vedic Moon sign differs from your Western Sun sign — the real astronomical difference between the tropical and sidereal zodiacs, explained.',
   category: 'astrology',
   tags: ['vedic astrology', 'western astrology', 'sidereal zodiac', 'tropical zodiac', 'moon sign', 'ayanamsa'],
-  authorId: 'ananya',
+  authorId: 'parikshiva',
   publishedAt: '2026-06-15',
   heroImage: '/og/blog/vedic-vs-western-astrology.png',
   keyTakeaways: [

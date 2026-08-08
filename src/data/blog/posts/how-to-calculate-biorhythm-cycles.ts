@@ -9,7 +9,7 @@ export default {
     "A step-by-step guide to calculating your physical, emotional and intellectual biorhythm cycles by hand, from your date of birth.",
   category: 'cosmology',
   tags: ['biorhythm', 'how to calculate biorhythm', 'biorhythm cycles', 'personal cycles', 'biorhythm calculator'],
-  authorId: 'ananya',
+  authorId: 'parikshiva',
   publishedAt: '2026-08-03',
   heroImage: 'https://images.pexels.com/photos/5417666/pexels-photo-5417666.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
   keyTakeaways: [

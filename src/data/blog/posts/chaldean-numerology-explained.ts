@@ -16,7 +16,7 @@ export default {
     'name number calculator',
     'vedic numerology',
   ],
-  authorId: 'kabir',
+  authorId: 'parikshiva',
   publishedAt: '2026-07-22',
   heroImage: '/og/blog/chaldean-numerology-explained.png',
   keyTakeaways: [

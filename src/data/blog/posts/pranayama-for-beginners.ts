@@ -9,7 +9,7 @@ export default {
     "A practical beginner's guide to pranayama, the yogic art of breath control: five techniques, from calming Bhramari to energizing Kapalabhati, with safe steps.",
   category: 'meditation-yoga',
   tags: ['pranayama', 'breathing techniques', 'nadi shodhana', 'yoga breathing', 'breathwork', 'beginner yoga'],
-  authorId: 'rajan',
+  authorId: 'parikshiva',
   publishedAt: '2026-07-15',
   heroImage: '/og/blog/pranayama-for-beginners.png',
   keyTakeaways: [

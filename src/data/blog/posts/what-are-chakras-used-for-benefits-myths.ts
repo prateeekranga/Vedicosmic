@@ -9,7 +9,7 @@ export default {
     'What are chakras actually used for, what benefits do people report, and which common claims about chakras are myths rather than facts?',
   category: 'energy',
   tags: ['what are chakras', 'chakra myths', 'chakra benefits', 'chakra misconceptions', 'chakras'],
-  authorId: 'vasanti',
+  authorId: 'parikshiva',
   publishedAt: '2026-07-28',
   heroImage: '/og/blog/what-are-chakras-used-for-benefits-myths.png',
   keyTakeaways: [

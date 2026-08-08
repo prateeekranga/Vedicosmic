@@ -9,7 +9,7 @@ export default {
     'What are the 7 chakras, in plain language? A short, direct definition for each one — Root through Crown — no jargon required.',
   category: 'energy',
   tags: ['what are the 7 chakras', '7 chakras', 'chakra definitions', 'chakras'],
-  authorId: 'vasanti',
+  authorId: 'parikshiva',
   publishedAt: '2026-07-28',
   heroImage: '/og/blog/what-are-the-7-chakras-simple-definitions.png',
   keyTakeaways: [

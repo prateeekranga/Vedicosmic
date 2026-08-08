@@ -84,11 +84,15 @@ function fromInput(input: Partial<BlogPost>) {
 
 /** Public, unauthenticated reads — used by the live site (Blog.tsx, BlogPostPage.tsx, ToolPage.tsx)
  *  and, via fetchDbPosts.mjs, by the Node build scripts (prerender.mjs/generate-seo-files.mjs).
- *  RLS restricts these to `hidden = false` rows automatically for the anon role. */
+ *  RLS restricts these to `hidden = false` rows automatically for the anon role. The
+ *  `published_at <= now` filter is what makes scheduling work: the admin editor lets a post be
+ *  marked visible with a future publish time, and it simply won't be in this result set — no
+ *  cron job needed — until that instant has actually passed for whoever re-fetches the list. */
 export async function fetchPublicPosts(): Promise<BlogPost[]> {
   const { data, error } = await supabase
     .from('posts')
     .select('*')
+    .lte('published_at', new Date().toISOString())
     .order('is_pinned', { ascending: false })
     .order('sort_order', { ascending: true })
     .order('published_at', { ascending: false });
@@ -97,7 +101,12 @@ export async function fetchPublicPosts(): Promise<BlogPost[]> {
 }
 
 export async function fetchPublicPostBySlug(slug: string): Promise<BlogPost | null> {
-  const { data, error } = await supabase.from('posts').select('*').eq('slug', slug).maybeSingle();
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('slug', slug)
+    .lte('published_at', new Date().toISOString())
+    .maybeSingle();
   if (error) throw new Error(`Failed to load post: ${error.message}`);
   return data ? toBlogPost(data as PostRow) : null;
 }

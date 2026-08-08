@@ -8,7 +8,7 @@ export default {
   excerpt: 'What is your Nakshatra, or birth star? A clear guide to the 27 lunar mansions of Vedic astrology, their ruling deities, and what a Pada quarter is.',
   category: 'astrology',
   tags: ['nakshatra', 'birth star', 'vedic astrology', 'lunar mansion', 'jyotish', 'moon sign'],
-  authorId: 'ananya',
+  authorId: 'parikshiva',
   publishedAt: '2026-06-19',
   heroImage: '/og/blog/nakshatras-explained-27-lunar-mansions.png',
   keyTakeaways: [

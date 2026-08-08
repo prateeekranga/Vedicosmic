@@ -9,7 +9,7 @@ export default {
     'Walk through all 7 chakras with their function, common signs of blockage, and a traditional healing practice for each — Root through Crown.',
   category: 'energy',
   tags: ['all chakras', 'chakra healing', 'chakra blockage', 'chakra balancing', 'energy healing', 'chakras'],
-  authorId: 'vasanti',
+  authorId: 'parikshiva',
   publishedAt: '2026-07-28',
   heroImage: '/og/blog/all-7-chakras-functions-blockages-healing.png',
   keyTakeaways: [

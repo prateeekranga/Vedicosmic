@@ -9,7 +9,7 @@ export default {
     'A daily contemplation card isn’t fortune-telling — it’s a simple reflective mirror. Learn a five-minute ritual for noticing what’s really on your mind.',
   category: 'spiritual-living',
   tags: ['daily reflection', 'contemplation card', 'journaling practice', 'mindfulness ritual', 'self-reflection', 'spiritual practice'],
-  authorId: 'leela',
+  authorId: 'parikshiva',
   publishedAt: '2026-07-26',
   heroImage: '/og/blog/daily-card-contemplation-ritual.png',
   keyTakeaways: [

@@ -9,7 +9,7 @@ export default {
     'Sadhana means a disciplined daily spiritual practice. Learn why consistency beats intensity, and five realistic ways to make yours actually stick.',
   category: 'spiritual-living',
   tags: ['sadhana', 'daily spiritual practice', 'meditation habit', 'spiritual discipline', 'habit formation', 'mindfulness'],
-  authorId: 'leela',
+  authorId: 'parikshiva',
   publishedAt: '2026-07-04',
   heroImage: '/og/blog/start-daily-spiritual-practice-sadhana.png',
   keyTakeaways: [

@@ -16,7 +16,7 @@ export default {
     'numerology calculator',
     'digit sum',
   ],
-  authorId: 'kabir',
+  authorId: 'parikshiva',
   publishedAt: '2026-07-20',
   heroImage: '/og/blog/mobile-number-numerology.png',
   keyTakeaways: [

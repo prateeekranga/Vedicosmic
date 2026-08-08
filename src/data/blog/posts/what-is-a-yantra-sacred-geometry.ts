@@ -9,7 +9,7 @@ export default {
     'What a yantra actually is, how the Sri Yantra\'s nine triangles are built, and the geometry — and golden ratio claims — behind sacred diagrams.',
   category: 'energy',
   tags: ['yantra', 'sri yantra', 'sacred geometry', 'meditation', 'tantra', 'symbolism'],
-  authorId: 'vasanti',
+  authorId: 'parikshiva',
   publishedAt: '2026-07-28',
   heroImage: '/og/blog/what-is-a-yantra-sacred-geometry.png',
   keyTakeaways: [

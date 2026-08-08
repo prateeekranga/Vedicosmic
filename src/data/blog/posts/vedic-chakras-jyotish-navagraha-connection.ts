@@ -9,7 +9,7 @@ export default {
     'How does the chakra system show up in Vedic astrology? A look at how Jyotish practitioners connect the 7 chakras to the Navagraha, the nine planets.',
   category: 'energy',
   tags: ['vedic chakras', 'navagraha', 'chakras', 'jyotish', 'vedic astrology', 'subtle body'],
-  authorId: 'ananya',
+  authorId: 'parikshiva',
   publishedAt: '2026-08-03',
   heroImage: 'https://images.pexels.com/photos/4172882/pexels-photo-4172882.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
   keyTakeaways: [

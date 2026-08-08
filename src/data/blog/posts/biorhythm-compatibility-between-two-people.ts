@@ -9,7 +9,7 @@ export default {
     "Can biorhythm cycles be compared between two people? A look at biorhythm compatibility theory, how it's calculated, and what science actually says.",
   category: 'cosmology',
   tags: ['biorhythm compatibility', 'biorhythm', 'personal cycles', 'relationship compatibility', 'biorhythm theory'],
-  authorId: 'ananya',
+  authorId: 'parikshiva',
   publishedAt: '2026-08-03',
   heroImage: 'https://images.pexels.com/photos/1646311/pexels-photo-1646311.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
   keyTakeaways: [

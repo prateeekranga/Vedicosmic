@@ -15,7 +15,7 @@ export default {
     'birth date numerology',
     'numerology calculator',
   ],
-  authorId: 'kabir',
+  authorId: 'parikshiva',
   publishedAt: '2026-06-01',
   heroImage: '/og/blog/life-path-number-guide-2026.png',
   keyTakeaways: [

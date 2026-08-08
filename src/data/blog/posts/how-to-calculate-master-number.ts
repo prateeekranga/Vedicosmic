@@ -9,7 +9,7 @@ export default {
     'A focused, step-by-step guide to calculating and recognising Master Numbers 11, 22 and 33 in numerology — with the most common mistake to avoid.',
   category: 'numerology',
   tags: ['master number', 'numerology', 'life path number', 'master numbers 11 22 33', 'numerology calculator'],
-  authorId: 'kabir',
+  authorId: 'parikshiva',
   publishedAt: '2026-07-28',
   heroImage: '/og/blog/how-to-calculate-master-number.png',
   keyTakeaways: [

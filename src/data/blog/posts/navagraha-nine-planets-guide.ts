@@ -8,7 +8,7 @@ export default {
   excerpt: 'Meet the Navagraha — the nine grahas of Vedic astrology, including shadow planets Rahu and Ketu — and how they shape Dashas and planetary hours.',
   category: 'cosmology',
   tags: ['navagraha', 'nine planets', 'vedic astrology', 'rahu and ketu', 'jyotish', 'grahas'],
-  authorId: 'ananya',
+  authorId: 'parikshiva',
   publishedAt: '2026-07-24',
   heroImage: '/og/blog/navagraha-nine-planets-guide.png',
   keyTakeaways: [

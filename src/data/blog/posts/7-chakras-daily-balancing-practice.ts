@@ -9,7 +9,7 @@ export default {
     'A short, beginner-friendly daily routine that moves through all 7 chakras — breath, posture and a moment of focus for each one.',
   category: 'energy',
   tags: ['7 chakras', 'chakra practice', 'daily ritual', 'chakra balancing', 'meditation', 'chakras'],
-  authorId: 'vasanti',
+  authorId: 'parikshiva',
   publishedAt: '2026-07-28',
   heroImage: '/og/blog/7-chakras-daily-balancing-practice.png',
   keyTakeaways: [

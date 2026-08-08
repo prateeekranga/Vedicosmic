@@ -6,6 +6,11 @@ import type { Instructor } from '@/types/course.types';
  * rating, student count) stay consistent wherever a person is credited.
  */
 export const AUTHORS: Record<string, Instructor> = {
+  // The single, unified byline for every blog article — set as the default author for
+  // both the 32 static posts and new admin-authored posts. Kept in this same shared map
+  // (rather than a separate blog-only constant) so AuthorBio, the admin author dropdown,
+  // and `/blog?author=parikshiva` all work exactly like the instructor bylines below.
+  parikshiva: { id: 'i0', name: 'Parikshiva', title: 'Founder, VediCosmic', initials: 'PV', rating: 4.9, courseCount: 0, studentCount: 60000, bio: 'Founder of VediCosmic — writing at the intersection of Vedic astrology, numerology and modern life, with a plain-language, no-mysticism-required approach to ancient tools.' },
   ananya: { id: 'i1', name: 'Acharya Ananya Devi', title: 'Vedic Astrologer & Jyotish Teacher', initials: 'AD', rating: 4.9, courseCount: 3, studentCount: 14200, bio: 'A Jyotish practitioner of two decades, Ananya bridges classical Parashari astrology with a clear, modern teaching style trusted by students across the world.' },
   rajan: { id: 'i2', name: 'Yogiraj Rajan Nath', title: 'Kundalini & Pranayama Master', initials: 'RN', rating: 4.8, courseCount: 2, studentCount: 9800, bio: 'Trained in the Himalayan tradition, Rajan teaches energy practices with an emphasis on safety, grounding, and steady, sustainable awakening.' },
   meera: { id: 'i3', name: 'Dr. Meera Iyer', title: 'Sacred Geometry & Mathematics', initials: 'MI', rating: 4.9, courseCount: 2, studentCount: 7600, bio: 'With a doctorate in mathematics and a lifelong study of yantra, Meera reveals the precise structures underlying ancient sacred forms.' },

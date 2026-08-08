@@ -8,7 +8,7 @@ export default {
   excerpt: 'A practical introduction to Vastu Shastra — the eight-direction framework, the five elements, and which direction traditionally suits every room in your home.',
   category: 'energy',
   tags: ['vastu shastra', 'home energy', 'directions', 'five elements', 'pooja room', 'vedic architecture'],
-  authorId: 'harish',
+  authorId: 'parikshiva',
   publishedAt: '2026-08-01',
   heroImage: '/og/blog/vastu-shastra-basics.png',
   keyTakeaways: [

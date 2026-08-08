@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { CheckCircle2, XCircle, Wand2 } from 'lucide-react';
+import { Wand2 } from 'lucide-react';
 import { Input, Textarea, Select } from '@/components/ui/Field';
 import { Button } from '@/components/ui/Button';
 import { ArrayEditor } from '@/components/admin/ArrayEditor';
 import { TagInput } from '@/components/admin/TagInput';
+import { SeoAnalysisPanel } from '@/components/admin/SeoAnalysisPanel';
 import { BlogBlockFieldsEditor, emptyBlockRow, type EditableBlockRow } from '@/components/admin/BlogBlockFieldsEditor';
 import { BlogContentRenderer } from '@/components/blog/BlogContentRenderer';
 import { KeyTakeaways } from '@/components/blog/KeyTakeaways';
@@ -12,6 +13,8 @@ import { BLOG_CATEGORIES } from '@/data/blogCategories';
 import { AUTHORS } from '@/data/authors';
 import { slugify, estimateReadingTime, estimateWordCount } from '@/lib/blogUtils';
 import { parsePastedContent } from '@/lib/parsePastedContent';
+import { analyzeSeo } from '@/lib/seoAnalysis';
+import { analyzeReadability } from '@/lib/readability';
 import { SITE_URL } from '@/config/site';
 import type { BlogPost, BlogContentBlock, BlogCategoryId } from '@/types/blog.types';
 import type { FAQItem } from '@/types/content.types';
@@ -51,7 +54,7 @@ function toEditableBlocks(blocks: BlogContentBlock[]): EditableBlockRow[] {
 
 function draftFromPost(post: BlogPost | null): {
   title: string; seoTitle: string; excerpt: string; category: string; authorId: string;
-  tags: string[]; slug: string; slugTouched: boolean; heroImage: string; publishedAt: string;
+  focusKeyphrase: string; additionalTags: string[]; slug: string; slugTouched: boolean; heroImage: string; publishedAt: string;
   isFeatured: boolean; isPinned: boolean; content: EditableBlockRow[];
   relatedToolSlugs: string; relatedCourseSlugs: string; keyTakeaways: string;
   howToSteps: EditableHowToStep[]; faqs: FAQItem[];
@@ -59,14 +62,14 @@ function draftFromPost(post: BlogPost | null): {
   if (!post) {
     return {
       title: '', seoTitle: '', excerpt: '', category: BLOG_CATEGORIES.find((c) => c.id !== 'all')?.id ?? 'numerology',
-      authorId: 'parikshiva', tags: [], slug: '', slugTouched: false, heroImage: '',
+      authorId: 'parikshiva', focusKeyphrase: '', additionalTags: [], slug: '', slugTouched: false, heroImage: '',
       publishedAt: toLocalDateTimeInput(new Date()), isFeatured: false, isPinned: false,
       content: [], relatedToolSlugs: '', relatedCourseSlugs: '', keyTakeaways: '', howToSteps: [], faqs: [],
     };
   }
   return {
     title: post.title, seoTitle: post.seoTitle ?? '', excerpt: post.excerpt, category: post.category,
-    authorId: post.authorId ?? '', tags: post.tags, slug: post.slug, slugTouched: true,
+    authorId: post.authorId ?? '', focusKeyphrase: post.tags[0] ?? '', additionalTags: post.tags.slice(1), slug: post.slug, slugTouched: true,
     heroImage: post.heroImage ?? '', publishedAt: toLocalDateTimeInput(new Date(post.publishedAt)),
     isFeatured: !!post.isFeatured, isPinned: !!post.isPinned, content: toEditableBlocks(post.content),
     relatedToolSlugs: (post.relatedToolSlugs ?? []).join('\n'), relatedCourseSlugs: (post.relatedCourseSlugs ?? []).join('\n'),
@@ -97,26 +100,22 @@ export function BlogPostEditor({ seed, allPosts, saving, onSave, onCancel }: Pro
   const isNew = !seed;
   const previewBlocks: BlogContentBlock[] = d.content.map((row) => row.block);
   const displayTitle = d.seoTitle || (d.title ? `${d.title} · VediCosmic` : '');
-  const focusKeyword = d.tags[0]?.toLowerCase() ?? '';
-  const firstParagraph = previewBlocks.find((b): b is Extract<BlogContentBlock, { type: 'paragraph' }> => b.type === 'paragraph');
-  const checklist = focusKeyword ? [
-    { label: 'Focus keyword is in the title', pass: d.title.toLowerCase().includes(focusKeyword) },
-    { label: 'Focus keyword is in the URL slug', pass: d.slug.toLowerCase().replace(/-/g, ' ').includes(focusKeyword) },
-    { label: 'Focus keyword is in the meta description', pass: d.excerpt.toLowerCase().includes(focusKeyword) },
-    { label: 'Focus keyword is in the first paragraph', pass: !!firstParagraph && firstParagraph.text.toLowerCase().includes(focusKeyword) },
-    { label: 'SEO title is 30–60 characters', pass: displayTitle.length >= 30 && displayTitle.length <= 60 },
-    { label: 'Meta description is 120–160 characters', pass: d.excerpt.length >= 120 && d.excerpt.length <= 160 },
-  ] : [];
+  const resolvedSlug = d.slugTouched && d.slug.trim() ? slugify(d.slug) : slugify(d.title);
+  const otherPosts = allPosts.filter((p) => p.slug !== seed?.slug).map((p) => ({ title: p.title, tags: p.tags }));
+  const seoAnalysis = analyzeSeo({
+    title: d.title, seoTitle: d.seoTitle, slug: resolvedSlug, metaDescription: d.excerpt,
+    focusKeyphrase: d.focusKeyphrase, blocks: previewBlocks, otherPosts,
+  });
+  const readabilityAnalysis = analyzeReadability(previewBlocks);
 
   const save = () => {
-    const slug = d.slugTouched && d.slug.trim() ? slugify(d.slug) : slugify(d.title);
     onSave({
-      slug,
+      slug: resolvedSlug,
       title: d.title.trim(),
       seoTitle: d.seoTitle.trim() || undefined,
       excerpt: d.excerpt.trim(),
       category: d.category as BlogCategoryId,
-      tags: d.tags,
+      tags: [d.focusKeyphrase, ...d.additionalTags].map((t) => t.trim()).filter(Boolean),
       authorId: d.authorId || undefined,
       // datetime-local gives "YYYY-MM-DDTHH:mm" in the browser's local time zone; `new Date(...)`
       // parses that as local time, so toISOString() converts it to a correct UTC instant to store.
@@ -154,50 +153,47 @@ export function BlogPostEditor({ seed, allPosts, saving, onSave, onCancel }: Pro
               <Input label="URL slug" value={d.slug} placeholder="auto-generated from title if left blank"
                 onChange={(e) => update({ slug: e.target.value, slugTouched: true })} />
             </div>
-            <p className="-mt-2 truncate text-xs text-white/35">{SITE_URL}/blog/{(d.slugTouched && d.slug.trim() ? slugify(d.slug) : slugify(d.title)) || 'your-post-slug'}</p>
+            <p className="-mt-2 truncate text-xs text-white/35">{SITE_URL}/blog/{resolvedSlug || 'your-post-slug'}</p>
             <div>
               <Textarea label="Excerpt — shown on the post and used as the meta description" rows={2}
                 value={d.excerpt} onChange={(e) => update({ excerpt: e.target.value })} />
-              <p className={`mt-1 text-xs ${d.excerpt.length > 0 && (d.excerpt.length < 120 || d.excerpt.length > 160) ? 'text-warning' : 'text-white/40'}`}>
-                {d.excerpt.length} characters — aim for 120–160
+              <p className={`mt-1 text-xs ${d.excerpt.length > 0 && (d.excerpt.length < 120 || d.excerpt.length > 156) ? 'text-warning' : 'text-white/40'}`}>
+                {d.excerpt.length} characters — aim for 120–156
               </p>
             </div>
           </div>
 
           <div className="space-y-4 rounded-2xl border border-white/10 p-4">
             <h4 className="text-sm font-medium text-white/70">SEO, GEO &amp; AEO</h4>
+
+            <div>
+              <Input label="Focus keyphrase" value={d.focusKeyphrase} placeholder="e.g. life path number"
+                onChange={(e) => update({ focusKeyphrase: e.target.value })} />
+              <p className="mt-1 text-xs text-white/40">
+                The one phrase this post should rank for. Drives the SEO analysis below — everything else here is optional.
+              </p>
+            </div>
+
             <div>
               <Input label="SEO title (optional)" value={d.seoTitle} placeholder={`${d.title || 'Untitled'} · VediCosmic`}
                 onChange={(e) => update({ seoTitle: e.target.value })} />
-              <p className={`mt-1 text-xs ${displayTitle.length > 60 ? 'text-warning' : 'text-white/40'}`}>
-                {displayTitle.length} characters — aim for 50–60
+              <p className={`mt-1 text-xs ${displayTitle.length < 40 || displayTitle.length > 60 ? 'text-warning' : 'text-white/40'}`}>
+                {displayTitle.length} characters — aim for 40–60
               </p>
             </div>
 
             <div className="rounded-xl border border-white/10 bg-white/[0.02] p-3">
               <p className="mb-1 text-[11px] uppercase tracking-wide text-white/35">Search snippet preview</p>
-              <p className="truncate text-sm text-brand-cyan-soft">{SITE_URL}/blog/{d.slug || 'your-post-slug'}</p>
+              <p className="truncate text-sm text-brand-cyan-soft">{SITE_URL}/blog/{resolvedSlug || 'your-post-slug'}</p>
               <p className="truncate text-base text-gold-pale">{displayTitle || 'Untitled post · VediCosmic'}</p>
               <p className="line-clamp-2 text-sm text-white/55">{d.excerpt || 'Your excerpt doubles as the meta description shown here.'}</p>
             </div>
 
-            <TagInput label="Keywords / Tags" value={d.tags} onChange={(tags) => update({ tags })} />
+            <SeoAnalysisPanel title="SEO analysis" score={seoAnalysis.score} scoreLabel={seoAnalysis.scoreLabel} checks={seoAnalysis.checks} />
+            <SeoAnalysisPanel title="Readability analysis" score={readabilityAnalysis.score} scoreLabel={readabilityAnalysis.scoreLabel} checks={readabilityAnalysis.checks} defaultOpen={false} />
 
-            {checklist.length > 0 && (
-              <div className="rounded-xl border border-white/10 p-3">
-                <p className="mb-2 text-xs uppercase tracking-wide text-white/35">
-                  On-page checklist · {checklist.filter((c) => c.pass).length}/{checklist.length} passed
-                </p>
-                <ul className="space-y-1.5">
-                  {checklist.map((c) => (
-                    <li key={c.label} className={`flex items-center gap-2 text-sm ${c.pass ? 'text-success' : 'text-white/45'}`}>
-                      {c.pass ? <CheckCircle2 className="h-4 w-4 shrink-0" /> : <XCircle className="h-4 w-4 shrink-0 text-white/25" />}
-                      {c.label}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            <TagInput label="Additional keywords" value={d.additionalTags} onChange={(additionalTags) => update({ additionalTags })}
+              helpText="Supporting topics and synonyms — used for on-site search and browsing, not scored by the analysis above." />
 
             <p className="text-xs text-white/40">
               Hero image alt text isn't a separate field yet — it falls back to the post title sitewide (see chat for why).

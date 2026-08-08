@@ -14,6 +14,12 @@ export function onAdminAuthChange(callback: (authed: boolean) => void): () => vo
   return () => data.subscription.unsubscribe();
 }
 
+/** The signed-in admin's email — for the "Howdy, ___" greeting in the WordPress-style admin bar. */
+export async function getAdminEmail(): Promise<string | undefined> {
+  const { data } = await supabase.auth.getUser();
+  return data.user?.email ?? undefined;
+}
+
 export async function adminLogin(email: string, password: string): Promise<{ ok: true } | { ok: false; error: string }> {
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) return { ok: false, error: error.message };

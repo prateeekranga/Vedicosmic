@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import {
   LayoutDashboard, GraduationCap, Wrench, Megaphone, Settings as SettingsIcon,
   Lock, LogOut, RotateCcw, Download, ShieldCheck, Eye, EyeOff, Star, IndianRupee, Users,
-  FileText, Search, Plus, Pencil, Trash2, Newspaper,
+  FileText, Search, Plus, Newspaper,
 } from 'lucide-react';
 import { COURSES } from '@/data/courses';
 import { TOOLS, TOOL_CATEGORIES } from '@/data/tools';
@@ -14,13 +14,18 @@ import { BLOG_POSTS } from '@/data/blog';
 import { STATIC_ROUTES } from '@/data/routes';
 import { formatINR } from '@/lib/format';
 import { useAuth } from '@/contexts/AuthContext';
-import { isBlogAdminAuthed, onAdminAuthChange, adminLogin, adminLogout, changeAdminPassword } from '@/lib/adminAuth';
+import { isBlogAdminAuthed, onAdminAuthChange, adminLogin, adminLogout, changeAdminPassword, getAdminEmail } from '@/lib/adminAuth';
 import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/Button';
 import { Input, Textarea } from '@/components/ui/Field';
 import { ArrayEditor } from '@/components/admin/ArrayEditor';
 import { CourseEditorModal, blankCourse } from '@/components/admin/CourseEditorModal';
 import { BlogManager } from '@/components/admin/BlogManager';
+import { AdminBar, ADMIN_BAR_HEIGHT } from '@/components/admin/AdminBar';
+import { AdminNoticeBanner } from '@/components/admin/AdminNotice';
+import { StatusFilterPills } from '@/components/admin/StatusFilterPills';
+import { BulkActionBar, type BulkAction } from '@/components/admin/BulkActionBar';
+import { useAdminNotice } from '@/hooks/useAdminNotice';
 import { useAllBlogPosts } from '@/hooks/useAllBlogPosts';
 import {
   getCourseOverrides, setCourseOverride, getToolOverrides, setToolOverride,
@@ -119,37 +124,61 @@ type TabId = typeof TABS[number]['id'];
 
 function AdminShell({ onLogout }: { onLogout: () => void }) {
   const [tab, setTab] = useState<TabId>('dashboard');
+  const [email, setEmail] = useState<string | undefined>();
+  useEffect(() => { getAdminEmail().then(setEmail); }, []);
   useSEO({ key: 'admin', path: '/admin', title: 'Admin · VediCosmic', description: 'Internal admin dashboard.', noindex: true });
-  return (
-    <div className="container-vc pb-12 pt-20">
-      <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <Logo />
-          <span className="rounded-full border border-gold-400/30 bg-gold-400/5 px-3 py-1 text-xs uppercase tracking-wider text-gold-300">Admin</span>
-        </div>
-        <Button variant="ghost" size="sm" onClick={onLogout}><LogOut className="mr-2 h-4 w-4" /> Log out</Button>
-      </div>
 
-      <div className="grid gap-8 lg:grid-cols-[200px_1fr]">
-        <nav className="flex gap-2 overflow-x-auto lg:flex-col">
+  return (
+    <div className="min-h-screen bg-cosmic-darker">
+      <AdminBar email={email} onLogout={onLogout} />
+      <div style={{ paddingTop: ADMIN_BAR_HEIGHT }}>
+        {/* Mobile: horizontal scrollable tab bar instead of a fixed sidebar */}
+        <nav className="flex gap-2 overflow-x-auto border-b border-white/10 bg-cosmic-dark/60 px-3 py-2.5 lg:hidden">
           {TABS.map(({ id, label, Icon }) => (
             <button key={id} onClick={() => setTab(id)}
-              className={`flex flex-none items-center gap-2.5 rounded-xl border px-4 py-2.5 text-sm transition-all ${
+              className={`flex flex-none items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs transition-all ${
                 tab === id ? 'border-gold-400/50 bg-gold-400/10 text-gold-200' : 'border-white/10 text-white/60 hover:border-white/25 hover:text-white'
               }`}>
-              <Icon className="h-4 w-4" /> {label}
+              <Icon className="h-3.5 w-3.5" /> {label}
             </button>
           ))}
         </nav>
-        <div className="min-w-0">
-          {tab === 'dashboard' && <Dashboard />}
-          {tab === 'courses' && <CoursesManager />}
-          {tab === 'tools' && <ToolsManager />}
-          {tab === 'blog' && <BlogManager />}
-          {tab === 'content' && <SiteContentManager />}
-          {tab === 'seo' && <SEOManager />}
-          {tab === 'announce' && <AnnouncementManager />}
-          {tab === 'settings' && <SettingsPanel onLogout={onLogout} />}
+
+        <div className="lg:flex">
+          {/* Desktop: persistent, sticky sidebar — stays put while the content column scrolls,
+              same as wp-admin's left menu. */}
+          <aside className="hidden shrink-0 border-r border-white/10 bg-cosmic-dark/60 lg:block lg:w-[210px]">
+            <div className="sticky flex flex-col overflow-y-auto py-5" style={{ top: ADMIN_BAR_HEIGHT, height: `calc(100vh - ${ADMIN_BAR_HEIGHT}px)` }}>
+              <div className="mb-5 flex items-center gap-2 px-4">
+                <Logo />
+                <span className="rounded-full border border-gold-400/30 bg-gold-400/5 px-2 py-0.5 text-[10px] uppercase tracking-wider text-gold-300">Admin</span>
+              </div>
+              <nav className="flex flex-col gap-0.5 px-2">
+                {TABS.map(({ id, label, Icon }) => (
+                  <span key={id}>
+                    {id === 'settings' && <span className="my-2 block border-t border-white/8" />}
+                    <button onClick={() => setTab(id)}
+                      className={`flex w-full items-center gap-2.5 rounded-lg border-l-2 px-3 py-2.5 text-sm transition-all ${
+                        tab === id ? 'border-gold-400 bg-gold-400/10 text-gold-200' : 'border-transparent text-white/60 hover:bg-white/5 hover:text-white'
+                      }`}>
+                      <Icon className="h-4 w-4" /> {label}
+                    </button>
+                  </span>
+                ))}
+              </nav>
+            </div>
+          </aside>
+
+          <main className="min-w-0 flex-1 p-5 sm:p-8">
+            {tab === 'dashboard' && <Dashboard />}
+            {tab === 'courses' && <CoursesManager />}
+            {tab === 'tools' && <ToolsManager />}
+            {tab === 'blog' && <BlogManager />}
+            {tab === 'content' && <SiteContentManager />}
+            {tab === 'seo' && <SEOManager />}
+            {tab === 'announce' && <AnnouncementManager />}
+            {tab === 'settings' && <SettingsPanel onLogout={onLogout} />}
+          </main>
         </div>
       </div>
     </div>
@@ -192,7 +221,7 @@ function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <h2 className="font-heading text-h3 text-white">Overview</h2>
+      <h1 className="font-heading text-h3 text-white">At a Glance</h1>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard label="Tools live" value={`${visibleTools.length}`} sub={`of ${TOOLS.length} total`} Icon={Wrench} />
         <StatCard label="Courses live" value={`${visibleCourses.length}`} sub={`of ${allCourses.length} total`} Icon={GraduationCap} />
@@ -245,13 +274,33 @@ function Mini({ label, value }: { label: string; value: string }) {
   return <div><p className="text-xs uppercase tracking-wider text-white/40">{label}</p><p className="mt-1 truncate font-medium text-white">{value}</p></div>;
 }
 
+const COURSE_BULK_ACTIONS: BulkAction[] = [
+  { value: 'show', label: 'Show' },
+  { value: 'hide', label: 'Hide' },
+  { value: 'feature', label: 'Mark as Featured' },
+  { value: 'unfeature', label: 'Remove Featured' },
+  { value: 'delete', label: 'Delete (custom courses only)' },
+];
+
 function CoursesManager() {
   const v = useOverridesVersion();
   const ov = getCourseOverrides();
   const levels: CourseLevel[] = ['Beginner', 'Intermediate', 'Advanced'];
   const [editorSeed, setEditorSeed] = useState<Course | null>(null);
-  const rows = mergedCourses();
+  const allRows = mergedCourses();
   const flags = getFeatureFlags();
+  const { notice, notify, dismiss } = useAdminNotice();
+  const [statusFilter, setStatusFilter] = useState<'all' | 'visible' | 'hidden'>('all');
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [bulkValue, setBulkValue] = useState('');
+
+  const visibleCount = allRows.filter((c) => !ov[c.id]?.hidden).length;
+  const hiddenCount = allRows.length - visibleCount;
+  const rows = allRows.filter((c) => {
+    if (statusFilter === 'visible') return !ov[c.id]?.hidden;
+    if (statusFilter === 'hidden') return !!ov[c.id]?.hidden;
+    return true;
+  });
 
   const saveCourse = (course: Course) => {
     if (COURSES.some((bc) => bc.id === course.id)) {
@@ -260,19 +309,53 @@ function CoursesManager() {
     } else {
       addCustomCourse(course);
     }
+    notify('success', `"${course.title || 'Untitled'}" saved.`);
+  };
+
+  const toggleSelectAll = (checked: boolean) => setSelected(checked ? new Set(rows.map((c) => c.id)) : new Set());
+  const toggleSelect = (id: string, checked: boolean) => setSelected((prev) => {
+    const next = new Set(prev);
+    if (checked) next.add(id); else next.delete(id);
+    return next;
+  });
+
+  const applyBulk = () => {
+    if (!bulkValue || selected.size === 0) return;
+    let count = 0; let skipped = 0;
+    selected.forEach((id) => {
+      if (bulkValue === 'show') { setCourseOverride(id, { hidden: false }); count++; }
+      else if (bulkValue === 'hide') { setCourseOverride(id, { hidden: true }); count++; }
+      else if (bulkValue === 'feature') { setCourseOverride(id, { isFeatured: true }); count++; }
+      else if (bulkValue === 'unfeature') { setCourseOverride(id, { isFeatured: false }); count++; }
+      else if (bulkValue === 'delete') {
+        if (isCustomCourseId(id)) { deleteCustomCourse(id); count++; } else skipped++;
+      }
+    });
+    const label = COURSE_BULK_ACTIONS.find((a) => a.value === bulkValue)?.label ?? 'Action';
+    notify('success', `${label}: ${count} course${count === 1 ? '' : 's'} updated.${skipped ? ` ${skipped} built-in course${skipped === 1 ? '' : 's'} skipped — only custom courses can be deleted.` : ''}`);
+    setSelected(new Set());
+    setBulkValue('');
   };
 
   return (
-    <div className="space-y-5" key={v}>
+    <div className="space-y-4" key={v}>
+      {notice && <AdminNoticeBanner notice={notice} onDismiss={dismiss} />}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="font-heading text-h3 text-white">Courses</h2>
+        <h1 className="font-heading text-h3 text-white">Courses</h1>
         <div className="flex gap-2">
-          <Button size="sm" onClick={() => setEditorSeed(blankCourse())}><Plus className="mr-2 h-4 w-4" /> Add Course</Button>
-          <Button variant="ghost" size="sm" onClick={() => { if (confirm('Reset all course changes?')) resetCourseOverrides(); }}>
+          <Button size="sm" onClick={() => setEditorSeed(blankCourse())}><Plus className="mr-2 h-4 w-4" /> Add New Course</Button>
+          <Button variant="ghost" size="sm" onClick={() => { if (confirm('Reset all course changes?')) { resetCourseOverrides(); notify('success', 'All course changes reset.'); } }}>
             <RotateCcw className="mr-2 h-4 w-4" /> Reset
           </Button>
         </div>
       </div>
+
+      <StatusFilterPills value={statusFilter} onChange={setStatusFilter} options={[
+        { id: 'all', label: 'All', count: allRows.length },
+        { id: 'visible', label: 'Visible', count: visibleCount },
+        { id: 'hidden', label: 'Hidden', count: hiddenCount },
+      ]} />
+
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-cosmic-light/40 p-5">
         <div>
           <p className="font-medium text-white">Show "Coming Soon" on the public Courses page</p>
@@ -284,10 +367,19 @@ function CoursesManager() {
             className="h-4 w-4 accent-gold-400" /> Coming Soon
         </label>
       </div>
+
+      <BulkActionBar actions={COURSE_BULK_ACTIONS} selectedCount={selected.size} value={bulkValue} onChange={setBulkValue} onApply={applyBulk} />
+
       <div className="overflow-x-auto rounded-2xl border border-white/10 bg-cosmic-light/40">
         <table className="w-full min-w-[720px] text-left text-sm">
           <thead className="border-b border-white/10 text-xs uppercase tracking-wider text-white/40">
-            <tr><th className="p-3">Course</th><th className="p-3">Level</th><th className="p-3">Price (₹)</th><th className="p-3 text-center">Featured</th><th className="p-3 text-center">Visible</th><th className="p-3 text-center">Actions</th></tr>
+            <tr>
+              <th className="w-10 p-3">
+                <input type="checkbox" checked={rows.length > 0 && selected.size === rows.length}
+                  onChange={(e) => toggleSelectAll(e.target.checked)} className="h-4 w-4 accent-gold-400" aria-label="Select all" />
+              </th>
+              <th className="p-3">Course</th><th className="p-3">Level</th><th className="p-3">Price (₹)</th><th className="p-3 text-center">Featured</th><th className="p-3 text-center">Visible</th>
+            </tr>
           </thead>
           <tbody>
             {rows.map((c) => {
@@ -297,8 +389,20 @@ function CoursesManager() {
               return (
                 <tr key={c.id} className="border-b border-white/5">
                   <td className="p-3">
+                    <input type="checkbox" checked={selected.has(c.id)} onChange={(e) => toggleSelect(c.id, e.target.checked)}
+                      className="h-4 w-4 accent-gold-400" aria-label={`Select ${c.title}`} />
+                  </td>
+                  <td className="p-3">
                     <p className="font-medium text-white">{c.title || <span className="text-white/30">Untitled</span>}</p>
                     <p className="text-xs text-white/40">{c.slug}{custom && <span className="ml-2 text-brand-cyan-300">custom</span>}</p>
+                    <div className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-xs">
+                      <button onClick={() => setEditorSeed(c)} className="text-brand-cyan-soft hover:underline">Edit</button>
+                      <a href={`/courses/${c.slug}`} target="_blank" rel="noreferrer" className="text-white/40 hover:text-white hover:underline">View</a>
+                      {custom && (
+                        <button onClick={() => { if (confirm(`Delete "${c.title}" permanently?`)) { deleteCustomCourse(c.id); notify('success', `"${c.title}" deleted.`); } }}
+                          className="text-error/70 hover:text-error hover:underline">Delete</button>
+                      )}
+                    </div>
                   </td>
                   <td className="p-3">
                     <select value={o.level ?? c.level} onChange={(e) => setCourseOverride(c.id, { level: e.target.value as CourseLevel })}
@@ -318,22 +422,13 @@ function CoursesManager() {
                       {hidden ? <EyeOff className="mx-auto h-5 w-5" /> : <Eye className="mx-auto h-5 w-5" />}
                     </button>
                   </td>
-                  <td className="p-3">
-                    <div className="flex items-center justify-center gap-3">
-                      <button onClick={() => setEditorSeed(c)} className="text-white/50 hover:text-white" aria-label="Edit course"><Pencil className="h-4 w-4" /></button>
-                      {custom && (
-                        <button onClick={() => { if (confirm(`Delete "${c.title}" permanently?`)) deleteCustomCourse(c.id); }}
-                          className="text-error/70 hover:text-error" aria-label="Delete course"><Trash2 className="h-4 w-4" /></button>
-                      )}
-                    </div>
-                  </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
       </div>
-      <p className="text-xs text-white/40">Changes save instantly and reflect on the public Courses page. Click the pencil to edit every field, including the full curriculum.</p>
+      <p className="text-xs text-white/40">Changes save instantly and reflect on the public Courses page. Click Edit to change every field, including the full curriculum.</p>
       {editorSeed && (
         <CourseEditorModal open={!!editorSeed} onClose={() => setEditorSeed(null)} seed={editorSeed} onSave={saveCourse} />
       )}
@@ -341,30 +436,97 @@ function CoursesManager() {
   );
 }
 
+const TOOL_BULK_ACTIONS: BulkAction[] = [
+  { value: 'show', label: 'Show' },
+  { value: 'hide', label: 'Hide' },
+  { value: 'mark-new', label: 'Mark as New' },
+  { value: 'unmark-new', label: 'Remove New badge' },
+];
+
 function ToolsManager() {
   const v = useOverridesVersion();
   const ov = getToolOverrides();
+  const { notice, notify, dismiss } = useAdminNotice();
+  const [statusFilter, setStatusFilter] = useState<'all' | 'visible' | 'hidden'>('all');
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [bulkValue, setBulkValue] = useState('');
+
+  const visibleCount = TOOLS.filter((t) => !ov[t.id]?.hidden).length;
+  const hiddenCount = TOOLS.length - visibleCount;
+  const rows = TOOLS.filter((t) => {
+    if (statusFilter === 'visible') return !ov[t.id]?.hidden;
+    if (statusFilter === 'hidden') return !!ov[t.id]?.hidden;
+    return true;
+  });
+
+  const toggleSelectAll = (checked: boolean) => setSelected(checked ? new Set(rows.map((t) => t.id)) : new Set());
+  const toggleSelect = (id: string, checked: boolean) => setSelected((prev) => {
+    const next = new Set(prev);
+    if (checked) next.add(id); else next.delete(id);
+    return next;
+  });
+
+  const applyBulk = () => {
+    if (!bulkValue || selected.size === 0) return;
+    selected.forEach((id) => {
+      if (bulkValue === 'show') setToolOverride(id, { hidden: false });
+      else if (bulkValue === 'hide') setToolOverride(id, { hidden: true });
+      else if (bulkValue === 'mark-new') setToolOverride(id, { isNew: true });
+      else if (bulkValue === 'unmark-new') setToolOverride(id, { isNew: false });
+    });
+    const label = TOOL_BULK_ACTIONS.find((a) => a.value === bulkValue)?.label ?? 'Action';
+    notify('success', `${label}: ${selected.size} tool${selected.size === 1 ? '' : 's'} updated.`);
+    setSelected(new Set());
+    setBulkValue('');
+  };
+
   return (
-    <div className="space-y-5" key={v}>
+    <div className="space-y-4" key={v}>
+      {notice && <AdminNoticeBanner notice={notice} onDismiss={dismiss} />}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="font-heading text-h3 text-white">Tools</h2>
-        <Button variant="ghost" size="sm" onClick={() => { if (confirm('Reset all tool changes?')) resetToolOverrides(); }}>
+        <h1 className="font-heading text-h3 text-white">Tools</h1>
+        <Button variant="ghost" size="sm" onClick={() => { if (confirm('Reset all tool changes?')) { resetToolOverrides(); notify('success', 'All tool changes reset.'); } }}>
           <RotateCcw className="mr-2 h-4 w-4" /> Reset
         </Button>
       </div>
+
+      <StatusFilterPills value={statusFilter} onChange={setStatusFilter} options={[
+        { id: 'all', label: 'All', count: TOOLS.length },
+        { id: 'visible', label: 'Visible', count: visibleCount },
+        { id: 'hidden', label: 'Hidden', count: hiddenCount },
+      ]} />
+
+      <BulkActionBar actions={TOOL_BULK_ACTIONS} selectedCount={selected.size} value={bulkValue} onChange={setBulkValue} onApply={applyBulk} />
+
       <div className="overflow-x-auto rounded-2xl border border-white/10 bg-cosmic-light/40">
-        <table className="w-full min-w-[560px] text-left text-sm">
+        <table className="w-full min-w-[600px] text-left text-sm">
           <thead className="border-b border-white/10 text-xs uppercase tracking-wider text-white/40">
-            <tr><th className="p-3">Tool</th><th className="p-3">Category</th><th className="p-3 text-center">"New" badge</th><th className="p-3 text-center">Coming Soon</th><th className="p-3 text-center">Visible</th></tr>
+            <tr>
+              <th className="w-10 p-3">
+                <input type="checkbox" checked={rows.length > 0 && selected.size === rows.length}
+                  onChange={(e) => toggleSelectAll(e.target.checked)} className="h-4 w-4 accent-gold-400" aria-label="Select all" />
+              </th>
+              <th className="p-3">Tool</th><th className="p-3">Category</th><th className="p-3 text-center">"New" badge</th><th className="p-3 text-center">Coming Soon</th><th className="p-3 text-center">Visible</th>
+            </tr>
           </thead>
           <tbody>
-            {TOOLS.map((t) => {
+            {rows.map((t) => {
               const o = ov[t.id] ?? {};
               const hidden = !!o.hidden;
               const comingSoon = isToolComingSoon(t.id);
               return (
                 <tr key={t.id} className="border-b border-white/5">
-                  <td className="p-3"><p className="font-medium text-white">{t.name}</p><p className="text-xs text-white/40">{t.slug}</p></td>
+                  <td className="p-3">
+                    <input type="checkbox" checked={selected.has(t.id)} onChange={(e) => toggleSelect(t.id, e.target.checked)}
+                      className="h-4 w-4 accent-gold-400" aria-label={`Select ${t.name}`} />
+                  </td>
+                  <td className="p-3">
+                    <p className="font-medium text-white">{t.name}</p>
+                    <p className="text-xs text-white/40">{t.slug}</p>
+                    <div className="mt-1 flex flex-wrap gap-x-3 text-xs">
+                      <a href={`/tools/${t.slug}`} target="_blank" rel="noreferrer" className="text-white/40 hover:text-white hover:underline">View</a>
+                    </div>
+                  </td>
                   <td className="p-3 capitalize text-white/60">{t.category}</td>
                   <td className="p-3 text-center">
                     <input type="checkbox" checked={o.isNew ?? !!t.isNew} onChange={(e) => setToolOverride(t.id, { isNew: e.target.checked })} className="h-4 w-4 accent-brand-cyan-400" />
@@ -400,7 +562,7 @@ function SiteContentManager() {
   return (
     <div className="space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="font-heading text-h3 text-white">Site Content</h2>
+        <h1 className="font-heading text-h3 text-white">Site Content</h1>
         <div className="flex gap-2">
           {CONTENT_SECTIONS.map((s) => (
             <button key={s.id} onClick={() => setSection(s.id)}
@@ -619,7 +781,7 @@ function SEOManager() {
   return (
     <div className="space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="font-heading text-h3 text-white">SEO</h2>
+        <h1 className="font-heading text-h3 text-white">SEO</h1>
         <Button variant="ghost" size="sm" onClick={() => { if (confirm('Reset all SEO overrides?')) resetSEOOverrides(); }}>
           <RotateCcw className="mr-2 h-4 w-4" /> Reset
         </Button>
@@ -660,10 +822,12 @@ function seedSEORows(): Record<string, { title: string; description: string; ogI
 function AnnouncementManager() {
   const [a, setA] = useState<Announcement>(() => getAnnouncement());
   const tones: Announcement['tone'][] = ['gold', 'cyan', 'info'];
-  const save = () => setAnnouncement(a);
+  const { notice, notify, dismiss } = useAdminNotice();
+  const save = () => { setAnnouncement(a); notify('success', 'Announcement saved.'); };
   return (
     <div className="space-y-5">
-      <h2 className="font-heading text-h3 text-white">Site Announcement</h2>
+      {notice && <AdminNoticeBanner notice={notice} onDismiss={dismiss} />}
+      <h1 className="font-heading text-h3 text-white">Site Announcement</h1>
       <div className="rounded-2xl border border-white/10 bg-cosmic-light/40 p-6 space-y-4">
         <Input id="ann-text" label="Banner message" value={a.text} onChange={(e) => setA({ ...a, text: e.target.value })}
           placeholder="✦ New course just launched — explore Vedic Mantra Science" />
@@ -711,7 +875,7 @@ function SettingsPanel({ onLogout }: { onLogout: () => void }) {
   };
   return (
     <div className="space-y-6">
-      <h2 className="font-heading text-h3 text-white">Settings</h2>
+      <h1 className="font-heading text-h3 text-white">Settings</h1>
       <div className="rounded-2xl border border-white/10 bg-cosmic-light/40 p-6 space-y-4">
         <h3 className="font-heading text-h5 text-white">Change password</h3>
         <p className="text-xs text-white/45">This is a real, server-side change to the signed-in admin account — unlike the settings below, it isn't scoped to this browser.</p>

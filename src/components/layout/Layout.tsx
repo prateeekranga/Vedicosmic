@@ -20,23 +20,33 @@ export function Layout() {
   const { pathname } = useLocation();
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior }); }, [pathname]);
 
+  // The admin dashboard is its own self-contained "app" (WordPress-style admin bar + sidebar,
+  // built inside Admin.tsx) — it doesn't wear the public site's marketing chrome, the same way
+  // wp-admin never shows the active theme's header/footer. SiteJsonLd stays on everywhere — it's
+  // invisible structured data, harmless either way — everything else here is public-site-only.
+  const isAdmin = pathname.startsWith('/vc-portal-x7');
+
   return (
     <div className="relative min-h-screen">
-      {/* Heavy cosmetic effects — lazy, desktop-only */}
-      {isDesktop && (
-        <Suspense fallback={null}>
-          {pathname === '/' && <CosmicGate />}
-          <CosmicCursor />
-        </Suspense>
+      {!isAdmin && (
+        <>
+          {/* Heavy cosmetic effects — lazy, desktop-only */}
+          {isDesktop && (
+            <Suspense fallback={null}>
+              {pathname === '/' && <CosmicGate />}
+              <CosmicCursor />
+            </Suspense>
+          )}
+
+          {/* Background layers */}
+          <CosmicBackground />
+          <Starfield />
+
+          <AnnouncementBanner />
+        </>
       )}
-
-      {/* Background layers */}
-      <CosmicBackground />
-      <Starfield />
-
-      <AnnouncementBanner />
       <SiteJsonLd />
-      <Navbar />
+      {!isAdmin && <Navbar />}
       <main className="relative">
         <AnimatePresence mode="wait">
           <motion.div
@@ -49,8 +59,8 @@ export function Layout() {
           </motion.div>
         </AnimatePresence>
       </main>
-      <Footer />
-      <BackToTop />
+      {!isAdmin && <Footer />}
+      {!isAdmin && <BackToTop />}
     </div>
   );
 }

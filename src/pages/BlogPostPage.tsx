@@ -59,16 +59,18 @@ export default function BlogPostPage() {
   if (loading || !post) return null;
 
   return (
-    <div className="container-vc pb-12 pt-20">
+    <div className="container-vc pb-12 pt-20 sm:pb-16 sm:pt-24">
       <ScrollProgress />
-      <div className="mx-auto mb-6 flex max-w-3xl flex-wrap items-center gap-x-2 gap-y-1 text-sm text-white/40">
-        <Link to="/" className="hover:text-white/70">Home</Link><span>/</span>
-        <Link to="/blog" className="hover:text-white/70">Blog</Link><span>/</span>
-        {category && <><Link to={`/blog/category/${category.id}`} className="hover:text-white/70">{category.label}</Link><span>/</span></>}
-        <span className="text-white/70">{post.title}</span>
-      </div>
+      <div className="mx-auto max-w-3xl">
+        <div className="mb-6 flex items-center gap-x-2 text-sm text-white/40">
+          <Link to="/" className="shrink-0 hover:text-white/70">Home</Link><span className="shrink-0">/</span>
+          <Link to="/blog" className="shrink-0 hover:text-white/70">Blog</Link><span className="shrink-0">/</span>
+          {category && <><Link to={`/blog/category/${category.id}`} className="shrink-0 hover:text-white/70">{category.label}</Link><span className="shrink-0">/</span></>}
+          <span className="min-w-0 flex-1 truncate text-white/70">{post.title}</span>
+        </div>
 
-      <BlogPostBody post={post} />
+        <BlogPostBody post={post} />
+      </div>
     </div>
   );
 }
@@ -86,7 +88,7 @@ function BlogPostBody({ post }: { post: BlogPost }) {
   const shareUrl = `${SITE_URL}/blog/${post.slug}`;
 
   return (
-    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mx-auto max-w-3xl">
+    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
       <BlogHero category={post.category} heroImage={post.heroImage} title={post.title} />
       <div className="mb-4 flex flex-wrap items-center gap-3">
         {category && <Badge tone="gold">{category.label}</Badge>}
@@ -105,39 +107,39 @@ function BlogPostBody({ post }: { post: BlogPost }) {
         <ShareBar url={shareUrl} title={post.title} text={post.excerpt} />
       </div>
 
-      <div className="mt-8">
+      <div className="mt-8 sm:mt-10">
         <TableOfContents blocks={post.content} />
       </div>
 
-      <div className="mt-8">
+      <div className="mt-8 sm:mt-10">
         <AdSlot slot="blog-post-top" />
       </div>
 
-      <div className="mt-8">
+      <div className="mt-8 sm:mt-10">
         <BlogContentRenderer blocks={post.content} />
       </div>
 
-      <div className="mt-10">
+      <div className="mt-8 sm:mt-10">
         <AdSlot slot="blog-post-bottom" />
       </div>
 
       {author && post.authorId && (
-        <div className="mt-10">
+        <div className="mt-8 sm:mt-10">
           <AuthorBio author={author} slug={post.authorId} />
         </div>
       )}
 
-      <div className="mt-6 flex flex-col items-start gap-3 rounded-2xl border border-white/10 bg-cosmic-light/40 p-5 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-8 sm:mt-10 flex flex-col items-start gap-3 rounded-2xl border border-white/10 bg-cosmic-light/40 p-6 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-white/60">Found this useful? Share it with someone who'd enjoy it.</p>
         <ShareBar url={shareUrl} title={post.title} text={post.excerpt} />
       </div>
 
-      <div className="mt-6">
+      <div className="mt-8 sm:mt-10">
         <EditorialDisclaimer />
       </div>
 
       {post.faqs && post.faqs.length > 0 && (
-        <div className="mt-16">
+        <div className="mt-12 sm:mt-16">
           <SectionHeading eyebrow="Good to Know" title="Frequently Asked" center={false} />
           <div className="mt-8">
             <Accordion items={post.faqs} defaultOpen={post.faqs[0]?.id} />
@@ -145,12 +147,12 @@ function BlogPostBody({ post }: { post: BlogPost }) {
         </div>
       )}
 
-      <div className="mt-16 flex items-center justify-between border-t border-white/8 pt-8">
+      <div className="mt-12 sm:mt-16 flex items-center justify-between border-t border-white/8 pt-8">
         <Button variant="ghost" to="/blog"><ArrowLeft className="h-4 w-4" /> All articles</Button>
       </div>
 
       {more.length > 0 && (
-        <div className="mt-16">
+        <div className="mt-12 sm:mt-16">
           <h2 className="mb-6 font-heading text-h4 text-white">More on {category?.label ?? post.category}</h2>
           <div className="grid gap-6 sm:grid-cols-2">
             {more.map((p) => <BlogPostCard key={p.id} post={p} />)}

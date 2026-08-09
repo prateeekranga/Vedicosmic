@@ -13,7 +13,7 @@ export function BlogHero({ category, heroImage, title }: { category: BlogCategor
   const showImage = !!heroImage && !imgFailed;
 
   return (
-    <div className="relative mb-8 h-52 overflow-hidden rounded-3xl border border-white/10 sm:h-80">
+    <div className="relative mb-8 h-52 overflow-hidden rounded-2xl border border-white/10 sm:h-72 lg:h-96">
       {showImage ? (
         <motion.img
           src={heroImage}

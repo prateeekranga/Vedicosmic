@@ -52,6 +52,11 @@ export default {
         h1: ['clamp(2rem, 4.5vw, 3rem)', { lineHeight: '1.2', fontWeight: '700' }],
         h2: ['clamp(1.6rem, 3vw, 2.25rem)', { lineHeight: '1.25', fontWeight: '600' }],
         h3: ['1.5rem', { lineHeight: '1.35', fontWeight: '600' }],
+        // h4/body were used sitewide (33 call sites) without ever being defined here — every
+        // one of them was silently emitting no font-size utility at all and falling back to
+        // Preflight's inherited size. Adding them here fixes every call site at once, sitewide.
+        h4: ['1.25rem', { lineHeight: '1.4', fontWeight: '600' }],
+        body: ['1.125rem', { lineHeight: '1.6' }],
       },
       boxShadow: {
         'glow-gold': '0 0 24px 2px rgba(255, 215, 0, 0.20)',

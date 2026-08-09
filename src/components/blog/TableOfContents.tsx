@@ -12,7 +12,7 @@ export function TableOfContents({ blocks }: { blocks: BlogContentBlock[] }) {
   if (entries.length < 3) return null;
 
   return (
-    <nav aria-label="Table of contents" className="mb-8 rounded-2xl border border-white/10 bg-cosmic-light/30 p-5">
+    <nav aria-label="Table of contents" className="mb-8 rounded-2xl border border-white/10 bg-cosmic-light/40 p-6">
       <p className="text-xs font-medium uppercase tracking-wide text-white/40">On this page</p>
       <ul className="mt-3 space-y-1.5 text-sm">
         {entries.map((e) => (

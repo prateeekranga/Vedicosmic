@@ -8,7 +8,7 @@ import { headingSlugs } from '@/lib/blogUtils';
 import { LoshuGridEmblem } from '@/components/blog/emblems/LoshuGridEmblem';
 import { NakshatraWheelEmblem } from '@/components/blog/emblems/NakshatraWheelEmblem';
 import { ChakraColumnEmblem } from '@/components/blog/emblems/ChakraColumnEmblem';
-import type { ComponentType } from 'react';
+import type { ComponentType, ReactNode } from 'react';
 import type { BlogContentBlock } from '@/types/blog.types';
 
 const DIAGRAM_COMPONENTS: Record<Extract<BlogContentBlock, { type: 'diagram' }>['id'], ComponentType<{ className?: string }>> = {
@@ -33,6 +33,30 @@ const CALLOUT_STYLE: Record<'info' | 'tip' | 'warning', { box: string; Icon: typ
   tip: { box: 'border-gold-soft/30 bg-gold-bright/8 text-gold-pale', Icon: Lightbulb },
   warning: { box: 'border-warning/30 bg-warning/8 text-warning', Icon: TriangleAlert },
 };
+
+/** Shared wrapper for cta-tool/cta-course/internal-link — these three block types rendered
+ *  near-identical markup independently before; this is the one place that layout lives now. */
+function InlineCta({
+  to, icon, eyebrow, title, subtitle, ctaLabel,
+}: { to: string; icon?: ReactNode; eyebrow?: string; title: string; subtitle: string; ctaLabel: string }) {
+  return (
+    <Link to={to} className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-cosmic-light/40 p-6 transition-colors hover:border-gold-soft/30">
+      {icon && (
+        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gold-bright/10 text-gold-soft">
+          {icon}
+        </span>
+      )}
+      <div className="min-w-0 flex-1">
+        {eyebrow && <p className="text-xs uppercase tracking-wide text-white/40">{eyebrow}</p>}
+        <p className="font-medium text-white">{title}</p>
+        <p className="truncate text-sm text-white/50">{subtitle}</p>
+      </div>
+      <span className="flex shrink-0 items-center gap-1 text-sm text-brand-cyan-soft">
+        {ctaLabel} <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+      </span>
+    </Link>
+  );
+}
 
 export function BlogContentRenderer({ blocks }: { blocks: BlogContentBlock[] }) {
   const ids = headingSlugs(blocks);
@@ -94,18 +118,8 @@ function Block({ block, headingId }: { block: BlogContentBlock; headingId: strin
         return null;
       }
       return (
-        <Link to={`/tools/${tool.slug}`} className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-cosmic-light/40 p-5 transition-colors hover:border-gold-soft/30">
-          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gold-bright/10 text-gold-soft">
-            <tool.Icon className="h-5 w-5" />
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className="font-medium text-white">{tool.name}</p>
-            <p className="truncate text-sm text-white/50">{tool.subtitle}</p>
-          </div>
-          <span className="flex shrink-0 items-center gap-1 text-sm text-brand-cyan-soft">
-            {block.label ?? 'Try it free'} <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-          </span>
-        </Link>
+        <InlineCta to={`/tools/${tool.slug}`} icon={<tool.Icon className="h-5 w-5" />}
+          title={tool.name} subtitle={tool.subtitle} ctaLabel={block.label ?? 'Try it free'} />
       );
     }
 
@@ -116,16 +130,8 @@ function Block({ block, headingId }: { block: BlogContentBlock; headingId: strin
         return null;
       }
       return (
-        <Link to={`/courses/${course.slug}`} className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-cosmic-light/40 p-5 transition-colors hover:border-gold-soft/30">
-          <div className="min-w-0 flex-1">
-            <p className="text-xs uppercase tracking-wide text-white/40">Go deeper</p>
-            <p className="font-medium text-white">{course.title}</p>
-            <p className="truncate text-sm text-white/50">{course.subtitle}</p>
-          </div>
-          <span className="flex shrink-0 items-center gap-1 text-sm text-brand-cyan-soft">
-            {block.label ?? 'Explore course'} <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-          </span>
-        </Link>
+        <InlineCta to={`/courses/${course.slug}`} eyebrow="Go deeper"
+          title={course.title} subtitle={course.subtitle} ctaLabel={block.label ?? 'Explore course'} />
       );
     }
 
@@ -136,23 +142,15 @@ function Block({ block, headingId }: { block: BlogContentBlock; headingId: strin
         return null;
       }
       return (
-        <Link to={`/blog/${linked.slug}`} className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-cosmic-light/40 p-5 transition-colors hover:border-gold-soft/30">
-          <div className="min-w-0 flex-1">
-            <p className="text-xs uppercase tracking-wide text-white/40">Related reading</p>
-            <p className="font-medium text-white">{linked.title}</p>
-            <p className="truncate text-sm text-white/50">{linked.excerpt}</p>
-          </div>
-          <span className="flex shrink-0 items-center gap-1 text-sm text-brand-cyan-soft">
-            {block.label ?? 'Read more'} <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-          </span>
-        </Link>
+        <InlineCta to={`/blog/${linked.slug}`} eyebrow="Related reading"
+          title={linked.title} subtitle={linked.excerpt} ctaLabel={block.label ?? 'Read more'} />
       );
     }
 
     case 'diagram': {
       const Diagram = DIAGRAM_COMPONENTS[block.id];
       return (
-        <figure className="rounded-2xl border border-white/10 bg-cosmic-light/30 p-6">
+        <figure className="rounded-2xl border border-white/10 bg-cosmic-light/40 p-6">
           <Diagram className="mx-auto h-56 w-56" />
           {block.caption && <figcaption className="mt-3 text-center text-xs text-white/40">{block.caption}</figcaption>}
         </figure>

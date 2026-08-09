@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Star, Users } from 'lucide-react';
+import { Card } from '@/components/ui/Card';
 import type { Instructor } from '@/types/course.types';
 
 /**
@@ -8,7 +9,7 @@ import type { Instructor } from '@/types/course.types';
  */
 export function AuthorBio({ author, slug }: { author: Instructor; slug: string }) {
   return (
-    <div className="flex flex-col gap-4 rounded-2xl border border-white/10 bg-cosmic-light/40 p-6 sm:flex-row sm:items-start">
+    <Card className="flex flex-col gap-4 sm:flex-row sm:items-start">
       <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-gold-bright/15 text-lg font-semibold text-gold-pale">
         {author.initials}
       </span>
@@ -25,6 +26,6 @@ export function AuthorBio({ author, slug }: { author: Instructor; slug: string }
           More articles by {author.name.split(' ').slice(-1)[0]} →
         </Link>
       </div>
-    </div>
+    </Card>
   );
 }

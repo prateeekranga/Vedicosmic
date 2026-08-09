@@ -50,7 +50,7 @@ export function BlogPostCard({ post }: { post: BlogPost }) {
     <Link to={`/blog/${post.slug}`}>
       <Card hover className="group flex h-full flex-col overflow-hidden p-0">
         <CardThumb post={post} />
-        <div className="flex flex-1 flex-col p-7">
+        <div className="flex flex-1 flex-col p-6">
           <div className="flex flex-wrap items-center gap-2">
             <Badge tone={CATEGORY_ACCENT[post.category]}>{category?.label ?? post.category}</Badge>
             {post.isFeatured && <Badge tone="neutral">Featured</Badge>}

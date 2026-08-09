@@ -27,8 +27,8 @@ function SpotlightPost({ post }: { post: BlogPost }) {
 
   return (
     <Link to={`/blog/${post.slug}`}>
-      <Card hover className="group grid overflow-hidden p-0 md:grid-cols-2">
-        <div className="relative aspect-[16/10] overflow-hidden bg-cosmic-light md:aspect-auto">
+      <Card hover className="group grid overflow-hidden p-0 lg:grid-cols-2">
+        <div className="relative aspect-[16/10] overflow-hidden bg-cosmic-light lg:aspect-auto">
           {post.heroImage && (
             <img
               src={post.heroImage} alt={post.title} loading="eager" decoding="async"
@@ -37,9 +37,9 @@ function SpotlightPost({ post }: { post: BlogPost }) {
             />
           )}
           <CategoryEmblem category={post.category} className={`absolute inset-0 h-full w-full opacity-70 ${post.heroImage ? 'hidden' : ''}`} />
-          <div className="absolute inset-0 bg-gradient-to-t from-cosmic-darker via-transparent to-transparent md:bg-gradient-to-r" />
+          <div className="absolute inset-0 bg-gradient-to-t from-cosmic-darker via-transparent to-transparent lg:bg-gradient-to-r" />
         </div>
-        <div className="flex flex-col justify-center p-8 sm:p-10">
+        <div className="flex flex-col justify-center p-6 sm:p-8">
           <div className="flex flex-wrap items-center gap-2">
             <Badge tone="gold">Latest Article</Badge>
             {category && <Badge>{category.label}</Badge>}
@@ -139,13 +139,14 @@ export default function Blog() {
   return (
     <div className="container-vc py-16 sm:py-24">
       <SectionHeading
+        as="h1"
         eyebrow="The Blog"
         title={category ? <>{category.label} <span className="text-gradient-gold">articles</span></> : <>Guides for <span className="text-gradient-gold">the inner journey</span></>}
         subtitle={category ? category.description : 'In-depth, practical guides on numerology, Vedic astrology, energy healing, cosmology, rituals and meditation.'}
       />
 
       {author && (
-        <div className="mx-auto mt-8 flex max-w-xl items-center justify-center gap-3 rounded-full border border-white/10 bg-cosmic-light/40 px-5 py-2.5 text-sm text-white/60">
+        <div className="mx-auto mt-8 sm:mt-10 flex max-w-xl items-center justify-center gap-3 rounded-full border border-white/10 bg-cosmic-light/40 px-5 py-2.5 text-sm text-white/60">
           <span>Showing articles by <span className="text-white">{author.name}</span></span>
           <button
             onClick={() => setSearchParams((prev) => { prev.delete('author'); return prev; })}
@@ -156,7 +157,7 @@ export default function Blog() {
         </div>
       )}
 
-      <div className="mx-auto mt-10 max-w-xl">
+      <div className="mx-auto mt-8 sm:mt-10 max-w-xl">
         <div className="relative">
           <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" />
           <input
@@ -176,7 +177,7 @@ export default function Blog() {
         </div>
       </div>
 
-      <div className="mt-8 flex flex-wrap justify-center gap-2">
+      <div className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-2">
         {BLOG_CATEGORIES.map((c) => {
           const active = c.id === 'all' ? !categoryId : categoryId === c.id;
           const count = c.id === 'all' ? byAuthor.length : categoryCounts.get(c.id) ?? 0;
@@ -194,17 +195,17 @@ export default function Blog() {
       </div>
 
       {spotlight && (
-        <div className="mx-auto mt-12 max-w-5xl">
+        <div className="mx-auto mt-12 sm:mt-16 max-w-5xl">
           <SpotlightPost post={spotlight} />
         </div>
       )}
 
-      <div className="mx-auto mt-10 max-w-3xl">
+      <div className="mx-auto mt-8 sm:mt-10 max-w-5xl">
         <AdSlot slot="blog-hub" />
       </div>
 
       {gridPosts.length > 0 ? (
-        <motion.div layout className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <motion.div layout className="mt-12 sm:mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
             {gridPosts.map((post, i) => (
               <motion.div key={post.id} layout
@@ -216,7 +217,7 @@ export default function Blog() {
           </AnimatePresence>
         </motion.div>
       ) : !spotlight ? (
-        <div className="mt-16 text-center">
+        <div className="mt-12 sm:mt-16 text-center">
           <p className="text-white/50">{query ? <>No articles match “{query}”.</> : 'No articles in this category yet.'}</p>
           <div className="mt-4 flex justify-center gap-4">
             {query && <button onClick={() => setQuery('')} className="text-sm text-brand-cyan-soft hover:underline">Clear search</button>}

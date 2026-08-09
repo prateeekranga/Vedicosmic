@@ -11,8 +11,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useSound } from '@/contexts/SoundContext';
 import { TOOLS, TOOL_CATEGORIES } from '@/data/tools';
 import { COURSES } from '@/data/courses';
-import { BLOG_POSTS } from '@/data/blog';
-import { BLOG_CATEGORIES } from '@/data/blogCategories';
 import { formatINR } from '@/lib/format';
 import { getFeatureFlags } from '@/lib/overrides';
 import { useOverridesVersion } from '@/hooks/useOverridesVersion';
@@ -37,6 +35,7 @@ function SoundToggle({ className = '' }: { className?: string }) {
 
 const LINKS = [
   { to: '/', label: 'Home' },
+  { to: '/blog', label: 'Blog' },
   { to: '/about', label: 'About' },
   { to: '/contact', label: 'Contact' },
 ];
@@ -55,12 +54,6 @@ const TOOLS_PER_CATEGORY = TOOL_CATEGORIES.filter((c) => c.id !== 'all').map((c)
 const MAX_PER_CATEGORY = 4;
 
 const FEATURED_COURSES = COURSES.filter((c) => c.isFeatured).slice(0, 4);
-
-const POSTS_PER_CATEGORY = BLOG_CATEGORIES.filter((c) => c.id !== 'all').map((c) => ({
-  ...c,
-  posts: BLOG_POSTS.filter((p) => p.category === c.id),
-}));
-const MAX_POSTS_PER_CATEGORY = 4;
 
 function ToolsPanel() {
   return (
@@ -96,42 +89,6 @@ function ToolsPanel() {
         className="mt-4 flex items-center justify-center gap-1.5 rounded-xl border border-black/10 py-2.5 text-sm text-sky-700 transition-colors hover:border-sky-600/50 hover:bg-black/[0.03]"
       >
         View all {TOOLS.length} tools <ArrowRight className="h-3.5 w-3.5" />
-      </Link>
-    </div>
-  );
-}
-
-function BlogPanel() {
-  return (
-    <div className="w-full">
-      <div className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-4">
-        {POSTS_PER_CATEGORY.map(({ id, label, posts }) => (
-          <div key={id}>
-            <p className="mb-1.5 px-3 text-xs font-semibold uppercase tracking-wider text-cosmic-darker/40">{label}</p>
-            <div className="space-y-0.5">
-              {posts.slice(0, MAX_POSTS_PER_CATEGORY).map((post) => (
-                <Link
-                  key={post.id}
-                  to={`/blog/${post.slug}`}
-                  className="block truncate rounded-lg px-3 py-2 text-sm text-cosmic-darker transition-colors hover:bg-black/[0.04] hover:text-gold-600"
-                >
-                  {post.title}
-                </Link>
-              ))}
-              {posts.length > MAX_POSTS_PER_CATEGORY && (
-                <Link to={`/blog/category/${id}`} className="block px-3 py-1.5 text-xs text-sky-700 hover:underline">
-                  +{posts.length - MAX_POSTS_PER_CATEGORY} more
-                </Link>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-      <Link
-        to="/blog"
-        className="mt-4 flex items-center justify-center gap-1.5 rounded-xl border border-black/10 py-2.5 text-sm text-sky-700 transition-colors hover:border-sky-600/50 hover:bg-black/[0.03]"
-      >
-        View all {BLOG_POSTS.length} articles <ArrowRight className="h-3.5 w-3.5" />
       </Link>
     </div>
   );
@@ -180,7 +137,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
-  const [mobileSection, setMobileSection] = useState<'tools' | 'courses' | 'blog' | null>(null);
+  const [mobileSection, setMobileSection] = useState<'tools' | 'courses' | null>(null);
   const [mobileMenuOverflowing, setMobileMenuOverflowing] = useState(false);
   const mobileListRef = useRef<HTMLUListElement>(null);
   const { user, logout } = useAuth();
@@ -217,12 +174,11 @@ export function Navbar() {
 
   const [toolsMenuOpen, setToolsMenuOpen] = useState(false);
   const [coursesMenuOpen, setCoursesMenuOpen] = useState(false);
-  const [blogMenuOpen, setBlogMenuOpen] = useState(false);
 
   const isHome = location.pathname === '/';
   // Force a solid header whenever a mega menu is open, so its background never
   // shifts mid-interaction — only relevant on the transparent, unscrolled home hero.
-  const solid = scrolled || mobileOpen || !isHome || toolsMenuOpen || coursesMenuOpen || blogMenuOpen;
+  const solid = scrolled || mobileOpen || !isHome || toolsMenuOpen || coursesMenuOpen;
 
   useEffect(() => {
     const open = (e: Event) => { if ((e as CustomEvent).type === 'vc:open-auth') setAuthOpen(true); };
@@ -262,7 +218,6 @@ export function Navbar() {
             </li>
             <li><NavDropdown label="Tools" active={location.pathname.startsWith('/tools')} panel={<ToolsPanel />} onOpenChange={setToolsMenuOpen} wide /></li>
             <li><NavDropdown label="Courses" active={location.pathname.startsWith('/courses')} panel={<CoursesPanel comingSoon={coursesComingSoon} />} onOpenChange={setCoursesMenuOpen} /></li>
-            <li><NavDropdown label="Blog" active={location.pathname.startsWith('/blog')} panel={<BlogPanel />} onOpenChange={setBlogMenuOpen} wide /></li>
             {LINKS.slice(1).map((l) => (
               <li key={l.to}>
                 <NavLink
@@ -378,25 +333,6 @@ export function Navbar() {
                       </Link>
                     </>
                   )}
-                </MobileAccordion>
-
-                <MobileAccordion
-                  label="Blog" open={mobileSection === 'blog'}
-                  onToggle={() => setMobileSection((s) => (s === 'blog' ? null : 'blog'))}
-                >
-                  {POSTS_PER_CATEGORY.map(({ id, label, posts }) => (
-                    <div key={id} className="mb-2">
-                      <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wider text-white/35">{label}</p>
-                      {posts.slice(0, MAX_POSTS_PER_CATEGORY).map((post) => (
-                        <Link key={post.id} to={`/blog/${post.slug}`} className="block truncate rounded-lg px-3 py-2.5 text-sm text-white/70 hover:bg-white/5 hover:text-white">
-                          {post.title}
-                        </Link>
-                      ))}
-                    </div>
-                  ))}
-                  <Link to="/blog" className="mt-1 flex items-center gap-1.5 rounded-lg px-3 py-2.5 text-sm text-brand-cyan-soft">
-                    View all articles <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
                 </MobileAccordion>
 
                 {LINKS.slice(1).map((l) => (

@@ -7,7 +7,7 @@ import { Info } from 'lucide-react';
  */
 export function EditorialDisclaimer() {
   return (
-    <div className="flex gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-sm text-white/55">
+    <div className="flex gap-3 rounded-2xl border border-white/10 bg-cosmic-light/40 p-6 text-sm text-white/55">
       <Info className="mt-0.5 h-4 w-4 shrink-0 text-white/35" />
       <p>
         This article is educational and reflective, grounded in traditional Vedic teaching — it is not medical,

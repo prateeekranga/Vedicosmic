@@ -136,6 +136,14 @@ export class ChakraPlayerEngine {
   private recorderDest: MediaStreamAudioDestinationNode | null = null;
   private mediaRecorder: MediaRecorder | null = null;
 
+  private analyser: AnalyserNode | null = null;
+
+  // Elapsed-time tracking — symmetric with the sleep-timer's pause/resume mechanism above,
+  // so "time elapsed" keeps counting across preset switches but freezes (doesn't accrue)
+  // while paused, and survives navigating away and back once playback is lifted globally.
+  private playStartedAtMs: number | null = null;
+  private elapsedAtPauseMs: number | null = null;
+
   /** Set by the consumer (React hook) to react when a sleep timer fades playback out on its own. */
   onSleepComplete: (() => void) | null = null;
 
@@ -148,6 +156,31 @@ export class ChakraPlayerEngine {
   get sleepRemainingMs(): number | null {
     if (this.sleepDeadlineMs == null) return this.sleepRemainingAtPauseMs;
     return Math.max(0, this.sleepDeadlineMs - Date.now());
+  }
+
+  /** Time elapsed in the current listening session — counts across preset switches, freezes while paused. */
+  get elapsedMs(): number | null {
+    if (this.playStartedAtMs != null) return Date.now() - this.playStartedAtMs;
+    return this.elapsedAtPauseMs;
+  }
+
+  /**
+   * A shared AnalyserNode tapped off transportGain — reflects the true post-fade audible
+   * signal. Read-only tap (the analyser has no downstream connection of its own, so adding
+   * it never affects what's actually heard). Lazily created; persists across preset
+   * switches (torn down only in stop()). Time-domain reads only, deliberately — a single
+   * sine tone would light up one frequency bin in a spectrum view, which would visually
+   * overstate how many frequencies are really present.
+   */
+  getAnalyser(): AnalyserNode | null {
+    if (!this.ctx || !this.transportGain) return null;
+    if (!this.analyser) {
+      this.analyser = this.ctx.createAnalyser();
+      this.analyser.fftSize = 1024;
+      this.analyser.smoothingTimeConstant = 0;
+      this.transportGain.connect(this.analyser);
+    }
+    return this.analyser;
   }
 
   private ensureContext(): AudioContext | null {
@@ -182,6 +215,14 @@ export class ChakraPlayerEngine {
     this.currentOpts = opts;
     ramp(this.transportGain.gain, 1, PLAY_FADE_SEC, ctx);
 
+    // Elapsed-time bookkeeping: only (re)anchor the clock if it isn't already running —
+    // switching preset while playing must not reset it, only a fresh start or a resume-from-pause does.
+    if (this.playStartedAtMs == null) {
+      const base = this.elapsedAtPauseMs ?? 0;
+      this.playStartedAtMs = Date.now() - base;
+      this.elapsedAtPauseMs = null;
+    }
+
     // resume the sleep countdown (listening time, not wall-clock) if one was armed before a pause
     if (this.sleepMinutesArmed != null && this.sleepDeadlineMs == null) {
       const remaining = this.sleepRemainingAtPauseMs ?? this.sleepMinutesArmed * 60000;
@@ -194,6 +235,10 @@ export class ChakraPlayerEngine {
     const ctx = this.ctx;
     if (!ctx || !this.transportGain) return;
     ramp(this.transportGain.gain, 0, PAUSE_FADE_SEC, ctx);
+    if (this.playStartedAtMs != null) {
+      this.elapsedAtPauseMs = Date.now() - this.playStartedAtMs;
+      this.playStartedAtMs = null;
+    }
     if (this.sleepDeadlineMs != null) {
       this.sleepRemainingAtPauseMs = Math.max(0, this.sleepDeadlineMs - Date.now());
       this.sleepDeadlineMs = null;
@@ -206,18 +251,23 @@ export class ChakraPlayerEngine {
   stop(): void {
     this.cancelSleepTimer();
     this.stopRecordingInternal();
+    this.playStartedAtMs = null;
+    this.elapsedAtPauseMs = null;
     const ctx = this.ctx;
     if (ctx && this.transportGain) ramp(this.transportGain.gain, 0, 0.15, ctx);
     const voice = this.currentVoice;
     const master = this.masterGain;
     const transport = this.transportGain;
+    const analyser = this.analyser;
     this.currentVoice = null;
     this.currentPreset = null;
     this.masterGain = null;
     this.transportGain = null;
+    this.analyser = null;
     this.ctx = null;
     window.setTimeout(() => {
       this.teardownVoice(voice);
+      try { analyser?.disconnect(); } catch { /* */ }
       try { master?.disconnect(); } catch { /* */ }
       try { transport?.disconnect(); } catch { /* */ }
       if (ctx) { try { void ctx.close(); } catch { /* */ } }

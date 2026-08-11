@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { ToastProvider } from '@/contexts/ToastContext';
 import { SoundProvider } from '@/contexts/SoundContext';
+import { ChakraPlayerProvider } from '@/contexts/ChakraPlayerContext';
 import { Layout } from '@/components/layout/Layout';
 
 const Home = lazy(() => import('@/pages/Home'));
@@ -39,6 +40,7 @@ export default function App() {
     <AuthProvider>
       <ToastProvider>
         <SoundProvider>
+        <ChakraPlayerProvider>
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route element={<Layout />}>
@@ -64,6 +66,7 @@ export default function App() {
             <Route path="/og/blog/:slug" element={<BlogOgCard />} />
           </Routes>
         </Suspense>
+        </ChakraPlayerProvider>
         </SoundProvider>
       </ToastProvider>
     </AuthProvider>

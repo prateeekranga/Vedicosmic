@@ -18,6 +18,7 @@ import { BlogPostCard } from '@/components/blog/BlogPostCard';
 import { ShareBar } from '@/components/ShareBar';
 import { ShareResultProvider, useShareText } from '@/contexts/ShareContext';
 import { useSound } from '@/contexts/SoundContext';
+import { useChakraPlayer } from '@/hooks/useChakraPlayer';
 import { useSEO } from '@/hooks/useSEO';
 import { breadcrumbList, faqPageSchema, softwareApplicationSchema, getToolExtraJsonLd } from '@/lib/schema';
 import type { ToolMeta } from '@/types/tool.types';
@@ -25,20 +26,34 @@ import type { Course } from '@/types/course.types';
 import type { FAQItem } from '@/types/content.types';
 import type { BlogPost } from '@/types/blog.types';
 
+// These four tools each build their own independent AudioContext graph, completely outside
+// ChakraPlayerEngine/Ambient. chakra-frequency-player is also self-managed but is excluded
+// from the ambient-ducking list separately below, since it's not one of the 4 collision risks.
+const SELF_MANAGED_AUDIO_SLUGS = ['tratak', 'kundalini', 'soundbath', 'puja-aarti'] as const;
+const AMBIENT_EXCLUDED_SLUGS = [...SELF_MANAGED_AUDIO_SLUGS, 'chakra-frequency-player'] as const;
+
 export default function ToolPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { enterTool, exitTool } = useSound();
+  const { pauseIfPlaying } = useChakraPlayer();
   const tool = slug ? getTool(slug) : undefined;
 
   useEffect(() => { if (!tool) navigate('/tools', { replace: true }); }, [tool, navigate]);
 
   // each tool gets its own soundscape; some tools manage their own audio internally
   useEffect(() => {
-    if (tool && !['tratak', 'kundalini', 'soundbath', 'puja-aarti', 'chakra-frequency-player'].includes(tool.slug)) {
+    if (tool && !(AMBIENT_EXCLUDED_SLUGS as readonly string[]).includes(tool.slug)) {
       enterTool(tool.category, tool.id);
       return () => exitTool();
     }
+  }, [tool?.slug]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // The chakra player now persists across the whole site (docked mini player), so visiting
+  // one of the 4 other self-managed-audio tools risks two independent AudioContexts running
+  // at once — a collision that couldn't happen while the chakra player was page-scoped.
+  useEffect(() => {
+    if (tool && (SELF_MANAGED_AUDIO_SLUGS as readonly string[]).includes(tool.slug)) pauseIfPlaying();
   }, [tool?.slug]); // eslint-disable-line react-hooks/exhaustive-deps
   const { posts: allPosts, loading: postsLoading } = useAllBlogPosts();
 

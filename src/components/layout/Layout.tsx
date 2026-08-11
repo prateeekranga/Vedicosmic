@@ -8,6 +8,7 @@ import { SiteJsonLd } from '@/components/seo/SiteJsonLd';
 import { Starfield } from '@/components/effects/Starfield';
 import { CosmicBackground } from '@/components/effects/CosmicBackground';
 import { BackToTop } from './BackToTop';
+import { ChakraMiniPlayer } from './ChakraMiniPlayer';
 
 // Lazy-load cosmetic-only components — they add no LCP value
 const CosmicGate   = lazy(() => import('@/components/motion/CosmicGate').then(m => ({ default: m.CosmicGate })));
@@ -61,6 +62,7 @@ export function Layout() {
       </main>
       {!isAdmin && <Footer />}
       {!isAdmin && <BackToTop />}
+      {!isAdmin && <ChakraMiniPlayer />}
     </div>
   );
 }

@@ -35,6 +35,7 @@ function SoundToggle({ className = '' }: { className?: string }) {
 
 const LINKS = [
   { to: '/', label: 'Home' },
+  { to: '/tools/chakra-frequency-player', label: 'Chakra Player' },
   { to: '/blog', label: 'Blog' },
   { to: '/about', label: 'About' },
   { to: '/contact', label: 'Contact' },

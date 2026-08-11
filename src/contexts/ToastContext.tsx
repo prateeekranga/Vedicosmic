@@ -18,7 +18,8 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <Ctx.Provider value={{ notify }}>
       {children}
-      <div className="pointer-events-none fixed bottom-6 left-1/2 z-[120] flex w-full max-w-sm -translate-x-1/2 flex-col gap-2 px-4">
+      <div className="pointer-events-none fixed left-1/2 z-[120] flex w-full max-w-sm -translate-x-1/2 flex-col gap-2 px-4"
+        style={{ bottom: 'calc(1.5rem + var(--vc-mini-player-h, 0px))' }}>
         <AnimatePresence>
           {toasts.map((t) => (
             <motion.div

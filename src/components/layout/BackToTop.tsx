@@ -30,7 +30,8 @@ export function BackToTop() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 16, scale: 0.9 }}
           transition={{ duration: 0.25 }}
-          className="fixed bottom-6 right-5 z-40 sm:bottom-8 sm:right-8"
+          className="fixed right-5 z-40 sm:right-8"
+          style={{ bottom: 'calc(1.5rem + var(--vc-mini-player-h, 0px))' }}
         >
           <Magnetic>
             <button

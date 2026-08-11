@@ -1,7 +1,7 @@
 import {
   Hash, Telescope, Smartphone, Flower2, Repeat, Hexagon, Activity, Clock, Gem, Layers, Grid3x3,
   Calculator, Wand2, Orbit, Eye, Sparkles, Home, Flame, Wind, SlidersHorizontal, Sun, Star, Shield,
-  CalendarDays, LayoutDashboard, BellRing, Heart,
+  CalendarDays, LayoutDashboard, BellRing, Heart, AudioLines,
 } from 'lucide-react';
 import type { ToolMeta } from '@/types/tool.types';
 
@@ -24,6 +24,7 @@ import VastuTool from '@/tools/VastuTool';
 import KundaliniTool from '@/tools/KundaliniTool';
 import PranayamaTool from '@/tools/PranayamaTool';
 import SoundBathTool from '@/tools/SoundBathTool';
+import ChakraFrequencyPlayerTool from '@/tools/ChakraFrequencyPlayerTool';
 import MuhurtaTool from '@/tools/MuhurtaTool';
 import NakshatraTool from '@/tools/NakshatraTool';
 import KundaliMatchingTool from '@/tools/KundaliMatchingTool';
@@ -179,6 +180,14 @@ export const TOOLS: ToolMeta[] = [
     seoTitle: 'Free Online Sound Bath — Live Generative Tanpura, Bowls & Om',
     description: 'Free online sound bath: mix six sacred, generatively synthesised layers — tanpura, singing bowls, Om, rain, chimes and earth hum — live on your own sliders, with presets like Temple Rain and Deep Space. Nothing here is a recording.',
     category: 'energy', accent: 'gold', Icon: SlidersHorizontal, Component: SoundBathTool, isNew: true,
+  },
+  {
+    id: 'chakra-frequency-player', slug: 'chakra-frequency-player', name: 'Chakra Frequency Player',
+    subtitle: 'Solfeggio & chakra tones, binaural beats and a sleep timer',
+    seoTitle: 'Free Chakra Frequency & Sleep Meditation Player — Solfeggio, Binaural & Isochronic Tones',
+    description: 'Free chakra frequency and sleep meditation player: choose from seven chakra tones and classic Solfeggio frequencies, layer in binaural or isochronic beats, and drift off with a crossfading sleep timer — every tone is synthesised live in your browser with the Web Audio API, not a recording.',
+    category: 'energy', accent: 'cyan', Icon: AudioLines, Component: ChakraFrequencyPlayerTool,
+    relatedCourseSlug: 'chakra-healing', isNew: true,
   },
   {
     id: 'muhurta', slug: 'muhurta', name: 'Muhurta Finder',

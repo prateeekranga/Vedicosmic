@@ -75,7 +75,7 @@ export function Footer() {
           <FooterCol title="Explore" links={[['Tools', '/tools'], ['Courses', '/courses'], ['About', '/about'], ['Contact', '/contact']]} />
         </RevealItem>
         <RevealItem>
-          <FooterCol title="Tools" links={[['Numerology', '/tools/numerology'], ['Vedic Astrology', '/tools/astrology'], ['Chakra Test', '/tools/chakra-assessment'], ['Daily Tarot', '/tools/tarot']]} />
+          <FooterCol title="Tools" links={[['Numerology', '/tools/numerology'], ['Vedic Astrology', '/tools/astrology'], ['Chakra Test', '/tools/chakra-assessment'], ['Daily Tarot', '/tools/tarot'], ['Sleep & Chakra Sounds', '/tools/chakra-frequency-player']]} />
         </RevealItem>
         <RevealItem>
           <FooterCol title="Learn" links={[['Vedic Astrology', '/courses/intro-vedic-astrology'], ['Numerology Mastery', '/courses/numerology-mastery'], ['Chakra Healing', '/courses/chakra-healing'], ['Mantra Science', '/courses/vedic-mantra-science']]} />

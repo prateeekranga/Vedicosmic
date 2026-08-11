@@ -45,6 +45,28 @@ export function softwareApplicationSchema(tool: ToolMeta) {
   };
 }
 
+export function audioObjectSchema(tool: ToolMeta) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'AudioObject',
+    name: tool.name,
+    description: tool.description,
+    contentUrl: `${SITE_URL}/tools/${tool.slug}`,
+    embedUrl: `${SITE_URL}/tools/${tool.slug}`,
+    isAccessibleForFree: true,
+  };
+}
+
+/** Per-tool extra JSON-LD beyond the generic SoftwareApplication/FAQPage/BreadcrumbList every
+ *  tool page already gets — keyed by slug, mirrors src/data/toolFaqs.ts's lookup shape. */
+const TOOL_EXTRA_SCHEMA: Record<string, (tool: ToolMeta) => object[]> = {
+  'chakra-frequency-player': (tool) => [audioObjectSchema(tool)],
+};
+
+export function getToolExtraJsonLd(tool: ToolMeta): object[] {
+  return TOOL_EXTRA_SCHEMA[tool.slug]?.(tool) ?? [];
+}
+
 export function courseSchema(course: Course) {
   return {
     '@context': 'https://schema.org',

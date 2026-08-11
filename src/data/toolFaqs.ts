@@ -64,6 +64,11 @@ const TOOL_SPECIFIC_FAQS: Record<string, FAQItem[]> = {
   soundbath: [
     { id: 'soundbath-live', header: 'Is the sound bath music a recording or generated live?', body: 'Every layer is synthesised live in your browser using the Web Audio API, not played back from an audio file — meaning each session is a unique, endless soundscape you shape yourself, rather than a looping recording.' },
   ],
+  'chakra-frequency-player': [
+    { id: 'solfeggio-what', header: 'What are Solfeggio frequencies?', body: 'Solfeggio frequencies are a set of tones (like 396 Hz, 528 Hz and 741 Hz) said to originate in ancient sacred music, each traditionally associated with a specific emotional or energetic effect — this player synthesises each one live, tuned to its classical frequency, rather than looping a sample.' },
+    { id: 'binaural-safety', header: 'Are binaural beats safe to listen to?', body: 'Binaural beats are generally considered safe for most listeners, but they rely on your two ears hearing two slightly different tones — always use stereo headphones, keep the volume moderate, and stop if you feel dizzy or uneasy; avoid using them while driving or operating machinery.' },
+    { id: 'sleep-use', header: 'Can I use this while sleeping?', body: "Yes — the sleep timer fades the tones out and stops playback automatically after your chosen duration, so you can fall asleep without worrying about audio playing all night; just keep your device from locking or the browser tab from being closed if you want it to run for the full timer." },
+  ],
   muhurta: [
     { id: 'rahu-kaal', header: 'What is Rahu Kaal and why do people avoid starting things during it?', body: 'Rahu Kaal is a roughly 90-minute period each day, at a different time depending on the weekday, traditionally considered inauspicious for beginning new ventures — this finder computes its exact start and end time for your location from real sunrise and sunset.' },
   ],

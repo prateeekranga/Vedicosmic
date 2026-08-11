@@ -19,7 +19,7 @@ import { ShareBar } from '@/components/ShareBar';
 import { ShareResultProvider, useShareText } from '@/contexts/ShareContext';
 import { useSound } from '@/contexts/SoundContext';
 import { useSEO } from '@/hooks/useSEO';
-import { breadcrumbList, faqPageSchema, softwareApplicationSchema } from '@/lib/schema';
+import { breadcrumbList, faqPageSchema, softwareApplicationSchema, getToolExtraJsonLd } from '@/lib/schema';
 import type { ToolMeta } from '@/types/tool.types';
 import type { Course } from '@/types/course.types';
 import type { FAQItem } from '@/types/content.types';
@@ -35,7 +35,7 @@ export default function ToolPage() {
 
   // each tool gets its own soundscape; some tools manage their own audio internally
   useEffect(() => {
-    if (tool && !['tratak', 'kundalini', 'soundbath', 'puja-aarti'].includes(tool.slug)) {
+    if (tool && !['tratak', 'kundalini', 'soundbath', 'puja-aarti', 'chakra-frequency-player'].includes(tool.slug)) {
       enterTool(tool.category, tool.id);
       return () => exitTool();
     }
@@ -56,6 +56,7 @@ export default function ToolPage() {
       ]),
       softwareApplicationSchema(tool),
       faqPageSchema(getToolFaqs(tool.id)),
+      ...getToolExtraJsonLd(tool),
     ] : undefined,
   });
 

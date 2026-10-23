@@ -82,3 +82,29 @@ axe-core 4.14 (WCAG 2.2 A/AA rules, 10 pages, `phase-0b/axe.json`): 0 critical; 
 `color-contrast` (low-opacity white text such as `text-white/30`–`/45`) except two `link-in-text-block` (links
 told apart only by colour, on the blog post and privacy page). CI fails on critical issues now; Phase 8 raises
 that to serious.
+
+## After Phase 2 (`phase-2/`)
+
+Same method as Phase 0b (Hostinger-style build, `serve@14.2.4 -s`, Lighthouse CI 0.15.1, median of 3 runs).
+
+| Page | Perf | LCP | TBT | CLS | Transfer |
+|---|---|---|---|---|---|
+| `/` | 73 → 83 | 5.7 → 4.0 s | 133 → 122 ms | 0.028 → 0.031 | 813 → 812 KB |
+| `/tools/sadhana` | 70 → 70 | 5.9 → 6.0 s | 261 → 242 ms | 0.000 → 0.002 | 821 → 852 KB |
+| `/tools/nakshatra` | 72 → 67 | 5.8 → 5.0 s | 146 → 133 ms | 0.000 → 0.206 | 845 → 877 KB |
+| `/tools/planetary-hours` | 77 → 79 | 5.1 → 4.6 s | 92 → 73 ms | 0.003 → 0.001 | 733 → 764 KB |
+| `/blog/best-time-to-meditate-morning-vs-evening` | 78 → 82 | 4.5 → 4.2 s | 109 → 98 ms | 0.022 → 0.022 | 686 → 685 KB |
+
+- Tool pages carry about 30 KB more (gzip): Astronomy Engine in its own `astro` chunk (24 KB) and the engine,
+  place search and new result views in the tool chunk (6 KB). Pages without tools are unchanged; the shared
+  `vendor` chunk is byte-identical to Phase 0b.
+- A place search loads one file from `public/places/` on first use: 59 KB gzip for "k", 88 KB for "s" (the
+  largest); 846 KB for all 27 files together, never loaded at once.
+- `/tools/nakshatra` CLS 0.206 is a font swap: the page title first paints in the fallback font on one line, then
+  wraps to two lines when Cinzel arrives from Google Fonts and pushes the (now taller) form card down by about
+  27 px. Same cause as the smaller shifts elsewhere; Phase 4 self-hosts the fonts with metric-matched fallbacks.
+- The higher homepage score is run-to-run variation; nothing on the homepage changed.
+
+axe-core 4.14 (13 pages, chart cast on `/tools/astrology`, `phase-2/axe.json`): 0 critical. New code adds no
+violations; the remaining serious ones are the site-wide low-contrast patterns listed after Phase 0b (breadcrumbs,
+badges, blog cards, faint helper text), for Phase 4/8.

@@ -28,6 +28,8 @@ export default defineConfig({
           if (id.includes('node_modules/recharts') || id.includes('node_modules/victory') || id.includes('node_modules/d3-')) return 'charts';
           // Icons — lucide ships individual files, keep together
           if (id.includes('node_modules/lucide-react')) return 'icons';
+          // Calculation engine's astronomy library — only the tools that cast charts or panchang need it
+          if (id.includes('node_modules/astronomy-engine')) return 'astro';
           // Everything else in node_modules → vendor
           if (id.includes('node_modules/')) return 'vendor';
         },

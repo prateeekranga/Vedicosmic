@@ -24,8 +24,10 @@ ships; each tool says so.
 
 ```bash
 npm test                         # Vitest, run under Asia/Kolkata and America/New_York
-npm run build                    # build + sitemap + (locally) prerender, then scripts/check-claims.mjs
-node scripts/smoke.mjs <url>     # browser smoke test against a served build
+npm run build                    # static pages, sitemaps, .htaccess, share cards, then scripts/check-claims.mjs
+npm run verify                   # every pre-rendered page: one h1, title/description lengths, canonical, og image, JSON-LD
+npm run smoke -- <url>           # browser smoke test against a served build (npx serve dist)
+npm run check:server -- <url>    # HTTP checks of a deployed site: 404s, redirects, headers
 ```
 
 `scripts/check-claims.mjs` fails the build if an invented claim (courses, ratings, user counts, people who are not
@@ -57,8 +59,8 @@ npm run dev
 # 3. Type-check + production build
 npm run build
 
-# 4. Preview the production build locally
-npm run preview
+# 4. Serve the built site locally (real 404s, like production)
+npx serve dist
 ```
 
 > Requires Node.js 18+.
@@ -67,14 +69,26 @@ npm run preview
 
 ## ✦ Deploying to VediCosmic.com (Hostinger)
 
-Production is **vedicosmic.com on Hostinger**, deployed by Hostinger's Git auto-deploy: every push to `main`
-is built by Hostinger (`npm install && npm run build`, Node 18) and `dist/` goes live. Merging to `main` is a
-production deploy.
+Production is **vedicosmic.com on Hostinger**. The site is built in GitHub Actions (`.github/workflows/ci.yml`)
+and published as finished files; Hostinger's Git auto-deploy serves them.
 
-- Hostinger's build has no browser, so the `postbuild` prerender and OG-image steps log "skipped" and the
-  site ships as a client-side SPA. Run `npm run build` locally (with Chrome installed) to see the prerendered
-  output. Until builds move to GitHub Actions, every dependency must install and run on Node 18.
-- SPA routing on Hostinger comes from `public/.htaccess`. `vercel.json` is a leftover and is not used.
+1. Every push to `main` or an `upgrade/**` branch runs the checks: type-check, lint, tests, the build,
+   `verify-prerender`, the link check, the smoke test, axe and Lighthouse.
+2. If they all pass, the built `dist/` is pushed (by `scripts/publish-branch.sh`) to a branch Hostinger watches:
+   `main` → **`deploy`** (vedicosmic.com), `upgrade/**` → **`staging`** (staging.vedicosmic.com, never indexed).
+   Merging to `main` is therefore a production deploy. Never edit `deploy` or `staging` by hand.
+3. A scheduled run at 00:05 IST rebuilds production so pre-rendered pages carry the new day's values. It only
+   publishes when something changed.
+4. Roll back by re-running the workflow on an earlier commit of `main` (Actions → CI → Run workflow), or by
+   pushing an earlier `deploy` commit back to the `deploy` branch.
+
+How the build works: `vite build` makes the browser bundle; `vite build --ssr src/entry-server.tsx` makes a
+Node bundle that `scripts/ssg.mjs` uses to render every page to HTML (no browser needed), which the browser then
+hydrates. Tools render in the browser after the page loads. `scripts/generate-htaccess.mjs` writes the server
+rules (real 404s, one URL per page, redirects from `src/content/redirects.ts`, caching and security headers).
+Share cards need a browser and are made in CI.
+
+- Blog posts written in the admin appear as pages at the next build (the daily one, or a manual run).
 - The Supabase URL and anon key have hard-coded fallbacks; `.env.example` documents the optional overrides.
 
 `npm run build:standalone` produces a single-file HashRouter build in `dist-standalone/` (not deployed, not

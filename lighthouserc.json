@@ -2,11 +2,11 @@
   "ci": {
     "collect": {
       "url": [
-        "http://localhost:4174/",
-        "http://localhost:4174/tools/sadhana",
-        "http://localhost:4174/tools/nakshatra",
-        "http://localhost:4174/tools/planetary-hours",
-        "http://localhost:4174/blog/best-time-to-meditate-morning-vs-evening"
+        "http://localhost:4173/",
+        "http://localhost:4173/tools/sadhana",
+        "http://localhost:4173/tools/nakshatra",
+        "http://localhost:4173/tools/planetary-hours",
+        "http://localhost:4173/blog/best-time-to-meditate-morning-vs-evening"
       ],
       "numberOfRuns": 3
     },

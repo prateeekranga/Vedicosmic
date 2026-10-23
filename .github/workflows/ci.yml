@@ -5,6 +5,9 @@ on:
     branches: [main, 'upgrade/**']
   pull_request:
   workflow_dispatch:
+  schedule:
+    # Daily rebuild at 00:05 IST, so pre-rendered pages carry the new day's values.
+    - cron: '35 18 * * *'
 
 permissions:
   contents: read
@@ -19,8 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      # Fail (instead of skipping) if pre-rendering cannot start a browser.
+      # Fail (instead of skipping) if share cards cannot start a browser.
       REQUIRE_PRERENDER: '1'
+      DEPLOY_TARGET: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -35,31 +39,22 @@ jobs:
         run: npm run lint
       - name: Unit and golden tests
         run: npm test
-      - name: Build (pre-render, then banned-claims check)
+      - name: Build (static pages, sitemaps, server rules, share cards, claims check)
         run: npm run build
+      - name: Verify the pre-rendered pages
+        run: npm run verify
       - name: Internal links
         run: npm run check:links
 
-      - name: Serve the pre-rendered build
+      - name: Serve the build (no SPA fallback, real 404s)
         run: |
-          npx --yes serve@14.2.4 -s dist -l 4173 > serve-dist.log 2>&1 &
+          npx --yes serve@14.2.4 dist -l 4173 > serve.log 2>&1 &
           for i in $(seq 1 60); do curl -sf http://localhost:4173/ > /dev/null && exit 0; sleep 1; done
-          cat serve-dist.log; exit 1
+          cat serve.log; exit 1
       - name: Smoke test
         run: npm run smoke -- http://localhost:4173
       - name: Accessibility (axe)
         run: npm run a11y -- http://localhost:4173 axe-report.json
-
-      # Lighthouse measures what visitors get today: Hostinger builds without a browser, so the
-      # live site is the plain client-rendered build, not the pre-rendered one. Phase 3 replaces
-      # this with the SSG build once that is what gets deployed.
-      - name: Build as Hostinger serves it (no pre-render)
-        run: npx vite build --outDir dist-hostinger --emptyOutDir
-      - name: Serve the Hostinger-style build
-        run: |
-          npx --yes serve@14.2.4 -s dist-hostinger -l 4174 > serve-hostinger.log 2>&1 &
-          for i in $(seq 1 60); do curl -sf http://localhost:4174/ > /dev/null && exit 0; sleep 1; done
-          cat serve-hostinger.log; exit 1
       - name: Lighthouse CI (mobile; budgets warn until Phase 8)
         run: npx --yes @lhci/cli@0.15.1 autorun --config=lighthouserc.json
 
@@ -73,11 +68,37 @@ jobs:
             axe-report.json
           if-no-files-found: ignore
           retention-days: 14
+      - name: Keep the build for publishing
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: dist/
+          include-hidden-files: true
+          retention-days: 3
+
+  publish:
+    # main → the 'deploy' branch Hostinger serves at vedicosmic.com; upgrade/** → 'staging'.
+    name: Publish ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+    needs: checks
+    if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/upgrade/'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    concurrency:
+      group: publish-${{ github.ref == 'refs/heads/main' && 'deploy' || 'staging' }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: dist
+      - run: bash scripts/publish-branch.sh ${{ github.ref == 'refs/heads/main' && 'deploy' || 'staging' }}
 
   hostinger-node18:
-    # Hostinger builds from main with `npm install && npm run build` on Node 18, so every
-    # dependency and build step must keep working there.
-    name: Builds on Node 18 (Hostinger)
+    # Until Hostinger is switched to the 'deploy' branch it still builds main itself on Node 18.
+    name: Builds on Node 18 (Hostinger, until the switch)
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:

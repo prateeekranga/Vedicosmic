@@ -40,17 +40,25 @@ for (const path of ['/', '/tools', '/courses', '/contact', '/about', '/how-we-ca
   check(`${path}: no skipped heading levels`, skips.length === 0, skips.join(', '));
 }
 
-// 2. Homepage console is free of warnings and errors (incl. the old negative-blur spring warnings).
-{
+// 2. Pages load without console warnings or errors: no hydration mismatches (React errors 418,
+//    422, 423, 425) on the pre-rendered HTML, and no old animation warnings.
+for (const path of ['/', '/tools', '/tools/astrology', '/blog', '/blog/best-time-to-meditate-morning-vs-evening', '/about']) {
   const messages = [];
   const p2 = await context.newPage();
   p2.on('console', (m) => { if (m.type() === 'warning' || m.type() === 'error') messages.push(`${m.type()}: ${m.text()}`); });
   p2.on('pageerror', (e) => messages.push(`pageerror: ${e.message}`));
-  await open(p2, '/');
+  await open(p2, path);
   await p2.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 600) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 120)); } });
   await p2.waitForTimeout(1000);
-  check('/: no console warnings or errors', messages.length === 0, messages.slice(0, 5).join(' | '));
+  check(`${path}: no console warnings or errors`, messages.length === 0, messages.slice(0, 3).join(' | '));
   await p2.close();
+}
+
+// 2b. A made-up URL gets a real 404 status and the branded page.
+{
+  const response = await open(page, '/this-page-does-not-exist');
+  check('made-up URL: HTTP 404 with the branded page', response?.status() === 404 && /This path is uncharted/i.test(await page.evaluate(() => document.body.innerText)),
+    `status ${response?.status()}`);
 }
 
 // 3. Removed claims are not on screen.

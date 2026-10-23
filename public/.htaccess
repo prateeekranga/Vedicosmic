@@ -8,9 +8,14 @@ RewriteRule ^(.*)$ https://vedicosmic.com/$1 [R=301,L]
 RewriteRule ^courses/.+ - [G,L]
 
 # Keep the admin dashboard out of search results (the page also sets a robots meta tag).
-SetEnvIf Request_URI "^/vc-portal-x7" VC_ADMIN
-Header always set X-Robots-Tag "noindex, nofollow" env=VC_ADMIN
-Header always set X-Robots-Tag "noindex, nofollow" env=REDIRECT_VC_ADMIN
+# Guarded so a server without these modules skips the rule instead of failing the whole site.
+<IfModule mod_setenvif.c>
+  SetEnvIf Request_URI "^/vc-portal-x7" VC_ADMIN
+</IfModule>
+<IfModule mod_headers.c>
+  Header always set X-Robots-Tag "noindex, nofollow" env=VC_ADMIN
+  Header always set X-Robots-Tag "noindex, nofollow" env=REDIRECT_VC_ADMIN
+</IfModule>
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  push:
+    branches: [main, 'upgrade/**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Build, test and audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # Fail (instead of skipping) if pre-rendering cannot start a browser.
+      REQUIRE_PRERENDER: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Type-check
+        run: npm run type-check
+      - name: Lint
+        run: npm run lint
+      - name: Unit and golden tests
+        run: npm test
+      - name: Build (pre-render, then banned-claims check)
+        run: npm run build
+      - name: Internal links
+        run: npm run check:links
+
+      - name: Serve the pre-rendered build
+        run: |
+          npx --yes serve@14.2.4 -s dist -l 4173 > serve-dist.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf http://localhost:4173/ > /dev/null && exit 0; sleep 1; done
+          cat serve-dist.log; exit 1
+      - name: Smoke test
+        run: npm run smoke -- http://localhost:4173
+      - name: Accessibility (axe)
+        run: npm run a11y -- http://localhost:4173 axe-report.json
+
+      # Lighthouse measures what visitors get today: Hostinger builds without a browser, so the
+      # live site is the plain client-rendered build, not the pre-rendered one. Phase 3 replaces
+      # this with the SSG build once that is what gets deployed.
+      - name: Build as Hostinger serves it (no pre-render)
+        run: npx vite build --outDir dist-hostinger --emptyOutDir
+      - name: Serve the Hostinger-style build
+        run: |
+          npx --yes serve@14.2.4 -s dist-hostinger -l 4174 > serve-hostinger.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf http://localhost:4174/ > /dev/null && exit 0; sleep 1; done
+          cat serve-hostinger.log; exit 1
+      - name: Lighthouse CI (mobile; budgets warn until Phase 8)
+        run: npx --yes @lhci/cli@0.15.1 autorun --config=lighthouserc.json
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: |
+            .lighthouseci/
+            axe-report.json
+          if-no-files-found: ignore
+          retention-days: 14
+
+  hostinger-node18:
+    # Hostinger builds from main with `npm install && npm run build` on Node 18, so every
+    # dependency and build step must keep working there.
+    name: Builds on Node 18 (Hostinger)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build

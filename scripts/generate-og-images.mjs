@@ -30,6 +30,7 @@ async function main() {
     } catch (err) {
       await server.close();
       console.warn(`[og-images] skipped — no browser available in this environment: ${err.message}`);
+      if (process.env.REQUIRE_PRERENDER) process.exitCode = 1;
       return;
     }
   }

@@ -4,7 +4,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import globals from 'globals';
 
 export default tseslint.config(
-  { ignores: ['dist', 'dist-standalone', 'node_modules', 'graphify-out', '.agents'] },
+  { ignores: ['dist', 'dist-hostinger', 'dist-standalone', '.lighthouseci', 'node_modules', 'graphify-out', '.agents'] },
   {
     files: ['src/**/*.{ts,tsx}', 'tests/**/*.ts'],
     extends: [js.configs.recommended, ...tseslint.configs.recommended],

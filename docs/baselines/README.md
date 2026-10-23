@@ -50,3 +50,35 @@ LCP improved on every page (the homepage headline is now plain HTML, not a per-w
 the homepage transfers 728 KB instead of 848 KB. TBT moved both ways within run-to-run noise (homepage runs:
 438–1055 ms before, 406–849 ms after); in every run it is dominated by framer-motion scripting, which Phase 8
 removes from static sections. Phase 1 was not a performance phase.
+
+## After Phase 0b (`phase-0b/`)
+
+Same build style (no pre-render, which is what Hostinger serves), same server (`serve@14.2.4 -s`, gzip), now run
+through Lighthouse CI 0.15.1 with three runs per page; the median run of each page is saved. CI repeats this on
+every push and keeps the full reports as a build artifact for 14 days.
+
+| Page | Perf | LCP | TBT | A11y | Best practices | SEO |
+|---|---|---|---|---|---|---|
+| `/` | 54 → 73 | 5.6 → 5.7 s | 801 → 133 ms | 100 → 100 | 100 → 100 | 100 → 100 |
+| `/tools/sadhana` | 64 → 70 | 6.2 → 5.9 s | 380 → 261 ms | 96 → 96 | 79 → 100 | 100 → 100 |
+| `/tools/nakshatra` | 61 → 72 | 6.1 → 5.8 s | 302 → 146 ms | 96 → 96 | 100 → 100 | 100 → 100 |
+| `/tools/planetary-hours` | 67 → 77 | 5.5 → 5.1 s | 355 → 92 ms | 96 → 96 | 100 → 100 | 100 → 100 |
+| `/blog/best-time-to-meditate-morning-vs-evening` | 68 → 78 | 5.0 → 4.5 s | 383 → 109 ms | 92 → 92 | 79 → 100 | 100 → 100 |
+
+- The higher performance scores come mostly from lower TBT. Phase 0b removed no JavaScript, so read that as
+  machine noise, not progress.
+- Best practices 79 → 100: the nine Pexels photos are now served from `/images/blog/` as WebP. The Pexels
+  servers had been setting third-party cookies. On the blog post the LCP element is that hero photo, and its
+  LCP improved by 0.5 s.
+- Homepage transfer: 813 KB (728 KB after Phase 1). Nearly all of the difference is one extra 83 KB Inter
+  font file from Google Fonts that this run downloaded and the Phase 1 run did not. Phase 4 self-hosts and subsets
+  the fonts.
+- Analytics and error reporting add nothing while they are switched off: the code is removed at build time.
+- A pre-rendered build measured the same way does worse (performance 63–65, LCP 6.3–7.1 s), because React
+  discards the pre-rendered markup and paints the page again. Hostinger has never served that build. Phase 3's
+  SSG must hydrate the existing markup (`hydrateRoot`) and keep the LCP element visible without JavaScript.
+
+axe-core 4.14 (WCAG 2.2 A/AA rules, 10 pages, `phase-0b/axe.json`): 0 critical; 9 serious rule violations, all
+`color-contrast` (low-opacity white text such as `text-white/30`–`/45`) except two `link-in-text-block` (links
+told apart only by colour, on the blog post and privacy page). CI fails on critical issues now; Phase 8 raises
+that to serious.

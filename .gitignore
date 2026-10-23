@@ -9,3 +9,7 @@ dist-standalone
 !.vscode/extensions.json
 tsconfig.tsbuildinfo
 graphify-out/
+.lighthouseci/
+axe-report.json
+dist-hostinger/
+preview.log

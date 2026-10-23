@@ -57,6 +57,8 @@ async function main() {
       await server.close();
       console.warn(`[prerender] skipped — no browser available in this environment: ${err.message}`);
       console.warn('[prerender] The site will work as a client-side SPA. Prerendering can be run locally.');
+      // CI sets REQUIRE_PRERENDER so a missing browser fails there instead of passing silently.
+      if (process.env.REQUIRE_PRERENDER) process.exitCode = 1;
       return;
     }
   }

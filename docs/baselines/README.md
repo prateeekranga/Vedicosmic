@@ -33,3 +33,20 @@ HTML that crawlers and link previews read is empty.
 ## Still to collect
 
 Search Console exports (queries, pages, indexed pages) from the owner, to be saved here.
+
+## After Phase 1 (same method, `phase-1/`)
+
+Same build style (no prerender), same server, same Lighthouse version and settings.
+
+| Page | Perf | LCP | TBT | A11y | Best practices | SEO |
+|---|---|---|---|---|---|---|
+| `/` | 56 → 54 | 6.6 → 5.6 s | 487 → 801 ms | 98 → 100 | 100 → 100 | 100 → 100 |
+| `/tools/sadhana` | 59 → 64 | 6.6 → 6.2 s | 383 → 380 ms | 96 → 96 | 79 → 79 | 100 → 100 |
+| `/tools/nakshatra` | 61 → 61 | 6.1 → 6.1 s | 397 → 302 ms | 95 → 96 | 100 → 100 | 100 → 100 |
+| `/tools/planetary-hours` | 69 → 67 | 5.8 → 5.5 s | 208 → 355 ms | 96 → 96 | 100 → 100 | 100 → 100 |
+| `/blog/best-time-to-meditate-morning-vs-evening` | 70 → 68 | 5.7 → 5.0 s | 103 → 383 ms | 92 → 92 | 79 → 79 | 100 → 100 |
+
+LCP improved on every page (the homepage headline is now plain HTML, not a per-word JavaScript animation) and
+the homepage transfers 728 KB instead of 848 KB. TBT moved both ways within run-to-run noise (homepage runs:
+438–1055 ms before, 406–849 ms after); in every run it is dominated by framer-motion scripting, which Phase 8
+removes from static sections. Phase 1 was not a performance phase.

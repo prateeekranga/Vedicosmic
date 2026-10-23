@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Sun, Moon, Wind, Eye, Flame, Sparkles, ArrowRight, Flower2, Check } from 'lucide-react';
@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { useDeviceStore } from '@/contexts/DeviceStoreContext';
 import { SavedOnDevice } from '@/components/device/SavedOnDevice';
 import { panchang, upcomingVrats } from '@/lib/panchang';
+import { trackEvent } from '@/lib/analytics';
 
 /* ── the day's suggested three-step flow ── */
 const FLOWS = [
@@ -51,6 +52,14 @@ export default function SadhanaTool() {
   const nextVrat = useMemo(() => upcomingVrats(new Date(), 30)[0], []);
   const ctx = useMemo(dayContext, []);
   const streak = streakNow;
+
+  useEffect(() => { trackEvent('view_today'); }, []);
+
+  const toggleDone = (key: string) => {
+    const next = { ...done, [key]: !done[key] };
+    setDone(next);
+    if (!done[key] && FLOWS.every((f) => next[f.key])) trackEvent('sadhana_completed');
+  };
 
   const completed = FLOWS.filter((f) => done[f.key]).length;
   const pct = Math.round((completed / FLOWS.length) * 100);
@@ -103,14 +112,14 @@ export default function SadhanaTool() {
                   <span className="grid h-11 w-11 place-items-center rounded-xl bg-gold-bright/10">
                     <f.Icon className="h-5 w-5 text-gold-300" />
                   </span>
-                  <button onClick={() => setDone((d) => ({ ...d, [f.key]: !d[f.key] }))} aria-label="Mark done"
+                  <button onClick={() => toggleDone(f.key)} aria-label="Mark done"
                     className={`grid h-7 w-7 place-items-center rounded-full border transition-colors ${done[f.key] ? 'border-gold-soft/60 bg-gold-bright/20 text-gold-pale' : 'border-white/15 text-white/30 hover:text-white/60'}`}>
                     <Check className="h-4 w-4" />
                   </button>
                 </div>
                 <p className="mt-3 text-sm font-medium text-white">{i + 1}. {f.title}</p>
                 <p className="mt-1 text-xs leading-snug text-white/50">{f.desc}</p>
-                <Link to={f.to} className="mt-3 inline-flex items-center gap-1 text-xs text-gold-300 hover:gap-2 transition-all">
+                <Link to={f.to} onClick={() => trackEvent('sadhana_started', { step: f.key })} className="mt-3 inline-flex items-center gap-1 text-xs text-gold-300 hover:gap-2 transition-all">
                   {f.mins} min · begin <ArrowRight className="h-3 w-3" />
                 </Link>
               </Card>

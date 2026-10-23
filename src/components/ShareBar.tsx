@@ -3,6 +3,7 @@ import { Share2, Facebook, Mail, Check, Link as LinkIcon } from 'lucide-react';
 import { WhatsAppIcon, TelegramIcon, XIcon, PinterestIcon } from '@/components/icons/BrandIcons';
 import { shareLink, type SharePlatform } from '@/lib/share';
 import { useToast } from '@/contexts/ToastContext';
+import { trackEvent } from '@/lib/analytics';
 import { cn } from '@/lib/cn';
 
 const ICONS: Record<SharePlatform, React.ComponentType<{ className?: string }>> = {
@@ -33,10 +34,12 @@ export function ShareBar({ url, title, text, className }: ShareBarProps) {
   const [copied, setCopied] = useState(false);
 
   const nativeShare = async () => {
+    trackEvent('share_clicked', { channel: 'native' });
     try { await navigator.share({ title, text, url }); } catch { /* user cancelled */ }
   };
 
   const copyLink = async () => {
+    trackEvent('share_clicked', { channel: 'copy' });
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);
@@ -60,7 +63,7 @@ export function ShareBar({ url, title, text, className }: ShareBarProps) {
         const Icon = ICONS[id];
         return (
           <a key={id} href={shareLink(id, { url, title, text })} target="_blank" rel="noopener noreferrer"
-            aria-label={`Share on ${label}`} data-sound="tap"
+            aria-label={`Share on ${label}`} data-sound="tap" onClick={() => trackEvent('share_clicked', { channel: id })}
             className="grid h-9 w-9 place-items-center rounded-full border border-white/12 text-white/60 transition-colors hover:border-white/25 hover:text-white">
             <Icon className="h-4 w-4" />
           </a>

@@ -104,14 +104,14 @@ export function ChakraPlayerProvider({ children }: { children: ReactNode }) {
     setIsPlaying(true);
     setActivePreset(preset);
     engine.play(preset, optsRef.current).catch(() => { setIsPlaying(false); endTratak(); });
-    trackEvent('play', { preset });
+    trackEvent('player_play', { preset });
   }, [beginTratak, endTratak]);
 
   const pause = useCallback(() => {
     engineRef.current!.pause();
     endTratak();
     setIsPlaying(false);
-    trackEvent('pause', { preset: activePreset });
+    trackEvent('player_pause', { preset: activePreset });
   }, [endTratak, activePreset]);
 
   const pauseIfPlaying = useCallback(() => { if (isPlaying) pause(); }, [isPlaying, pause]);
@@ -126,7 +126,7 @@ export function ChakraPlayerProvider({ children }: { children: ReactNode }) {
     setSleepTimerMinutesState(null);
     setIsRecording(false);
     recordingHandleRef.current = null;
-    trackEvent('stop', { preset: activePreset });
+    trackEvent('player_stop', { preset: activePreset });
   }, [endTratak, activePreset]);
 
   const setMasterVolume = useCallback((v: number) => {
@@ -147,7 +147,7 @@ export function ChakraPlayerProvider({ children }: { children: ReactNode }) {
   const setSleepTimer = useCallback((m: SleepMinutes) => {
     setSleepTimerMinutesState(m);
     engineRef.current!.armSleepTimer(m);
-    trackEvent('timer_set', { minutes: m });
+    trackEvent('player_timer_set', { minutes: m });
   }, []);
 
   const startRecording = useCallback(() => {
@@ -169,7 +169,7 @@ export function ChakraPlayerProvider({ children }: { children: ReactNode }) {
       a.download = `vedicosmic-${activePreset ?? 'chakra'}-${Date.now()}.webm`;
       document.body.appendChild(a); a.click(); a.remove();
       URL.revokeObjectURL(url);
-      trackEvent('record_download', { preset: activePreset });
+      trackEvent('player_record_download', { preset: activePreset });
     });
   }, [activePreset]);
 

@@ -2,6 +2,8 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import { initAnalytics } from '@/lib/analytics';
+import { initMonitoring } from '@/lib/monitoring';
 import '@/styles/globals.css';
 
 createRoot(document.getElementById('root')!).render(
@@ -20,4 +22,9 @@ if (typeof requestIdleCallback !== 'undefined') {
 } else {
   setTimeout(signal, 200);
 }
+
+// Analytics and error reporting load only after the page has settled (and only if configured).
+const startIntegrations = () => { initAnalytics(); initMonitoring(); };
+if (typeof requestIdleCallback !== 'undefined') requestIdleCallback(startIntegrations, { timeout: 4000 });
+else setTimeout(startIntegrations, 2000);
 

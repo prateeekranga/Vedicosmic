@@ -10,6 +10,7 @@ import { ShareBar } from '@/components/ShareBar';
 import { useShareResult } from '@/contexts/ShareContext';
 import { siderealMoonLongitude } from '@/lib/astronomy';
 import { BoundaryNote } from '@/components/astro/BoundaryNote';
+import { trackEvent } from '@/lib/analytics';
 
 const rad = Math.PI / 180;
 
@@ -30,6 +31,7 @@ export default function NakshatraTool() {
     const pada = Math.floor((lon % SEG) / (SEG / 4)) + 1;
     setResult({ idx, pada, lon });
     setSel(idx);
+    trackEvent('chart_created', { tool: 'nakshatra' });
   };
 
   const nak = NAKS[sel];

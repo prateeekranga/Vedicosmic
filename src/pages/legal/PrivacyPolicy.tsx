@@ -1,7 +1,40 @@
-import { LegalLayout } from './LegalLayout';
+import { LegalLayout, type LegalSection } from './LegalLayout';
+import { ANALYTICS_ENABLED, ERROR_REPORTING_ENABLED } from '@/config/integrations';
 
-// Draft for lawyer review. Describes the site as it works today: no accounts, no forms,
-// no analytics, no advertising. Update this page before any of that changes.
+// Draft for lawyer review. Describes the site as it works today: no accounts, no forms, no
+// advertising. The visit-statistics and error-report sections appear by themselves when those
+// services are switched on in src/config/integrations.ts; update the date when that happens.
+
+const visitStatistics: LegalSection = {
+  heading: 'Visit statistics',
+  body: (
+    <>
+      <p>
+        We count visits with Umami Cloud, a privacy-focused analytics service. It sets no cookies and does not
+        build a profile of you. For each page view it records the page address, the site you came from, your
+        browser, operating system, device type and country. Your IP address is used to work out the country
+        and is not stored.
+      </p>
+      <p>
+        It also records a few named actions, such as “a chart was calculated”, “a share button was pressed” or
+        “a 7-day streak was reached”. It never receives names, birth dates or times, places, readings or anything
+        you type. If your browser sends a Do Not Track signal, nothing is recorded.
+      </p>
+    </>
+  ),
+};
+
+const errorReports: LegalSection = {
+  heading: 'Error reports',
+  body: (
+    <p>
+      If something on a page breaks, your browser sends an error report to Sentry so we can fix it. A report
+      contains the error message, where in our code it happened, your browser and operating system, and the page
+      address without anything after “?” or “#”. It does not include your IP address, what you clicked or typed,
+      or anything you entered into a tool.
+    </p>
+  ),
+};
 export default function PrivacyPolicy() {
   return (
     <LegalLayout
@@ -67,7 +100,16 @@ export default function PrivacyPolicy() {
             </>
           ),
         },
-        {
+        ...(ANALYTICS_ENABLED ? [visitStatistics] : []),
+        ...(ERROR_REPORTING_ENABLED ? [errorReports] : []),
+        ANALYTICS_ENABLED ? {
+          heading: 'No advertising or tracking cookies',
+          body: (
+            <p>
+              VediCosmic shows no advertising and sets no tracking cookies.
+            </p>
+          ),
+        } : {
           heading: 'No advertising, analytics or tracking cookies',
           body: (
             <p>

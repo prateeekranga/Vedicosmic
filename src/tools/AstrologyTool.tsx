@@ -15,6 +15,7 @@ import { Input, Select } from '@/components/ui/Field';
 import { useDeviceStore } from '@/contexts/DeviceStoreContext';
 import { SaveOnDeviceButton } from '@/components/device/SaveOnDeviceButton';
 import { useToast } from '@/contexts/ToastContext';
+import { trackEvent } from '@/lib/analytics';
 
 interface Chart { sun: number; moon: number; }
 
@@ -88,6 +89,7 @@ export default function AstrologyTool() {
       sun: siderealSunLongitude(utc),
       moon: siderealMoonLongitude(utc),
     });
+    trackEvent('chart_created', { tool: 'astrology' });
   };
 
   const save = () => {
@@ -96,6 +98,7 @@ export default function AstrologyTool() {
     saveReading({ toolId: 'astrology', toolName: 'Vedic Birth Chart',
       summary: `Moon in ${moon.sanskrit} (${moon.english}) · Sun in ${RASHI_INFO[longitudeToRashi(chart.sun)].english}` });
     notify('Chart saved on this device');
+    trackEvent('chart_saved', { tool: 'astrology' });
   };
 
   return (

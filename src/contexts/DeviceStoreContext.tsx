@@ -1,8 +1,11 @@
 import {
-  createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode,
+  createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode,
 } from 'react';
 import type { DeviceData, JournalEntry, PracticeStreak, SavedReading } from '@/types/device.types';
 import { localDateKey } from '@/engine/time';
+import { trackEvent, type AnalyticsEvent } from '@/lib/analytics';
+
+const STREAK_EVENTS: Record<number, AnalyticsEvent> = { 3: 'streak_3', 7: 'streak_7', 30: 'streak_30' };
 
 /**
  * Progress kept in this browser only: practice streak, crystal kit, and — after the visitor
@@ -152,6 +155,14 @@ export function DeviceStoreProvider({ children }: { children: ReactNode }) {
     try { localStorage.removeItem(KEY); } catch { /* ignore */ }
     setData(EMPTY);
   }, []);
+
+  // Report reaching a 3-, 7- or 30-day streak once, when a session moves the streak onto that number.
+  const lastStreak = useRef(data.practiceStreak.currentStreak);
+  useEffect(() => {
+    const n = data.practiceStreak.currentStreak;
+    if (n !== lastStreak.current && STREAK_EVENTS[n]) trackEvent(STREAK_EVENTS[n]);
+    lastStreak.current = n;
+  }, [data.practiceStreak.currentStreak]);
 
   const s = data.practiceStreak;
   const streakNow = s.lastSessionDate === localDateKey() || s.lastSessionDate === yesterdayKey() ? s.currentStreak : 0;

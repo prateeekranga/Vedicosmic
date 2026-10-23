@@ -64,18 +64,20 @@ npm run preview
 
 ---
 
-## ✦ Deploying to VediCosmic.com (Vercel)
+## ✦ Deploying to VediCosmic.com (Hostinger)
 
-The repository ships with `vercel.json` (SPA rewrites already configured).
+Production is **vedicosmic.com on Hostinger**, deployed by Hostinger's Git auto-deploy: every push to `main`
+is built by Hostinger (`npm install && npm run build`, Node 18) and `dist/` goes live. Merging to `main` is a
+production deploy.
 
-1. Push this project to a Git repository.
-2. In Vercel, **Import Project** and select it. Framework preset: **Vite** (auto-detected).
-   - Build command: `npm run build`
-   - Output directory: `dist`
-3. Add your domain **vedicosmic.com** under **Settings → Domains**.
-4. Deploy. Any static host works too (Netlify, Cloudflare Pages, S3+CloudFront) — just serve `dist/` and route all paths to `index.html`.
+- Hostinger's build has no browser, so the `postbuild` prerender and OG-image steps log "skipped" and the
+  site ships as a client-side SPA. Run `npm run build` locally (with Chrome installed) to see the prerendered
+  output. Until builds move to GitHub Actions, every dependency must install and run on Node 18.
+- SPA routing on Hostinger comes from `public/.htaccess`. `vercel.json` is a leftover and is not used.
+- The Supabase URL and anon key have hard-coded fallbacks; `.env.example` documents the optional overrides.
 
-No environment variables are required for the current experience. `.env.example` documents the keys that a future hosted backend would use.
+`npm run build:standalone` produces a single-file HashRouter build in `dist-standalone/` (not deployed, not
+committed).
 
 ---
 

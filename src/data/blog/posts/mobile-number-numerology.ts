@@ -17,7 +17,7 @@ export default {
     'digit sum',
   ],
   authorId: 'parikshiva',
-  publishedAt: '2026-07-20',
+  publishedAt: '2026-07-26',
   heroImage: '/og/blog/mobile-number-numerology.png',
   keyTakeaways: [
     "A mobile number's numerological reading comes from reducing every digit in it to a single root number, using the same digit-sum method as a Life Path number.",

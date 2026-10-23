@@ -10,7 +10,7 @@ export default {
   category: 'spiritual-living',
   tags: ['brahmacharya', 'urdhvaretas', 'kundalini', 'urge control', 'yogic philosophy', 'subtle body'],
   authorId: 'parikshiva',
-  publishedAt: '2026-08-03',
+  publishedAt: '2026-07-26',
   heroImage: '/og/blog/urdhvaretas-brahmacharya-yogic-view.png',
   keyTakeaways: [
     'Brahmacharya is one of the yamas in Patanjali\'s Yoga Sutras — "conduct that leads toward the divine" — traditionally read as sexual restraint, though many modern teachers understand it more broadly as mindful, non-exploitative use of vital energy.',

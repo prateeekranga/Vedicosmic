@@ -9,7 +9,7 @@ export default {
   category: 'cosmology',
   tags: ['navagraha', 'nine planets', 'vedic astrology', 'rahu and ketu', 'jyotish', 'grahas'],
   authorId: 'parikshiva',
-  publishedAt: '2026-07-24',
+  publishedAt: '2026-07-26',
   heroImage: '/og/blog/navagraha-nine-planets-guide.png',
   keyTakeaways: [
     'The Navagraha are the nine grahas of Vedic astrology: Surya, Chandra, Mangal, Budha, Guru, Shukra, and Shani, plus the lunar nodes Rahu and Ketu.',

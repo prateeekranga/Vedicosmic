@@ -10,7 +10,7 @@ export default {
   category: 'numerology',
   tags: ['lo shu grid', 'numerology', 'magic square', 'birth date numbers', 'vedic numerology'],
   authorId: 'parikshiva',
-  publishedAt: '2026-06-05',
+  publishedAt: '2026-07-23',
   heroImage: '/og/blog/loshu-grid-explained.png',
   keyTakeaways: [
     'The Lo Shu Grid is a 3×3 magic square where every row, column and diagonal sums to 15.',

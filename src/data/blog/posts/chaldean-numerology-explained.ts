@@ -17,7 +17,7 @@ export default {
     'vedic numerology',
   ],
   authorId: 'parikshiva',
-  publishedAt: '2026-07-22',
+  publishedAt: '2026-07-26',
   heroImage: '/og/blog/chaldean-numerology-explained.png',
   keyTakeaways: [
     'Chaldean numerology is traditionally said to predate the more familiar Pythagorean system, with practitioners tracing its roots to ancient Babylon and Mesopotamia.',

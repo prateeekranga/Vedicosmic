@@ -9,7 +9,7 @@ export default {
   category: 'astrology',
   tags: ['vedic astrology', 'western astrology', 'sidereal zodiac', 'tropical zodiac', 'moon sign', 'ayanamsa'],
   authorId: 'parikshiva',
-  publishedAt: '2026-06-15',
+  publishedAt: '2026-07-23',
   heroImage: '/og/blog/vedic-vs-western-astrology.png',
   keyTakeaways: [
     'Western astrology uses the tropical zodiac, anchored to the equinoxes; Vedic astrology uses the sidereal zodiac, anchored to the fixed stars.',

@@ -9,7 +9,7 @@ export default {
   category: 'cosmology',
   tags: ['panchang', 'hindu calendar', 'tithi', 'muhurta', 'vedic calendar', 'nakshatra'],
   authorId: 'parikshiva',
-  publishedAt: '2026-06-29',
+  publishedAt: '2026-07-23',
   heroImage: '/og/blog/panchang-101-tithi-nakshatra.png',
   keyTakeaways: [
     'The Panchang combines five limbs — Tithi, Vara, Nakshatra, Yoga and Karana — to describe the character of a single day.',

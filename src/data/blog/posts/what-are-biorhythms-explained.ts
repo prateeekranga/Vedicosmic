@@ -9,7 +9,7 @@ export default {
   category: 'cosmology',
   tags: ['biorhythms', 'self-reflection', 'pseudoscience', 'personal cycles', 'wellness tools', 'history of ideas'],
   authorId: 'parikshiva',
-  publishedAt: '2026-07-30',
+  publishedAt: '2026-07-26',
   heroImage: '/og/blog/what-are-biorhythms-explained.png',
   keyTakeaways: [
     'Biorhythm theory proposes three fixed sine-wave cycles from birth — physical (23 days), emotional (28 days), and intellectual (33 days) — that combine to describe how a given day might feel.',

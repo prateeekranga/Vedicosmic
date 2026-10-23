@@ -17,7 +17,7 @@ export default {
     'anka shastra',
   ],
   authorId: 'parikshiva',
-  publishedAt: '2026-06-10',
+  publishedAt: '2026-07-23',
   heroImage: '/og/blog/numerology-compatibility-life-path.png',
   keyTakeaways: [
     'Numerology compatibility compares each partner\'s Life Path number to describe relationship dynamics, not to predict fate.',

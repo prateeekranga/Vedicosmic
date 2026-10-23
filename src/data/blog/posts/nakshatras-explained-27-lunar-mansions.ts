@@ -9,7 +9,7 @@ export default {
   category: 'astrology',
   tags: ['nakshatra', 'birth star', 'vedic astrology', 'lunar mansion', 'jyotish', 'moon sign'],
   authorId: 'parikshiva',
-  publishedAt: '2026-06-19',
+  publishedAt: '2026-07-23',
   heroImage: '/og/blog/nakshatras-explained-27-lunar-mansions.png',
   keyTakeaways: [
     'A Nakshatra is one of 27 lunar mansions the Moon passes through, each 13°20′ wide — far more precise than your 30-degree Moon sign (Rashi).',

@@ -16,7 +16,7 @@ export default {
     'numerology calculator',
   ],
   authorId: 'parikshiva',
-  publishedAt: '2026-06-01',
+  publishedAt: '2026-07-23',
   heroImage: '/og/blog/life-path-number-guide-2026.png',
   keyTakeaways: [
     'Your Life Path number comes from reducing your full birth date to a single digit — no birth time or place needed.',

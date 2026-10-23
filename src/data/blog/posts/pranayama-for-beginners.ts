@@ -10,7 +10,7 @@ export default {
   category: 'meditation-yoga',
   tags: ['pranayama', 'breathing techniques', 'nadi shodhana', 'yoga breathing', 'breathwork', 'beginner yoga'],
   authorId: 'parikshiva',
-  publishedAt: '2026-07-15',
+  publishedAt: '2026-07-23',
   heroImage: '/og/blog/pranayama-for-beginners.png',
   keyTakeaways: [
     'Pranayama is the yogic practice of consciously working with the breath — slowing, lengthening or pausing it to influence the mind.',

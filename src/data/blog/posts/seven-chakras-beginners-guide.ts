@@ -10,7 +10,7 @@ export default {
   category: 'energy',
   tags: ['chakras', 'energy healing', 'root chakra', 'crown chakra', 'subtle body', 'chakra balancing'],
   authorId: 'parikshiva',
-  publishedAt: '2026-06-24',
+  publishedAt: '2026-07-23',
   heroImage: '/og/blog/seven-chakras-beginners-guide.png',
   keyTakeaways: [
     'The 7 chakras are a symbolic map of the subtle body, from the grounding Root (Muladhara) to the expansive Crown (Sahasrara).',

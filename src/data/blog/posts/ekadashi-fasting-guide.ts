@@ -10,7 +10,7 @@ export default {
   category: 'rituals-festivals',
   tags: ['ekadashi', 'vrat fasting', 'hindu fasting', 'vedic rituals', 'lunar calendar', 'lord vishnu'],
   authorId: 'parikshiva',
-  publishedAt: '2026-07-10',
+  publishedAt: '2026-07-23',
   heroImage: '/og/blog/ekadashi-fasting-guide.png',
   keyTakeaways: [
     'Ekadashi falls twice a month, on the eleventh day of each lunar fortnight — roughly 24 times a year.',

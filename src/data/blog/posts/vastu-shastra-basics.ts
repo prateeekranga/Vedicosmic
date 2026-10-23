@@ -9,7 +9,7 @@ export default {
   category: 'energy',
   tags: ['vastu shastra', 'home energy', 'directions', 'five elements', 'pooja room', 'vedic architecture'],
   authorId: 'parikshiva',
-  publishedAt: '2026-08-01',
+  publishedAt: '2026-07-26',
   heroImage: '/og/blog/vastu-shastra-basics.png',
   keyTakeaways: [
     'Vastu Shastra is a classical Indian design tradition that maps the eight cardinal and intercardinal directions to the five elements — earth, water, fire, air, and ether.',

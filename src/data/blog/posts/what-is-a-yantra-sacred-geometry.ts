@@ -10,7 +10,7 @@ export default {
   category: 'energy',
   tags: ['yantra', 'sri yantra', 'sacred geometry', 'meditation', 'tantra', 'symbolism'],
   authorId: 'parikshiva',
-  publishedAt: '2026-07-28',
+  publishedAt: '2026-07-26',
   heroImage: '/og/blog/what-is-a-yantra-sacred-geometry.png',
   keyTakeaways: [
     'A yantra is a geometric diagram used as a focus for meditation and worship in Tantric and Vedic traditions — related to, but distinct from, a mandala.',

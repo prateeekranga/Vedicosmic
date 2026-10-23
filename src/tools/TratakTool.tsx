@@ -65,7 +65,7 @@ export default function TratakTool() {
 
   const start = () => {
     try {
-      audioRef.current = audioRef.current ?? new (window.AudioContext || (window as any).webkitAudioContext)();
+      audioRef.current = audioRef.current ?? new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
       audioRef.current.resume?.();
     } catch { /* audio optional */ }
     setRemaining(total);

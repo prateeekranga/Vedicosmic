@@ -80,7 +80,7 @@ export function sunriseSunset(date: Date, lat: number, lng: number, tz: number):
     const lngHour = lng / 15;
     const t = dayOfYear + ((rising ? 6 : 18) - lngHour) / 24;
     const M = 0.9856 * t - 3.289;
-    let L = norm360(M + 1.916 * Math.sin(rad(M)) + 0.02 * Math.sin(rad(2 * M)) + 282.634);
+    const L = norm360(M + 1.916 * Math.sin(rad(M)) + 0.02 * Math.sin(rad(2 * M)) + 282.634);
     let RA = norm360(deg(Math.atan(0.91764 * Math.tan(rad(L)))));
     RA += (Math.floor(L / 90) * 90 - Math.floor(RA / 90) * 90);
     RA /= 15;

@@ -73,7 +73,7 @@ function YantraArt({ y }: { y: Yantra }) {
       break;
     }
     case 'fibonacci': case 'golden': {
-      const path: string[] = []; let x = c - 40, yy = c - 20, size = 8, dir = 0;
+      const path: string[] = []; const x = c - 40, yy = c - 20, dir = 0; let size = 8;
       for (let i = 0; i < 9; i++) {
         const next = size * (y.kind === 'golden' ? PHI : (i < 2 ? 1 : 1.6));
         path.push(`M ${x} ${yy} a ${size} ${size} 0 0 1 ${dir % 2 === 0 ? size : -size} ${dir % 2 === 0 ? size : size}`);

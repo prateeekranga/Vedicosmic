@@ -14,7 +14,7 @@ createRoot(document.getElementById('root')!).render(
 
 // Signal the prerender script that React has mounted and painted.
 // Falls back to setTimeout for environments without requestIdleCallback.
-const signal = () => { (window as any).__PRERENDER_READY__ = true; };
+const signal = () => { (window as unknown as { __PRERENDER_READY__?: boolean }).__PRERENDER_READY__ = true; };
 if (typeof requestIdleCallback !== 'undefined') {
   requestIdleCallback(signal, { timeout: 2000 });
 } else {

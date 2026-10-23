@@ -11,7 +11,7 @@ export default {
   tags: ['best time to meditate', 'meditation timing', 'morning meditation', 'evening meditation', 'brahma muhurta'],
   authorId: 'parikshiva',
   publishedAt: '2026-08-08',
-  heroImage: 'https://images.pexels.com/photos/5928615/pexels-photo-5928615.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  heroImage: '/images/blog/pexels-5928615.webp',
   keyTakeaways: [
     'There is no single scientifically proven "best" time to meditate — consistency at a chosen time matters more than which time you pick.',
     'Morning meditation tends to suit people who want to set a calm baseline before the day\'s demands begin.',
@@ -26,7 +26,7 @@ export default {
     },
     {
       type: 'image',
-      src: 'https://images.pexels.com/photos/5928615/pexels-photo-5928615.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      src: '/images/blog/pexels-5928615.webp',
       alt: 'Silhouette of a woman doing a yoga pose on a beach at sunset',
       caption: 'Morning and evening meditation each offer a genuinely different experience — neither is objectively superior.',
     },

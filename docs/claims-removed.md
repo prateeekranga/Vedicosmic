@@ -99,5 +99,6 @@ if any of the banned patterns reaches the built site (`scripts/check-claims.mjs`
 - **Urdhva Shakti** (`/tools/urdhva`) addresses porn-urge control and speaks to a "young body"
   (`UrdhvaTool.tsx:184`) on a site intended for ages 16 and older. Please decide whether the wording and the
   audience fit.
-- **Pexels hotlinks:** 9 posts load hero images straight from images.pexels.com with no photographer credit
-  (see `docs/inventory.md`). Phase 4 replaces imagery and adds `/attributions`.
+- **Pexels photos:** 9 posts used hero images loaded straight from images.pexels.com, which set third-party
+  cookies the privacy policy did not mention. Phase 0b serves copies from `/images/blog/` instead. There is still
+  no photographer credit (see `docs/inventory.md`); Phase 4 replaces imagery and adds `/attributions`.

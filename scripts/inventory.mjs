@@ -54,6 +54,7 @@ function wordCount(post) {
 function imageSource(src) {
   if (!src) return 'none (falls back to emblem / default OG image)';
   if (src.includes('images.pexels.com')) return 'Pexels hotlink — Pexels License; photographer not credited';
+  if (src.startsWith('/images/blog/pexels-')) return 'Pexels photo, self-hosted — Pexels License; photographer not credited';
   if (src.startsWith('/og/blog/')) return 'Generated OG card (build-time screenshot; missing in production)';
   return src;
 }

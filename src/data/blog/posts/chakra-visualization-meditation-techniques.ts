@@ -11,7 +11,7 @@ export default {
   tags: ['chakra visualization', 'chakra meditation', 'meditation techniques', 'chakras', 'energy healing'],
   authorId: 'parikshiva',
   publishedAt: '2026-08-08',
-  heroImage: 'https://images.pexels.com/photos/3822864/pexels-photo-3822864.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  heroImage: '/images/blog/pexels-3822864.webp',
   keyTakeaways: [
     'Chakra visualization pairs each energy center with a specific color, shape and simple mental image to give meditation a concrete focal point.',
     'A common technique is picturing a spinning wheel of colored light at each chakra location, glowing brighter and steadier with each breath.',
@@ -31,7 +31,7 @@ export default {
     },
     {
       type: 'image',
-      src: 'https://images.pexels.com/photos/3822864/pexels-photo-3822864.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      src: '/images/blog/pexels-3822864.webp',
       alt: 'A woman meditating indoors surrounded by candles and incense',
       caption: 'Visualization gives meditation a concrete image to return to whenever the mind wanders.',
     },

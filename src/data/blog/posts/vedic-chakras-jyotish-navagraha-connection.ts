@@ -11,7 +11,7 @@ export default {
   tags: ['vedic chakras', 'navagraha', 'chakras', 'jyotish', 'vedic astrology', 'subtle body'],
   authorId: 'parikshiva',
   publishedAt: '2026-08-03',
-  heroImage: 'https://images.pexels.com/photos/4172882/pexels-photo-4172882.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  heroImage: '/images/blog/pexels-4172882.webp',
   keyTakeaways: [
     'The chakra system and Jyotish (Vedic astrology) are two distinct traditions, but many modern practitioners draw a working correspondence between the 7 chakras and the 9 grahas (Navagraha).',
     'A common pairing links the Root to Mars and Saturn, the Sacral to the Moon and Venus, the Solar Plexus to the Sun, the Heart to Venus, the Throat to Mercury, the Third Eye to Jupiter, and the Crown to Ketu or the Sun.',
@@ -26,7 +26,7 @@ export default {
     },
     {
       type: 'image',
-      src: 'https://images.pexels.com/photos/4172882/pexels-photo-4172882.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      src: '/images/blog/pexels-4172882.webp',
       alt: 'A woman sitting in lotus pose, meditating outdoors at sunset',
       caption: 'Chakra meditation and Jyotish both describe a subtle layer of experience beyond the purely physical.',
     },

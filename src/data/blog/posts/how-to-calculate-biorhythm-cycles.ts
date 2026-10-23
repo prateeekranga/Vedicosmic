@@ -11,7 +11,7 @@ export default {
   tags: ['biorhythm', 'how to calculate biorhythm', 'biorhythm cycles', 'personal cycles', 'biorhythm calculator'],
   authorId: 'parikshiva',
   publishedAt: '2026-08-03',
-  heroImage: 'https://images.pexels.com/photos/5417666/pexels-photo-5417666.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  heroImage: '/images/blog/pexels-5417666.webp',
   keyTakeaways: [
     'Every biorhythm cycle is calculated from the same base number: the total number of days you have been alive on the date you are checking.',
     'Each cycle — physical (23 days), emotional (28 days) and intellectual (33 days) — is found by dividing that day-count by its own cycle length and looking at the remainder.',
@@ -39,7 +39,7 @@ export default {
     },
     {
       type: 'image',
-      src: 'https://images.pexels.com/photos/5417666/pexels-photo-5417666.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      src: '/images/blog/pexels-5417666.webp',
       alt: 'A calendar and planner laid out on a desk, used for tracking dates',
       caption: 'Every biorhythm cycle starts from a single number: the days between your birth date and today.',
     },

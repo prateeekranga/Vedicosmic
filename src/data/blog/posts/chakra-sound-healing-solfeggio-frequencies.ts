@@ -11,7 +11,7 @@ export default {
   tags: ['sound healing', 'solfeggio frequencies', 'chakra sound healing', 'singing bowls', 'meditation music'],
   authorId: 'parikshiva',
   publishedAt: '2026-08-08',
-  heroImage: 'https://images.pexels.com/photos/6252095/pexels-photo-6252095.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  heroImage: '/images/blog/pexels-6252095.webp',
   keyTakeaways: [
     'Solfeggio frequencies are a set of specific tones (like 396 Hz or 528 Hz) marketed as corresponding to specific chakras or healing effects.',
     'Their claimed ancient origin is disputed — most historians trace the modern popular version to a 20th-century reconstruction, not an unbroken ancient tradition.',
@@ -26,7 +26,7 @@ export default {
     },
     {
       type: 'image',
-      src: 'https://images.pexels.com/photos/6252095/pexels-photo-6252095.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      src: '/images/blog/pexels-6252095.webp',
       alt: 'A person holding a Tibetan singing bowl during a sound meditation session',
       caption: 'Singing bowls and sound meditation have a genuine calming effect, whatever the underlying frequency.',
     },

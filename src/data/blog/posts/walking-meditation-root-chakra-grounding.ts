@@ -11,7 +11,7 @@ export default {
   tags: ['walking meditation', 'root chakra', 'grounding', 'meditation techniques', 'mindful walking'],
   authorId: 'parikshiva',
   publishedAt: '2026-08-08',
-  heroImage: 'https://images.pexels.com/photos/397096/pexels-photo-397096.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  heroImage: '/images/blog/pexels-397096.webp',
   keyTakeaways: [
     'Walking meditation replaces stillness with slow, deliberate movement as the object of attention — a genuine alternative to seated practice, not a lesser version of it.',
     'It pairs naturally with Root chakra work, since both are fundamentally about the physical, grounded connection between your body and the earth.',
@@ -31,7 +31,7 @@ export default {
     },
     {
       type: 'image',
-      src: 'https://images.pexels.com/photos/397096/pexels-photo-397096.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      src: '/images/blog/pexels-397096.webp',
       alt: 'Back view of a person walking slowly along a quiet forest path',
       caption: 'Walking meditation turns each step into the object of attention, rather than the destination.',
     },

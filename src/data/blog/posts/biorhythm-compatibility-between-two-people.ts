@@ -11,7 +11,7 @@ export default {
   tags: ['biorhythm compatibility', 'biorhythm', 'personal cycles', 'relationship compatibility', 'biorhythm theory'],
   authorId: 'parikshiva',
   publishedAt: '2026-08-03',
-  heroImage: 'https://images.pexels.com/photos/1646311/pexels-photo-1646311.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  heroImage: '/images/blog/pexels-1646311.webp',
   keyTakeaways: [
     'Biorhythm compatibility theory compares two people\'s physical, emotional and intellectual cycles to describe how "in sync" they might be on a given day.',
     'It is calculated by plotting both people\'s three cycles on the same timeline and comparing how closely each pair of waves aligns.',
@@ -31,7 +31,7 @@ export default {
     },
     {
       type: 'image',
-      src: 'https://images.pexels.com/photos/1646311/pexels-photo-1646311.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      src: '/images/blog/pexels-1646311.webp',
       alt: 'Ocean waves rolling toward the shore',
       caption: 'Biorhythm compatibility compares two people\'s waves the way you might compare two overlapping tides.',
     },

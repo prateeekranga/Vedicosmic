@@ -11,7 +11,7 @@ export default {
   tags: ['navagraha', 'navagraha remedies', 'vedic astrology', 'planetary mantras', 'gemstones', 'jyotish'],
   authorId: 'parikshiva',
   publishedAt: '2026-08-03',
-  heroImage: 'https://images.pexels.com/photos/4094847/pexels-photo-4094847.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  heroImage: '/images/blog/pexels-4094847.webp',
   keyTakeaways: [
     'Navagraha remedies are traditional practices — mantras, gemstones, colors, fasting and simple rituals — used in Jyotish to ease the effect of a weak or difficult planet in a birth chart.',
     'Each of the nine grahas has its own seed mantra, gemstone, color and day of the week traditionally associated with it.',
@@ -38,7 +38,7 @@ export default {
     },
     {
       type: 'image',
-      src: 'https://images.pexels.com/photos/4094847/pexels-photo-4094847.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      src: '/images/blog/pexels-4094847.webp',
       alt: 'A lit diya oil lamp, traditionally used in Hindu puja rituals',
       caption: 'A lit diya is a common element of Navagraha puja and other traditional rituals.',
     },

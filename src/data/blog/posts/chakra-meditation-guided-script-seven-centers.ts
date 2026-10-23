@@ -11,7 +11,7 @@ export default {
   tags: ['chakra meditation', 'guided meditation', 'meditation script', 'chakras', 'meditation for beginners'],
   authorId: 'parikshiva',
   publishedAt: '2026-08-08',
-  heroImage: 'https://images.pexels.com/photos/9032698/pexels-photo-9032698.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  heroImage: '/images/blog/pexels-9032698.webp',
   keyTakeaways: [
     'A full chakra meditation moves attention through all 7 centers in order, root to crown, pairing each with a brief phrase and a moment of stillness.',
     'The script below takes roughly 12-15 minutes and needs nothing but a quiet seat — no props, mala or prior experience required.',
@@ -31,7 +31,7 @@ export default {
     },
     {
       type: 'image',
-      src: 'https://images.pexels.com/photos/9032698/pexels-photo-9032698.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      src: '/images/blog/pexels-9032698.webp',
       alt: 'A person sitting quietly meditating beside a lit candle',
       caption: 'A simple, quiet seat is all a chakra meditation practice actually requires.',
     },

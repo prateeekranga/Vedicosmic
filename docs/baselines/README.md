@@ -108,3 +108,32 @@ Same method as Phase 0b (Hostinger-style build, `serve@14.2.4 -s`, Lighthouse CI
 axe-core 4.14 (13 pages, chart cast on `/tools/astrology`, `phase-2/axe.json`): 0 critical. New code adds no
 violations; the remaining serious ones are the site-wide low-contrast patterns listed after Phase 0b (breadcrumbs,
 badges, blog cards, faint helper text), for Phase 4/8.
+
+## After Phase 3 (`phase-3/`)
+
+Same server and settings, but now the pre-rendered build that production will serve (`serve@14.2.4 dist`,
+without the SPA fallback). Phase 2 measured the client-rendered build Hostinger served at the time.
+
+| Page | Perf | LCP | TBT | CLS | Transfer |
+|---|---|---|---|---|---|
+| `/` | 83 → 82 | 4.0 → 3.8 s | 122 → 24 ms | 0.031 → 0.028 | 812 → 822 KB |
+| `/tools/sadhana` | 70 → 68 | 6.0 → 4.7 s | 242 → 337 ms | 0.002 → 0.001 | 852 → 854 KB |
+| `/tools/nakshatra` | 67 → 59 | 5.0 → 5.4 s | 133 → 222 ms | 0.206 → 0.205 | 877 → 879 KB |
+| `/tools/planetary-hours` | 79 → 75 | 4.6 → 4.7 s | 73 → 127 ms | 0.001 → 0.002 | 764 → 767 KB |
+| `/blog/best-time-to-meditate-morning-vs-evening` | 82 → 82 | 4.2 → 3.9 s | 98 → 106 ms | 0.022 → 0.022 | 685 → 689 KB |
+
+- Every page now arrives as complete HTML (heading, copy, links, head tags and JSON-LD) before any script
+  runs; crawlers and link previews no longer depend on JavaScript. That was the goal of this phase, not speed.
+- Mobile performance is in the same range as before: what costs time is still the JavaScript every page loads
+  (React, framer-motion) and the Google Fonts, which Phases 4 and 8 address. TBT moves between runs on this
+  machine (Sādhana runs: 62/77/68).
+- A first attempt shifted the tool pages by 40 px after loading (CLS 0.10): the pre-rendered share row wrapped
+  to two lines, then phones swapped in a one-line Share button. The pre-rendered page now shows the same button,
+  and CLS is back to 0.001–0.002. Nakshatra's 0.205 is still the title re-wrapping when Cinzel arrives.
+- Measured on staging.vedicosmic.com (the real Hostinger server), runs vary widely with the network (the
+  homepage scored 91, 64 and 66), so the local server stays the comparison point. Staging's SEO score is low on
+  purpose: it is blocked from indexing.
+
+axe (`phase-3/axe.json`): 0 critical. The homepage now shows 15 low-contrast elements that were invisible to
+axe before, because sections below the fold used to wait at opacity 0 for their entrance animation; they are
+the same site-wide patterns (faint step numbers, blog-card dates) listed for Phase 4/8.

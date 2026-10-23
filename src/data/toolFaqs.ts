@@ -2,8 +2,8 @@ import type { FAQItem } from '@/types/content.types';
 
 /** Shown on every tool page — the two questions any first-time visitor actually has. */
 const UNIVERSAL_FAQS: FAQItem[] = [
-  { id: 'universal-free', header: 'Is this tool free to use?', body: 'Yes — every tool on VediCosmic is completely free, with no sign-up required. An optional free account lets you save your results and track progress across visits.' },
-  { id: 'universal-privacy', header: 'Is my personal data stored or shared?', body: 'No. All calculations run entirely in your browser — your name, birth details and results are never sent to a server unless you choose to save them to your own free account.' },
+  { id: 'universal-free', header: 'Is this tool free to use?', body: 'Yes. Every tool on VediCosmic is free, with no sign-up. If you choose to save a result, it stays in this browser on your device.' },
+  { id: 'universal-privacy', header: 'Is my personal data stored or shared?', body: 'No. Calculations run in your browser, and your name, birth details and results are not sent to us. Anything you choose to save is kept in this browser only, and you can delete it from the Daily Sādhana page.' },
 ];
 
 const TOOL_SPECIFIC_FAQS: Record<string, FAQItem[]> = {

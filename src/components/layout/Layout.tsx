@@ -10,10 +10,9 @@ import { BackToTop } from './BackToTop';
 import { ChakraMiniPlayer } from './ChakraMiniPlayer';
 
 // Lazy-load cosmetic-only components — they add no LCP value
-const CosmicGate   = lazy(() => import('@/components/motion/CosmicGate').then(m => ({ default: m.CosmicGate })));
 const CosmicCursor = lazy(() => import('@/components/motion/CosmicCursor').then(m => ({ default: m.CosmicCursor })));
 
-// Only mount cursor/gate on non-touch devices
+// Only mount the cursor effect on non-touch devices
 const isDesktop = typeof window !== 'undefined' && window.matchMedia('(pointer: fine)').matches;
 
 export function Layout() {
@@ -33,7 +32,6 @@ export function Layout() {
           {/* Heavy cosmetic effects — lazy, desktop-only */}
           {isDesktop && (
             <Suspense fallback={null}>
-              {pathname === '/' && <CosmicGate />}
               <CosmicCursor />
             </Suspense>
           )}

@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 /**
  * Polls a live AnalyserNode via requestAnimationFrame and writes bar heights straight to
  * cached DOM refs' style.transform — no per-frame React state, matching the imperative
- * rAF-loop idiom already used by Starfield.tsx/CosmicGate.tsx. Reads time-domain samples
+ * rAF-loop idiom already used by Starfield.tsx. Reads time-domain samples
  * (not frequency-domain) deliberately: a single sine tone would light up one frequency
  * bin, which would visually overstate how many frequencies are really present — this is a
  * literal, honest rendering of the actual oscillation in the buffer, closer to a bar-style

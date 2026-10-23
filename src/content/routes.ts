@@ -221,8 +221,8 @@ export const TOOLS: ToolMeta[] = [
   {
     id: 'kundali-matching', slug: 'kundali-matching', name: 'Kundali Matching',
     subtitle: 'Numerology and Ashtakoot compatibility for two',
-    seoTitle: 'Free Kundali Matching Calculator — Guna Milan & Numerology Compatibility',
-    description: 'Free Kundali matching calculator: enter two birth details to reveal the classical 8-koota Ashtakoot (Guna Milan) score out of 36, alongside Life Path and Expression numerology compatibility — two honest lenses on a relationship, side by side.',
+    seoTitle: 'Kundali Matching (coming soon) · VediCosmic',
+    description: 'Kundali matching (Ashtakoota guna milan) is being rebuilt and checked against reference charts before it goes live.',
     category: 'astrology', accent: 'violet', Icon: Heart,
     isNew: true,
     status: 'coming-soon', indexable: false,

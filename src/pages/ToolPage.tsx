@@ -60,15 +60,16 @@ export default function ToolPage() {
     title: tool ? (tool.seoTitle ?? `${tool.name} · VediCosmic`) : 'Tool · VediCosmic',
     description: tool?.description ?? '',
     ready: !postsLoading,
+    noindex: tool ? !tool.indexable : false,
     jsonLd: tool ? [
       breadcrumbList([
         { name: 'Home', path: '/' },
         { name: 'Tools', path: '/tools' },
         { name: tool.name, path: `/tools/${tool.slug}` },
       ]),
-      softwareApplicationSchema(tool),
+      // Only working tools are described as software applications.
+      ...(tool.status === 'live' ? [softwareApplicationSchema(tool), ...getToolExtraJsonLd(tool)] : []),
       faqPageSchema(getToolFaqs(tool.id)),
-      ...getToolExtraJsonLd(tool),
     ] : undefined,
   });
 
@@ -125,8 +126,14 @@ function ToolBody({
 
       {comingSoon ? (
         <ComingSoon title={`${tool.name} is on its way`}
-          blurb="We're polishing this tool before it goes live. Check back soon — or explore the rest of our free Vedic tools in the meantime." />
-      ) : <Tool />}
+          blurb="This tool is being rebuilt and checked against reference charts before it goes live. The rest of the tools are free to use in the meantime." />
+      ) : (
+        // The h2 keeps heading levels in order: the page h1 above, the tools' own h3 sections below.
+        <section aria-labelledby="tool-heading">
+          <h2 id="tool-heading" className="sr-only">{tool.name}</h2>
+          <Tool />
+        </section>
+      )}
 
       <div className="mx-auto mt-16 max-w-3xl">
         <SectionHeading eyebrow="Good to Know" title="Frequently Asked" />

@@ -8,7 +8,7 @@ function getInitial(): boolean {
 export function usePrefersReducedMotion(): boolean {
   // Lazy initializer reads matchMedia synchronously on first render, so
   // consumers never briefly see "not reduced" before an effect corrects it —
-  // some (like CosmicGate) trigger one-time side effects on mount that a
+  // some trigger one-time side effects on mount that a
   // later correction can't undo.
   const [reduced, setReduced] = useState(getInitial);
   useEffect(() => {

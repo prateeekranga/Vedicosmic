@@ -32,7 +32,7 @@ const context = await browser.newContext({ viewport: { width: 390, height: 844 }
 const page = await context.newPage();
 
 // 1. One H1 and no skipped heading levels on key pages.
-for (const path of ['/', '/tools', '/courses', '/contact', '/about', '/tools/astrology', '/tools/nakshatra',
+for (const path of ['/', '/tools', '/courses', '/contact', '/about', '/how-we-calculate', '/tools/astrology', '/tools/nakshatra',
   '/blog/best-time-to-meditate-morning-vs-evening', '/privacy-policy']) {
   await open(page, path);
   const { h1, skips } = await headingReport(page);
@@ -62,24 +62,30 @@ for (const path of ['/', '/about', '/tools', '/contact', '/courses', '/blog/nume
   check(`${path}: no removed claims on screen`, hits.length === 0, hits.join(', '));
 }
 
-// 4. Birth chart: golden case L01 (Kolkata 1988-03-20 02:00) — Lagna hidden, borderline Moon flagged,
-//    and no request leaves the page carrying the birth data.
+// 4. Birth chart: golden case L01 (Kolkata 1988-03-20 02:00) — Lagna Dhanu, borderline Moon flagged,
+//    method line shown, and no request leaves the page carrying the birth data.
 {
   await open(page, '/tools/astrology');
+  const requests = [];
+  page.on('request', (r) => requests.push({ url: r.url(), body: r.postData() ?? '' }));
   await page.selectOption('select[aria-label="Day"]', '20');
   await page.selectOption('select[aria-label="Month"]', '3');
   await page.selectOption('select[aria-label="Year"]', '1988');
   await page.fill('#ast-time', '02:00');
-  await page.selectOption('#ast-city', { label: 'Kolkata, India' });
-  const requests = [];
-  page.on('request', (r) => requests.push({ url: r.url(), body: r.postData() ?? '' }));
+  await page.fill('#ast-place', 'Kolkata');
+  await page.waitForSelector('#ast-place-opt-0', { timeout: 10000 });
+  await page.keyboard.press('Enter');
   await page.getByRole('button', { name: /cast my chart/i }).click();
   await page.waitForTimeout(1500);
   const text = await page.evaluate(() => document.body.innerText);
-  check('astrology: Lagna is hidden with the rebuild note', /Lagna \(Ascendant\) is being rebuilt/.test(text));
-  check('astrology: borderline note shown for L01 Moon (0.009° from Meena/Mesha)', /Borderline: your Moon/.test(text));
+  check('astrology: Lagna shown and is Dhanu (golden L01)', /Lagna \(Ascendant\)/.test(text) && /Dhanu \(Sagittarius\)/.test(text));
+  check('astrology: borderline note shown for L01 Moon (0.009° from Meena/Mesha)', /Moon is within 0\.05° of the edge/.test(text));
   check('astrology: Moon sign is Meena or Mesha', /Meena|Mesha/.test(text));
-  const leaks = requests.filter((r) => !r.url.startsWith(BASE) || /1988|02:00|Kolkata/.test(r.url + r.body));
+  check('astrology: all nine grahas listed', ['Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'].every((g) => text.includes(g)));
+  check('astrology: method line names the engine', /Engine: Astronomy Engine \d/.test(text));
+  // Our own files and Google Fonts only; nothing may carry the date, time, place or its coordinates.
+  const allowed = (url) => url.startsWith(BASE) || /^https:\/\/fonts\.(googleapis|gstatic)\.com\//.test(url);
+  const leaks = requests.filter((r) => !allowed(r.url) || /1988|02:00|kolkata|22\.57|88\.36/i.test(r.url + r.body));
   check('astrology: no request carries birth data', leaks.length === 0, leaks.map((r) => r.url).join(', '));
 
   // 5. Saving asks for consent first, appears on the Sādhana page, and can be deleted.
@@ -114,6 +120,29 @@ for (const path of ['/', '/about', '/tools', '/contact', '/courses', '/blog/nume
   }
   await open(page, '/tools/nakshatra');
   check('/tools/nakshatra: result note under the tool', await page.getByText('Astrology offers tradition-based reflection, not guarantees.').isVisible());
+}
+
+// 7. Place search finds the playbook's test towns; the daily tools compute for a place.
+{
+  await open(page, '/tools/nakshatra');
+  for (const town of ['Sonipat', 'Rohtak']) {
+    await page.fill('#nak-place', town);
+    await page.waitForFunction((t) => document.querySelector('#nak-place-opt-0')?.textContent?.startsWith(t), town, { timeout: 10000 }).catch(() => {});
+    const option = await page.locator('#nak-place-opt-0').textContent().catch(() => '');
+    check(`place search: "${town}" finds ${town}, Haryana`, new RegExp(`^${town}, Haryana`).test(option ?? ''), option ?? '');
+  }
+  const role = await page.getAttribute('#nak-place', 'role');
+  check('place search: input is an ARIA combobox', role === 'combobox', String(role));
+
+  await open(page, '/tools/vrat-calendar');
+  await page.waitForSelector('text=Ekadashi', { timeout: 15000 }).catch(() => {});
+  check('/tools/vrat-calendar: lists an Ekadashi in the next 45 days', /Ekadashi/.test(await page.evaluate(() => document.body.innerText)));
+
+  await open(page, '/tools/muhurta');
+  check('/tools/muhurta: shows Rahu Kaal with times', /Rahu Kaal[\s\S]*\d{1,2}:\d{2}/.test(await page.evaluate(() => document.body.innerText)));
+
+  await open(page, '/how-we-calculate');
+  check('/how-we-calculate: lists the reference charts', /Reference charts we pass/.test(await page.evaluate(() => document.body.innerText)));
 }
 
 await browser.close();

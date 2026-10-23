@@ -1,15 +1,17 @@
 import { computeBlueprint, type Blueprint } from './numerology';
 import { NUMBER_MEANINGS } from '@/data/numerology';
-import { computeBirthMoon, type BirthMoonPlacement } from './nakshatra';
-import { ashtakootMilan, type AshtakootResult } from './ashtakoot';
-import type { City } from './astronomy';
+import { ashtakootMilan, type AshtakootResult, type BirthMoonPlacement } from './ashtakoot';
+import { birthInstant } from './birthTime';
+import type { ChosenPlace } from './places';
+import { siderealLongitude } from '@/engine/sky';
+import { zodiacPosition } from '@/engine/core';
 
 export interface PersonInput {
   name: string;
   gender: 'male' | 'female';
   day: number; month: number; year: number;
   time: string;
-  city: City;
+  place: ChosenPlace;
 }
 
 export interface NumberPairResult { label: string; a: number; b: number; score: number; traditionallyCompatible: boolean }
@@ -32,6 +34,13 @@ function pairScore(a: number, b: number): number {
 function pad(n: number): string { return String(n).padStart(2, '0'); }
 function isoOf(p: PersonInput): string { return `${p.year}-${pad(p.month)}-${pad(p.day)}`; }
 
+/** Sidereal Moon at birth, the birth time read in the birth place's own time zone. */
+function birthMoon(p: PersonInput): BirthMoonPlacement {
+  const lon = siderealLongitude('moon', birthInstant(isoOf(p), p.time || '06:00', p.place).utcMs);
+  const z = zodiacPosition(lon);
+  return { nakshatraIndex: z.nakshatra, pada: z.pada, rashiIndex: z.sign, siderealMoonLon: lon };
+}
+
 export function matchPeople(a: PersonInput, b: PersonInput): MatchReport {
   const blueprintA = computeBlueprint(a.name, a.day, a.month, a.year);
   const blueprintB = computeBlueprint(b.name, b.day, b.month, b.year);
@@ -49,8 +58,8 @@ export function matchPeople(a: PersonInput, b: PersonInput): MatchReport {
     traditionallyCompatible: !!NUMBER_MEANINGS[blueprintA.expression.root]?.compatibleWith.includes(blueprintB.expression.root),
   };
 
-  const placementA = computeBirthMoon(isoOf(a), a.time, a.city);
-  const placementB = computeBirthMoon(isoOf(b), b.time, b.city);
+  const placementA = birthMoon(a);
+  const placementB = birthMoon(b);
   const ashtakoot = ashtakootMilan(placementA, placementB, a.gender, b.gender);
 
   return {

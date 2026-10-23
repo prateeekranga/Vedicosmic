@@ -7,7 +7,11 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { useDeviceStore } from '@/contexts/DeviceStoreContext';
 import { SavedOnDevice } from '@/components/device/SavedOnDevice';
-import { panchang, upcomingVrats } from '@/lib/panchang';
+import { skyAt } from '@/engine/panchang';
+import { vratsBetween } from '@/engine/vrat';
+import { dateInZone } from '@/engine/time';
+import { formatIsoDate } from '@/lib/format';
+import { usePreferredPlace } from '@/hooks/usePreferredPlace';
 import { trackEvent } from '@/lib/analytics';
 
 /* ── the day's suggested three-step flow ── */
@@ -48,8 +52,9 @@ function MiniMoon({ phase }: { phase: number }) {
 export default function SadhanaTool() {
   const { streakNow } = useDeviceStore();
   const [done, setDone] = useState<Record<string, boolean>>({});
-  const pan = useMemo(() => panchang(new Date()), []);
-  const nextVrat = useMemo(() => upcomingVrats(new Date(), 30)[0], []);
+  const [place] = usePreferredPlace();
+  const pan = useMemo(() => skyAt(Date.now()), []);
+  const nextVrat = useMemo(() => vratsBetween(dateInZone(Date.now(), place.zone), 30, place)[0], [place]);
   const ctx = useMemo(dayContext, []);
   const streak = streakNow;
 
@@ -80,9 +85,9 @@ export default function SadhanaTool() {
             <h2 className="mt-1 font-heading text-h2 text-white">{ctx.g}</h2>
             <p className="mt-1 max-w-lg text-sm text-white/60">{ctx.s}</p>
             <div className="mt-3 flex flex-wrap gap-2">
-              <Badge tone="gold">{pan.tithiName}</Badge>
+              <Badge tone="gold">{pan.tithi.name}</Badge>
               <Badge tone="cyan">Moon in {pan.nakshatra}</Badge>
-              <Badge tone="neutral">{pan.paksha === 'Shukla' ? 'Waxing' : 'Waning'}</Badge>
+              <Badge tone="neutral">{pan.tithi.paksha === 'Shukla' ? 'Waxing' : 'Waning'}</Badge>
             </div>
           </div>
           <motion.div animate={{ y: [0, -5, 0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}>
@@ -154,7 +159,7 @@ export default function SadhanaTool() {
               <span className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl text-3xl" style={{ background: 'rgba(255,215,0,0.10)' }}>🌿</span>
               <div className="min-w-0">
                 <p className="text-sm font-medium text-white">Next: {nextVrat.name}</p>
-                <p className="text-xs text-white/50">{nextVrat.date.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' })}</p>
+                <p className="text-xs text-white/50">{formatIsoDate(nextVrat.date)} · {place.label.split(',')[0]}</p>
                 <span className="mt-1 inline-flex items-center gap-1 text-xs text-gold-300">Open calendar <ArrowRight className="h-3 w-3" /></span>
               </div>
             </Card>

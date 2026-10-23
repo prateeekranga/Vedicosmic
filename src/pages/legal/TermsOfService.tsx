@@ -23,8 +23,8 @@ export default function TermsOfService() {
           heading: 'Results are for reflection',
           body: (
             <p>
-              Results come from traditional methods and simplified astronomical formulas; some are approximate, and
-              each tool says so where it matters. They are offered for reflection and practice, not as predictions,
+              Results come from traditional methods and the astronomical calculations explained on our{' '}
+              <a href="/how-we-calculate" className="text-brand-cyan-soft underline">How we calculate</a> page. They are offered for reflection and practice, not as predictions,
               guarantees or a substitute for medical, psychological, financial or legal advice. See the{' '}
               <a href="/disclaimer" className="text-brand-cyan-soft hover:underline">Disclaimer</a>.
             </p>

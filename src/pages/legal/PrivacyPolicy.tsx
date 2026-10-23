@@ -48,7 +48,9 @@ export default function PrivacyPolicy() {
           body: (
             <p>
               Every tool runs its calculations in your browser. The name, birth date, time, place or numbers you
-              enter are used on your device to compute the result and are not sent to us.
+              enter are used on your device to compute the result and are not sent to us. When you search for a place,
+              your browser downloads our list of places that start with the same letter, so that first letter is the
+              only part of a search that reaches our server.
             </p>
           ),
         },

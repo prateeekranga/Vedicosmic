@@ -11,7 +11,23 @@ const BASE = (process.argv[2] ?? 'http://localhost:4173').replace(/\/$/, '');
 const OUT = process.argv[3]; // optional: write the full report as JSON here
 const FAIL_ON = new Set(['critical']);
 const PAGES = ['/', '/tools', '/tools/sadhana', '/tools/nakshatra', '/tools/planetary-hours', '/tools/astrology',
-  '/blog/best-time-to-meditate-morning-vs-evening', '/about', '/contact', '/privacy-policy'];
+  '/tools/muhurta', '/tools/vrat-calendar', '/blog/best-time-to-meditate-morning-vs-evening', '/about', '/contact',
+  '/privacy-policy', '/how-we-calculate'];
+
+// Pages whose results only appear after input: fill the form so the results are checked too.
+const PREPARE = {
+  '/tools/astrology': async (page) => {
+    await page.selectOption('select[aria-label="Day"]', '20');
+    await page.selectOption('select[aria-label="Month"]', '3');
+    await page.selectOption('select[aria-label="Year"]', '1988');
+    await page.fill('#ast-time', '02:00');
+    await page.fill('#ast-place', 'Kolkata');
+    await page.waitForSelector('#ast-place-opt-0', { timeout: 10000 });
+    await page.keyboard.press('Enter');
+    await page.getByRole('button', { name: /cast my chart/i }).click();
+    await page.waitForTimeout(1000);
+  },
+};
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
 
 const axeSource = fs.readFileSync(createRequire(import.meta.url).resolve('axe-core/axe.min.js'), 'utf8');
@@ -30,6 +46,7 @@ for (const path of PAGES) {
   await page.goto(BASE + path, { waitUntil: 'networkidle' });
   await page.waitForSelector('h1', { timeout: 10000 }).catch(() => {});
   await page.waitForTimeout(1500);
+  if (PREPARE[path]) await PREPARE[path](page);
   await page.addScriptTag({ content: axeSource });
   const { violations } = await page.evaluate((tags) => window.axe.run(document, { runOnly: { type: 'tag', values: tags } }), TAGS);
   report.push({ path, violations: violations.map((v) => ({ id: v.id, impact: v.impact, help: v.help, nodes: v.nodes.length, sample: v.nodes[0]?.target.join(' ') })) });

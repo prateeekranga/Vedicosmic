@@ -35,7 +35,7 @@ export function LegalLayout({
           <RevealItem key={s.heading}>
             <Card className="p-7 sm:p-8">
               <h2 className="font-heading text-h4 text-gold-pale">
-                <span className="mr-2 text-white/30">{String(i + 1).padStart(2, '0')}</span>
+                <span className="mr-2 text-white/60">{String(i + 1).padStart(2, '0')}</span>
                 {s.heading}
               </h2>
               <div className="mt-3 space-y-3 text-sm leading-relaxed text-white/65">{s.body}</div>

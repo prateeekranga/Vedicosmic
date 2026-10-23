@@ -4,10 +4,11 @@ import { Heart, RotateCcw, Sparkles, ArrowLeftRight, AlertTriangle } from 'lucid
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
-import { Input, Select } from '@/components/ui/Field';
+import { Input } from '@/components/ui/Field';
 import { DateSelect } from '@/components/ui/DateSelect';
 import { Accordion } from '@/components/ui/Accordion';
-import { CITIES } from '@/lib/astronomy';
+import { PlaceSearch } from '@/components/astro/PlaceSearch';
+import type { ChosenPlace } from '@/lib/places';
 import { matchPeople, type MatchReport, type PersonInput } from '@/lib/matchmaking';
 import { useDeviceStore } from '@/contexts/DeviceStoreContext';
 import { SaveOnDeviceButton } from '@/components/device/SaveOnDeviceButton';
@@ -28,8 +29,8 @@ function useCountUp(target: number, dur = 1200) {
   return v;
 }
 
-interface FormPerson { name: string; gender: 'male' | 'female'; dob: string; time: string; cityIdx: number }
-const blankPerson = (): FormPerson => ({ name: '', gender: 'male', dob: '', time: '06:00', cityIdx: 0 });
+interface FormPerson { name: string; gender: 'male' | 'female'; dob: string; time: string; place: ChosenPlace | null }
+const blankPerson = (): FormPerson => ({ name: '', gender: 'male', dob: '', time: '06:00', place: null });
 
 /** DateSelect allows day 1-31 regardless of month — catch rollover dates like Feb 30. */
 function isValidISODate(iso: string): boolean {
@@ -41,7 +42,7 @@ function isValidISODate(iso: string): boolean {
 
 function sameEntry(a: FormPerson, b: FormPerson): boolean {
   return a.name.trim().toLowerCase() === b.name.trim().toLowerCase()
-    && a.dob === b.dob && a.time === b.time && a.cityIdx === b.cityIdx
+    && a.dob === b.dob && a.time === b.time && a.place?.label === b.place?.label
     && a.name.trim().length > 0;
 }
 
@@ -64,9 +65,8 @@ function PersonForm({ label, p, setP }: { label: string; p: FormPerson; setP: (p
       <DateSelect value={p.dob} onChange={(iso) => setP({ ...p, dob: iso })} label="Date of birth" />
       {p.dob && !isValidISODate(p.dob) && <p className="text-xs text-error">That date doesn't exist — check the day and month.</p>}
       <Input type="time" label="Time of birth" value={p.time} onChange={(e) => setP({ ...p, time: e.target.value })} />
-      <Select label="Birth city" value={p.cityIdx} onChange={(e) => setP({ ...p, cityIdx: Number(e.target.value) })}>
-        {CITIES.map((c, i) => <option key={c.name} value={i}>{c.name}, {c.country}</option>)}
-      </Select>
+      <PlaceSearch id={`${label.toLowerCase().replace(/\W+/g, '-')}-place`} label="Place of birth" value={p.place}
+        onChange={(place) => setP({ ...p, place })} allowOffsetOverride />
     </div>
   );
 }
@@ -78,7 +78,8 @@ export default function KundaliMatchingTool() {
   const { saveReading } = useDeviceStore();
   const { notify } = useToast();
 
-  const ready = a.name.trim().length > 1 && isValidISODate(a.dob) && b.name.trim().length > 1 && isValidISODate(b.dob);
+  const ready = a.name.trim().length > 1 && isValidISODate(a.dob) && !!a.place
+    && b.name.trim().length > 1 && isValidISODate(b.dob) && !!b.place;
   const isSamePerson = sameEntry(a, b);
   const orb = useCountUp(report?.ashtakoot.total ?? 0);
   const swap = () => { setA(b); setB(a); };
@@ -87,7 +88,7 @@ export default function KundaliMatchingTool() {
     if (!ready) return;
     const toInput = (p: FormPerson): PersonInput => {
       const [y, m, d] = p.dob.split('-').map(Number);
-      return { name: p.name.trim(), gender: p.gender, day: d, month: m, year: y, time: p.time, city: CITIES[p.cityIdx] };
+      return { name: p.name.trim(), gender: p.gender, day: d, month: m, year: y, time: p.time, place: p.place! };
     };
     setReport(matchPeople(toInput(a), toInput(b)));
   };
@@ -201,7 +202,7 @@ export default function KundaliMatchingTool() {
       </Card>
 
       <p className="text-center text-xs text-white/40">
-        Moon positions come from an approximate sidereal model (usually within about 0.3°), with each birth time read in the birth city’s own time zone. A score is one thing many families consider; it is not a verdict on a relationship.
+        Moon positions are calculated on your device (Lahiri ayanamsa), with each birth time read in the birth place’s own time zone. A score is one thing many families consider; it is not a verdict on a relationship.
       </p>
 
       <div className="text-center">

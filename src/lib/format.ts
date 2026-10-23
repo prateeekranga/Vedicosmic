@@ -48,3 +48,18 @@ export function seededRandom(seed: string): () => number {
 export function todayKey(): string {
   return new Date().toISOString().slice(0, 10);
 }
+
+/** Clock time of an instant in a given IANA zone, rounded to the nearest minute, e.g. "6:42 am". */
+export function formatClock(utcMs: number, zone: string): string {
+  return new Date(Math.round(utcMs / 60000) * 60000).toLocaleTimeString('en-IN', { timeZone: zone, hour: 'numeric', minute: '2-digit' });
+}
+
+/** Date of an instant in a given IANA zone, e.g. "Mon, 12 Jan 2026". */
+export function formatDateIn(utcMs: number, zone: string, opts: Intl.DateTimeFormatOptions = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }): string {
+  return new Date(utcMs).toLocaleDateString('en-IN', { timeZone: zone, ...opts });
+}
+
+/** A YYYY-MM-DD calendar date for display, without any time-zone shift. */
+export function formatIsoDate(date: string, opts: Intl.DateTimeFormatOptions = { weekday: 'short', day: 'numeric', month: 'short' }): string {
+  return new Date(`${date}T12:00:00Z`).toLocaleDateString('en-IN', { timeZone: 'UTC', ...opts });
+}

@@ -30,12 +30,13 @@ export default function Disclaimer() {
           ),
         },
         {
-          heading: 'Approximate calculations',
+          heading: 'Calculations and their limits',
           body: (
             <p>
-              Some astronomical results — Sun and Moon positions, sunrise and sunset, tithi and nakshatra — come from
-              simplified formulas and are approximate. Each tool says so where it matters. Check important dates
-              and charts with your local panchang or astrologer.
+              Charts, panchang and daily timings are calculated with a tested astronomy engine, described on the{' '}
+              <a href="/how-we-calculate" className="text-brand-cyan-soft underline">How we calculate</a> page. Results still
+              depend on the birth time and place you enter, and traditions differ on some rules, such as the day a vrat is
+              kept. Check important dates and charts with your local panchang or astrologer.
             </p>
           ),
         },

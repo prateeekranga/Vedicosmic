@@ -8,29 +8,56 @@ import { DateSelect } from '@/components/ui/DateSelect';
 import { NAKSHATRAS as NAKS, RULER_COLOR } from '@/data/nakshatras';
 import { ShareBar } from '@/components/ShareBar';
 import { useShareResult } from '@/contexts/ShareContext';
-import { siderealMoonLongitude } from '@/lib/astronomy';
-import { BoundaryNote } from '@/components/astro/BoundaryNote';
+import { siderealLongitude } from '@/engine/sky';
+import { ENGINE_MARGIN_DEG, nearBoundary, zodiacPosition, type Boundary } from '@/engine/core';
+import type { ResolvedTime } from '@/engine/time';
+import { PlaceSearch } from '@/components/astro/PlaceSearch';
+import { AstroNote } from '@/components/astro/AstroNote';
+import { ClockNote } from '@/components/astro/ClockNote';
+import { MethodLine } from '@/components/astro/MethodLine';
+import { birthInstant } from '@/lib/birthTime';
+import type { ChosenPlace } from '@/lib/places';
 import { trackEvent } from '@/lib/analytics';
 
 const rad = Math.PI / 180;
 
 const SEG = 360 / 27;
+const HALF_HOUR = 30 * 60000;
+
+interface Result {
+  idx: number;
+  pada: number;
+  lon: number;
+  borderline: Boundary | null;
+  /** The nakshatra differs half an hour either side of the birth time. */
+  timeSensitive: boolean;
+  resolved: ResolvedTime;
+  zone: string;
+  time: string;
+}
 
 export default function NakshatraTool() {
   const [sel, setSel] = useState(0);
   const [dob, setDob] = useState('');
-  const [time, setTime] = useState('06:00');
-  const [result, setResult] = useState<{ idx: number; pada: number; lon: number } | null>(null);
+  const [time, setTime] = useState('');
+  const [place, setPlace] = useState<ChosenPlace | null>(null);
+  const [useLater, setUseLater] = useState(false);
+  const [result, setResult] = useState<Result | null>(null);
+
+  const compute = (later: boolean) => {
+    if (!dob || !time || !place) return;
+    const resolved = birthInstant(dob, time, place, later);
+    if (!Number.isFinite(resolved.utcMs)) return;
+    const lon = siderealLongitude('moon', resolved.utcMs);
+    const pos = zodiacPosition(lon);
+    const near = [-HALF_HOUR, HALF_HOUR].some((dt) => zodiacPosition(siderealLongitude('moon', resolved.utcMs + dt)).nakshatra !== pos.nakshatra);
+    setResult({ idx: pos.nakshatra, pada: pos.pada, lon, borderline: nearBoundary(lon, ENGINE_MARGIN_DEG), timeSensitive: near, resolved, zone: place.zone, time });
+    setSel(pos.nakshatra);
+  };
 
   const find = () => {
-    if (!dob) return;
-    const dt = new Date(`${dob}T${time || '06:00'}:00`);
-    if (isNaN(dt.getTime())) return;
-    const lon = siderealMoonLongitude(dt);
-    const idx = Math.floor(lon / SEG) % 27;
-    const pada = Math.floor((lon % SEG) / (SEG / 4)) + 1;
-    setResult({ idx, pada, lon });
-    setSel(idx);
+    setUseLater(false);
+    compute(false);
     trackEvent('chart_created', { tool: 'nakshatra' });
   };
 
@@ -59,20 +86,36 @@ export default function NakshatraTool() {
           journey. The mansion it occupied at your birth is your <b className="text-white">janma nakshatra</b>, the
           seed-star of your temperament. Explore the wheel, or enter your birth details to find yours.
         </p>
-        <div className="mt-5 flex flex-wrap items-end gap-3">
-          <DateSelect value={dob} onChange={setDob} className="max-w-md" />
-          <label className="text-xs text-white/50">Birth time
+        <div className="mt-5 grid gap-4 sm:grid-cols-2">
+          <DateSelect value={dob} onChange={setDob} />
+          <label className="text-sm text-white/70">Birth time
             <input type="time" value={time} onChange={(e) => setTime(e.target.value)}
-              className="mt-1 block rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-gold-400/50" />
+              className="mt-1.5 block w-full rounded-xl border border-white/12 bg-cosmic-darker/60 px-4 py-3 text-white outline-none focus:border-brand-cyan" />
           </label>
-          <Button onClick={find} disabled={!dob}><Star className="mr-2 h-4 w-4" /> Find my star</Button>
+          <PlaceSearch id="nak-place" label="Place of birth" value={place} onChange={setPlace} allowOffsetOverride className="sm:col-span-2" />
         </div>
+        <Button className="mt-5" onClick={find} disabled={!dob || !time || !place}><Star className="mr-2 h-4 w-4" /> Find my star</Button>
         {result && (
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-4 text-sm text-white/75">
             <Sparkles className="mr-1 inline h-4 w-4 text-gold-300" />
             Your janma nakshatra is <b className="text-gold-300">{NAKS[result.idx].name} · {NAKS[result.idx].dev}</b>, pada {result.pada}
-            <span className="text-white/40"> (sidereal Moon ≈ {result.lon.toFixed(1)}°)</span>
+            <span className="text-white/40"> (sidereal Moon {result.lon.toFixed(2)}°)</span>
           </motion.p>
+        )}
+        {result && (
+          <div className="mt-3 space-y-2">
+            <ClockNote resolved={result.resolved} time={result.time} zone={result.zone} useLater={useLater}
+              onUseLater={(later) => { setUseLater(later); compute(later); }} />
+            {result.borderline && (
+              <AstroNote>
+                The Moon is within 0.05° of the edge of a {result.borderline}: even an exact calculation cannot say which side,
+                so either reading is possible.
+              </AstroNote>
+            )}
+            {!result.borderline && result.timeSensitive && (
+              <AstroNote>The Moon changes nakshatra within 30 minutes of this time, so a less exact birth time could give the neighbouring nakshatra.</AstroNote>
+            )}
+          </div>
         )}
         {result && (
           <div className="mt-4 flex flex-wrap items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.02] px-5 py-3.5">
@@ -155,12 +198,7 @@ export default function NakshatraTool() {
                   </span>
                 ))}
               </div>
-              {result && result.idx === sel && <BoundaryNote longitude={result.lon} body="Moon" />}
-              <p className="text-xs text-white/30">
-                Approximate method: the Moon’s position from a simplified lunar theory (usually within about 0.3°) with
-                the Lahiri ayanamsa. The birth time is read in your device’s time zone, so enter it as local time where
-                you are now, or convert it first. Calculated in your browser.
-              </p>
+              <MethodLine kind="moon" />
             </Card>
           </motion.div>
         </AnimatePresence>

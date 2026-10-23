@@ -40,7 +40,7 @@ export function Footer() {
         </RevealItem>
 
         <RevealItem>
-          <FooterCol title="Explore" links={[['Tools', '/tools'], ['Blog', '/blog'], ['About', '/about'], ['Contact', '/contact']]} />
+          <FooterCol title="Explore" links={[['Tools', '/tools'], ['Blog', '/blog'], ['How we calculate', '/how-we-calculate'], ['About', '/about'], ['Contact', '/contact']]} />
         </RevealItem>
         <RevealItem>
           <FooterCol title="Tools" links={[['Numerology', '/tools/numerology'], ['Vedic Astrology', '/tools/astrology'], ['Chakra Test', '/tools/chakra-assessment'], ['Daily Tarot', '/tools/tarot'], ['Sleep & Chakra Sounds', '/tools/chakra-frequency-player']]} />

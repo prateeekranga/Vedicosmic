@@ -13,6 +13,7 @@ const Courses = lazy(() => import('@/pages/Courses'));
 const Blog = lazy(() => import('@/pages/Blog'));
 const BlogPostPage = lazy(() => import('@/pages/BlogPostPage'));
 const About = lazy(() => import('@/pages/About'));
+const HowWeCalculate = lazy(() => import('@/pages/HowWeCalculate'));
 const Contact = lazy(() => import('@/pages/Contact'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 const Admin = lazy(() => import('@/pages/Admin'));
@@ -52,6 +53,7 @@ export default function App() {
               <Route path="/blog/category/:categoryId" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPostPage />} />
               <Route path="/about" element={<About />} />
+              <Route path="/how-we-calculate" element={<HowWeCalculate />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<TermsOfService />} />

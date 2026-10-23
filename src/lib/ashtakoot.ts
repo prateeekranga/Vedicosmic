@@ -1,4 +1,10 @@
-import type { BirthMoonPlacement } from './nakshatra';
+/** The birth Moon that Ashtakoota compares. */
+export interface BirthMoonPlacement {
+  nakshatraIndex: number; // 0-26
+  pada: number;           // 1-4
+  rashiIndex: number;     // 0-11 (Mesha = 0)
+  siderealMoonLon: number;
+}
 import { NAKSHATRAS } from '@/data/nakshatras';
 import {
   VARNA_BY_RASHI, VARNA_RANK, VASHYA_GROUP_BY_RASHI, vashyaPoints, RASHI_LORD, grahaMaitriPoints,

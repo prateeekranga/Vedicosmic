@@ -26,7 +26,7 @@ Mobile Lighthouse, 3 runs per page, before any upgrade work. Raw reports: `<page
 | `/tools/planetary-hours` | 69 | 96 | 100 | 100 | 5.8 s | 208 ms | 0.000 | 3.3 s | 71, 60, 69 |
 | `/blog/best-time-to-meditate-morning-vs-evening` | 70 | 92 | 79 | 100 | 5.7 s | 103 ms | 0.022 | 3.7 s | 66, 72, 70 |
 
-Homepage total transfer: 803 KB. Budget from the Master brief: performance ≥ 90, LCP ≤ 2.5 s, TBT ≤ 200 ms,
+Homepage total transfer: 848 KB (median of 3 runs). Budget from the Master brief: performance ≥ 90, LCP ≤ 2.5 s, TBT ≤ 200 ms,
 CLS ≤ 0.1. The SEO score of 100 is misleading: Lighthouse scores the page after JavaScript has run, while the raw
 HTML that crawlers and link previews read is empty.
 

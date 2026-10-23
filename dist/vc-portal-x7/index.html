@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0A0A1A" />
+    <!-- Page head: replaced per page by scripts/ssg.mjs; these defaults serve client-only pages and dev. -->
+    <title>Admin · VediCosmic</title>
+    <meta name="description" content="VediCosmic site administration." />
+    <meta property="og:title" content="Admin · VediCosmic" />
+    <meta property="og:description" content="VediCosmic site administration." />
+    <meta property="og:image" content="https://vedicosmic.com/og/vc-portal-x7.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content="https://vedicosmic.com/vc-portal-x7" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="VediCosmic" />
+    <meta property="og:locale" content="en_IN" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Admin · VediCosmic" />
+    <meta name="twitter:description" content="VediCosmic site administration." />
+    <meta name="twitter:image" content="https://vedicosmic.com/og/vc-portal-x7.jpg" />
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href="https://vedicosmic.com/vc-portal-x7" />
+    <script type="application/ld+json" data-site-jsonld="1">[{"@context":"https://schema.org","@type":"Organization","name":"VediCosmic","url":"https://vedicosmic.com","logo":"https://vedicosmic.com/logo-full.png","description":"Free Vedic tools: today’s tithi and nakshatra, your birth star, planetary hours, numerology and a 17-minute daily sādhana. Calculated in your browser. No ads."},{"@context":"https://schema.org","@type":"WebSite","name":"VediCosmic","url":"https://vedicosmic.com","description":"Free Vedic tools: today’s tithi and nakshatra, your birth star, planetary hours, numerology and a 17-minute daily sādhana. Calculated in your browser. No ads."}]</script>
+
+    <!-- DNS prefetch for external origins -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+
+    <!-- Critical font preconnects -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!--
+      Non-blocking font load: rel="preload" + onload swap trick.
+      Split into two requests: critical display fonts first, secondary fonts deferred.
+    -->
+    <!-- 1) Critical: heading + body fonts (Cinzel + Inter) -->
+    <link rel="preload" as="style"
+      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" />
+    </noscript>
+
+    <!-- 2) Secondary: Devanagari + Mono (defer via JS, optional for LCP) -->
+    <script>
+      ;(function(){
+        var l=document.createElement('link');
+        l.rel='stylesheet';
+        l.href='https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=optional';
+        document.head.appendChild(l);
+      })()
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-BgX-p1BY.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/react-core-Ciqnzp4K.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-D2zDvP4Q.js">
+    <link rel="modulepreload" crossorigin href="/assets/router-BIFfzM8X.js">
+    <link rel="modulepreload" crossorigin href="/assets/motion-Ymbld2UK.js">
+    <link rel="modulepreload" crossorigin href="/assets/icons-0AP93h6j.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-BA3U6YmE.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
+

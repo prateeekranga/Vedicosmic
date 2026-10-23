@@ -1,0 +1,1 @@
+const o={parikshiva:{id:"parikshiva",name:"Parikshiva",role:"Founder of VediCosmic",nameNote:"Parikshiva is the spiritual name of VediCosmic’s founder.",bio:null,credentials:[],verified:!0}};function r(i){const e=i?o[i]:void 0;return e?.verified?e:void 0}export{o as P,r as g};

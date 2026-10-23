@@ -92,11 +92,8 @@ export default {
       postSlug: 'start-daily-spiritual-practice-sadhana',
       label: 'Building a Sadhana? Here’s how to make any daily practice actually stick',
     },
-    { type: 'divider' },
-    { type: 'cta-course', courseSlug: 'meditation-pranayama', label: 'Deepen your daily practice with Leela’s Meditation & Pranayama course' },
   ],
   relatedToolSlugs: ['tarot'],
-  relatedCourseSlugs: ['meditation-pranayama'],
   faqs: [
     {
       id: 'daily-card-contemplation-ritual-faq-1',

@@ -101,14 +101,8 @@ export default {
     {
       type: 'divider',
     },
-    {
-      type: 'cta-course',
-      courseSlug: 'vastu-shastra',
-      label: 'Learn the full Vastu Shastra system room by room',
-    },
   ],
   relatedToolSlugs: ['vastu'],
-  relatedCourseSlugs: ['vastu-shastra'],
   faqs: [
     {
       id: 'vastu-shastra-basics-faq-1',

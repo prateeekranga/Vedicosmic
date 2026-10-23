@@ -80,11 +80,8 @@ export default {
       text:
         'These are traditional, symbolic definitions for reflection and wellness practice — not anatomically verified facts, and not a substitute for qualified medical or mental health care.',
     },
-    { type: 'divider' },
-    { type: 'cta-course', courseSlug: 'chakra-healing', label: 'Learn Each Chakra in Depth in the Chakra Healing Course' },
   ],
   relatedToolSlugs: ['chakra-assessment', 'kundalini', 'crystals'],
-  relatedCourseSlugs: ['chakra-healing'],
   faqs: [
     {
       id: 'what-are-the-7-chakras-faq-1',

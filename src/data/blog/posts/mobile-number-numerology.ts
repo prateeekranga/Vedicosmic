@@ -122,14 +122,8 @@ export default {
       type: 'paragraph',
       text: "If you're curious what your own mobile number's root number and digit patterns look like — and how they read against your Life Path — the calculator below does the arithmetic instantly and lays out the two-digit combinations for you.",
     },
-    {
-      type: 'cta-course',
-      courseSlug: 'numerology-mastery',
-      label: 'Learn the full numerology system in Numerology Mastery',
-    },
   ],
   relatedToolSlugs: ['mobile-numerology'],
-  relatedCourseSlugs: ['numerology-mastery'],
   faqs: [
     {
       id: 'mobile-number-numerology-faq-1',

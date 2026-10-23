@@ -86,11 +86,8 @@ export default {
       text:
         "Walking meditation is a traditional mindfulness and grounding practice for reflection and calm. It is not a treatment for any physical or mental health condition, and it does not replace qualified medical advice for mobility, balance or foot health concerns.",
     },
-    { type: 'divider' },
-    { type: 'cta-course', courseSlug: 'chakra-healing', label: 'Learn More Root Chakra Practices in the Chakra Healing Course' },
   ],
   relatedToolSlugs: ['chakra-assessment', 'pranayama', 'kundalini'],
-  relatedCourseSlugs: ['chakra-healing'],
   faqs: [
     {
       id: 'walking-meditation-root-chakra-faq-1',

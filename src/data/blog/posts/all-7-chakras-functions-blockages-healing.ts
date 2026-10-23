@@ -87,10 +87,8 @@ export default {
       postSlug: '7-chakras-daily-balancing-practice',
       label: 'Ready to build a routine? See the daily 7-chakra balancing practice',
     },
-    { type: 'cta-course', courseSlug: 'chakra-healing', label: 'Learn a Full Healing Practice for Each Chakra' },
   ],
   relatedToolSlugs: ['chakra-assessment', 'kundalini', 'crystals'],
-  relatedCourseSlugs: ['chakra-healing'],
   faqs: [
     {
       id: 'all-7-chakras-faq-1',

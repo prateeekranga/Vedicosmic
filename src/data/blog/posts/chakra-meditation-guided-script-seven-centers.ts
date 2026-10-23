@@ -82,11 +82,8 @@ export default {
       text:
         "Chakra meditation is a traditional, symbolic practice for reflection and calm — it is not a treatment for any physical or mental health condition. If you are dealing with a persistent symptom, low mood, or anxiety, please see a qualified doctor or licensed mental health professional; this practice can sit alongside good care, never replace it.",
     },
-    { type: 'divider' },
-    { type: 'cta-course', courseSlug: 'chakra-healing', label: 'Learn a Full Guided Practice in the Chakra Healing Course' },
   ],
   relatedToolSlugs: ['chakra-assessment', 'mantra-timer', 'kundalini'],
-  relatedCourseSlugs: ['chakra-healing'],
   faqs: [
     {
       id: 'chakra-meditation-script-faq-1',

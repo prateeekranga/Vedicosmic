@@ -3,7 +3,6 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
-import { AnnouncementBanner } from './AnnouncementBanner';
 import { SiteJsonLd } from '@/components/seo/SiteJsonLd';
 import { Starfield } from '@/components/effects/Starfield';
 import { CosmicBackground } from '@/components/effects/CosmicBackground';
@@ -42,8 +41,6 @@ export function Layout() {
           {/* Background layers */}
           <CosmicBackground />
           <Starfield />
-
-          <AnnouncementBanner />
         </>
       )}
       <SiteJsonLd />

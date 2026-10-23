@@ -1,7 +1,7 @@
 {
-  "name": "VediCosmic — The Inner Journey",
+  "name": "VediCosmic",
   "short_name": "VediCosmic",
-  "description": "Ancient Vedic wisdom, interactive cosmic tools, and guided courses for the modern seeker.",
+  "description": "Free Vedic tools: today’s tithi and nakshatra, your birth star, planetary hours, numerology and a 17-minute daily sādhana.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0A0A1A",

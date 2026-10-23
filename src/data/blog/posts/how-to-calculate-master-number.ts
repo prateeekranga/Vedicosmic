@@ -91,10 +91,8 @@ export default {
     },
     { type: 'divider' },
     { type: 'cta-tool', toolSlug: 'numerology', label: 'See Your Full Numerology Blueprint' },
-    { type: 'cta-course', courseSlug: 'numerology-mastery', label: 'Go Deeper in Numerology Mastery' },
   ],
   relatedToolSlugs: ['life-path', 'numerology'],
-  relatedCourseSlugs: ['numerology-mastery'],
   faqs: [
     {
       id: 'how-to-calculate-master-number-faq-1',

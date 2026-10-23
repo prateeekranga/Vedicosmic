@@ -4,7 +4,7 @@ import { read, write } from './storage';
 
 /**
  * Client-side admin overrides for blog posts, persisted to localStorage —
- * same mechanism as course/tool overrides in `overrides.ts`. Lets the admin
+ * same localStorage mechanism as the SEO overrides in `siteContent.ts`. Lets the admin
  * panel hide/show, feature, pin and reorder posts without a backend. Posts
  * themselves stay source-controlled; this only layers visibility/ranking on top.
  */

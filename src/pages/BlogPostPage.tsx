@@ -5,7 +5,7 @@ import { ArrowLeft, Calendar, Clock, RefreshCw } from 'lucide-react';
 import { useBlogPost } from '@/hooks/useBlogPost';
 import { useAllBlogPosts } from '@/hooks/useAllBlogPosts';
 import { getBlogCategory } from '@/data/blogCategories';
-import { getAuthor } from '@/data/authors';
+import { getPerson } from '@/content/people';
 import { estimateReadingTime } from '@/lib/blogUtils';
 import { useSEO } from '@/hooks/useSEO';
 import { breadcrumbList, blogPostingSchema, faqPageSchema, howToSchema } from '@/lib/schema';
@@ -76,7 +76,7 @@ export default function BlogPostPage() {
 
 function BlogPostBody({ post }: { post: BlogPost }) {
   const category = getBlogCategory(post.category);
-  const author = post.authorId ? getAuthor(post.authorId) : undefined;
+  const author = getPerson(post.authorId);
   const readingTime = post.readingTimeMin ?? estimateReadingTime(post.content);
   const dateFmt = (iso: string) => new Date(iso).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   const publishedDate = dateFmt(post.publishedAt);
@@ -114,9 +114,9 @@ function BlogPostBody({ post }: { post: BlogPost }) {
         <BlogContentRenderer blocks={post.content} />
       </div>
 
-      {author && post.authorId && (
+      {author && (
         <div className="mt-8 sm:mt-10">
-          <AuthorBio author={author} slug={post.authorId} />
+          <AuthorBio person={author} />
         </div>
       )}
 

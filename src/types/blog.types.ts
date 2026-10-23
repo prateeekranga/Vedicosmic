@@ -12,7 +12,6 @@ export type BlogContentBlock =
   | { type: 'quote'; text: string; attribution?: string }
   | { type: 'callout'; tone: 'info' | 'tip' | 'warning'; title?: string; text: string }
   | { type: 'cta-tool'; toolSlug: string; label?: string }
-  | { type: 'cta-course'; courseSlug: string; label?: string }
   | { type: 'internal-link'; postSlug: string; label?: string }
   | { type: 'diagram'; id: 'loshu-grid' | 'nakshatra-wheel' | 'chakra-column'; caption?: string }
   | { type: 'divider' };
@@ -28,7 +27,7 @@ export interface BlogPost {
   excerpt: string;
   category: BlogCategoryId;
   tags: string[];
-  /** References a key in AUTHORS (src/data/authors.ts) — shared with course instructors for consistent E-E-A-T bios. */
+  /** References a person in src/content/people.ts; shown only when that person is verified. */
   authorId?: string;
   /** ISO date, e.g. '2026-01-15'. */
   publishedAt: string;
@@ -41,7 +40,6 @@ export interface BlogPost {
   isPinned?: boolean;
   content: BlogContentBlock[];
   relatedToolSlugs?: string[];
-  relatedCourseSlugs?: string[];
   /** Reuses existing FAQItem — feeds faqPageSchema() for AEO + an on-page Accordion. */
   faqs?: FAQItem[];
   /** Always-visible TL;DR bullets, rendered above the fold and marked data-speakable. */

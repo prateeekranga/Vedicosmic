@@ -10,7 +10,7 @@ import { BlogContentRenderer } from '@/components/blog/BlogContentRenderer';
 import { KeyTakeaways } from '@/components/blog/KeyTakeaways';
 import { Accordion } from '@/components/ui/Accordion';
 import { BLOG_CATEGORIES } from '@/data/blogCategories';
-import { AUTHORS } from '@/data/authors';
+import { PEOPLE } from '@/content/people';
 import { slugify, estimateReadingTime, estimateWordCount } from '@/lib/blogUtils';
 import { parsePastedContent } from '@/lib/parsePastedContent';
 import { analyzeSeo } from '@/lib/seoAnalysis';
@@ -42,7 +42,6 @@ export interface BlogPostDraftInput {
   isPinned: boolean;
   content: BlogContentBlock[];
   relatedToolSlugs: string[];
-  relatedCourseSlugs: string[];
   faqs: FAQItem[];
   keyTakeaways: string[];
   howToSteps: { name: string; text: string }[];
@@ -56,7 +55,7 @@ function draftFromPost(post: BlogPost | null): {
   title: string; seoTitle: string; excerpt: string; category: string; authorId: string;
   focusKeyphrase: string; additionalTags: string[]; slug: string; slugTouched: boolean; heroImage: string; publishedAt: string;
   isFeatured: boolean; isPinned: boolean; content: EditableBlockRow[];
-  relatedToolSlugs: string; relatedCourseSlugs: string; keyTakeaways: string;
+  relatedToolSlugs: string; keyTakeaways: string;
   howToSteps: EditableHowToStep[]; faqs: FAQItem[];
 } {
   if (!post) {
@@ -64,7 +63,7 @@ function draftFromPost(post: BlogPost | null): {
       title: '', seoTitle: '', excerpt: '', category: BLOG_CATEGORIES.find((c) => c.id !== 'all')?.id ?? 'numerology',
       authorId: 'parikshiva', focusKeyphrase: '', additionalTags: [], slug: '', slugTouched: false, heroImage: '',
       publishedAt: toLocalDateTimeInput(new Date()), isFeatured: false, isPinned: false,
-      content: [], relatedToolSlugs: '', relatedCourseSlugs: '', keyTakeaways: '', howToSteps: [], faqs: [],
+      content: [], relatedToolSlugs: '', keyTakeaways: '', howToSteps: [], faqs: [],
     };
   }
   return {
@@ -72,7 +71,7 @@ function draftFromPost(post: BlogPost | null): {
     authorId: post.authorId ?? '', focusKeyphrase: post.tags[0] ?? '', additionalTags: post.tags.slice(1), slug: post.slug, slugTouched: true,
     heroImage: post.heroImage ?? '', publishedAt: toLocalDateTimeInput(new Date(post.publishedAt)),
     isFeatured: !!post.isFeatured, isPinned: !!post.isPinned, content: toEditableBlocks(post.content),
-    relatedToolSlugs: (post.relatedToolSlugs ?? []).join('\n'), relatedCourseSlugs: (post.relatedCourseSlugs ?? []).join('\n'),
+    relatedToolSlugs: (post.relatedToolSlugs ?? []).join('\n'),
     keyTakeaways: (post.keyTakeaways ?? []).join('\n'),
     howToSteps: (post.howToSteps ?? []).map((s, i) => ({ id: `h-${i}`, ...s })),
     faqs: post.faqs ?? [],
@@ -125,7 +124,6 @@ export function BlogPostEditor({ seed, allPosts, saving, onSave, onCancel }: Pro
       isPinned: d.isPinned,
       content: previewBlocks,
       relatedToolSlugs: linesToArray(d.relatedToolSlugs),
-      relatedCourseSlugs: linesToArray(d.relatedCourseSlugs),
       faqs: d.faqs,
       keyTakeaways: linesToArray(d.keyTakeaways),
       howToSteps: d.howToSteps.map(({ id: _k, ...rest }) => rest),
@@ -210,7 +208,7 @@ export function BlogPostEditor({ seed, allPosts, saving, onSave, onCancel }: Pro
               </Select>
               <Select label="Author" value={d.authorId} onChange={(e) => update({ authorId: e.target.value })}>
                 <option value="">No author</option>
-                {Object.entries(AUTHORS).map(([id, a]) => <option key={id} value={id}>{a.name}</option>)}
+                {Object.values(PEOPLE).filter((p) => p.verified).map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
               </Select>
             </div>
             <div>
@@ -268,11 +266,9 @@ export function BlogPostEditor({ seed, allPosts, saving, onSave, onCancel }: Pro
             />
           </div>
 
-          <div className="grid gap-4 rounded-2xl border border-white/10 p-4 sm:grid-cols-2">
+          <div className="rounded-2xl border border-white/10 p-4">
             <Textarea label="Related tool slugs (one per line)" rows={3} value={d.relatedToolSlugs}
               onChange={(e) => update({ relatedToolSlugs: e.target.value })} />
-            <Textarea label="Related course slugs (one per line)" rows={3} value={d.relatedCourseSlugs}
-              onChange={(e) => update({ relatedCourseSlugs: e.target.value })} />
           </div>
 
           <div className="space-y-2 rounded-2xl border border-white/10 p-4">

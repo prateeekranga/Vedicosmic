@@ -90,10 +90,8 @@ export default {
       text:
         "Once the basics click, going deeper usually means learning the subtler associations of each chakra — mantras, postures, and how to build a sustainable daily practice around the system.",
     },
-    { type: 'cta-course', courseSlug: 'chakra-healing', label: 'Explore the Chakra Healing Course' },
   ],
   relatedToolSlugs: ['chakra-assessment', 'kundalini', 'crystals'],
-  relatedCourseSlugs: ['chakra-healing'],
   faqs: [
     {
       id: 'chakras-101-complete-guide-faq-1',

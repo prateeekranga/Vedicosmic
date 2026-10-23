@@ -17,7 +17,6 @@ async function loadRoutes() {
     appType: 'custom',
   });
   const { TOOLS, STATIC_ROUTES } = await vite.ssrLoadModule('/src/content/routes.ts');
-  const { COURSES } = await vite.ssrLoadModule('/src/data/courses.ts');
   const { BLOG_POSTS } = await vite.ssrLoadModule('/src/data/blog/index.ts');
   const { BLOG_CATEGORIES } = await vite.ssrLoadModule('/src/data/blogCategories.ts');
   await vite.close();
@@ -29,7 +28,6 @@ async function loadRoutes() {
   return [
     ...rest,
     ...TOOLS.map((t) => `/tools/${t.slug}`),
-    ...COURSES.map((c) => `/courses/${c.slug}`),
     ...BLOG_POSTS.map((p) => `/blog/${p.slug}`),
     ...dbPosts.map((p) => `/blog/${p.slug}`),
     ...BLOG_CATEGORIES.filter((c) => c.id !== 'all').map((c) => `/blog/category/${c.id}`),

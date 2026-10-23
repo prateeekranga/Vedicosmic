@@ -29,6 +29,11 @@ interface PostRow {
   how_to_steps: unknown;
 }
 
+/** Course CTA blocks were retired with the courses; older database posts may still contain them. */
+function withoutRetiredBlocks(content: unknown): BlogPost['content'] {
+  return ((content as BlogPost['content'] | null) ?? []).filter((b) => (b as { type: string }).type !== 'cta-course');
+}
+
 function toBlogPost(row: PostRow): BlogPost {
   return {
     id: row.slug,
@@ -45,9 +50,8 @@ function toBlogPost(row: PostRow): BlogPost {
     heroImage: row.hero_image ?? undefined,
     isFeatured: row.is_featured,
     isPinned: row.is_pinned,
-    content: (row.content as BlogPost['content']) ?? [],
+    content: withoutRetiredBlocks(row.content),
     relatedToolSlugs: row.related_tool_slugs ?? [],
-    relatedCourseSlugs: row.related_course_slugs ?? [],
     faqs: (row.faqs as BlogPost['faqs']) ?? [],
     keyTakeaways: row.key_takeaways ?? [],
     howToSteps: (row.how_to_steps as BlogPost['howToSteps']) ?? [],
@@ -75,7 +79,7 @@ function fromInput(input: Partial<BlogPost>) {
     is_pinned: input.isPinned ?? false,
     content: input.content ?? [],
     related_tool_slugs: input.relatedToolSlugs ?? [],
-    related_course_slugs: input.relatedCourseSlugs ?? [],
+    related_course_slugs: [], // column kept for older rows; courses were retired
     faqs: input.faqs ?? [],
     key_takeaways: input.keyTakeaways ?? [],
     how_to_steps: input.howToSteps ?? [],

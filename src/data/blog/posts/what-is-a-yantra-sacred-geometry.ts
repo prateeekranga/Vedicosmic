@@ -98,16 +98,8 @@ export default {
       text:
         "Yantras carry centuries of traditional meaning within Tantric and Vedic practice, and many people find real value in sitting with one. But their traditionally described effects — on consciousness, energy, or life circumstances — are a matter of spiritual interpretation and personal practice, not scientifically demonstrated outcomes. Approach them as a contemplative tool worth exploring on their own terms, not as a substitute for medical, psychological or financial guidance.",
     },
-    { type: 'divider' },
-    {
-      type: 'paragraph',
-      text:
-        "A single article can only sketch the outline of a design this intricate. If the geometry and symbolism of yantras genuinely interest you — the full construction logic behind all nine triangles, how the golden-ratio debate breaks down in more depth, and how to work with a yantra as a real meditation practice rather than just an image — a guided course is where that understanding actually builds.",
-    },
-    { type: 'cta-course', courseSlug: 'sacred-geometry-yantras', label: 'Explore the Sacred Geometry & Yantras Course' },
   ],
   relatedToolSlugs: ['yantra'],
-  relatedCourseSlugs: ['sacred-geometry-yantras'],
   faqs: [
     {
       id: 'what-is-a-yantra-sacred-geometry-faq-1',

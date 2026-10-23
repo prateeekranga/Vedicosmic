@@ -22,5 +22,4 @@ export interface ToolMeta {
   /** False keeps the page out of the sitemap and adds a noindex robots tag. */
   indexable: boolean;
   Icon: ComponentType<{ className?: string }>;
-  relatedCourseSlug?: string;
 }

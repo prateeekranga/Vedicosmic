@@ -1,16 +1,31 @@
 import { supabase } from '@/lib/supabaseClient';
 
-/** Gates the entire /vc-portal-x7 dashboard (Admin.tsx) — not just the Blog tab's Database
- *  Posts section, despite the "blog" naming here. One Supabase Auth account for the whole
- *  admin surface; names kept as-is to avoid a wider rename across both call sites. */
-export async function isBlogAdminAuthed(): Promise<boolean> {
+/**
+ * Access to the /vc-portal-x7 dashboard. Signing in is not enough: the account must also be
+ * on the admin allowlist, checked server-side by the `is_admin()` function that
+ * `supabase/policies.sql` installs (the same function guards every write in the database).
+ * The allowlist lives only in the database, so no admin email ships in the site's code.
+ *
+ * - `admin`: signed in and on the allowlist.
+ * - `not-admin`: signed in, not on the allowlist.
+ * - `unchecked`: signed in, but `is_admin()` could not be called (policies.sql not installed
+ *   yet, or the network failed). The dashboard opens with a warning; database writes are then
+ *   protected only by whatever policies are already installed.
+ * - `signed-out`: no session.
+ */
+export type AdminAccess = 'admin' | 'not-admin' | 'unchecked' | 'signed-out';
+
+export async function getAdminAccess(): Promise<AdminAccess> {
   const { data } = await supabase.auth.getSession();
-  return !!data.session;
+  if (!data.session) return 'signed-out';
+  const { data: isAdmin, error } = await supabase.rpc('is_admin');
+  if (error) return 'unchecked';
+  return isAdmin ? 'admin' : 'not-admin';
 }
 
 /** Subscribes to sign-in/sign-out events (including token expiry) — returns an unsubscribe fn. */
-export function onAdminAuthChange(callback: (authed: boolean) => void): () => void {
-  const { data } = supabase.auth.onAuthStateChange((_event, session) => callback(!!session));
+export function onAdminAuthChange(callback: () => void): () => void {
+  const { data } = supabase.auth.onAuthStateChange(() => callback());
   return () => data.subscription.unsubscribe();
 }
 

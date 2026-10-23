@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Search, X, ArrowRight, Clock } from 'lucide-react';
 import { BLOG_CATEGORIES, getBlogCategory } from '@/data/blogCategories';
-import { getAuthor } from '@/data/authors';
+import { getPerson } from '@/content/people';
 import { useAllBlogPosts } from '@/hooks/useAllBlogPosts';
 import { useOverridesVersion } from '@/hooks/useOverridesVersion';
 import { useSEO } from '@/hooks/useSEO';
@@ -20,7 +20,7 @@ import type { BlogPost } from '@/types/blog.types';
  *  hub, so search/category/author views stay a plain, predictable grid. */
 function SpotlightPost({ post }: { post: BlogPost }) {
   const category = getBlogCategory(post.category);
-  const author = post.authorId ? getAuthor(post.authorId) : undefined;
+  const author = getPerson(post.authorId);
   const readingTime = post.readingTimeMin ?? estimateReadingTime(post.content);
   const date = new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
@@ -69,7 +69,7 @@ export default function Blog() {
   const deferredQuery = useDeferredValue(query);
   const [searchParams, setSearchParams] = useSearchParams();
   const authorId = searchParams.get('author');
-  const author = authorId ? getAuthor(authorId) : undefined;
+  const author = getPerson(authorId ?? undefined);
 
   const category = categoryId ? getBlogCategory(categoryId) : undefined;
   useEffect(() => {

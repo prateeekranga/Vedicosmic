@@ -2,9 +2,7 @@ import { useDeferredValue, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Search, X } from 'lucide-react';
-import { TOOL_CATEGORIES, TOOL_ACCENT_BG } from '@/content/routes';
-import { visibleTools, isToolComingSoon } from '@/lib/overrides';
-import { useOverridesVersion } from '@/hooks/useOverridesVersion';
+import { TOOLS, TOOL_CATEGORIES, TOOL_ACCENT_BG, liveTools } from '@/content/routes';
 import { useSEO } from '@/hooks/useSEO';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -14,15 +12,15 @@ export default function Tools() {
   const [cat, setCat] = useState<string>('all');
   const [query, setQuery] = useState('');
   const deferredQuery = useDeferredValue(query);
-  const ov = useOverridesVersion();
   useSEO({
     key: '/tools', path: '/tools', title: 'Interactive Tools · VediCosmic',
-    description: 'Free Vedic numerology, astrology, and energy tools — real calculations, running entirely in your browser.',
+    description: 'Free Vedic astrology, numerology and daily-practice tools. Each one runs its calculations in your browser.',
   });
-  const allTools = visibleTools();
+  const allTools = TOOLS;
+  const liveCount = liveTools().length;
   const byCategory = useMemo(
     () => cat === 'all' ? allTools : allTools.filter((t) => t.category === cat),
-    [cat, ov], // eslint-disable-line react-hooks/exhaustive-deps
+    [cat, allTools],
   );
   const filtered = useMemo(() => {
     const terms = deferredQuery.trim().toLowerCase().split(/\s+/).filter(Boolean);
@@ -40,9 +38,9 @@ export default function Tools() {
 
   return (
     <div className="container-vc py-16 sm:py-24">
-      <SectionHeading eyebrow="Interactive Tools"
-        title={<>{allTools.length} ways to read <span className="text-gradient-gold">your cosmos</span></>}
-        subtitle="Every tool runs entirely in your browser with real calculations. Free to use — sign in to save what resonates." />
+      <SectionHeading as="h1" eyebrow="Interactive Tools"
+        title={`${liveCount} free tools`}
+        subtitle="Vedic astrology, numerology and daily-practice tools. Each one runs its calculations in your browser; what you enter is not sent to us." />
 
       <div className="mx-auto mt-10 max-w-xl">
         <div className="relative">
@@ -95,7 +93,7 @@ export default function Tools() {
                       <span className={`flex h-12 w-12 items-center justify-center rounded-xl ${TOOL_ACCENT_BG[t.accent]}`}>
                         <t.Icon className="h-6 w-6" />
                       </span>
-                      {isToolComingSoon(t.id) ? <Badge tone="neutral">Coming Soon</Badge> : t.isNew && <Badge tone="cyan">New</Badge>}
+                      {t.status === 'coming-soon' ? <Badge tone="neutral">Coming Soon</Badge> : t.isNew && <Badge tone="cyan">New</Badge>}
                     </div>
                     <h3 className="mt-5 font-heading text-h3 text-white group-hover:text-gold-pale">{t.name}</h3>
                     <p className="mt-1 text-xs uppercase tracking-wide text-white/40">{t.subtitle}</p>

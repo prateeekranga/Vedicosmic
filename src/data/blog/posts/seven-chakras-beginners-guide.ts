@@ -94,16 +94,8 @@ export default {
       text:
         "If you're new to this system, there's no need to memorise all seven at once or force a daily ritual around each one. Most people start simply — noticing which one or two themes feel most alive right now, and choosing a single small practice (a few minutes of quiet breathing, a short seated meditation, or sitting with a stone that has personal meaning to you) rather than trying to \"fix\" every centre simultaneously. The chakra system rewards patience far more than intensity.",
     },
-    { type: 'divider' },
-    {
-      type: 'paragraph',
-      text:
-        "Working through all seven chakras in depth — their subtler associations, the postures and mantras traditionally paired with each, and how to build a sustainable practice around them — is exactly what a guided course can offer that a single article can't.",
-    },
-    { type: 'cta-course', courseSlug: 'chakra-healing', label: 'Explore the Chakra Healing Course' },
   ],
   relatedToolSlugs: ['chakra-assessment', 'crystals', 'kundalini'],
-  relatedCourseSlugs: ['chakra-healing'],
   faqs: [
     {
       id: 'seven-chakras-beginners-guide-faq-1',

@@ -86,11 +86,8 @@ export default {
       text:
         "Missing a day is not the same as failing. Traditional teachers describe Sadhana as a lifelong path, not a thirty-day challenge with a pass-or-fail outcome — one missed morning doesn't undo the ones that came before it, and it doesn't disqualify you from the ones ahead. The only real misstep is deciding that a lapse means the whole effort was wasted, and quietly giving up altogether. If you miss a day, or a week, the entire practice is simply to begin again — no lecture to yourself, no \"making up\" for lost time, just the next small sitting, exactly as it would have been anyway.",
     },
-    { type: 'divider' },
-    { type: 'cta-course', courseSlug: 'meditation-pranayama', label: 'Learn Meditation & Pranayama with Leela' },
   ],
   relatedToolSlugs: ['sadhana', 'mantra-timer'],
-  relatedCourseSlugs: ['meditation-pranayama'],
   faqs: [
     {
       id: 'start-daily-spiritual-practice-sadhana-faq-1',

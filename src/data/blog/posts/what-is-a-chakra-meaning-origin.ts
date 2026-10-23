@@ -70,11 +70,8 @@ export default {
       text:
         'Chakras are a symbolic system from a long-standing spiritual and philosophical tradition. They have not been anatomically verified by modern science, and understanding their history is a matter of intellectual and cultural interest — not a medical claim.',
     },
-    { type: 'divider' },
-    { type: 'cta-course', courseSlug: 'chakra-healing', label: 'Explore the Chakra Healing Course' },
   ],
   relatedToolSlugs: ['kundalini', 'chakra-assessment', 'crystals'],
-  relatedCourseSlugs: ['chakra-healing'],
   faqs: [
     {
       id: 'what-is-a-chakra-faq-1',

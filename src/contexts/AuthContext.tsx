@@ -37,8 +37,6 @@ interface AuthContextValue extends AuthState {
   login: (email: string, password: string) => Promise<boolean>;
   register: (email: string, password: string, displayName: string) => Promise<boolean>;
   logout: () => void;
-  toggleEnrollment: (courseId: string) => void;
-  isEnrolled: (courseId: string) => boolean;
   saveReading: (r: Omit<SavedReading, 'id' | 'date'>) => void;
   addJournalEntry: (e: Omit<JournalEntry, 'id' | 'date'>) => void;
   toggleCrystal: (crystalId: string) => void;
@@ -122,7 +120,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const newUser: User = {
       id: crypto.randomUUID(), email, displayName,
       createdAt: new Date().toISOString(),
-      enrolledCourses: [], savedReadings: [], journalEntries: [], crystalKit: [],
+      savedReadings: [], journalEntries: [], crystalKit: [],
       mantraStreak: { lastSessionDate: '', currentStreak: 0, totalSessions: 0, totalRepetitions: 0 },
     };
     const salt = randomSalt();
@@ -137,17 +135,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem(STORAGE_KEY);
     dispatch({ type: 'LOGOUT' });
   }, []);
-
-  const toggleEnrollment = useCallback((courseId: string) => {
-    if (!state.user) return;
-    const enrolled = state.user.enrolledCourses.includes(courseId)
-      ? state.user.enrolledCourses.filter((id) => id !== courseId)
-      : [...state.user.enrolledCourses, courseId];
-    persistUser({ ...state.user, enrolledCourses: enrolled });
-  }, [state.user, persistUser]);
-
-  const isEnrolled = useCallback((courseId: string) =>
-    !!state.user?.enrolledCourses.includes(courseId), [state.user]);
 
   const saveReading = useCallback((r: Omit<SavedReading, 'id' | 'date'>) => {
     if (!state.user) return;
@@ -193,7 +180,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider value={{
-      ...state, login, register, logout, toggleEnrollment, isEnrolled,
+      ...state, login, register, logout,
       saveReading, addJournalEntry, toggleCrystal, recordMantraSession, clearError,
     }}>
       {children}

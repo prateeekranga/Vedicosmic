@@ -120,11 +120,8 @@ export default {
       text:
         "None of this is a verdict on your character or a forecast of what will happen to you. The Lo Shu Grid is a **traditional framework for self-reflection** — a mirror that highlights natural strengths to lean on and quiet growth areas to work with consciously, not a fixed script your life is bound to follow.",
     },
-    { type: 'divider' },
-    { type: 'cta-course', courseSlug: 'numerology-mastery', label: 'Go Deeper with Numerology Mastery' },
   ],
   relatedToolSlugs: ['loshu-grid'],
-  relatedCourseSlugs: ['numerology-mastery'],
   faqs: [
     {
       id: 'loshu-grid-explained-faq-1',

@@ -71,10 +71,8 @@ export default {
       postSlug: 'seven-chakras-beginners-guide',
       label: 'Back to the full 7 chakras beginner\'s guide',
     },
-    { type: 'cta-course', courseSlug: 'chakra-healing', label: 'Explore the Chakra Healing Course' },
   ],
   relatedToolSlugs: ['kundalini', 'chakra-assessment'],
-  relatedCourseSlugs: ['chakra-healing'],
   faqs: [
     {
       id: 'chakras-subtle-body-faq-1',

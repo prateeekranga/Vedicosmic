@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/Badge';
 import { CategoryEmblem } from '@/components/blog/CategoryEmblem';
 import { estimateReadingTime } from '@/lib/blogUtils';
 import { getBlogCategory } from '@/data/blogCategories';
-import { getAuthor } from '@/data/authors';
+import { getPerson } from '@/content/people';
 import type { BlogPost, BlogCategoryId } from '@/types/blog.types';
 
 const CATEGORY_ACCENT: Record<BlogCategoryId, 'gold' | 'cyan' | 'violet' | 'teal'> = {
@@ -42,7 +42,7 @@ function CardThumb({ post }: { post: BlogPost }) {
 
 export function BlogPostCard({ post }: { post: BlogPost }) {
   const category = getBlogCategory(post.category);
-  const author = post.authorId ? getAuthor(post.authorId) : undefined;
+  const author = getPerson(post.authorId);
   const readingTime = post.readingTimeMin ?? estimateReadingTime(post.content);
   const date = new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 

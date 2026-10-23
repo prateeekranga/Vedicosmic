@@ -21,10 +21,12 @@ export async function fetchDbPosts() {
     // supabase-js needs even just to construct the client (it eagerly sets up a Realtime
     // client, unused here) — supply the `ws` package explicitly so this doesn't throw.
     const supabase = createClient(url, anonKey, { realtime: { transport: WebSocket } });
-    // RLS restricts the anon role to `hidden = false` rows automatically.
+    // RLS restricts the anon role to `hidden = false` rows automatically. The published_at
+    // filter matches the live site's (blogApi.ts), so scheduled posts stay out of the sitemap.
     const { data, error } = await supabase
       .from('posts')
       .select('*')
+      .lte('published_at', new Date().toISOString())
       .order('is_pinned', { ascending: false })
       .order('sort_order', { ascending: true })
       .order('published_at', { ascending: false });
@@ -45,9 +47,8 @@ export async function fetchDbPosts() {
       heroImage: row.hero_image ?? undefined,
       isFeatured: row.is_featured,
       isPinned: row.is_pinned,
-      content: row.content ?? [],
+      content: (row.content ?? []).filter((b) => b.type !== 'cta-course'), // course CTAs were retired
       relatedToolSlugs: row.related_tool_slugs ?? [],
-      relatedCourseSlugs: row.related_course_slugs ?? [],
       faqs: row.faqs ?? [],
       keyTakeaways: row.key_takeaways ?? [],
       howToSteps: row.how_to_steps ?? [],

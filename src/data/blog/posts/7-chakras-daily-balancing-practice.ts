@@ -76,11 +76,8 @@ export default {
       text:
         'This routine is a traditional wellness practice for reflection and grounding — it is not a treatment for any physical or mental health condition. If you are dealing with a persistent symptom or concern, please see a qualified doctor or licensed mental health professional.',
     },
-    { type: 'divider' },
-    { type: 'cta-course', courseSlug: 'chakra-healing', label: 'Build a Full Practice in the Chakra Healing Course' },
   ],
   relatedToolSlugs: ['chakra-assessment', 'kundalini', 'crystals'],
-  relatedCourseSlugs: ['chakra-healing'],
   faqs: [
     {
       id: '7-chakras-daily-practice-faq-1',

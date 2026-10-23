@@ -109,11 +109,8 @@ export default {
       text:
         "Whether you come to this connection through yoga, through Jyotish, or through both at once, the value isn't in proving one system explains the other — it's in having two different, thoughtfully developed vocabularies for noticing the same pattern in your own life from more than one angle.",
     },
-    { type: 'cta-course', courseSlug: 'intro-vedic-astrology', label: 'Learn to Read a Full Vedic Birth Chart' },
-    { type: 'cta-course', courseSlug: 'chakra-healing', label: 'Or Go Deeper Into the Chakra System' },
   ],
   relatedToolSlugs: ['planet-mandala', 'chakra-assessment', 'astrology'],
-  relatedCourseSlugs: ['intro-vedic-astrology', 'chakra-healing'],
   faqs: [
     {
       id: 'vedic-chakras-faq-1',

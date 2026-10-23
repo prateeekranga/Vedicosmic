@@ -92,14 +92,8 @@ export default {
       type: 'paragraph',
       text: "Whichever lens you start with, the most useful outcome isn't a score — it's a better conversation. Learning to read your own numbers, and your partner's, with real fluency — rather than a one-line pairing — is what turns numerology from a curiosity into a genuinely useful mirror.",
     },
-    {
-      type: 'cta-course',
-      courseSlug: 'numerology-mastery',
-      label: 'Learn to read numbers fluently in Numerology Mastery',
-    },
   ],
   relatedToolSlugs: ['life-path', 'kundali-matching'],
-  relatedCourseSlugs: ['numerology-mastery'],
   faqs: [
     {
       id: 'numerology-compatibility-life-path-faq-1',

@@ -2,7 +2,6 @@ import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Info, Lightbulb, TriangleAlert, ArrowRight } from 'lucide-react';
 import { getTool } from '@/content/routes';
-import { getCourse } from '@/data/courses';
 import { getBlogPost } from '@/data/blog';
 import { headingSlugs } from '@/lib/blogUtils';
 import { LoshuGridEmblem } from '@/components/blog/emblems/LoshuGridEmblem';
@@ -34,8 +33,7 @@ const CALLOUT_STYLE: Record<'info' | 'tip' | 'warning', { box: string; Icon: typ
   warning: { box: 'border-warning/30 bg-warning/8 text-warning', Icon: TriangleAlert },
 };
 
-/** Shared wrapper for cta-tool/cta-course/internal-link — these three block types rendered
- *  near-identical markup independently before; this is the one place that layout lives now. */
+/** Shared wrapper for cta-tool/internal-link — both block types render this same layout. */
 function InlineCta({
   to, icon, eyebrow, title, subtitle, ctaLabel,
 }: { to: string; icon?: ReactNode; eyebrow?: string; title: string; subtitle: string; ctaLabel: string }) {
@@ -120,18 +118,6 @@ function Block({ block, headingId }: { block: BlogContentBlock; headingId: strin
       return (
         <InlineCta to={`/tools/${tool.slug}`} icon={<tool.Icon className="h-5 w-5" />}
           title={tool.name} subtitle={tool.subtitle} ctaLabel={block.label ?? 'Try it free'} />
-      );
-    }
-
-    case 'cta-course': {
-      const course = getCourse(block.courseSlug);
-      if (!course) {
-        if (import.meta.env.DEV) console.warn(`BlogContentRenderer: unknown courseSlug "${block.courseSlug}"`);
-        return null;
-      }
-      return (
-        <InlineCta to={`/courses/${course.slug}`} eyebrow="Go deeper"
-          title={course.title} subtitle={course.subtitle} ctaLabel={block.label ?? 'Explore course'} />
       );
     }
 

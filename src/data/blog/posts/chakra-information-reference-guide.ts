@@ -122,11 +122,8 @@ export default {
       text:
         'This reference reflects the most common modern teaching of each chakra\'s associations. Different schools and lineages vary in some details, particularly around mudras and secondary symbolism — treat this as a widely-used starting reference, not a single fixed authority.',
     },
-    { type: 'divider' },
-    { type: 'cta-course', courseSlug: 'chakra-healing', label: 'Learn to Practice Each Mudra and Mantra Properly' },
   ],
   relatedToolSlugs: ['chakra-assessment', 'crystals', 'kundalini'],
-  relatedCourseSlugs: ['chakra-healing'],
   faqs: [
     {
       id: 'chakra-information-faq-1',

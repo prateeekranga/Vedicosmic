@@ -11,7 +11,7 @@ function textOf(block: BlogContentBlock): string {
     case 'callout': return block.text;
     case 'image': return block.caption ?? '';
     case 'diagram': return block.caption ?? '';
-    case 'cta-tool': case 'cta-course': case 'internal-link': case 'divider': return '';
+    case 'cta-tool': case 'internal-link': case 'divider': return '';
   }
 }
 

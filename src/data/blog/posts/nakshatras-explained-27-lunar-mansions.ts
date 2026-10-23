@@ -87,10 +87,8 @@ export default {
       type: 'paragraph',
       text: 'Your Nakshatra is best understood as one more layer of symbolic self-knowledge in the larger Jyotish system — a companion to your Rashi and Ascendant, not a replacement for them. Read together, they offer a richly textured, traditional lens for reflection, not a fixed script for how your life must unfold.',
     },
-    { type: 'cta-course', courseSlug: 'intro-vedic-astrology', label: 'Learn to read a full Vedic birth chart' },
   ],
   relatedToolSlugs: ['nakshatra'],
-  relatedCourseSlugs: ['intro-vedic-astrology'],
   faqs: [
     {
       id: 'nakshatras-explained-27-lunar-mansions-faq-1',

@@ -21,7 +21,7 @@ export interface StaticRoute {
 export const STATIC_ROUTES: StaticRoute[] = [
   { path: '/', seoLabel: 'Home', indexable: true },
   { path: '/tools', seoLabel: 'Tools', indexable: true },
-  { path: '/courses', seoLabel: 'Courses', indexable: true },
+  { path: '/courses', seoLabel: 'Courses', indexable: false },
   { path: '/about', seoLabel: 'About', indexable: true },
   { path: '/contact', seoLabel: 'Contact', indexable: true },
   { path: '/blog', seoLabel: 'Blog', indexable: true },
@@ -38,7 +38,7 @@ export const TOOLS: ToolMeta[] = [
     seoTitle: 'Free Numerology Calculator — Life Path, Expression & Lo Shu Blueprint',
     description: 'Free numerology calculator: enter your name and birth date to reveal your Life Path, Expression, Soul Urge, Personality, Birthday and Personal Year numbers as animated orbs, a core-number wheel and your highlighted Lo Shu grid — computed instantly and privately in your browser.',
     category: 'numerology', accent: 'gold', Icon: Sparkles,
-    relatedCourseSlug: 'numerology-mastery', isNew: true,
+    isNew: true,
     status: 'live', indexable: true,
   },
   {
@@ -47,7 +47,6 @@ export const TOOLS: ToolMeta[] = [
     seoTitle: 'Free Mobile Number Numerology Calculator — Phone Number Analysis',
     description: 'Free mobile number numerology calculator: find the root number of your phone number, its repeating digit patterns, and how well it harmonises with your Life Path — including two-digit combination analysis.',
     category: 'numerology', accent: 'cyan', Icon: Smartphone,
-    relatedCourseSlug: 'numerology-mastery',
     status: 'live', indexable: true,
   },
   {
@@ -56,7 +55,7 @@ export const TOOLS: ToolMeta[] = [
     seoTitle: 'Free Lo Shu Grid Calculator — Vedic Numerology Magic Square',
     description: 'Free Lo Shu Grid calculator: drop your birth-date digits into the ancient 3×3 magic square and instantly read its ruling planets, repeated-number energies, missing numbers, and arrows of strength and weakness.',
     category: 'numerology', accent: 'gold', Icon: Grid3x3,
-    relatedCourseSlug: 'numerology-mastery', isNew: true,
+    isNew: true,
     status: 'live', indexable: true,
   },
   {
@@ -65,7 +64,7 @@ export const TOOLS: ToolMeta[] = [
     seoTitle: 'Free Chaldean Numerology Calculator — Name & Number Vibration',
     description: 'Free Chaldean numerology calculator: type any name, phone number or date of birth to instantly see its Chaldean compound number, reduced root number, ruling planet, and a full per-letter breakdown.',
     category: 'numerology', accent: 'cyan', Icon: Calculator,
-    relatedCourseSlug: 'numerology-mastery', isNew: true,
+    isNew: true,
     status: 'live', indexable: true,
   },
   {
@@ -74,7 +73,7 @@ export const TOOLS: ToolMeta[] = [
     seoTitle: 'Free Life Path Number Calculator — Numerology Console & Predictions',
     description: 'Free Life Path number calculator and full numerology console in one: get your DOB chart, name number, lucky colours and numbers, plus a personal prediction for today, this month, and this year.',
     category: 'numerology', accent: 'violet', Icon: Wand2,
-    relatedCourseSlug: 'numerology-mastery', isNew: true,
+    isNew: true,
     status: 'live', indexable: true,
   },
   {
@@ -83,7 +82,7 @@ export const TOOLS: ToolMeta[] = [
     seoTitle: 'Free Vedic Birth Chart Calculator — Moon Sign & Rashi (Jyotish)',
     description: 'Free Vedic birth chart calculator: enter your birth date, time and city to cast an animated sidereal Rashi chart and discover your Moon sign, Sun sign and Ascendant — the foundation of Jyotish (Vedic astrology).',
     category: 'astrology', accent: 'violet', Icon: Telescope,
-    relatedCourseSlug: 'intro-vedic-astrology', isNew: true,
+    isNew: true,
     status: 'live', indexable: true,
   },
   {
@@ -92,7 +91,6 @@ export const TOOLS: ToolMeta[] = [
     seoTitle: 'Free Planetary Hours Calculator — Live Hora Finder',
     description: 'Free planetary hours (hora) calculator: see exactly which planet rules this very hour wherever you are, and the best activities to align with each planetary hour throughout the day and night.',
     category: 'astrology', accent: 'gold', Icon: Clock,
-    relatedCourseSlug: 'intro-vedic-astrology',
     status: 'live', indexable: true,
   },
   {
@@ -101,7 +99,7 @@ export const TOOLS: ToolMeta[] = [
     seoTitle: 'Free Navagraha Mandala — Interactive Nine Planets (Vedic Astrology)',
     description: 'A free interactive Navagraha mandala: spin a living 360° orbital map of the nine Vedic planets (grahas), watch them circle the Sun, and tap any graha to learn its meaning and mythology.',
     category: 'astrology', accent: 'violet', Icon: Orbit,
-    relatedCourseSlug: 'intro-vedic-astrology', isNew: true,
+    isNew: true,
     status: 'live', indexable: true,
   },
   {
@@ -110,7 +108,7 @@ export const TOOLS: ToolMeta[] = [
     seoTitle: 'Free Chakra Test — 21-Question Energy Balance Assessment',
     description: 'Free chakra test: answer 21 reflective questions to map the balance of your seven chakras on an animated radar chart, revealing which energy centres may need attention.',
     category: 'energy', accent: 'violet', Icon: Flower2,
-    relatedCourseSlug: 'chakra-healing', isNew: true,
+    isNew: true,
     status: 'live', indexable: true,
   },
   {
@@ -119,7 +117,6 @@ export const TOOLS: ToolMeta[] = [
     seoTitle: 'Free Japa Mala Counter — 108-Bead Mantra Counter Online',
     description: 'Free 108-bead japa mala counter: chant along with eight sacred mantras, track every round with a satisfying tap, and keep a personal daily streak — no physical mala required.',
     category: 'energy', accent: 'gold', Icon: Repeat,
-    relatedCourseSlug: 'vedic-mantra-science',
     status: 'live', indexable: true,
   },
   {
@@ -128,7 +125,7 @@ export const TOOLS: ToolMeta[] = [
     seoTitle: 'Free Trataka Meditation — Online Candle Gazing Timer',
     description: 'Free Trataka (candle gazing) meditation guide: fix your gaze on a luminous bindu, candle flame, Om symbol or Sri Yantra in distraction-free full screen, with a timer, breath pacer, and a closing afterimage ritual.',
     category: 'energy', accent: 'violet', Icon: Eye,
-    relatedCourseSlug: 'meditation-pranayama', isNew: true,
+    isNew: true,
     status: 'live', indexable: true,
   },
   {
@@ -137,7 +134,6 @@ export const TOOLS: ToolMeta[] = [
     seoTitle: 'Free Crystal Guide — Healing Stones by Intention',
     description: 'Free crystal guide: browse twelve healing crystals by intention (love, protection, clarity, abundance and more), learn how to use each one, and build your own personal crystal kit.',
     category: 'energy', accent: 'cyan', Icon: Gem,
-    relatedCourseSlug: 'chakra-healing',
     status: 'live', indexable: true,
   },
   {
@@ -146,7 +142,6 @@ export const TOOLS: ToolMeta[] = [
     seoTitle: 'Free Daily Tarot-Style Contemplation Card & Reflection Journal',
     description: 'A free daily contemplation card: draw one original Vedic-flavoured card each day, reflect on the prompt it offers, and keep a private journal of your insights over time.',
     category: 'energy', accent: 'teal', Icon: Layers,
-    relatedCourseSlug: 'meditation-pranayama',
     status: 'live', indexable: true,
   },
   {
@@ -155,7 +150,7 @@ export const TOOLS: ToolMeta[] = [
     seoTitle: 'Free Sacred Geometry Generator — Yantra Mathematics Explained',
     description: 'Free sacred geometry lab: watch fourteen classical yantras (including the Sri Yantra) draw themselves stroke by stroke, and learn the precise mathematics — ratios, angles, the golden ratio — encoded in each.',
     category: 'cosmology', accent: 'gold', Icon: Hexagon,
-    relatedCourseSlug: 'sacred-geometry-yantras', isNew: true,
+    isNew: true,
     status: 'live', indexable: true,
   },
   {
@@ -204,7 +199,7 @@ export const TOOLS: ToolMeta[] = [
     seoTitle: 'Free Chakra Frequency & Sleep Meditation Player — Solfeggio, Binaural & Isochronic Tones',
     description: 'Free chakra frequency and sleep meditation player: choose from seven chakra tones and classic Solfeggio frequencies, layer in binaural or isochronic beats, and drift off with a crossfading sleep timer — every tone is synthesised live in your browser with the Web Audio API, not a recording.',
     category: 'energy', accent: 'cyan', Icon: AudioLines,
-    relatedCourseSlug: 'chakra-healing', isNew: true,
+    isNew: true,
     status: 'live', indexable: true,
   },
   {
@@ -229,8 +224,8 @@ export const TOOLS: ToolMeta[] = [
     seoTitle: 'Free Kundali Matching Calculator — Guna Milan & Numerology Compatibility',
     description: 'Free Kundali matching calculator: enter two birth details to reveal the classical 8-koota Ashtakoot (Guna Milan) score out of 36, alongside Life Path and Expression numerology compatibility — two honest lenses on a relationship, side by side.',
     category: 'astrology', accent: 'violet', Icon: Heart,
-    relatedCourseSlug: 'numerology-mastery', isNew: true,
-    status: 'coming-soon', indexable: true,
+    isNew: true,
+    status: 'coming-soon', indexable: false,
   },
   {
     id: 'urdhva', slug: 'urdhva', name: 'Urdhva Shakti',

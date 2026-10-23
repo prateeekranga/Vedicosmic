@@ -1,9 +1,8 @@
 import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from '@/config/site';
 import type { FAQItem } from '@/types/content.types';
-import type { Course } from '@/types/course.types';
 import type { ToolMeta } from '@/types/tool.types';
 import type { BlogPost } from '@/types/blog.types';
-import { getAuthor } from '@/data/authors';
+import { getPerson } from '@/content/people';
 import { getBlogCategory } from '@/data/blogCategories';
 import { estimateWordCount } from '@/lib/blogUtils';
 
@@ -67,36 +66,11 @@ export function getToolExtraJsonLd(tool: ToolMeta): object[] {
   return TOOL_EXTRA_SCHEMA[tool.slug]?.(tool) ?? [];
 }
 
-export function courseSchema(course: Course) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Course',
-    name: course.title,
-    description: course.description,
-    provider: { '@type': 'Organization', name: SITE_NAME, sameAs: SITE_URL },
-    ...(course.reviewCount > 0 ? {
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: course.rating,
-        reviewCount: course.reviewCount,
-      },
-    } : {}),
-    ...(course.price != null ? {
-      offers: {
-        '@type': 'Offer',
-        price: course.price,
-        priceCurrency: course.currency,
-        url: `${SITE_URL}/courses/${course.slug}`,
-      },
-    } : {}),
-  };
-}
-
 export function blogPostingSchema(post: BlogPost) {
   const image = post.heroImage
     ? (post.heroImage.startsWith('http') ? post.heroImage : SITE_URL + post.heroImage)
     : SITE_URL + DEFAULT_OG_IMAGE;
-  const author = post.authorId ? getAuthor(post.authorId) : undefined;
+  const author = getPerson(post.authorId);
   const category = getBlogCategory(post.category);
   return {
     '@context': 'https://schema.org',
@@ -108,7 +82,7 @@ export function blogPostingSchema(post: BlogPost) {
     dateModified: post.updatedAt ?? post.publishedAt,
     // An unattributed post is credited to the Organization, not a fabricated Person named after the site.
     author: author
-      ? { '@type': 'Person', name: author.name, jobTitle: author.title, description: author.bio, url: `${SITE_URL}/about` }
+      ? { '@type': 'Person', name: author.name, jobTitle: author.role, ...(author.bio ? { description: author.bio } : {}), url: `${SITE_URL}/about` }
       : { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
     publisher: { '@type': 'Organization', name: SITE_NAME, logo: { '@type': 'ImageObject', url: SITE_URL + DEFAULT_OG_IMAGE } },
     mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}/blog/${post.slug}` },

@@ -25,7 +25,6 @@ export interface User {
   email: string;
   displayName: string;
   createdAt: string;
-  enrolledCourses: string[];
   savedReadings: SavedReading[];
   journalEntries: JournalEntry[];
   crystalKit: string[];

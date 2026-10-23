@@ -76,11 +76,8 @@ export default {
       text:
         'Chakra work is a traditional, symbolic framework for reflection and wellness — it does not diagnose, treat, cure or prevent any physical or mental health condition. If you are dealing with a real symptom or concern, please see a qualified medical doctor or licensed mental health professional.',
     },
-    { type: 'divider' },
-    { type: 'cta-course', courseSlug: 'chakra-healing', label: 'Explore the Chakra Healing Course' },
   ],
   relatedToolSlugs: ['chakra-assessment', 'kundalini', 'crystals'],
-  relatedCourseSlugs: ['chakra-healing'],
   faqs: [
     {
       id: 'what-are-chakras-used-for-faq-1',

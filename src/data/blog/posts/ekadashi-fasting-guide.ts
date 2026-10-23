@@ -92,16 +92,8 @@ export default {
       text:
         "If you're observing Ekadashi for the first time, there's no need to start with the strictest version. Many experienced practitioners suggest beginning with a grain-free or phalahar day, paying attention to how your body responds, and letting your practice deepen gradually and safely over time — with sincerity of intention mattering far more than the severity of the fast.",
     },
-    { type: 'divider' },
-    {
-      type: 'paragraph',
-      text:
-        "Ekadashi is one thread in a much larger fabric of mantra, ritual timing and intention that runs through Vedic practice. If you'd like to understand the deeper science behind why specific days, sounds and observances are chosen the way they are, a structured course can take you well beyond what a single guide can cover.",
-    },
-    { type: 'cta-course', courseSlug: 'vedic-mantra-science', label: 'Explore the Vedic Mantra Science Course' },
   ],
   relatedToolSlugs: ['vrat-calendar', 'puja-aarti'],
-  relatedCourseSlugs: ['vedic-mantra-science'],
   faqs: [
     {
       id: 'ekadashi-fasting-guide-faq-1',

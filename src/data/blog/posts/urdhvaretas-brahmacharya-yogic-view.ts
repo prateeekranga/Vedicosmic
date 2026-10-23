@@ -97,14 +97,8 @@ export default {
       text: 'Energy is never destroyed, only redirected. The work is not to fight the current, but to learn where it can flow.',
       attribution: 'Traditional yogic teaching',
     },
-    {
-      type: 'cta-course',
-      courseSlug: 'kundalini-awakening',
-      label: 'Explore the Kundalini Awakening Course',
-    },
   ],
   relatedToolSlugs: ['urdhva'],
-  relatedCourseSlugs: ['kundalini-awakening'],
   faqs: [
     {
       id: 'urdhvaretas-brahmacharya-yogic-view-faq-1',

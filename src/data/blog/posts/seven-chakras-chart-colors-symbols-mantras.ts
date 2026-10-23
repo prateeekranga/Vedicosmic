@@ -72,10 +72,8 @@ export default {
       postSlug: 'chakra-information-reference-guide',
       label: 'Want more detail per chakra? See the full reference guide (location, mudra & more)',
     },
-    { type: 'cta-course', courseSlug: 'chakra-healing', label: 'Learn to Work With Each Chakra’s Mantra in the Chakra Healing Course' },
   ],
   relatedToolSlugs: ['crystals', 'chakra-assessment', 'kundalini'],
-  relatedCourseSlugs: ['chakra-healing'],
   faqs: [
     {
       id: 'seven-chakras-chart-faq-1',

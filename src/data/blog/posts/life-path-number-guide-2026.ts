@@ -138,14 +138,8 @@ export default {
       type: 'paragraph',
       text: 'Whether your birth date lands on a single digit or one of the three Master Numbers, a Life Path number describes a theme, not a ceiling or a script. Plenty of people spend a lifetime growing into the fuller expression of their number — and that growth is really the point of calculating it at all.',
     },
-    {
-      type: 'cta-course',
-      courseSlug: 'numerology-mastery',
-      label: 'Go deeper into numerology in Numerology Mastery',
-    },
   ],
   relatedToolSlugs: ['life-path', 'numerology'],
-  relatedCourseSlugs: ['numerology-mastery'],
   faqs: [
     {
       id: 'life-path-number-guide-2026-faq-1',

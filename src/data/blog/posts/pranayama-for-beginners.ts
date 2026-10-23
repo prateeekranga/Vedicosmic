@@ -127,10 +127,8 @@ export default {
     { type: 'cta-tool', toolSlug: 'pranayama', label: 'Try the Guided Pranayama Tool' },
     { type: 'cta-tool', toolSlug: 'soundbath', label: 'Explore the Soundbath Tool' },
     { type: 'cta-tool', toolSlug: 'tratak', label: 'Try Trataka — candle-gazing meditation' },
-    { type: 'cta-course', courseSlug: 'meditation-pranayama', label: 'Enroll in the Meditation & Pranayama Course' },
   ],
   relatedToolSlugs: ['pranayama', 'soundbath', 'tratak'],
-  relatedCourseSlugs: ['meditation-pranayama'],
   faqs: [
     {
       id: 'pranayama-for-beginners-faq-1',

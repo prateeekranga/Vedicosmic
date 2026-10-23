@@ -1,6 +1,5 @@
 import { Input, Textarea, Select } from '@/components/ui/Field';
 import { TOOLS } from '@/content/routes';
-import { COURSES } from '@/data/courses';
 import type { BlogContentBlock, BlogPost } from '@/types/blog.types';
 
 /** Wraps a block with a stable row identity for ArrayEditor — kept separate from the block's own
@@ -13,7 +12,7 @@ export interface EditableBlockRow {
 
 const BLOCK_TYPES: BlogContentBlock['type'][] = [
   'heading', 'paragraph', 'list', 'image', 'quote', 'callout',
-  'cta-tool', 'cta-course', 'internal-link', 'diagram', 'divider',
+  'cta-tool', 'internal-link', 'diagram', 'divider',
 ];
 
 const DIAGRAM_IDS: Extract<BlogContentBlock, { type: 'diagram' }>['id'][] = ['loshu-grid', 'nakshatra-wheel', 'chakra-column'];
@@ -27,7 +26,6 @@ function blankBlockOfType(type: BlogContentBlock['type']): BlogContentBlock {
     case 'quote': return { type, text: '' };
     case 'callout': return { type, tone: 'info', text: '' };
     case 'cta-tool': return { type, toolSlug: TOOLS[0]?.slug ?? '' };
-    case 'cta-course': return { type, courseSlug: COURSES[0]?.slug ?? '' };
     case 'internal-link': return { type, postSlug: '' };
     case 'diagram': return { type, id: 'loshu-grid' };
     case 'divider': return { type };
@@ -113,15 +111,6 @@ export function BlogBlockFieldsEditor({
         <>
           <Select label="Tool" value={block.toolSlug} onChange={(e) => updateBlock({ toolSlug: e.target.value })}>
             {TOOLS.map((t) => <option key={t.slug} value={t.slug}>{t.name}</option>)}
-          </Select>
-          <Input label="Label (optional)" value={block.label ?? ''} onChange={(e) => updateBlock({ label: e.target.value })} />
-        </>
-      )}
-
-      {block.type === 'cta-course' && (
-        <>
-          <Select label="Course" value={block.courseSlug} onChange={(e) => updateBlock({ courseSlug: e.target.value })}>
-            {COURSES.map((c) => <option key={c.slug} value={c.slug}>{c.title}</option>)}
           </Select>
           <Input label="Label (optional)" value={block.label ?? ''} onChange={(e) => updateBlock({ label: e.target.value })} />
         </>

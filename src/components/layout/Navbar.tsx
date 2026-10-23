@@ -4,16 +4,11 @@ import { useEffect, useRef, useState } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
 import { AuthModal } from '@/components/auth/AuthModal';
 import { NavDropdown } from '@/components/layout/NavDropdown';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSound } from '@/contexts/SoundContext';
-import { TOOLS, TOOL_CATEGORIES } from '@/content/routes';
-import { COURSES } from '@/data/courses';
-import { formatINR } from '@/lib/format';
-import { getFeatureFlags } from '@/lib/overrides';
-import { useOverridesVersion } from '@/hooks/useOverridesVersion';
+import { TOOL_CATEGORIES, liveTools } from '@/content/routes';
 
 function SoundToggle({ className = '' }: { className?: string }) {
   const { enabled, toggle } = useSound();
@@ -48,13 +43,13 @@ const LEGAL_LINKS = [
   { to: '/disclaimer', label: 'Disclaimer' },
 ];
 
+// Coming-soon tools stay out of the navigation until they work.
+const LIVE_TOOLS = liveTools();
 const TOOLS_PER_CATEGORY = TOOL_CATEGORIES.filter((c) => c.id !== 'all').map((c) => ({
   ...c,
-  tools: TOOLS.filter((t) => t.category === c.id),
+  tools: LIVE_TOOLS.filter((t) => t.category === c.id),
 }));
 const MAX_PER_CATEGORY = 4;
-
-const FEATURED_COURSES = COURSES.filter((c) => c.isFeatured).slice(0, 4);
 
 function ToolsPanel() {
   return (
@@ -89,46 +84,7 @@ function ToolsPanel() {
         to="/tools"
         className="mt-4 flex items-center justify-center gap-1.5 rounded-xl border border-black/10 py-2.5 text-sm text-sky-700 transition-colors hover:border-sky-600/50 hover:bg-black/[0.03]"
       >
-        View all {TOOLS.length} tools <ArrowRight className="h-3.5 w-3.5" />
-      </Link>
-    </div>
-  );
-}
-
-function CoursesPanel({ comingSoon }: { comingSoon: boolean }) {
-  if (comingSoon) {
-    return (
-      <div className="w-[min(90vw,320px)] py-2 text-center">
-        <Badge tone="gold">Coming Soon</Badge>
-        <p className="mt-3 text-sm text-cosmic-darker/70">
-          Structured courses are in the works — check back soon.
-        </p>
-      </div>
-    );
-  }
-  return (
-    <div className="w-[min(90vw,380px)]">
-      <ul className="space-y-1">
-        {FEATURED_COURSES.map((c) => (
-          <li key={c.slug}>
-            <Link
-              to={`/courses/${c.slug}`}
-              className="flex items-center justify-between gap-3 rounded-xl p-3 transition-colors hover:bg-black/[0.04]"
-            >
-              <span className="min-w-0">
-                <span className="block truncate text-sm font-medium text-cosmic-darker">{c.title}</span>
-                <span className="mt-0.5 block text-xs text-cosmic-darker/55">{c.instructor.name.split(' ')[0]} · {c.level}</span>
-              </span>
-              <Badge tone="gold" className="shrink-0 !bg-gold-bright/15 !text-gold-600 !border-gold-500/30">{c.price === 0 ? 'Free' : formatINR(c.price)}</Badge>
-            </Link>
-          </li>
-        ))}
-      </ul>
-      <Link
-        to="/courses"
-        className="mt-2 flex items-center justify-center gap-1.5 rounded-xl border border-black/10 py-2.5 text-sm text-sky-700 transition-colors hover:border-sky-600/50 hover:bg-black/[0.03]"
-      >
-        View all courses <ArrowRight className="h-3.5 w-3.5" />
+        View all {LIVE_TOOLS.length} tools <ArrowRight className="h-3.5 w-3.5" />
       </Link>
     </div>
   );
@@ -138,13 +94,11 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
-  const [mobileSection, setMobileSection] = useState<'tools' | 'courses' | null>(null);
+  const [mobileSection, setMobileSection] = useState<'tools' | null>(null);
   const [mobileMenuOverflowing, setMobileMenuOverflowing] = useState(false);
   const mobileListRef = useRef<HTMLUListElement>(null);
   const { user, logout } = useAuth();
   const location = useLocation();
-  useOverridesVersion();
-  const coursesComingSoon = getFeatureFlags().coursesComingSoon;
 
   useEffect(() => {
     let ticking = false;
@@ -174,12 +128,11 @@ export function Navbar() {
   }, [mobileOpen, mobileSection]);
 
   const [toolsMenuOpen, setToolsMenuOpen] = useState(false);
-  const [coursesMenuOpen, setCoursesMenuOpen] = useState(false);
 
   const isHome = location.pathname === '/';
   // Force a solid header whenever a mega menu is open, so its background never
   // shifts mid-interaction — only relevant on the transparent, unscrolled home hero.
-  const solid = scrolled || mobileOpen || !isHome || toolsMenuOpen || coursesMenuOpen;
+  const solid = scrolled || mobileOpen || !isHome || toolsMenuOpen;
 
   useEffect(() => {
     const open = (e: Event) => { if ((e as CustomEvent).type === 'vc:open-auth') setAuthOpen(true); };
@@ -218,7 +171,6 @@ export function Navbar() {
               </NavLink>
             </li>
             <li><NavDropdown label="Tools" active={location.pathname.startsWith('/tools')} panel={<ToolsPanel />} onOpenChange={setToolsMenuOpen} wide /></li>
-            <li><NavDropdown label="Courses" active={location.pathname.startsWith('/courses')} panel={<CoursesPanel comingSoon={coursesComingSoon} />} onOpenChange={setCoursesMenuOpen} /></li>
             {LINKS.slice(1).map((l) => (
               <li key={l.to}>
                 <NavLink
@@ -260,13 +212,13 @@ export function Navbar() {
                 <UserIcon className="h-4 w-4" /> Sign in
               </Button>
             )}
-            <Button variant="primary" size="sm" to="/courses">Begin Your Journey</Button>
+            <Button variant="primary" size="sm" to="/tools/sadhana">Begin today’s sādhana</Button>
           </div>
 
           <div className="flex items-center gap-2 md:hidden">
             <SoundToggle />
             <button
-              className="text-white" aria-label="Open menu" aria-expanded={mobileOpen}
+              className="grid h-11 w-11 place-items-center text-white" aria-label={mobileOpen ? 'Close menu' : 'Open menu'} aria-expanded={mobileOpen}
               onClick={() => setMobileOpen((o) => !o)}
             >
               {mobileOpen ? <X /> : <Menu />}
@@ -308,32 +260,8 @@ export function Navbar() {
                     </div>
                   ))}
                   <Link to="/tools" className="mt-1 flex items-center gap-1.5 rounded-lg px-3 py-2.5 text-sm text-brand-cyan-soft">
-                    View all {TOOLS.length} tools <ArrowRight className="h-3.5 w-3.5" />
+                    View all {LIVE_TOOLS.length} tools <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
-                </MobileAccordion>
-
-                <MobileAccordion
-                  label="Courses" open={mobileSection === 'courses'}
-                  onToggle={() => setMobileSection((s) => (s === 'courses' ? null : 'courses'))}
-                >
-                  {coursesComingSoon ? (
-                    <div className="flex items-center gap-2 px-3 py-2.5">
-                      <Badge tone="gold">Coming Soon</Badge>
-                      <span className="text-xs text-white/50">Structured courses are in the works.</span>
-                    </div>
-                  ) : (
-                    <>
-                      {FEATURED_COURSES.map((c) => (
-                        <Link key={c.slug} to={`/courses/${c.slug}`} className="flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm text-white/70 hover:bg-white/5 hover:text-white">
-                          <span className="truncate">{c.title}</span>
-                          <Badge tone="gold" className="shrink-0">{c.price === 0 ? 'Free' : formatINR(c.price)}</Badge>
-                        </Link>
-                      ))}
-                      <Link to="/courses" className="mt-1 flex items-center gap-1.5 rounded-lg px-3 py-2.5 text-sm text-brand-cyan-soft">
-                        View all courses <ArrowRight className="h-3.5 w-3.5" />
-                      </Link>
-                    </>
-                  )}
                 </MobileAccordion>
 
                 {LINKS.slice(1).map((l) => (
@@ -353,7 +281,7 @@ export function Navbar() {
                   ) : (
                     <Button variant="outline" onClick={() => { setMobileOpen(false); setAuthOpen(true); }}>Sign in</Button>
                   )}
-                  <Button variant="primary" to="/courses">Begin Your Journey</Button>
+                  <Button variant="primary" to="/tools/sadhana">Begin today’s sādhana</Button>
                 </li>
 
                 <li className="mt-3 flex flex-wrap gap-x-4 gap-y-1 border-t border-white/8 px-4 pt-3">

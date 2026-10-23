@@ -82,11 +82,8 @@ export default {
       text:
         "Chakra visualization is a traditional meditation technique for focus and reflection — it has no scientifically measurable effect on the body, and does not diagnose, treat, cure or prevent any condition. If you are dealing with a real health concern, please see a qualified doctor or licensed mental health professional.",
     },
-    { type: 'divider' },
-    { type: 'cta-course', courseSlug: 'chakra-healing', label: 'Learn Visualization Alongside Mantra & Posture in the Chakra Healing Course' },
   ],
   relatedToolSlugs: ['chakra-assessment', 'crystals', 'kundalini'],
-  relatedCourseSlugs: ['chakra-healing'],
   faqs: [
     {
       id: 'chakra-visualization-faq-1',

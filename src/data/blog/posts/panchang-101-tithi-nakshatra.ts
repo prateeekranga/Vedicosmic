@@ -102,14 +102,8 @@ export default {
       type: 'paragraph',
       text: 'The Panchang is, at its heart, a remarkably old and remarkably precise way of describing time — not as a blank sequence of identical days, but as a rhythm with its own recurring texture, built from the real, calculable motion of the Sun and Moon. Whether you use it to plan a wedding, mark an Ekadashi fast, or simply understand why your grandmother always asks "what Tithi is it today," the five limbs give you a genuine window into one of the Vedic tradition\'s oldest living systems.',
     },
-    {
-      type: 'cta-course',
-      courseSlug: 'intro-vedic-astrology',
-      label: 'Learn to read a Panchang and birth chart together',
-    },
   ],
   relatedToolSlugs: ['muhurta', 'vrat-calendar', 'planetary-hours'],
-  relatedCourseSlugs: ['intro-vedic-astrology'],
   faqs: [
     {
       id: 'panchang-101-tithi-nakshatra-faq-1',

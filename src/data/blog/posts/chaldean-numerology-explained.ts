@@ -111,14 +111,8 @@ export default {
       type: 'paragraph',
       text: "Whether you come to Chaldean numerology through curiosity about its Babylonian roots or simply want a second lens on a name's vibration, treat the compound and root numbers the way the tradition intends — as a mirror for reflection, not a verdict. Two names sharing a root number can belong to entirely different people living entirely different lives, and that's exactly what you'd expect from a symbolic framework rather than a scientific instrument.",
     },
-    {
-      type: 'cta-course',
-      courseSlug: 'numerology-mastery',
-      label: 'Learn the full Chaldean and Pythagorean systems in Numerology Mastery',
-    },
   ],
   relatedToolSlugs: ['chaldean'],
-  relatedCourseSlugs: ['numerology-mastery'],
   faqs: [
     {
       id: 'chaldean-numerology-explained-faq-1',

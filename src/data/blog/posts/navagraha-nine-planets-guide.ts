@@ -82,10 +82,8 @@ export default {
       type: 'paragraph',
       text: 'Nine grahas, seven of them visible in the night sky and two of them pure geometry, form the working vocabulary of an entire astrological tradition — the vocabulary used to read a birth chart, name the days of the week, and time the unfolding of a life through Dasha. Learning the Navagraha individually is the first real step toward reading a Vedic chart as more than a diagram; it\'s the difference between seeing nine dots on a wheel and seeing nine distinct characters, each with a role to play.',
     },
-    { type: 'cta-course', courseSlug: 'intro-vedic-astrology', label: 'Learn to read the Navagraha in a real birth chart' },
   ],
   relatedToolSlugs: ['planet-mandala'],
-  relatedCourseSlugs: ['intro-vedic-astrology'],
   faqs: [
     {
       id: 'navagraha-nine-planets-guide-faq-1',

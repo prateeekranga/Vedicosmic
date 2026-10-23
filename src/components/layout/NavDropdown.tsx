@@ -4,7 +4,7 @@ import { useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { EASE } from '@/components/motion/Reveal';
 
-/** Hover/click dropdown for a top-level nav item — used for Tools & Courses. */
+/** Hover/click dropdown for a top-level nav item — used for Tools. */
 export function NavDropdown({
   label, active, panel, panelClassName = '', onOpenChange, wide = false,
 }: { label: string; active?: boolean; panel: ReactNode; panelClassName?: string; onOpenChange?: (open: boolean) => void; wide?: boolean }) {

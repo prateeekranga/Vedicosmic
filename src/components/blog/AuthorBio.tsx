@@ -1,29 +1,24 @@
 import { Link } from 'react-router-dom';
-import { Star, Users } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
-import type { Instructor } from '@/types/course.types';
+import type { Person } from '@/content/people';
 
-/**
- * E-E-A-T byline card — real bio/credentials/stats shared with course
- * instructor cards, not content authored just for this box.
- */
-export function AuthorBio({ author, slug }: { author: Instructor; slug: string }) {
+/** Byline card for a verified person. Shows only what the person has confirmed about
+ *  themselves: name, role and, once written, their own bio. */
+export function AuthorBio({ person }: { person: Person }) {
+  const initials = person.name.split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase();
   return (
     <Card className="flex flex-col gap-4 sm:flex-row sm:items-start">
       <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-gold-bright/15 text-lg font-semibold text-gold-pale">
-        {author.initials}
+        {initials}
       </span>
       <div className="min-w-0 flex-1">
         <p className="text-xs uppercase tracking-wide text-white/40">Written by</p>
-        <p className="mt-0.5 font-heading text-lg text-white">{author.name}</p>
-        <p className="text-sm text-gold-soft">{author.title}</p>
-        <p className="mt-2 text-sm leading-relaxed text-white/60">{author.bio}</p>
-        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-white/45">
-          <span className="inline-flex items-center gap-1"><Star className="h-3.5 w-3.5 text-gold-soft" /> {author.rating} instructor rating</span>
-          <span className="inline-flex items-center gap-1"><Users className="h-3.5 w-3.5" /> {author.studentCount.toLocaleString('en-IN')}+ students taught</span>
-        </div>
-        <Link to={`/blog?author=${slug}`} className="mt-3 inline-block text-sm text-brand-cyan-soft hover:underline">
-          More articles by {author.name.split(' ').slice(-1)[0]} →
+        <p className="mt-0.5 font-heading text-lg text-white">{person.name}</p>
+        <p className="text-sm text-gold-soft">{person.role}</p>
+        {person.nameNote && <p className="mt-1 text-sm text-white/55">{person.nameNote}</p>}
+        {person.bio && <p className="mt-2 text-sm leading-relaxed text-white/60">{person.bio}</p>}
+        <Link to={`/blog?author=${person.id}`} className="mt-3 inline-block text-sm text-brand-cyan-soft hover:underline">
+          More articles by {person.name} →
         </Link>
       </div>
     </Card>

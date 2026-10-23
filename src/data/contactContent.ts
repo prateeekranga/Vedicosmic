@@ -1,15 +1,12 @@
 import type { ContactContent } from '@/types/content.types';
 
-export const DEFAULT_CONTACT_CONTENT: ContactContent = {
-  heroTitle: 'Begin a Conversation',
-  heroSubtitle: 'Questions, feedback, or a story to share about your practice — we read every message that finds its way to us.',
+export const CONTACT_CONTENT: ContactContent = {
+  heroTitle: 'Contact',
+  heroSubtitle: 'Questions, corrections or feedback about a tool or an article? Write to us by email.',
   email: 'hello@vedicosmic.com',
-  addressLine: 'Written for seekers everywhere',
-  socials: { instagram: '', youtube: '', twitter: '' },
   faqs: [
-    { id: 'f1', header: 'Are the tools based on real calculations?', body: 'Yes. Every reading — numerology, sidereal astrology, biorhythm, planetary hours — is computed live in your browser from established formulas. Nothing is random or pre-written, and your inputs never leave your device.' },
-    { id: 'f2', header: 'Do I need an account to use VediCosmic?', body: 'No. All fourteen tools are free to explore without signing in. An account simply lets you save readings, keep a tarot journal, build a crystal kit, and track your mantra streak across visits.' },
-    { id: 'f3', header: 'Is my personal data stored anywhere?', body: 'Your profile and saved readings live only in your browser via local storage. We do not run a tracking server for the current experience — your inner journey stays on your own device.' },
-    { id: 'f4', header: 'Can I get a refund on a course?', body: 'Course enrollment in this experience is a demonstration of the learning flow. When paid courses go live, every purchase will carry a 14-day satisfaction window.' },
+    { id: 'f1', header: 'Are the tools based on real calculations?', body: 'Yes. Each tool computes its result in your browser from published formulas. Some astronomy results are approximate, and each tool says so where it matters. The Lagna (Ascendant) is hidden while it is being rebuilt.' },
+    { id: 'f2', header: 'Do I need an account?', body: 'No. Every tool works without signing in. Anything you choose to save stays in this browser on your device.' },
+    { id: 'f3', header: 'Is my personal data stored anywhere?', body: 'What you type into a tool is not sent to us. Saved readings and practice streaks are kept in your browser’s local storage on this device; clearing the site’s data in your browser removes them. If you email us, we receive your email address and message, and use them only to reply.' },
   ],
 };

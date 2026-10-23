@@ -1,14 +1,11 @@
 import { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight, GraduationCap } from 'lucide-react';
-import { getTool, TOOL_CATEGORIES, TOOL_ACCENT_BG } from '@/content/routes';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { getTool, liveTools, TOOL_CATEGORIES, TOOL_ACCENT_BG } from '@/content/routes';
 import { TOOL_COMPONENTS } from '@/tools/registry';
-import { getCourse } from '@/data/courses';
 import { getToolFaqs } from '@/data/toolFaqs';
 import { useAllBlogPosts } from '@/hooks/useAllBlogPosts';
-import { isToolComingSoon, visibleTools } from '@/lib/overrides';
-import { useOverridesVersion } from '@/hooks/useOverridesVersion';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
@@ -23,7 +20,6 @@ import { useChakraPlayer } from '@/hooks/useChakraPlayer';
 import { useSEO } from '@/hooks/useSEO';
 import { breadcrumbList, faqPageSchema, softwareApplicationSchema, getToolExtraJsonLd } from '@/lib/schema';
 import type { ToolMeta } from '@/types/tool.types';
-import type { Course } from '@/types/course.types';
 import type { FAQItem } from '@/types/content.types';
 import type { BlogPost } from '@/types/blog.types';
 
@@ -78,10 +74,9 @@ export default function ToolPage() {
 
   if (!tool) return null;
 
-  const course = tool.relatedCourseSlug ? getCourse(tool.relatedCourseSlug) : undefined;
   const faqs = getToolFaqs(tool.id);
   const relatedPosts = allPosts.filter((p) => p.relatedToolSlugs?.includes(tool.slug));
-  const relatedTools = visibleTools().filter((t) => t.category === tool.category && t.slug !== tool.slug).slice(0, 4);
+  const relatedTools = liveTools().filter((t) => t.category === tool.category && t.slug !== tool.slug).slice(0, 4);
 
   return (
     <div className="container-vc pb-12 pt-20">
@@ -93,21 +88,20 @@ export default function ToolPage() {
 
       {/* keyed by slug so a stale result's share text can't leak into the next tool navigated to */}
       <ShareResultProvider key={tool.slug}>
-        <ToolBody tool={tool} course={course} faqs={faqs} relatedPosts={relatedPosts} relatedTools={relatedTools} />
+        <ToolBody tool={tool} faqs={faqs} relatedPosts={relatedPosts} relatedTools={relatedTools} />
       </ShareResultProvider>
     </div>
   );
 }
 
 function ToolBody({
-  tool, course, faqs, relatedPosts, relatedTools,
-}: { tool: ToolMeta; course: Course | undefined; faqs: FAQItem[]; relatedPosts: BlogPost[]; relatedTools: ToolMeta[] }) {
+  tool, faqs, relatedPosts, relatedTools,
+}: { tool: ToolMeta; faqs: FAQItem[]; relatedPosts: BlogPost[]; relatedTools: ToolMeta[] }) {
   const Tool = TOOL_COMPONENTS[tool.slug];
   const shareText = useShareText();
   const url = window.location.href;
   const title = `${tool.name} · VediCosmic`;
-  useOverridesVersion();
-  const comingSoon = isToolComingSoon(tool.id);
+  const comingSoon = tool.status === 'coming-soon';
 
   return (
     <>
@@ -170,19 +164,6 @@ function ToolBody({
             ))}
           </div>
         </div>
-      )}
-
-      {course && (
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          className="glass mt-16 flex flex-col items-start gap-4 rounded-2xl p-7 sm:flex-row sm:items-center">
-          <GraduationCap className="h-8 w-8 shrink-0 text-gold-soft" />
-          <div className="flex-1">
-            <div className="text-xs uppercase tracking-wide text-white/40">Go deeper</div>
-            <div className="font-heading text-lg text-white">{course.title}</div>
-            <p className="text-sm text-white/55">{course.subtitle}</p>
-          </div>
-          <Button to={`/courses/${course.slug}`} variant="outline">Explore course</Button>
-        </motion.div>
       )}
     </>
   );

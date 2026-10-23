@@ -4,9 +4,7 @@ import { PresetRow } from './PresetRow';
 /** Vertical list at lg+, horizontal scrollable chip row below — a chip row rather than an
  *  Accordion, deliberately: switching presets is the single most frequent action on this
  *  page while audio is already running, and this codebase's Accordion is reserved for
- *  independent show/hide content (FAQs), a different interaction. No duplicate course-promo
- *  card here — ToolPage.tsx already renders a "Go deeper" CTA for this tool's
- *  relatedCourseSlug; repeating it here would sell the same course twice on one screen. */
+ *  independent show/hide content (FAQs), a different interaction. */
 export function ChakraSidebar() {
   return (
     <div className="lg:sticky lg:top-28">

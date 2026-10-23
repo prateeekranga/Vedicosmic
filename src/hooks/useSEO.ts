@@ -42,17 +42,22 @@ export function useSEO(input: SEOInput): void {
     const ov = getSEOOverrides()[input.key];
     const title = ov?.title || input.title;
     const description = ov?.description || input.description;
-    const image = ov?.ogImage || input.image || DEFAULT_OG_IMAGE;
+    const imagePath = ov?.ogImage || input.image || DEFAULT_OG_IMAGE;
+    const image = imagePath.startsWith('http') ? imagePath : SITE_URL + imagePath;
     const url = SITE_URL + input.path;
 
     document.title = title;
     upsertMeta('name', 'description', description);
     upsertMeta('property', 'og:title', title);
     upsertMeta('property', 'og:description', description);
-    upsertMeta('property', 'og:image', image.startsWith('http') ? image : SITE_URL + image);
+    upsertMeta('property', 'og:image', image);
     upsertMeta('property', 'og:url', url);
     upsertMeta('property', 'og:type', input.type ?? 'website');
     upsertMeta('property', 'og:site_name', SITE_NAME);
+    upsertMeta('property', 'og:locale', 'en_IN');
+    upsertMeta('name', 'twitter:title', title);
+    upsertMeta('name', 'twitter:description', description);
+    upsertMeta('name', 'twitter:image', image);
     upsertMeta('name', 'robots', input.noindex ? 'noindex, follow' : 'index, follow');
     upsertCanonical(url);
 

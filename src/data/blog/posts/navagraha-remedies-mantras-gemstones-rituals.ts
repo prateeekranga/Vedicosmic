@@ -95,11 +95,8 @@ export default {
       text:
         "Navagraha remedies are a traditional, symbolic practice within Jyotish, offered here for cultural and educational understanding. They are not scientifically verified, do not guarantee any specific outcome, and should never replace real-world action, financial planning, or professional medical or legal advice where those are genuinely needed.",
     },
-    { type: 'divider' },
-    { type: 'cta-course', courseSlug: 'intro-vedic-astrology', label: 'Learn to Identify Which Remedies Apply to Your Own Chart' },
   ],
   relatedToolSlugs: ['planet-mandala', 'mantra-timer', 'puja-aarti'],
-  relatedCourseSlugs: ['intro-vedic-astrology'],
   faqs: [
     {
       id: 'navagraha-remedies-faq-1',

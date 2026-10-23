@@ -76,10 +76,8 @@ export default {
       type: 'paragraph',
       text: 'Neither system is a corrupted version of the other — they are two coherent conventions for mapping the same sky, built for different purposes and refined within different cultures over thousands of years. Understanding the tropical–sidereal split doesn\'t require you to declare a winner; it simply lets you read either tradition, or both, with a clearer sense of what you\'re actually looking at.',
     },
-    { type: 'cta-course', courseSlug: 'intro-vedic-astrology', label: 'Learn to read a full Vedic birth chart' },
   ],
   relatedToolSlugs: ['astrology'],
-  relatedCourseSlugs: ['intro-vedic-astrology'],
   faqs: [
     {
       id: 'vedic-vs-western-astrology-faq-1',

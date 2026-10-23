@@ -46,7 +46,7 @@ export interface SeoAnalysisInput {
 
 /** Yoast/Rank Math-style keyphrase analysis. Every check that needs an outbound-link block
  *  (Yoast's "add links to external sources" check) is intentionally left out — this content
- *  model has no generic hyperlink block type, only specific cta-tool/cta-course/internal-link
+ *  model has no generic hyperlink block type, only specific cta-tool/internal-link
  *  blocks, so a real outbound-link check isn't possible without a content-model change. */
 export function analyzeSeo(input: SeoAnalysisInput): Analysis {
   const { title, seoTitle, slug, metaDescription, focusKeyphrase, blocks, otherPosts } = input;

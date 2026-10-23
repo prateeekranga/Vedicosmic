@@ -1,6 +1,6 @@
 /**
  * Shared localStorage read/write primitives for all client-side admin state
- * (course/tool overrides, site content, SEO overrides). `write` fires a
+ * (static-post overrides, SEO overrides). `write` fires a
  * `vc:overrides` window event so any component using `useOverridesVersion`
  * re-renders with fresh data.
  */

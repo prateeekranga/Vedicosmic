@@ -1,8 +1,7 @@
 /**
  * Deities for the Virtual Puja & Aarti tool. Each is represented by its
- * traditional bija (seed) mantra syllable — the same authentic, symbolic
- * approach already used across this site (see FloatingGlyphs) — rather than
- * a figurative image, alongside a short well-known invocation and the
+ * traditional bija (seed) mantra syllable, shown in the context of that deity's
+ * puja rather than as decoration, instead of a figurative image, alongside a short well-known invocation and the
  * opening line of its traditional aarti (all public-domain devotional verses
  * well over a century old).
  */

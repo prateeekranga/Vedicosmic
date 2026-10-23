@@ -11,7 +11,6 @@ import { breadcrumbList } from '@/lib/schema';
 import { estimateReadingTime } from '@/lib/blogUtils';
 import { BlogPostCard } from '@/components/blog/BlogPostCard';
 import { CategoryEmblem } from '@/components/blog/CategoryEmblem';
-import { AdSlot } from '@/components/ads/AdSlot';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { SectionHeading } from '@/components/ui/SectionHeading';
@@ -199,10 +198,6 @@ export default function Blog() {
           <SpotlightPost post={spotlight} />
         </div>
       )}
-
-      <div className="mx-auto mt-8 sm:mt-10 max-w-5xl">
-        <AdSlot slot="blog-hub" />
-      </div>
 
       {gridPosts.length > 0 ? (
         <motion.div layout className="mt-12 sm:mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

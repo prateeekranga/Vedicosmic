@@ -16,7 +16,6 @@ import { KeyTakeaways } from '@/components/blog/KeyTakeaways';
 import { TableOfContents } from '@/components/blog/TableOfContents';
 import { AuthorBio } from '@/components/blog/AuthorBio';
 import { EditorialDisclaimer } from '@/components/blog/EditorialDisclaimer';
-import { AdSlot } from '@/components/ads/AdSlot';
 import { ShareBar } from '@/components/ShareBar';
 import { Accordion } from '@/components/ui/Accordion';
 import { Badge } from '@/components/ui/Badge';
@@ -112,15 +111,7 @@ function BlogPostBody({ post }: { post: BlogPost }) {
       </div>
 
       <div className="mt-8 sm:mt-10">
-        <AdSlot slot="blog-post-top" />
-      </div>
-
-      <div className="mt-8 sm:mt-10">
         <BlogContentRenderer blocks={post.content} />
-      </div>
-
-      <div className="mt-8 sm:mt-10">
-        <AdSlot slot="blog-post-bottom" />
       </div>
 
       {author && post.authorId && (

@@ -1,7 +1,7 @@
 import { Gift, UserX, ShieldCheck, Ban, Share2 } from 'lucide-react';
 
 /** Each claim verified true for this specific page before writing it: no pricing/auth
- *  gate, no useAuth reference anywhere in this tool, AdSlot never renders on /tools/*,
+ *  gate, no useAuth reference anywhere in this tool, the site carries no ads at all,
  *  and ShareBar is the real, existing share feature already on every tool page. */
 const BADGES = [
   { Icon: Gift, title: '100% Free', text: 'No paywall, no premium tier' },

@@ -14,9 +14,10 @@ async function launch() {
 
 /** Waits for the SPA to render the route's content. */
 async function open(page, path) {
-  await page.goto(BASE + path, { waitUntil: 'networkidle' });
+  const response = await page.goto(BASE + path, { waitUntil: 'networkidle' });
   await page.waitForSelector('h1', { timeout: 10000 }).catch(() => {});
   await page.waitForTimeout(800);
+  return response;
 }
 
 const headingReport = (page) => page.evaluate(() => {
@@ -104,9 +105,12 @@ for (const path of ['/', '/about', '/tools', '/contact', '/courses', '/blog/nume
   await open(page, '/tools/kundali-matching');
   const robots = await page.evaluate(() => [...document.querySelectorAll('meta[name="robots"]')].map((m) => m.content).join(' | '));
   check('/tools/kundali-matching: robots noindex', /noindex/.test(robots), robots);
+  // On Hostinger, .htaccess answers retired course URLs with a real 410 Gone; locally the app shows "not found".
   for (const path of ['/courses/chakra-healing', '/legal']) {
-    await open(page, path);
-    check(`${path}: renders "not found"`, /Page not found|404/i.test(await page.evaluate(() => document.body.innerText)));
+    const response = await open(page, path);
+    const gone = response?.status() === 410;
+    check(`${path}: gone (410) or renders "not found"`, gone || /Page not found|404/i.test(await page.evaluate(() => document.body.innerText)),
+      `status ${response?.status()}`);
   }
   await open(page, '/tools/nakshatra');
   check('/tools/nakshatra: result note under the tool', await page.getByText('Astrology offers tradition-based reflection, not guarantees.').isVisible());

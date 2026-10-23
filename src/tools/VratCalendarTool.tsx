@@ -134,9 +134,10 @@ export default function VratCalendarTool() {
         </div>
         <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-white/35">
           <Moon className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-          Dates are computed from the Moon and Sun for your device’s timezone and are accurate to about a day. Regional panchangs
-          differ slightly on start/end times of a tithi — confirm important vrat dates with your local panchang. Reminder bells are a
-          personal marker saved on this device (they don’t send notifications).
+          Dates are computed from the Moon and Sun for your device’s time zone with an approximate method, checked once a day,
+          so a short tithi can occasionally be missed or land a day off. Regional panchangs also differ on start and end times —
+          confirm important vrat dates with your local panchang. The bell markers last only while this page is open and do not
+          send notifications.
         </p>
       </div>
     </div>

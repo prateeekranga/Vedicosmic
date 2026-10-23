@@ -5,31 +5,10 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Input } from '@/components/ui/Field';
 
-/* ─────────────────── solar math (NOAA-style, ±2 min) ─────────────────── */
+import { sunEventUTC } from '@/lib/sunEvents';
+import { localDateKey } from '@/engine/time';
 
 const rad = Math.PI / 180;
-function sunEventUTC(date: Date, lat: number, lng: number, rise: boolean): number | null {
-  const start = Date.UTC(date.getFullYear(), 0, 0);
-  const n = Math.floor((Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - start) / 86400000);
-  const lngHour = lng / 15;
-  const t = n + ((rise ? 6 : 18) - lngHour) / 24;
-  const M = 0.9856 * t - 3.289;
-  let L = M + 1.916 * Math.sin(M * rad) + 0.02 * Math.sin(2 * M * rad) + 282.634;
-  L = ((L % 360) + 360) % 360;
-  let RA = Math.atan(0.91764 * Math.tan(L * rad)) / rad;
-  RA = ((RA % 360) + 360) % 360;
-  RA += (Math.floor(L / 90) - Math.floor(RA / 90)) * 90;
-  RA /= 15;
-  const sinDec = 0.39782 * Math.sin(L * rad);
-  const cosDec = Math.cos(Math.asin(sinDec));
-  const cosH = (Math.cos(90.833 * rad) - sinDec * Math.sin(lat * rad)) / (cosDec * Math.cos(lat * rad));
-  if (cosH > 1 || cosH < -1) return null;               // polar day/night
-  let H = rise ? 360 - Math.acos(cosH) / rad : Math.acos(cosH) / rad;
-  H /= 15;
-  const T = H + RA - 0.06571 * t - 6.622;
-  const UT = ((T - lngHour) % 24 + 24) % 24;
-  return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) + UT * 3600000;
-}
 
 /* ────────────────────── muhurta segment tables ────────────────────── */
 // 1-based index of the 8 equal daylight parts, by weekday (0 = Sunday)
@@ -42,7 +21,7 @@ interface Win { id: string; name: string; sa: string; kind: 'avoid' | 'good'; st
 const fmtT = (d: Date) => d.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' });
 
 export default function MuhurtaTool() {
-  const [dateStr, setDateStr] = useState(() => new Date().toISOString().slice(0, 10));
+  const [dateStr, setDateStr] = useState(() => localDateKey());
   const [lat, setLat] = useState(28.6139);
   const [lng, setLng] = useState(77.209);
   const [locName, setLocName] = useState('New Delhi (default)');
@@ -98,7 +77,7 @@ export default function MuhurtaTool() {
     return `M ${p1.x} ${p1.y} A ${r} ${r} 0 ${large} 1 ${p2.x} ${p2.y}`;
   };
 
-  const isToday = dateStr === new Date().toISOString().slice(0, 10);
+  const isToday = dateStr === localDateKey();
   const status = (w: Win) => {
     if (!isToday) return null;
     if (now >= w.start && now <= w.end) return 'now';
@@ -210,7 +189,7 @@ export default function MuhurtaTool() {
               );
             })}
             <p className="px-1 text-xs text-white/30">
-              Times computed from the sun for the given coordinates and shown in your device’s timezone — for distant locations, mind the timezone difference. Verify important dates with a local panchang.
+              Approximate method: sunrise and sunset from a simplified solar formula (usually within a minute or two) for the given coordinates, shown in your device’s time zone — for distant locations, mind the time difference. Verify important dates with a local panchang.
             </p>
           </div>
         </div>

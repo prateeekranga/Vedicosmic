@@ -70,7 +70,7 @@ const TOOL_SPECIFIC_FAQS: Record<string, FAQItem[]> = {
     { id: 'sleep-use', header: 'Can I use this while sleeping?', body: "Yes — the sleep timer fades the tones out and stops playback automatically after your chosen duration, so you can fall asleep without worrying about audio playing all night; just keep your device from locking or the browser tab from being closed if you want it to run for the full timer." },
   ],
   muhurta: [
-    { id: 'rahu-kaal', header: 'What is Rahu Kaal and why do people avoid starting things during it?', body: 'Rahu Kaal is a roughly 90-minute period each day, at a different time depending on the weekday, traditionally considered inauspicious for beginning new ventures — this finder computes its exact start and end time for your location from real sunrise and sunset.' },
+    { id: 'rahu-kaal', header: 'What is Rahu Kaal and why do people avoid starting things during it?', body: 'Rahu Kaal is a roughly 90-minute period each day, at a different time depending on the weekday, traditionally considered inauspicious for beginning new ventures — this finder computes its start and end time for your location from an approximate sunrise and sunset, usually within a minute or two.' },
   ],
   nakshatra: [
     { id: 'nakshatra-importance', header: 'What is a nakshatra and why does it matter in Vedic astrology?', body: 'A nakshatra is one of 27 lunar mansions the Moon passes through, considered in Vedic astrology to be even more personally revealing than your Moon sign (Rashi) alone — your janma nakshatra is traditionally used for naming ceremonies, muhurta timing, and marriage compatibility (Kundali matching).' },
@@ -87,7 +87,7 @@ const TOOL_SPECIFIC_FAQS: Record<string, FAQItem[]> = {
     { id: 'sadhana-streak', header: 'What is a daily sadhana and why keep a streak?', body: "Sadhana means a consistent spiritual practice — the streak here isn't about perfection, it's a gentle visual reminder that small, repeated daily effort, even a few minutes, compounds into real transformation over time." },
   ],
   'vrat-calendar': [
-    { id: 'ekadashi-calc', header: 'How are Ekadashi dates calculated?', body: "Ekadashi falls on the 11th tithi (lunar day) of each paksha (fortnight), determined by the real angular difference between the Sun and Moon — this calendar computes that difference live to find each upcoming Ekadashi, Purnima and Amavasya, not from a fixed yearly list." },
+    { id: 'ekadashi-calc', header: 'How are Ekadashi dates calculated?', body: "Ekadashi falls on the 11th tithi (lunar day) of each paksha (fortnight), determined by the angular difference between the Sun and Moon — this calendar computes that difference from approximate positions to find each upcoming Ekadashi, Purnima and Amavasya, rather than reading a fixed yearly list. Confirm the exact day and parana time with your local panchang." },
   ],
   'puja-aarti': [
     { id: 'virtual-puja', header: 'Can a virtual puja really replace a real one?', body: "Nothing replaces a physical shrine and real ritual objects, but this tool is designed for moments you can't reach one — a quiet ritual pause during travel, illness, or a busy day — using the same traditional structure, mantras and invocations as an in-person Aarti." },

@@ -201,7 +201,7 @@ export default function KundaliMatchingTool() {
       </Card>
 
       <p className="text-center text-xs text-white/40">
-        Moon positions are computed from an approximate (±1°) sidereal model, the same one used across VediCosmic&apos;s other astrology tools — not a substitute for a full professional consultation, especially for major life decisions.
+        Moon positions come from an approximate sidereal model (usually within about 0.3°), with each birth time read in the birth city’s own time zone. A score is one thing many families consider; it is not a verdict on a relationship.
       </p>
 
       <div className="text-center">

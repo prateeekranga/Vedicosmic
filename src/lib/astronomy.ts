@@ -1,33 +1,36 @@
-// Lightweight client-side astronomy for the MVP tools.
-// Sidereal (Vedic) sign approximations use the Lahiri ayanamsa (~24°).
+// Lightweight client-side astronomy for the tools. Sun and Moon positions are approximate
+// (low-precision formulas, about ±0.3°) and are replaced by the tested engine in Phase 2.
+import { julianDay, sunLongitude, moonLongitude, lahiriAyanamsa } from './panchang';
+import { zoneOffsetMinutes } from '@/engine/time';
 
 export interface City {
   name: string;
   country: string;
   lat: number;
   lng: number;
-  tz: number; // UTC offset in hours
+  /** IANA time zone, so daylight saving and historic offsets are applied for each date. */
+  zone: string;
 }
 
 export const CITIES: City[] = [
-  { name: 'Delhi', country: 'India', lat: 28.61, lng: 77.21, tz: 5.5 },
-  { name: 'Mumbai', country: 'India', lat: 19.08, lng: 72.88, tz: 5.5 },
-  { name: 'Bengaluru', country: 'India', lat: 12.97, lng: 77.59, tz: 5.5 },
-  { name: 'Kolkata', country: 'India', lat: 22.57, lng: 88.36, tz: 5.5 },
-  { name: 'Chennai', country: 'India', lat: 13.08, lng: 80.27, tz: 5.5 },
-  { name: 'Varanasi', country: 'India', lat: 25.32, lng: 82.97, tz: 5.5 },
-  { name: 'Jaipur', country: 'India', lat: 26.91, lng: 75.79, tz: 5.5 },
-  { name: 'Hyderabad', country: 'India', lat: 17.39, lng: 78.49, tz: 5.5 },
-  { name: 'Pune', country: 'India', lat: 18.52, lng: 73.86, tz: 5.5 },
-  { name: 'Rishikesh', country: 'India', lat: 30.09, lng: 78.27, tz: 5.5 },
-  { name: 'London', country: 'UK', lat: 51.51, lng: -0.13, tz: 0 },
-  { name: 'New York', country: 'USA', lat: 40.71, lng: -74.01, tz: -5 },
-  { name: 'Los Angeles', country: 'USA', lat: 34.05, lng: -118.24, tz: -8 },
-  { name: 'Dubai', country: 'UAE', lat: 25.2, lng: 55.27, tz: 4 },
-  { name: 'Singapore', country: 'Singapore', lat: 1.35, lng: 103.82, tz: 8 },
-  { name: 'Sydney', country: 'Australia', lat: -33.87, lng: 151.21, tz: 11 },
-  { name: 'Toronto', country: 'Canada', lat: 43.65, lng: -79.38, tz: -5 },
-  { name: 'Kathmandu', country: 'Nepal', lat: 27.7, lng: 85.32, tz: 5.75 },
+  { name: 'Delhi', country: 'India', lat: 28.61, lng: 77.21, zone: 'Asia/Kolkata' },
+  { name: 'Mumbai', country: 'India', lat: 19.08, lng: 72.88, zone: 'Asia/Kolkata' },
+  { name: 'Bengaluru', country: 'India', lat: 12.97, lng: 77.59, zone: 'Asia/Kolkata' },
+  { name: 'Kolkata', country: 'India', lat: 22.57, lng: 88.36, zone: 'Asia/Kolkata' },
+  { name: 'Chennai', country: 'India', lat: 13.08, lng: 80.27, zone: 'Asia/Kolkata' },
+  { name: 'Varanasi', country: 'India', lat: 25.32, lng: 82.97, zone: 'Asia/Kolkata' },
+  { name: 'Jaipur', country: 'India', lat: 26.91, lng: 75.79, zone: 'Asia/Kolkata' },
+  { name: 'Hyderabad', country: 'India', lat: 17.39, lng: 78.49, zone: 'Asia/Kolkata' },
+  { name: 'Pune', country: 'India', lat: 18.52, lng: 73.86, zone: 'Asia/Kolkata' },
+  { name: 'Rishikesh', country: 'India', lat: 30.09, lng: 78.27, zone: 'Asia/Kolkata' },
+  { name: 'London', country: 'UK', lat: 51.51, lng: -0.13, zone: 'Europe/London' },
+  { name: 'New York', country: 'USA', lat: 40.71, lng: -74.01, zone: 'America/New_York' },
+  { name: 'Los Angeles', country: 'USA', lat: 34.05, lng: -118.24, zone: 'America/Los_Angeles' },
+  { name: 'Dubai', country: 'UAE', lat: 25.2, lng: 55.27, zone: 'Asia/Dubai' },
+  { name: 'Singapore', country: 'Singapore', lat: 1.35, lng: 103.82, zone: 'Asia/Singapore' },
+  { name: 'Sydney', country: 'Australia', lat: -33.87, lng: 151.21, zone: 'Australia/Sydney' },
+  { name: 'Toronto', country: 'Canada', lat: 43.65, lng: -79.38, zone: 'America/Toronto' },
+  { name: 'Kathmandu', country: 'Nepal', lat: 27.7, lng: 85.32, zone: 'Asia/Kathmandu' },
 ];
 
 export const RASHIS = [
@@ -44,47 +47,25 @@ function rad(d: number) { return d * DEG; }
 function deg(r: number) { return r / DEG; }
 function norm360(d: number) { return ((d % 360) + 360) % 360; }
 
-const AYANAMSA = 24.1; // Lahiri approximate for this era
-
-function julianDay(date: Date): number {
-  return date.getTime() / 86400000 + 2440587.5;
+/** UTC offset in hours of a city's time zone at a given instant. */
+export function cityOffsetHours(city: City, at: Date): number {
+  return zoneOffsetMinutes(city.zone, at.getTime()) / 60;
 }
 
-/** Approximate tropical solar longitude, then shift to sidereal. */
+/** Sidereal (Lahiri) solar longitude, approximate. */
 export function siderealSunLongitude(date: Date): number {
   const jd = julianDay(date);
-  const n = jd - 2451545.0;
-  const L = norm360(280.46 + 0.9856474 * n);
-  const g = norm360(357.528 + 0.9856003 * n);
-  const lambda = norm360(L + 1.915 * Math.sin(rad(g)) + 0.02 * Math.sin(rad(2 * g)));
-  return norm360(lambda - AYANAMSA);
+  return norm360(sunLongitude(jd) - lahiriAyanamsa(jd));
 }
 
-/** Very rough sidereal lunar longitude. */
+/** Sidereal (Lahiri) lunar longitude from the six largest terms of the lunar theory, approximate. */
 export function siderealMoonLongitude(date: Date): number {
   const jd = julianDay(date);
-  const n = jd - 2451545.0;
-  const Lp = norm360(218.316 + 13.176396 * n);
-  const M = norm360(134.963 + 13.064993 * n);
-  const lambda = norm360(Lp + 6.289 * Math.sin(rad(M)));
-  return norm360(lambda - AYANAMSA);
+  return norm360(moonLongitude(jd) - lahiriAyanamsa(jd));
 }
 
 export function longitudeToRashi(lon: number): number {
   return Math.floor(norm360(lon) / 30);
-}
-
-/** Crude Lagna (ascendant) approximation from time + latitude. */
-export function ascendantRashi(date: Date, lat: number, lng: number, tz: number): number {
-  const jd = julianDay(date);
-  const n = jd - 2451545.0;
-  const gmst = norm360(280.46061837 + 360.98564736629 * n);
-  const lst = norm360(gmst + lng);
-  const sunLon = siderealSunLongitude(date);
-  // Blend local sidereal time with latitude bias for a stable pseudo-lagna.
-  const latBias = (lat / 90) * 15;
-  const asc = norm360(sunLon + lst / 12 + latBias);
-  return longitudeToRashi(asc);
 }
 
 // ---- Sunrise / sunset (NOAA simplified) ----

@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Telescope, Sparkles } from 'lucide-react';
 import {
-  CITIES, siderealSunLongitude, siderealMoonLongitude, longitudeToRashi, ascendantRashi,
+  CITIES, siderealSunLongitude, siderealMoonLongitude, longitudeToRashi,
 } from '@/lib/astronomy';
+import { birthUtc } from '@/lib/nakshatra';
+import { BoundaryNote } from '@/components/astro/BoundaryNote';
 import { RASHI_INFO, SIDEREAL_NOTE } from '@/data/zodiac';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -14,12 +16,11 @@ import { useDeviceStore } from '@/contexts/DeviceStoreContext';
 import { SaveOnDeviceButton } from '@/components/device/SaveOnDeviceButton';
 import { useToast } from '@/contexts/ToastContext';
 
-interface Chart { sun: number; moon: number; asc: number; }
+interface Chart { sun: number; moon: number; }
 
 const POINTS = [
   { key: 'sun', label: 'Sun', sanskrit: 'Surya', sym: '☉', color: '#FFB300', blurb: 'Your soul, vitality, and essential self.' },
   { key: 'moon', label: 'Moon', sanskrit: 'Chandra', sym: '☾', color: '#CBD5E1', blurb: 'Your mind, emotions, and inner world — the most important point in Vedic astrology.' },
-  { key: 'asc', label: 'Ascendant', sanskrit: 'Lagna', sym: '↑', color: '#39B7F0', blurb: 'Your rising sign — how you meet the world and your physical self.' },
 ] as const;
 
 function Wheel({ chart }: { chart: Chart }) {
@@ -80,12 +81,12 @@ export default function AstrologyTool() {
   const calculate = () => {
     if (!date) return;
     const city = CITIES[cityIdx];
-    const dt = new Date(`${date}T${time}:00`);
-    const utc = new Date(dt.getTime() - city.tz * 3600000);
+    // The birth time is read in the birth city's own time zone, never the visitor's device zone.
+    const utc = birthUtc(date, time, city);
+    if (isNaN(utc.getTime())) return;
     setChart({
       sun: siderealSunLongitude(utc),
       moon: siderealMoonLongitude(utc),
-      asc: ascendantRashi(utc, city.lat, city.lng, city.tz),
     });
   };
 
@@ -112,7 +113,8 @@ export default function AstrologyTool() {
           <Telescope className="h-4 w-4" /> Cast my chart
         </Button>
         <p className="mt-3 text-xs text-white/40">
-          Educational approximation (±1 day). For precise charts, a professional ephemeris is recommended.
+          Approximate method: Sun and Moon from simplified formulas (usually within about 0.3°), Lahiri ayanamsa,
+          birth time read in the chosen city’s own time zone. Calculated in your browser.
         </p>
       </Card>
 
@@ -151,6 +153,15 @@ export default function AstrologyTool() {
                   </motion.div>
                 );
               })}
+              <BoundaryNote longitude={chart.moon} body="Moon" />
+              <BoundaryNote longitude={chart.sun} body="Sun" signOnly />
+              <Card className="p-5">
+                <div className="text-sm text-white/50">Ascendant · Lagna</div>
+                <p className="mt-1 text-sm leading-relaxed text-white/70">
+                  Lagna (Ascendant) is being rebuilt and checked against reference charts. Sun and Moon signs use an
+                  approximate method until the new engine is verified.
+                </p>
+              </Card>
               <div className="flex justify-center pt-2">
                 <SaveOnDeviceButton label="Save this chart" onSave={save} />
               </div>

@@ -2,6 +2,7 @@ import {
   createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode,
 } from 'react';
 import type { DeviceData, JournalEntry, PracticeStreak, SavedReading } from '@/types/device.types';
+import { localDateKey } from '@/engine/time';
 
 /**
  * Progress kept in this browser only: practice streak, crystal kit, and — after the visitor
@@ -14,12 +15,6 @@ const LEGACY_USERS_KEY = 'vedicosmic:users';
 
 const EMPTY_STREAK: PracticeStreak = { lastSessionDate: '', currentStreak: 0, totalSessions: 0, totalRepetitions: 0 };
 const EMPTY: DeviceData = { consented: false, savedReadings: [], journalEntries: [], crystalKit: [], practiceStreak: EMPTY_STREAK };
-
-/** Local calendar date as YYYY-MM-DD, so a "day" starts at the visitor's midnight, not UTC's. */
-export function localDateKey(d: Date = new Date()): string {
-  const pad = (n: number) => String(n).padStart(2, '0');
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-}
 
 function yesterdayKey(): string {
   const now = new Date();

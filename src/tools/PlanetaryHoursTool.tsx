@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
 import {
-  CITIES, planetaryHours, PLANET_SANSKRIT, PLANET_COLOR, type Hora,
+  CITIES, cityOffsetHours, planetaryHours, PLANET_SANSKRIT, PLANET_COLOR, type Hora,
 } from '@/lib/astronomy';
 import { HORA_ACTIVITIES } from '@/data/planetaryActivities';
 import { formatTime } from '@/lib/format';
@@ -20,7 +20,10 @@ export default function PlanetaryHoursTool() {
   }, []);
 
   const city = CITIES[cityIdx];
-  const horas = useMemo(() => planetaryHours(new Date(), city.lat, city.lng, city.tz), [city]);
+  const horas = useMemo(() => {
+    const today = new Date();
+    return planetaryHours(today, city.lat, city.lng, cityOffsetHours(city, today));
+  }, [city]);
   const current = horas.find((h) => now >= h.start && now < h.end) ?? horas[0];
 
   return (

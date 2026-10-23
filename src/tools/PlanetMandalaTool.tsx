@@ -160,6 +160,7 @@ export default function PlanetMandalaTool() {
             <p className="mt-4 text-sm leading-relaxed text-white/75">{selected.significance}</p>
             <p className="mt-6 text-xs leading-relaxed text-white/40">
               The Navagraha — nine celestial influences of Vedic astrology. Drag the mandala to spin it through a full 360°, and tap any graha to read its meaning.
+              The mandala is illustrative: the grahas’ positions here are not where they are in the sky today.
             </p>
           </div>
         </motion.div>

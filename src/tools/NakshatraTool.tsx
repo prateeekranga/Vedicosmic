@@ -8,25 +8,10 @@ import { DateSelect } from '@/components/ui/DateSelect';
 import { NAKSHATRAS as NAKS, RULER_COLOR } from '@/data/nakshatras';
 import { ShareBar } from '@/components/ShareBar';
 import { useShareResult } from '@/contexts/ShareContext';
+import { siderealMoonLongitude } from '@/lib/astronomy';
+import { BoundaryNote } from '@/components/astro/BoundaryNote';
 
-/* ─────────────── approximate Moon sidereal longitude ─────────────── */
 const rad = Math.PI / 180;
-function moonSiderealLon(dt: Date): number {
-  const jd = dt.getTime() / 86400000 + 2440587.5;
-  const d = jd - 2451545.0;
-  const L = 218.316 + 13.176396 * d;          // mean longitude
-  const M = 134.963 + 13.064993 * d;          // mean anomaly
-  const D = 297.85 + 12.190749 * d;           // mean elongation
-  const Ms = 357.529 + 0.98560028 * d;        // sun anomaly
-  let lon = L
-    + 6.289 * Math.sin(M * rad)
-    + 1.274 * Math.sin((2 * D - M) * rad)
-    + 0.658 * Math.sin(2 * D * rad)
-    - 0.186 * Math.sin(Ms * rad);
-  const ayan = 23.856 + d * 0.0000382;        // Lahiri ayanamsa, linearised
-  lon = ((lon - ayan) % 360 + 360) % 360;
-  return lon;
-}
 
 const SEG = 360 / 27;
 
@@ -40,7 +25,7 @@ export default function NakshatraTool() {
     if (!dob) return;
     const dt = new Date(`${dob}T${time || '06:00'}:00`);
     if (isNaN(dt.getTime())) return;
-    const lon = moonSiderealLon(dt);
+    const lon = siderealMoonLongitude(dt);
     const idx = Math.floor(lon / SEG) % 27;
     const pada = Math.floor((lon % SEG) / (SEG / 4)) + 1;
     setResult({ idx, pada, lon });
@@ -168,9 +153,11 @@ export default function NakshatraTool() {
                   </span>
                 ))}
               </div>
+              {result && result.idx === sel && <BoundaryNote longitude={result.lon} body="Moon" />}
               <p className="text-xs text-white/30">
-                Birth-star computed from an approximate lunar position (±1°) with Lahiri ayanamsa, in your device’s timezone.
-                Births near a boundary may shift by one mansion — verify with a full ephemeris or panchang.
+                Approximate method: the Moon’s position from a simplified lunar theory (usually within about 0.3°) with
+                the Lahiri ayanamsa. The birth time is read in your device’s time zone, so enter it as local time where
+                you are now, or convert it first. Calculated in your browser.
               </p>
             </Card>
           </motion.div>

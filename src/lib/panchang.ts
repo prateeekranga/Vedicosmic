@@ -1,6 +1,8 @@
-/* Lightweight Hindu lunar-calendar math (approximate, ±1 tithi).
-   Computes Sun & Moon longitudes → tithi, paksha, nakshatra, and scans
-   forward for the major vrats (Ekadashi, Purnima, Amavasya, Pradosh, etc.). */
+/* Lightweight Hindu lunar-calendar math (approximate: names are right except within
+   roughly 30–40 minutes of a tithi or nakshatra change). Computes Sun & Moon longitudes →
+   tithi, paksha, nakshatra, and scans forward for the major vrats (Ekadashi, Purnima,
+   Amavasya, Pradosh, etc.). Replaced by the tested engine in Phase 2. */
+import { lahiriAyanamsa as meanLahiri } from '@/engine/ayanamsa';
 
 const rad = Math.PI / 180;
 const norm = (x: number) => ((x % 360) + 360) % 360;
@@ -36,8 +38,8 @@ export const NAK_NAMES = [
   'Magha', 'Purva Phalguni', 'Uttara Phalguni', 'Hasta', 'Chitra', 'Swati', 'Vishakha', 'Anuradha', 'Jyeshtha',
   'Mula', 'Purva Ashadha', 'Uttara Ashadha', 'Shravana', 'Dhanishta', 'Shatabhisha', 'Purva Bhadrapada', 'Uttara Bhadrapada', 'Revati',
 ];
-/** Linearised Lahiri ayanamsa (degrees) for a given Julian Day. */
-export function lahiriAyanamsa(jd: number): number { return 23.856 + (jd - 2451545.0) * 0.0000382; }
+/** Mean Lahiri ayanamsa (degrees) for a given Julian Day. */
+export function lahiriAyanamsa(jd: number): number { return meanLahiri(jd); }
 const AYAN = lahiriAyanamsa;
 
 const TITHI_NAMES = ['Pratipada', 'Dwitiya', 'Tritiya', 'Chaturthi', 'Panchami', 'Shashthi', 'Saptami', 'Ashtami', 'Navami', 'Dashami', 'Ekadashi', 'Dwadashi', 'Trayodashi', 'Chaturdashi'];

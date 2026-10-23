@@ -1,0 +1,3 @@
+Place data from GeoNames (https://www.geonames.org/), licensed under CC BY 4.0
+(https://creativecommons.org/licenses/by/4.0/). Reduced to name, state, country, coordinates
+and time zone, ordered by population; built with scripts/build-places.mjs.

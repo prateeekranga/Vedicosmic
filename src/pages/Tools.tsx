@@ -80,6 +80,7 @@ export default function Tools() {
         })}
       </div>
 
+      <h2 className="sr-only">All tools</h2>
       {filtered.length > 0 ? (
         <motion.div layout className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">

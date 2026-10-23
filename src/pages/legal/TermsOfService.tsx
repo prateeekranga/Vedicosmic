@@ -1,93 +1,67 @@
 import { LegalLayout } from './LegalLayout';
 
+// Draft for lawyer review. Written for the site as it is: free tools and articles,
+// nothing sold, no accounts.
 export default function TermsOfService() {
   return (
     <LegalLayout
       eyebrow="Legal"
       title="Terms & Conditions"
-      updated="8 July 2026"
-      intro="These terms govern your use of VediCosmic's tools, courses and content. By using the site, you agree to them."
+      updated="23 October 2026"
+      intro="These terms cover your use of VediCosmic’s free tools and articles. By using the site, you agree to them."
       sections={[
         {
           heading: 'Using VediCosmic',
           body: (
             <p>
-              VediCosmic provides interactive numerology, astrology and energy-practice tools, along with paid
-              and free educational courses. You may use the free tools without an account. Creating an account
-              requires that the information you provide (name, email) be accurate and kept up to date.
+              VediCosmic offers free Vedic astrology, panchang, numerology and practice tools, and articles about
+              them. Nothing is sold, and there are no accounts. Anything you save stays in your own browser.
             </p>
           ),
         },
         {
-          heading: 'Accounts & Security',
+          heading: 'Results are for reflection',
           body: (
             <p>
-              You are responsible for maintaining the confidentiality of your account and for all activity that
-              occurs under it. Notify us immediately at{' '}
-              <a href="mailto:hello@vedicosmic.com" className="text-brand-cyan-soft hover:underline">
-                hello@vedicosmic.com
-              </a>{' '}
-              if you suspect unauthorised access.
+              Results come from traditional methods and simplified astronomical formulas; some are approximate, and
+              each tool says so where it matters. They are offered for reflection and practice, not as predictions,
+              guarantees or a substitute for medical, psychological, financial or legal advice. See the{' '}
+              <a href="/disclaimer" className="text-brand-cyan-soft hover:underline">Disclaimer</a>.
             </p>
           ),
         },
         {
-          heading: 'Courses & Payments',
+          heading: 'Acceptable use',
           body: (
             <p>
-              Paid courses are licensed to you for personal, non-commercial learning use upon successful
-              payment. Course pricing, content and availability may change over time. Enrolment does not
-              transfer ownership of course materials — redistribution, resale or public re-upload of course
-              content is not permitted.
+              Please don’t try to disrupt the site, scrape it at scale, or misuse its content.
             </p>
           ),
         },
         {
-          heading: 'Acceptable Use',
+          heading: 'Intellectual property',
           body: (
             <p>
-              You agree not to misuse the platform: no attempting to disrupt or reverse-engineer the tools, no
-              scraping content at scale, no uploading unlawful or infringing material, and no impersonating
-              another person when creating an account.
+              The VediCosmic name, logo, tool designs, illustrations and articles belong to VediCosmic or their
+              respective owners. Traditional texts quoted on the site, such as mantras and verses, remain part of the
+              shared tradition they come from.
             </p>
           ),
         },
         {
-          heading: 'Intellectual Property',
+          heading: 'Limitation of liability',
           body: (
             <p>
-              The VediCosmic name, logo, tool designs, illustrations and course content are the property of
-              VediCosmic or its instructors and licensors. Nothing in these terms grants you rights to our
-              trademarks or brand assets beyond fair, descriptive use.
+              The site is provided as it is. To the fullest extent the law allows, VediCosmic is not liable for
+              indirect or consequential loss arising from its use.
             </p>
           ),
         },
         {
-          heading: 'Disclaimer of Warranties',
+          heading: 'Changes to these terms',
           body: (
             <p>
-              VediCosmic's tools and courses are offered for reflection, education and self-inquiry. They are
-              provided "as is," without warranties of any kind, and are not a substitute for professional
-              medical, psychological, financial or legal advice. See our{' '}
-              <a href="/disclaimer" className="text-brand-cyan-soft hover:underline">Disclaimer</a> for more detail.
-            </p>
-          ),
-        },
-        {
-          heading: 'Limitation of Liability',
-          body: (
-            <p>
-              To the fullest extent permitted by law, VediCosmic and its team are not liable for any indirect,
-              incidental, or consequential damages arising from your use of the platform.
-            </p>
-          ),
-        },
-        {
-          heading: 'Changes to These Terms',
-          body: (
-            <p>
-              We may revise these terms from time to time. We will update the "Last updated" date above when we
-              do; continued use after a revision means you accept the updated terms.
+              We will update the date at the top when these terms change.
             </p>
           ),
         },

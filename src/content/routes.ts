@@ -9,6 +9,7 @@ import {
   CalendarDays, LayoutDashboard, BellRing, Heart, AudioLines,
 } from 'lucide-react';
 import type { ToolMeta } from '@/types/tool.types';
+import { LEGAL } from '@/content/legal';
 
 export interface StaticRoute {
   path: string;
@@ -29,6 +30,8 @@ export const STATIC_ROUTES: StaticRoute[] = [
   { path: '/terms', seoLabel: 'Terms of Service', indexable: true },
   { path: '/refund-policy', seoLabel: 'Refund Policy', indexable: true },
   { path: '/disclaimer', seoLabel: 'Disclaimer', indexable: true },
+  // /legal goes live only once the owner's entity and grievance-officer details exist.
+  ...(LEGAL ? [{ path: '/legal', seoLabel: 'Legal & grievance officer', indexable: true }] : []),
 ];
 
 export const TOOLS: ToolMeta[] = [
@@ -131,8 +134,8 @@ export const TOOLS: ToolMeta[] = [
   {
     id: 'crystals', slug: 'crystals', name: 'Crystal Guide',
     subtitle: 'Find the right stone for your intention',
-    seoTitle: 'Free Crystal Guide — Healing Stones by Intention',
-    description: 'Free crystal guide: browse twelve healing crystals by intention (love, protection, clarity, abundance and more), learn how to use each one, and build your own personal crystal kit.',
+    seoTitle: 'Free Crystal Guide — Stones by Intention',
+    description: 'Free crystal guide: browse twelve crystals by the intentions traditionally associated with them (love, protection, clarity, abundance and more), see how each is used, and build your own crystal kit.',
     category: 'energy', accent: 'cyan', Icon: Gem,
     status: 'live', indexable: true,
   },
@@ -265,7 +268,7 @@ export const TOOL_CATEGORIES: { id: ToolMeta['category'] | 'all'; label: string 
   { id: 'all', label: 'All Tools' },
   { id: 'numerology', label: 'Numerology' },
   { id: 'astrology', label: 'Astrology' },
-  { id: 'energy', label: 'Energy & Healing' },
+  { id: 'energy', label: 'Energy & Practice' },
   { id: 'cosmology', label: 'Cosmology' },
 ];
 

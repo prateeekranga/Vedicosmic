@@ -20,6 +20,7 @@ const PrivacyPolicy = lazy(() => import('@/pages/legal/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('@/pages/legal/TermsOfService'));
 const RefundPolicy = lazy(() => import('@/pages/legal/RefundPolicy'));
 const Disclaimer = lazy(() => import('@/pages/legal/Disclaimer'));
+const Legal = lazy(() => import('@/pages/legal/Legal'));
 const BlogOgCard = lazy(() => import('@/pages/og/BlogOgCard'));
 
 function PageLoader() {
@@ -56,6 +57,7 @@ export default function App() {
               <Route path="/terms" element={<TermsOfService />} />
               <Route path="/refund-policy" element={<RefundPolicy />} />
               <Route path="/disclaimer" element={<Disclaimer />} />
+              <Route path="/legal" element={<Legal />} />
               <Route path="/vc-portal-x7" element={<Admin />} />
               <Route path="*" element={<NotFound />} />
             </Route>

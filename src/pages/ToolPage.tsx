@@ -12,6 +12,7 @@ import { Card } from '@/components/ui/Card';
 import { Accordion } from '@/components/ui/Accordion';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { ComingSoon } from '@/components/ui/ComingSoon';
+import { ResultNote } from '@/components/ui/ResultNote';
 import { BlogPostCard } from '@/components/blog/BlogPostCard';
 import { ShareBar } from '@/components/ShareBar';
 import { ShareResultProvider, useShareText } from '@/contexts/ShareContext';
@@ -132,6 +133,7 @@ function ToolBody({
         <section aria-labelledby="tool-heading">
           <h2 id="tool-heading" className="sr-only">{tool.name}</h2>
           <Tool />
+          <ResultNote category={tool.category} />
         </section>
       )}
 

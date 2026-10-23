@@ -11,10 +11,10 @@ import type { PresetId } from '@/lib/chakraPlayerEngine';
  *  Root (396 Hz) — its own `blocked` copy names anxiety directly; the most direct antidote to stress.
  *  Third Eye (852 Hz) — theme is insight/perception, closest to mental focus among the remaining chakras. */
 const ACTIONS: { Icon: typeof HeartPulse; title: string; text: string; presetId: PresetId; accent: 'gold' | 'cyan' | 'violet' | 'teal' }[] = [
-  { Icon: HeartPulse, title: 'Heal Your Energy', text: 'The Heart tone — compassion and repair.', presetId: 'heart', accent: 'teal' },
-  { Icon: Moon, title: 'Improve Sleep', text: 'The Sleep Mix — a soft pad to drift off to.', presetId: 'sleep', accent: 'cyan' },
-  { Icon: Wind, title: 'Reduce Stress', text: 'The Root tone — safety and grounding.', presetId: 'root', accent: 'gold' },
-  { Icon: Eye, title: 'Increase Focus', text: 'The Third Eye tone — insight and clarity.', presetId: 'third-eye', accent: 'violet' },
+  { Icon: HeartPulse, title: 'Heart tone', text: 'Traditionally linked with compassion.', presetId: 'heart', accent: 'teal' },
+  { Icon: Moon, title: 'Wind down', text: 'The Sleep Mix — a soft pad to rest to.', presetId: 'sleep', accent: 'cyan' },
+  { Icon: Wind, title: 'Settle', text: 'The Root tone — traditionally linked with grounding.', presetId: 'root', accent: 'gold' },
+  { Icon: Eye, title: 'Focus', text: 'The Third Eye tone — traditionally linked with insight.', presetId: 'third-eye', accent: 'violet' },
 ];
 
 export function QuickActionCards() {

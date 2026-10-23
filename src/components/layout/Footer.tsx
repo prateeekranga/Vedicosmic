@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Logo } from '@/components/Logo';
 import { SriYantra } from '@/components/effects/SriYantra';
+import { LEGAL } from '@/content/legal';
 import { RevealStagger, RevealItem } from '@/components/motion/Reveal';
 
 const LEGAL_LINKS: [string, string][] = [
@@ -9,6 +10,7 @@ const LEGAL_LINKS: [string, string][] = [
   ['Terms & Conditions', '/terms'],
   ['Refund Policy', '/refund-policy'],
   ['Disclaimer', '/disclaimer'],
+  ...(LEGAL ? [['Legal & grievance officer', '/legal'] as [string, string]] : []),
 ];
 
 export function Footer() {

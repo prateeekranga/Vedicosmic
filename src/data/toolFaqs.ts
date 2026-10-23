@@ -38,10 +38,10 @@ const TOOL_SPECIFIC_FAQS: Record<string, FAQItem[]> = {
     { id: 'why-108', header: 'Why 108 beads in a japa mala?', body: '108 is considered a sacred number across Vedic tradition — from the number of Upanishads to astronomical ratios between the Sun, Moon and Earth — and a mala of 108 beads lets you count a full round of mantra repetitions without losing track.' },
   ],
   tratak: [
-    { id: 'tratak-benefits', header: 'What are the benefits of Trataka meditation?', body: 'Trataka, the ancient yogic gazing practice, is traditionally used to sharpen concentration, calm a restless mind, and strengthen the eyes — practised by steadily fixing the gaze on a single point until the eyes naturally moisten, then closing them to observe the afterimage.' },
+    { id: 'tratak-benefits', header: 'What are the benefits of Trataka meditation?', body: 'Trataka, the ancient yogic gazing practice, is traditionally used to sharpen concentration and calm a restless mind — practised by steadily fixing the gaze on a single point until the eyes naturally moisten, then closing them to observe the afterimage.' },
   ],
   crystals: [
-    { id: 'crystal-choice', header: 'How do I choose the right healing crystal?', body: "Start with your intention rather than the stone itself — decide what you're working on (calm, confidence, focus, protection) and use the intention filter to see which crystals are traditionally associated with that quality, then trust which one you're drawn to." },
+    { id: 'crystal-choice', header: 'How do I choose a crystal?', body: "Start with your intention rather than the stone itself — decide what you're working on (calm, confidence, focus, protection) and use the intention filter to see which crystals are traditionally associated with that quality, then trust which one you're drawn to." },
   ],
   tarot: [
     { id: 'real-tarot', header: 'Is this a real tarot deck?', body: 'No — these are original contemplation cards inspired by Vedic themes rather than a traditional 78-card tarot deck, designed for daily reflection and self-inquiry rather than fortune-telling.' },

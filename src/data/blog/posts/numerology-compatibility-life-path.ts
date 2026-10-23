@@ -71,9 +71,8 @@ export default {
       ],
     },
     {
-      type: 'quote',
-      text: 'Anka Shastra was never built to tell two people whether to stay together. It was built to describe, patiently, how they tend to move — so they can recognise the pattern and choose what to do with it.',
-      attribution: 'Pandit Kabir Sharma',
+      type: 'paragraph',
+      text: 'Anka Shastra was never built to tell two people whether to stay together. It describes, patiently, how they tend to move — so they can recognise the pattern and choose what to do with it.',
     },
     {
       type: 'callout',

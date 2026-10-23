@@ -233,8 +233,8 @@ export default function KundaliniTool() {
                 <iframe
                   className="h-full w-full"
                   width="560" height="315"
-                  src={`https://www.youtube.com/embed/${VIDEO_ID}?si=OInXmyMd21mnlzN5`}
-                  title="YouTube video player"
+                  src={`https://www.youtube-nocookie.com/embed/${VIDEO_ID}`}
+                  title="Guided Kundalini meditation video (YouTube)"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"

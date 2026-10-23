@@ -1,49 +1,52 @@
 import { LegalLayout } from './LegalLayout';
 
+// Draft for lawyer review.
 export default function Disclaimer() {
   return (
     <LegalLayout
       eyebrow="Please read"
       title="Disclaimer"
-      updated="8 July 2026"
-      intro="VediCosmic offers contemplative and symbolic tools for reflection — presented honestly, with real calculations and without false certainty."
+      updated="23 October 2026"
+      intro="VediCosmic offers traditional tools for reflection and practice. Here is what they are, and what they are not."
       sections={[
         {
-          heading: 'Not Professional Advice',
+          heading: 'Not professional advice',
           body: (
             <p>
-              Numerology, astrology, tarot, chakra assessments and the other tools on VediCosmic are
-              contemplative and symbolic traditions, offered for self-inquiry and entertainment. They are not
-              scientific instruments, and nothing on this site constitutes medical, psychological, legal or
-              financial advice. Please consult a qualified professional for decisions in those areas.
+              Numerology, astrology, the contemplation card, chakra assessments and the other tools on VediCosmic
+              are symbolic traditions, offered for self-inquiry. They are not scientific instruments, and nothing on
+              this site is medical, psychological, legal or financial advice. Please consult a qualified
+              professional for decisions in those areas.
             </p>
           ),
         },
         {
-          heading: 'No Guarantee of Outcome',
+          heading: 'No guarantee of outcome',
           body: (
             <p>
-              Readings, charts and course content are provided for reflection. We make no guarantee that any
-              practice, prediction or interpretation will produce a specific outcome in your life.
+              Readings and charts are offered for reflection. We make no guarantee that any practice, prediction or
+              interpretation will produce a particular outcome in your life.
             </p>
           ),
         },
         {
-          heading: 'Energy & Physical Practices',
+          heading: 'Approximate calculations',
           body: (
             <p>
-              Tools and courses involving breathwork, meditation or energy practices (such as Pranayama or
-              Kundalini content) should be approached gently. If you have a medical condition, are pregnant, or
-              are otherwise uncertain, consult a physician before beginning any new practice.
+              Some astronomical results — Sun and Moon positions, sunrise and sunset, tithi and nakshatra — come from
+              simplified formulas and are approximate. Each tool says so where it matters. Check important dates
+              and charts with your local panchang or astrologer.
             </p>
           ),
         },
         {
-          heading: 'Third-Party Instructors',
+          heading: 'Breath, meditation, sound and energy practices',
           body: (
             <p>
-              Courses are created and taught by independent instructors. Views expressed in course content are
-              those of the instructor and do not necessarily represent an official VediCosmic position.
+              Breathwork, meditation, sound and energy practices (such as Pranayama, Kundalini, the sound bath and
+              the chakra frequency player) are traditional wellness practices for relaxation and reflection. They do
+              not diagnose, treat, cure or prevent any condition. Approach them gently, and if you have a medical
+              condition, are pregnant, or are unsure, ask a doctor before starting.
             </p>
           ),
         },
@@ -51,7 +54,7 @@ export default function Disclaimer() {
           heading: 'Questions',
           body: (
             <p>
-              If anything here is unclear, reach out at{' '}
+              If anything here is unclear, write to{' '}
               <a href="mailto:hello@vedicosmic.com" className="text-brand-cyan-soft hover:underline">
                 hello@vedicosmic.com
               </a>.

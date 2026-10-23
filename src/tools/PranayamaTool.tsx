@@ -15,7 +15,7 @@ type TechId = 'box' | '478' | 'nadi' | 'bhastrika' | 'calm';
 
 const TECHS: { id: TechId; name: string; sub: string; rounds: number[]; note: string }[] = [
   { id: 'box', name: 'Box Breathing', sub: 'Sama Vritti · 4-4-4-4', rounds: [6, 8, 12], note: 'Equal inhale, hold, exhale, hold — steadies the nervous system like a square drawn in breath.' },
-  { id: '478', name: '4 · 7 · 8', sub: 'The relaxing breath', rounds: [4, 6, 8], note: 'Inhale 4, hold 7, exhale 8 — a natural tranquiliser famed for easing the body toward sleep.' },
+  { id: '478', name: '4 · 7 · 8', sub: 'The relaxing breath', rounds: [4, 6, 8], note: 'Inhale 4, hold 7, exhale 8 — a slow pattern many people use to wind down before sleep.' },
   { id: 'nadi', name: 'Nadi Shodhana', sub: 'Alternate nostril', rounds: [4, 6, 9], note: 'Alternate-nostril breathing balances ida and pingala — the lunar and solar channels.' },
   { id: 'bhastrika', name: 'Bhastrika', sub: 'Bellows breath', rounds: [2, 3, 4], note: 'Rapid bellows pumping followed by retention — heating, energising, awakening.' },
   { id: 'calm', name: 'Deep Calm', sub: 'Slow belly breath · 5-5', rounds: [8, 12, 16], note: 'Simple, slow diaphragmatic breathing — the foundation of every practice.' },

@@ -16,9 +16,8 @@ async function loadRoutes() {
     server: { middlewareMode: true },
     appType: 'custom',
   });
-  const { TOOLS } = await vite.ssrLoadModule('/src/data/tools.tsx');
+  const { TOOLS, STATIC_ROUTES } = await vite.ssrLoadModule('/src/content/routes.ts');
   const { COURSES } = await vite.ssrLoadModule('/src/data/courses.ts');
-  const { STATIC_ROUTES } = await vite.ssrLoadModule('/src/data/routes.ts');
   const { BLOG_POSTS } = await vite.ssrLoadModule('/src/data/blog/index.ts');
   const { BLOG_CATEGORIES } = await vite.ssrLoadModule('/src/data/blogCategories.ts');
   await vite.close();

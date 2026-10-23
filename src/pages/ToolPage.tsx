@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, GraduationCap } from 'lucide-react';
-import { getTool, TOOL_CATEGORIES, TOOL_ACCENT_BG } from '@/data/tools';
+import { getTool, TOOL_CATEGORIES, TOOL_ACCENT_BG } from '@/content/routes';
+import { TOOL_COMPONENTS } from '@/tools/registry';
 import { getCourse } from '@/data/courses';
 import { getToolFaqs } from '@/data/toolFaqs';
 import { useAllBlogPosts } from '@/hooks/useAllBlogPosts';
@@ -101,7 +102,7 @@ export default function ToolPage() {
 function ToolBody({
   tool, course, faqs, relatedPosts, relatedTools,
 }: { tool: ToolMeta; course: Course | undefined; faqs: FAQItem[]; relatedPosts: BlogPost[]; relatedTools: ToolMeta[] }) {
-  const Tool = tool.Component;
+  const Tool = TOOL_COMPONENTS[tool.slug];
   const shareText = useShareText();
   const url = window.location.href;
   const title = `${tool.name} · VediCosmic`;

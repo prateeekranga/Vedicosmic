@@ -1,5 +1,5 @@
 import { Input, Textarea, Select } from '@/components/ui/Field';
-import { TOOLS } from '@/data/tools';
+import { TOOLS } from '@/content/routes';
 import { COURSES } from '@/data/courses';
 import type { BlogContentBlock, BlogPost } from '@/types/blog.types';
 

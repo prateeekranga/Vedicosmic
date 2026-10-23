@@ -9,7 +9,7 @@ import { AuthModal } from '@/components/auth/AuthModal';
 import { NavDropdown } from '@/components/layout/NavDropdown';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSound } from '@/contexts/SoundContext';
-import { TOOLS, TOOL_CATEGORIES } from '@/data/tools';
+import { TOOLS, TOOL_CATEGORIES } from '@/content/routes';
 import { COURSES } from '@/data/courses';
 import { formatINR } from '@/lib/format';
 import { getFeatureFlags } from '@/lib/overrides';

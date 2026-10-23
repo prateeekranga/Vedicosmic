@@ -2,7 +2,7 @@ import { useDeferredValue, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Search, X } from 'lucide-react';
-import { TOOL_CATEGORIES, TOOL_ACCENT_BG } from '@/data/tools';
+import { TOOL_CATEGORIES, TOOL_ACCENT_BG } from '@/content/routes';
 import { visibleTools, isToolComingSoon } from '@/lib/overrides';
 import { useOverridesVersion } from '@/hooks/useOverridesVersion';
 import { useSEO } from '@/hooks/useSEO';

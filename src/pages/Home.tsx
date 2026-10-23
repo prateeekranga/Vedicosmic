@@ -11,7 +11,7 @@ import { Accordion } from '@/components/ui/Accordion';
 import { StardustText } from '@/components/motion/StardustText';
 import { SparkleUnderline } from '@/components/motion/SparkleUnderline';
 import { BlogPostCard } from '@/components/blog/BlogPostCard';
-import { TOOLS } from '@/data/tools';
+import { TOOLS } from '@/content/routes';
 import { COURSES } from '@/data/courses';
 import { formatINR } from '@/lib/format';
 import { mergedHomeContent } from '@/lib/siteContent';

@@ -9,9 +9,8 @@ import {
   FileText, Search, Plus, Newspaper,
 } from 'lucide-react';
 import { COURSES } from '@/data/courses';
-import { TOOLS, TOOL_CATEGORIES } from '@/data/tools';
+import { TOOLS, TOOL_CATEGORIES, STATIC_ROUTES } from '@/content/routes';
 import { BLOG_POSTS } from '@/data/blog';
-import { STATIC_ROUTES } from '@/data/routes';
 import { formatINR } from '@/lib/format';
 import { useAuth } from '@/contexts/AuthContext';
 import { isBlogAdminAuthed, onAdminAuthChange, adminLogin, adminLogout, changeAdminPassword, getAdminEmail } from '@/lib/adminAuth';

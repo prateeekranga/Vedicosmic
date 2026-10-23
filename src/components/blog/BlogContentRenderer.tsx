@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Info, Lightbulb, TriangleAlert, ArrowRight } from 'lucide-react';
-import { getTool } from '@/data/tools';
+import { getTool } from '@/content/routes';
 import { getCourse } from '@/data/courses';
 import { getBlogPost } from '@/data/blog';
 import { headingSlugs } from '@/lib/blogUtils';

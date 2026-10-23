@@ -1,5 +1,5 @@
 import { COURSES } from '@/data/courses';
-import { TOOLS } from '@/data/tools';
+import { TOOLS } from '@/content/routes';
 import type { Course } from '@/types/course.types';
 import type { ToolMeta } from '@/types/tool.types';
 import { read, write } from './storage';
@@ -19,7 +19,7 @@ export interface Announcement { text: string; active: boolean; tone: 'gold' | 'c
 export interface FeatureFlags { coursesComingSoon: boolean }
 const DEFAULT_FEATURE_FLAGS: FeatureFlags = { coursesComingSoon: true };
 /** Tools shipped with a baseline "Coming Soon" default (independent of the per-tool override above). */
-export const DEFAULT_COMING_SOON_TOOL_IDS: string[] = ['kundali-matching'];
+export const DEFAULT_COMING_SOON_TOOL_IDS: string[] = TOOLS.filter((t) => t.status === 'coming-soon').map((t) => t.id);
 
 const K = {
   courses: 'vc.overrides.courses',

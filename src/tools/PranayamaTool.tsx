@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Play, X, Wind, Mic, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { useAuth } from '@/contexts/AuthContext';
+import { useDeviceStore } from '@/contexts/DeviceStoreContext';
 import { useToast } from '@/contexts/ToastContext';
 import { useSound } from '@/contexts/SoundContext';
 
@@ -89,7 +89,7 @@ export default function PranayamaTool() {
   const curRound = Math.min(rounds, Math.floor(idx / roundLen) + 1);
 
   const hideTimer = useRef<number | null>(null);
-  const { user, recordMantraSession } = useAuth();
+  const { recordPracticeSession } = useDeviceStore();
   const { notify } = useToast();
   const { speak, stopSpeak } = useSound();
 
@@ -123,7 +123,7 @@ export default function PranayamaTool() {
           if (next >= phases.length) {
             window.clearInterval(id);
             setPhase('done');
-            if (user) recordMantraSession(Math.max(1, Math.round(total / 60)));
+            recordPracticeSession(Math.max(1, Math.round(total / 60)));
             if (voiceOn) speak(voiceLang === 'hi' ? 'अभ्यास पूर्ण हुआ। कुछ क्षण सहज साँस के साथ बैठिए।' : 'Practice complete. Sit for a few moments with the natural breath.', voiceLang);
             return i;
           }
@@ -136,7 +136,7 @@ export default function PranayamaTool() {
       });
     }, 1000);
     return () => window.clearInterval(id);
-  }, [phase, phases, total, user, recordMantraSession, voiceOn, voiceLang, speak]);
+  }, [phase, phases, total, recordPracticeSession, voiceOn, voiceLang, speak]);
 
   // esc + auto-hide
   useEffect(() => {
@@ -286,7 +286,7 @@ export default function PranayamaTool() {
               <p className="mt-3 text-sm leading-relaxed text-white/70">
                 {rounds} rounds of {T.name}. Sit quietly and let the breath return to its own natural rhythm — notice how still the mind has become.
               </p>
-              {user && <p className="mt-3 text-xs text-white/40">Session added to your practice streak.</p>}
+              <p className="mt-3 text-xs text-white/40">Session added to your practice streak on this device.</p>
               <div className="mt-6 flex flex-wrap justify-center gap-3">
                 <Button onClick={start}><RotateCcw className="mr-2 h-4 w-4" /> Practice again</Button>
                 <Button variant="outline" onClick={() => { finish(); notify('Breathe easy.'); }}>Finish</Button>

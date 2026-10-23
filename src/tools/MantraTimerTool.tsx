@@ -5,7 +5,7 @@ import { MANTRAS } from '@/data/mantras';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
-import { useAuth } from '@/contexts/AuthContext';
+import { useDeviceStore } from '@/contexts/DeviceStoreContext';
 import { useToast } from '@/contexts/ToastContext';
 
 const MALA = 108;
@@ -15,7 +15,7 @@ export default function MantraTimerTool() {
   const [count, setCount] = useState(0);
   const [logged, setLogged] = useState(false);
   const pulseRef = useRef<HTMLButtonElement>(null);
-  const { user, recordMantraSession } = useAuth();
+  const { data, streakNow, recordPracticeSession } = useDeviceStore();
   const { notify } = useToast();
   const mantra = MANTRAS[idx];
 
@@ -47,7 +47,7 @@ export default function MantraTimerTool() {
 
   const complete = () => {
     if (count === 0) return;
-    recordMantraSession(count);
+    recordPracticeSession(count);
     setLogged(true);
     notify(`Session logged: ${count} repetitions`);
   };
@@ -98,26 +98,25 @@ export default function MantraTimerTool() {
             <p className="mt-4 text-sm leading-relaxed text-white/60">{mantra.meaning}</p>
           </Card>
 
-          {user ? (
-            <Card className="p-6">
+          <Card className="p-6">
               <div className="flex items-center gap-3">
                 <Flame className="h-5 w-5 text-warning" />
                 <div className="flex-1">
                   <div className="font-medium text-white">Your japa streak</div>
-                  <div className="text-xs text-white/45">Keep the daily flame alive</div>
+                  <div className="text-xs text-white/45">Kept on this device</div>
                 </div>
                 <div className="text-right">
-                  <div className="font-display text-3xl text-gradient-gold">{user.mantraStreak.currentStreak}</div>
-                  <div className="text-xs text-white/45">day{user.mantraStreak.currentStreak !== 1 ? 's' : ''}</div>
+                  <div className="font-display text-3xl text-gradient-gold">{streakNow}</div>
+                  <div className="text-xs text-white/45">day{streakNow !== 1 ? 's' : ''}</div>
                 </div>
               </div>
               <div className="mt-4 grid grid-cols-2 gap-3 text-center text-sm">
                 <div className="rounded-xl bg-cosmic-light/30 py-3">
-                  <div className="text-xl text-white">{user.mantraStreak.totalSessions}</div>
+                  <div className="text-xl text-white">{data.practiceStreak.totalSessions}</div>
                   <div className="text-xs text-white/45">sessions</div>
                 </div>
                 <div className="rounded-xl bg-cosmic-light/30 py-3">
-                  <div className="text-xl text-white">{user.mantraStreak.totalRepetitions.toLocaleString('en-IN')}</div>
+                  <div className="text-xl text-white">{data.practiceStreak.totalRepetitions.toLocaleString('en-IN')}</div>
                   <div className="text-xs text-white/45">repetitions</div>
                 </div>
               </div>
@@ -125,14 +124,6 @@ export default function MantraTimerTool() {
                 {logged ? <><Check className="h-4 w-4" /> Logged</> : `Log this session (${count})`}
               </Button>
             </Card>
-          ) : (
-            <Card className="p-6 text-center">
-              <p className="text-sm text-white/60">Sign in to track your daily streak and total repetitions.</p>
-              <Button variant="outline" className="mt-4" onClick={() => window.dispatchEvent(new CustomEvent('vc:open-auth'))}>
-                Sign in
-              </Button>
-            </Card>
-          )}
         </div>
       </div>
     </div>

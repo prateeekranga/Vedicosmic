@@ -1,3 +1,4 @@
+/** Everything VediCosmic keeps about a visitor, stored only in their own browser. */
 export interface SavedReading {
   id: string;
   toolId: string;
@@ -13,20 +14,19 @@ export interface JournalEntry {
   content: string;
 }
 
-export interface MantraStreak {
+export interface PracticeStreak {
+  /** Local calendar date (YYYY-MM-DD) of the last completed session. */
   lastSessionDate: string;
   currentStreak: number;
   totalSessions: number;
   totalRepetitions: number;
 }
 
-export interface User {
-  id: string;
-  email: string;
-  displayName: string;
-  createdAt: string;
+export interface DeviceData {
+  /** The visitor agreed to keep readings and journal entries on this device. */
+  consented: boolean;
   savedReadings: SavedReading[];
   journalEntries: JournalEntry[];
   crystalKit: string[];
-  mantraStreak: MantraStreak;
+  practiceStreak: PracticeStreak;
 }

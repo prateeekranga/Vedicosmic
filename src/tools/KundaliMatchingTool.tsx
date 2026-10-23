@@ -9,7 +9,8 @@ import { DateSelect } from '@/components/ui/DateSelect';
 import { Accordion } from '@/components/ui/Accordion';
 import { CITIES } from '@/lib/astronomy';
 import { matchPeople, type MatchReport, type PersonInput } from '@/lib/matchmaking';
-import { useAuth } from '@/contexts/AuthContext';
+import { useDeviceStore } from '@/contexts/DeviceStoreContext';
+import { SaveOnDeviceButton } from '@/components/device/SaveOnDeviceButton';
 import { useToast } from '@/contexts/ToastContext';
 
 function useCountUp(target: number, dur = 1200) {
@@ -74,7 +75,7 @@ export default function KundaliMatchingTool() {
   const [a, setA] = useState<FormPerson>(blankPerson());
   const [b, setB] = useState<FormPerson>(blankPerson());
   const [report, setReport] = useState<MatchReport | null>(null);
-  const { saveReading } = useAuth();
+  const { saveReading } = useDeviceStore();
   const { notify } = useToast();
 
   const ready = a.name.trim().length > 1 && isValidISODate(a.dob) && b.name.trim().length > 1 && isValidISODate(b.dob);
@@ -97,7 +98,7 @@ export default function KundaliMatchingTool() {
       toolId: 'kundali-matching', toolName: 'Kundali Matching',
       summary: `${a.name.trim()} & ${b.name.trim()} — ${report.ashtakoot.total}/36 gunas, ${report.ashtakoot.tier.label}`,
     });
-    notify('Match saved to your journal');
+    notify('Match saved on this device');
   };
 
   if (!report) {
@@ -204,7 +205,7 @@ export default function KundaliMatchingTool() {
       </p>
 
       <div className="text-center">
-        <Button variant="outline" onClick={save}>Save to journal</Button>
+        <SaveOnDeviceButton label="Save this match" onSave={save} />
       </div>
     </motion.div>
   );

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Play, X, Youtube, Flame, Music2, Mic, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { useAuth } from '@/contexts/AuthContext';
+import { useDeviceStore } from '@/contexts/DeviceStoreContext';
 import { useToast } from '@/contexts/ToastContext';
 import { useSound } from '@/contexts/SoundContext';
 import KundaliniBreathGuide from '@/tools/KundaliniBreathGuide';
@@ -125,7 +125,7 @@ export default function KundaliniTool() {
 
   const engRef = useRef<Eng | null>(null);
   const hideTimer = useRef<number | null>(null);
-  const { user, recordMantraSession } = useAuth();
+  const { recordPracticeSession } = useDeviceStore();
   const { notify } = useToast();
   const { beginTratak, endTratak, speak, stopSpeak } = useSound();
 
@@ -170,7 +170,7 @@ export default function KundaliniTool() {
               : 'Sahasrara. The thousand-petalled lotus has opened. Rest in this light.',
             voiceLang), 600);
           setPhase('done');
-          if (user) recordMantraSession(Math.round(total / 60));
+          recordPracticeSession(Math.round(total / 60));
           return total;
         }
         if (next % per === 0) {
@@ -182,7 +182,7 @@ export default function KundaliniTool() {
       });
     }, 1000);
     return () => window.clearInterval(id);
-  }, [phase, per, total, user, recordMantraSession, say, speak, voiceOn, voiceLang]);
+  }, [phase, per, total, recordPracticeSession, say, speak, voiceOn, voiceLang]);
 
   // esc + auto-hide controls
   useEffect(() => {
@@ -428,7 +428,7 @@ export default function KundaliniTool() {
                 The serpent has risen through all seven centres to the thousand-petalled crown.
                 Sit quietly for a few breaths and let the energy settle back down the spine like warm light.
               </p>
-              {user && <p className="mt-3 text-xs text-white/40">Session added to your practice streak.</p>}
+              <p className="mt-3 text-xs text-white/40">Session added to your practice streak on this device.</p>
               <div className="mt-6 flex flex-wrap justify-center gap-3">
                 <Button onClick={() => {
                   stopEngine(engRef.current);

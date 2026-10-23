@@ -6,13 +6,13 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
-import { useAuth } from '@/contexts/AuthContext';
+import { useDeviceStore } from '@/contexts/DeviceStoreContext';
 import { useToast } from '@/contexts/ToastContext';
 
 export default function CrystalsTool() {
   const [filter, setFilter] = useState<string>('All');
   const [selected, setSelected] = useState<Crystal | null>(null);
-  const { user, toggleCrystal } = useAuth();
+  const { data, toggleCrystal } = useDeviceStore();
   const { notify } = useToast();
 
   const filtered = useMemo(
@@ -20,10 +20,9 @@ export default function CrystalsTool() {
     [filter],
   );
 
-  const inKit = (id: string) => user?.crystalKit.includes(id) ?? false;
+  const inKit = (id: string) => data.crystalKit.includes(id);
 
   const toggle = (c: Crystal) => {
-    if (!user) { window.dispatchEvent(new CustomEvent('vc:open-auth')); return; }
     toggleCrystal(c.id);
     notify(inKit(c.id) ? `${c.name} removed from your kit` : `${c.name} added to your kit`);
   };
@@ -77,12 +76,12 @@ export default function CrystalsTool() {
         </AnimatePresence>
       </motion.div>
 
-      {user && user.crystalKit.length > 0 && (
+      {data.crystalKit.length > 0 && (
         <Card className="p-6">
           <div className="flex items-center gap-2"><Gem className="h-4 w-4 text-brand-cyan" />
-            <span className="eyebrow">Your crystal kit ({user.crystalKit.length})</span></div>
+            <span className="eyebrow">Your crystal kit ({data.crystalKit.length}) · kept on this device</span></div>
           <div className="mt-3 flex flex-wrap gap-2">
-            {user.crystalKit.map((id) => {
+            {data.crystalKit.map((id) => {
               const c = CRYSTALS.find((x) => x.id === id); if (!c) return null;
               return <Badge key={id} tone="cyan">{c.name}</Badge>;
             })}

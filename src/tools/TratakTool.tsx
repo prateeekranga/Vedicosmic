@@ -4,7 +4,7 @@ import { Eye, Play, X, RotateCcw, Wind, Timer, Maximize2, Volume2, Mic } from 'l
 import { SriYantra } from '@/components/effects/SriYantra';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { useAuth } from '@/contexts/AuthContext';
+import { useDeviceStore } from '@/contexts/DeviceStoreContext';
 import { useToast } from '@/contexts/ToastContext';
 import { useSound } from '@/contexts/SoundContext';
 import { audioConfig } from '@/config/audio';
@@ -58,7 +58,7 @@ export default function TratakTool() {
   const color = COLORS.find((c) => c.id === colorId) ?? COLORS[1];
   const audioRef = useRef<AudioContext | null>(null);
   const hideTimer = useRef<number | null>(null);
-  const { user, recordMantraSession } = useAuth();
+  const { recordPracticeSession } = useDeviceStore();
   const { notify } = useToast();
   const { beginTratak, endTratak, speak, stopSpeak } = useSound();
   const VL = audioConfig.tratak.voice.lines[voiceLang];
@@ -93,7 +93,7 @@ export default function TratakTool() {
           if (audioRef.current) bell(audioRef.current);
           if (voiceOn) setTimeout(() => speak(VL.end, voiceLang), 700);
           setPhase('done');
-          if (user) recordMantraSession(minutes);
+          recordPracticeSession(minutes);
           return 0;
         }
         if (next === total - 22 && total > 60 && voiceOn) speak(VL.settle, voiceLang);
@@ -108,7 +108,7 @@ export default function TratakTool() {
       });
     }, 1000);
     return () => window.clearInterval(id);
-  }, [phase, user, minutes, recordMantraSession, total, voiceOn, voiceLang, speak, VL]);
+  }, [phase, minutes, recordPracticeSession, total, voiceOn, voiceLang, speak, VL]);
 
   // esc to exit, auto-hide controls
   useEffect(() => {
@@ -281,7 +281,7 @@ export default function TratakTool() {
                 You held your gaze for {minutes} minute{minutes > 1 ? 's' : ''}. Now gently close your eyes and watch the
                 glowing afterimage settle at the centre of your brow — the ajna. Rest there until it fades.
               </p>
-              {user && <p className="mt-3 text-xs text-white/40">Session added to your practice streak.</p>}
+              <p className="mt-3 text-xs text-white/40">Session added to your practice streak on this device.</p>
               <div className="mt-6 flex flex-wrap justify-center gap-3">
                 <Button onClick={() => { setRemaining(total); setPhase('focus'); if (voiceOn) setTimeout(() => speak(VL.start, voiceLang), 500); }}>
                   <RotateCcw className="mr-2 h-4 w-4" /> Gaze again

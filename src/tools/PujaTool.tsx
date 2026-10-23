@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Bell, Flame, Flower2, Wind, Bookmark, Check, Sparkles } from 'lucide-react';
+import { ArrowLeft, Bell, Flame, Flower2, Wind, Sparkles } from 'lucide-react';
 import { DEITIES, type Deity } from '@/data/deities';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -8,7 +8,8 @@ import { Badge } from '@/components/ui/Badge';
 import { Sound } from '@/lib/sound';
 import { Ambient } from '@/lib/ambient';
 import { useSound } from '@/contexts/SoundContext';
-import { useAuth } from '@/contexts/AuthContext';
+import { useDeviceStore } from '@/contexts/DeviceStoreContext';
+import { SaveOnDeviceButton } from '@/components/device/SaveOnDeviceButton';
 import { useToast } from '@/contexts/ToastContext';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
@@ -97,7 +98,7 @@ function Diya({ color }: { color: string }) {
 function ShrineView({ deity, onBack }: { deity: Deity; onBack: () => void }) {
   const reduced = usePrefersReducedMotion();
   const { enabled: soundEnabled } = useSound();
-  const { user, saveReading } = useAuth();
+  const { saveReading } = useDeviceStore();
   const { notify } = useToast();
 
   const [petalBurst, setPetalBurst] = useState(0);
@@ -155,7 +156,7 @@ function ShrineView({ deity, onBack }: { deity: Deity; onBack: () => void }) {
       summary: `Aarti for ${deity.name} — ${circles} circle${circles === 1 ? '' : 's'}, ${Math.round(elapsed / 60) || 1} min`,
     });
     setJustSaved(true);
-    notify(`Aarti for ${deity.name} logged to your journal 🙏`);
+    notify(`Aarti for ${deity.name} saved on this device 🙏`);
   }
 
   const fmt = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
@@ -274,16 +275,7 @@ function ShrineView({ deity, onBack }: { deity: Deity; onBack: () => void }) {
               <span className="h-1 w-1 rounded-full bg-white/20" />
               <span>{fmt(elapsed)}</span>
               {!aartiActive && circles > 0 && (
-                user ? (
-                  <Button variant="ghost" size="sm" onClick={save} disabled={justSaved}>
-                    {justSaved ? <><Check className="h-3.5 w-3.5" /> Logged</> : <><Bookmark className="h-3.5 w-3.5" /> Save to journal</>}
-                  </Button>
-                ) : (
-                  <button onClick={() => window.dispatchEvent(new CustomEvent('vc:open-auth'))}
-                    className="text-xs text-white/40 underline decoration-dotted hover:text-gold-300">
-                    Sign in to save
-                  </button>
-                )
+                <SaveOnDeviceButton label="Save this aarti" onSave={save} saved={justSaved} size="sm" />
               )}
             </div>
           )}

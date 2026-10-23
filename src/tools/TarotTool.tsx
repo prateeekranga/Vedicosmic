@@ -5,8 +5,8 @@ import { TAROT_DECK } from '@/data/tarot';
 import { seededRandom, todayKey } from '@/lib/format';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
-import { useAuth } from '@/contexts/AuthContext';
+import { useDeviceStore } from '@/contexts/DeviceStoreContext';
+import { SaveOnDeviceButton } from '@/components/device/SaveOnDeviceButton';
 import { useToast } from '@/contexts/ToastContext';
 import { ShareBar } from '@/components/ShareBar';
 import { useShareResult } from '@/contexts/ShareContext';
@@ -15,7 +15,7 @@ export default function TarotTool() {
   const [flipped, setFlipped] = useState(false);
   const [reflection, setReflection] = useState('');
   const [saved, setSaved] = useState(false);
-  const { user, addJournalEntry } = useAuth();
+  const { data, addJournalEntry } = useDeviceStore();
   const { notify } = useToast();
 
   const card = useMemo(() => {
@@ -25,15 +25,15 @@ export default function TarotTool() {
 
   useShareResult(flipped ? `My daily contemplation card is ${card.name} (${card.sanskrit}) ✨` : null);
 
-  const alreadyJournaled = user?.journalEntries.some(
+  const alreadyJournaled = data.journalEntries.some(
     (e) => e.tarotCardId === String(card.id) && e.date.slice(0, 10) === todayKey(),
-  ) ?? false;
+  );
 
   const save = () => {
     if (!reflection.trim()) return;
     addJournalEntry({ tarotCardId: String(card.id), content: reflection.trim() });
     setSaved(true);
-    notify('Reflection saved to your journal');
+    notify('Reflection saved on this device');
   };
 
   return (
@@ -86,24 +86,19 @@ export default function TarotTool() {
               <div className="flex items-center gap-2"><BookOpen className="h-4 w-4 text-brand-cyan" />
                 <span className="eyebrow">Contemplation</span></div>
               <p className="mt-2 italic text-gold-pale">{card.prompt}</p>
-              {user ? (
-                alreadyJournaled && !saved ? (
-                  <p className="mt-4 rounded-xl bg-cosmic-light/30 p-4 text-sm text-white/60">
-                    You’ve already journaled on this card today. Return tomorrow for a new draw. 🙏
-                  </p>
-                ) : saved ? (
-                  <p className="mt-4 flex items-center gap-2 text-sm text-success"><Check className="h-4 w-4" /> Saved to your journal.</p>
-                ) : (
-                  <>
-                    <textarea value={reflection} onChange={(e) => setReflection(e.target.value)}
-                      rows={4} placeholder="What does this card stir in you today?"
-                      className="mt-4 w-full rounded-xl border border-white/10 bg-cosmic-light/30 p-4 text-sm text-white/90 outline-none transition-colors focus:border-brand-cyan/50" />
-                    <Button variant="outline" className="mt-3" onClick={save} disabled={!reflection.trim()}>Save reflection</Button>
-                  </>
-                )
+              {alreadyJournaled && !saved ? (
+                <p className="mt-4 rounded-xl bg-cosmic-light/30 p-4 text-sm text-white/60">
+                  You’ve already written a reflection on this card today. Return tomorrow for a new draw. 🙏
+                </p>
+              ) : saved ? (
+                <p className="mt-4 flex items-center gap-2 text-sm text-success"><Check className="h-4 w-4" /> Saved on this device.</p>
               ) : (
-                <button onClick={() => window.dispatchEvent(new CustomEvent('vc:open-auth'))}
-                  className="mt-4 text-sm text-brand-cyan-soft hover:text-brand-cyan">Sign in to keep a tarot journal →</button>
+                <>
+                  <textarea value={reflection} onChange={(e) => setReflection(e.target.value)}
+                    rows={4} placeholder="What does this card stir in you today?" aria-label="Your reflection"
+                    className="mt-4 w-full rounded-xl border border-white/10 bg-cosmic-light/30 p-4 text-sm text-white/90 outline-none transition-colors focus:border-brand-cyan/50" />
+                  <SaveOnDeviceButton label="Save reflection" onSave={save} disabled={!reflection.trim()} className="mt-3" />
+                </>
               )}
             </Card>
           </motion.div>

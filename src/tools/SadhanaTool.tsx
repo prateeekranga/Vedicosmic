@@ -5,7 +5,8 @@ import { Sun, Moon, Wind, Eye, Flame, Sparkles, ArrowRight, Flower2, Check } fro
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
-import { useAuth } from '@/contexts/AuthContext';
+import { useDeviceStore } from '@/contexts/DeviceStoreContext';
+import { SavedOnDevice } from '@/components/device/SavedOnDevice';
 import { panchang, upcomingVrats } from '@/lib/panchang';
 
 /* ── the day's suggested three-step flow ── */
@@ -44,12 +45,12 @@ function MiniMoon({ phase }: { phase: number }) {
 }
 
 export default function SadhanaTool() {
-  const { user } = useAuth();
+  const { streakNow } = useDeviceStore();
   const [done, setDone] = useState<Record<string, boolean>>({});
   const pan = useMemo(() => panchang(new Date()), []);
   const nextVrat = useMemo(() => upcomingVrats(new Date(), 30)[0], []);
   const ctx = useMemo(dayContext, []);
-  const streak = user?.mantraStreak?.currentStreak ?? 0;
+  const streak = streakNow;
 
   const completed = FLOWS.filter((f) => done[f.key]).length;
   const pct = Math.round((completed / FLOWS.length) * 100);
@@ -67,7 +68,7 @@ export default function SadhanaTool() {
         <div className="relative flex flex-wrap items-center justify-between gap-6">
           <div className="min-w-0">
             <span className="eyebrow flex items-center gap-2"><Sun className="h-4 w-4" /> {new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' })}</span>
-            <h2 className="mt-1 font-heading text-h2 text-white">{ctx.g}{user ? `, ${user.displayName.split(' ')[0]}` : ''}</h2>
+            <h2 className="mt-1 font-heading text-h2 text-white">{ctx.g}</h2>
             <p className="mt-1 max-w-lg text-sm text-white/60">{ctx.s}</p>
             <div className="mt-3 flex flex-wrap gap-2">
               <Badge tone="gold">{pan.tithiName}</Badge>
@@ -134,7 +135,7 @@ export default function SadhanaTool() {
           </motion.div>
           <div>
             <p className="text-sm font-medium text-white">Practice streak</p>
-            <p className="text-xs text-white/50">{user ? 'Days in a row of sādhana' : 'Sign in to track your streak'}</p>
+            <p className="text-xs text-white/50">Days in a row with a logged session</p>
           </div>
         </Card>
 
@@ -180,7 +181,9 @@ export default function SadhanaTool() {
         </div>
       </div>
 
-      <p className="text-xs text-white/35">Your daily checklist resets each visit and lives only on this device. Sign in to keep a lasting practice streak.</p>
+      <p className="text-xs text-white/35">The checklist above resets on each visit. Finishing a Pranayama, Trataka, Kundalini or japa session adds to your practice streak, kept on this device.</p>
+
+      <SavedOnDevice />
     </div>
   );
 }

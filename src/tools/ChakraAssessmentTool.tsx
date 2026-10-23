@@ -5,7 +5,8 @@ import { CHAKRAS, chakraStatus } from '@/data/chakras';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
-import { useAuth } from '@/contexts/AuthContext';
+import { useDeviceStore } from '@/contexts/DeviceStoreContext';
+import { SaveOnDeviceButton } from '@/components/device/SaveOnDeviceButton';
 import { useToast } from '@/contexts/ToastContext';
 
 const LIKERT = [
@@ -20,7 +21,7 @@ export default function ChakraAssessmentTool() {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [done, setDone] = useState(false);
-  const { user, saveReading } = useAuth();
+  const { saveReading } = useDeviceStore();
   const { notify } = useToast();
 
   const scores = useMemo(() => {
@@ -46,7 +47,7 @@ export default function ChakraAssessmentTool() {
     const lowest = scores.indexOf(Math.min(...scores));
     saveReading({ toolId: 'chakra-assessment', toolName: 'Chakra Balance',
       summary: `Most open: ${CHAKRAS[scores.indexOf(Math.max(...scores))].name}. Needs attention: ${CHAKRAS[lowest].name}.` });
-    notify('Assessment saved to your journal');
+    notify('Assessment saved on this device');
   };
 
   const progress = ((done ? QUESTIONS.length : step) / QUESTIONS.length) * 100;
@@ -151,10 +152,7 @@ export default function ChakraAssessmentTool() {
 
             <div className="flex flex-wrap justify-center gap-3">
               <Button variant="ghost" onClick={reset}><RotateCcw className="h-4 w-4" /> Retake</Button>
-              {user
-                ? <Button variant="outline" onClick={save}>Save assessment</Button>
-                : <button onClick={() => window.dispatchEvent(new CustomEvent('vc:open-auth'))}
-                    className="text-sm text-brand-cyan-soft hover:text-brand-cyan">Sign in to save →</button>}
+              <SaveOnDeviceButton label="Save assessment" onSave={save} />
             </div>
           </motion.div>
         )}

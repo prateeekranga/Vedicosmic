@@ -10,7 +10,8 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Input, Select } from '@/components/ui/Field';
-import { useAuth } from '@/contexts/AuthContext';
+import { useDeviceStore } from '@/contexts/DeviceStoreContext';
+import { SaveOnDeviceButton } from '@/components/device/SaveOnDeviceButton';
 import { useToast } from '@/contexts/ToastContext';
 
 interface Chart { sun: number; moon: number; asc: number; }
@@ -73,7 +74,7 @@ export default function AstrologyTool() {
   const [time, setTime] = useState('12:00');
   const [cityIdx, setCityIdx] = useState(0);
   const [chart, setChart] = useState<Chart | null>(null);
-  const { user, saveReading } = useAuth();
+  const { saveReading } = useDeviceStore();
   const { notify } = useToast();
 
   const calculate = () => {
@@ -93,7 +94,7 @@ export default function AstrologyTool() {
     const moon = RASHI_INFO[longitudeToRashi(chart.moon)];
     saveReading({ toolId: 'astrology', toolName: 'Vedic Birth Chart',
       summary: `Moon in ${moon.sanskrit} (${moon.english}) · Sun in ${RASHI_INFO[longitudeToRashi(chart.sun)].english}` });
-    notify('Chart saved to your journal');
+    notify('Chart saved on this device');
   };
 
   return (
@@ -151,12 +152,7 @@ export default function AstrologyTool() {
                 );
               })}
               <div className="flex justify-center pt-2">
-                {user ? (
-                  <Button variant="outline" onClick={save}>Save this chart</Button>
-                ) : (
-                  <button onClick={() => window.dispatchEvent(new CustomEvent('vc:open-auth'))}
-                    className="text-sm text-brand-cyan-soft hover:text-brand-cyan">Sign in to save this chart →</button>
-                )}
+                <SaveOnDeviceButton label="Save this chart" onSave={save} />
               </div>
             </div>
           </motion.div>

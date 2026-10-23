@@ -1,12 +1,10 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { Menu, User as UserIcon, X, Volume2, VolumeX, ArrowRight, ChevronDown } from 'lucide-react';
+import { Menu, X, Volume2, VolumeX, ArrowRight, ChevronDown } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/Button';
-import { AuthModal } from '@/components/auth/AuthModal';
 import { NavDropdown } from '@/components/layout/NavDropdown';
-import { useAuth } from '@/contexts/AuthContext';
 import { useSound } from '@/contexts/SoundContext';
 import { TOOL_CATEGORIES, liveTools } from '@/content/routes';
 
@@ -93,11 +91,9 @@ function ToolsPanel() {
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [authOpen, setAuthOpen] = useState(false);
   const [mobileSection, setMobileSection] = useState<'tools' | null>(null);
   const [mobileMenuOverflowing, setMobileMenuOverflowing] = useState(false);
   const mobileListRef = useRef<HTMLUListElement>(null);
-  const { user, logout } = useAuth();
   const location = useLocation();
 
   useEffect(() => {
@@ -133,12 +129,6 @@ export function Navbar() {
   // Force a solid header whenever a mega menu is open, so its background never
   // shifts mid-interaction — only relevant on the transparent, unscrolled home hero.
   const solid = scrolled || mobileOpen || !isHome || toolsMenuOpen;
-
-  useEffect(() => {
-    const open = (e: Event) => { if ((e as CustomEvent).type === 'vc:open-auth') setAuthOpen(true); };
-    window.addEventListener('vc:open-auth', open);
-    return () => window.removeEventListener('vc:open-auth', open);
-  }, []);
 
   return (
     <>
@@ -197,21 +187,6 @@ export function Navbar() {
 
           <div className="hidden items-center gap-3 md:flex">
             <SoundToggle />
-            {user ? (
-              <div className="flex items-center gap-3">
-                <span className="flex items-center gap-2 text-sm text-white/70">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-cyan-sheen text-xs font-bold text-cosmic-darker">
-                    {user.displayName.slice(0, 1).toUpperCase()}
-                  </span>
-                  {user.displayName.split(' ')[0]}
-                </span>
-                <Button variant="ghost" size="sm" onClick={logout}>Sign out</Button>
-              </div>
-            ) : (
-              <Button variant="ghost" size="sm" onClick={() => setAuthOpen(true)}>
-                <UserIcon className="h-4 w-4" /> Sign in
-              </Button>
-            )}
             <Button variant="primary" size="sm" to="/tools/sadhana">Begin today’s sādhana</Button>
           </div>
 
@@ -276,11 +251,6 @@ export function Navbar() {
                 ))}
 
                 <li className="mt-2 flex flex-col gap-2 px-1">
-                  {user ? (
-                    <Button variant="outline" onClick={logout}>Sign out ({user.displayName.split(' ')[0]})</Button>
-                  ) : (
-                    <Button variant="outline" onClick={() => { setMobileOpen(false); setAuthOpen(true); }}>Sign in</Button>
-                  )}
                   <Button variant="primary" to="/tools/sadhana">Begin today’s sādhana</Button>
                 </li>
 
@@ -297,8 +267,6 @@ export function Navbar() {
           )}
         </AnimatePresence>
       </header>
-
-      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
     </>
   );
 }

@@ -1,7 +1,7 @@
 import { DateSelect } from '@/components/ui/DateSelect';
 import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Grid3x3, RotateCcw, Bookmark } from 'lucide-react';
+import { Grid3x3, RotateCcw } from 'lucide-react';
 import {
   LOSHU_NUMBERS, PLANES, repetitionMeaning, LOSHU_INTRO, MISSING_REMEDIES,
   buildLoshuChart, kuaNumber, effectiveCounts, type LoshuChart,
@@ -11,7 +11,8 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Input, Select } from '@/components/ui/Field';
-import { useAuth } from '@/contexts/AuthContext';
+import { useDeviceStore } from '@/contexts/DeviceStoreContext';
+import { SaveOnDeviceButton } from '@/components/device/SaveOnDeviceButton';
 import { useToast } from '@/contexts/ToastContext';
 
 export default function LoshuGridTool() {
@@ -20,7 +21,7 @@ export default function LoshuGridTool() {
   const [chart, setChart] = useState<LoshuChart | null>(null);
   const [kua, setKua] = useState<number | null>(null);
   const [key, setKey] = useState(0);
-  const { user, saveReading } = useAuth();
+  const { saveReading } = useDeviceStore();
   const { notify } = useToast();
 
   const compute = () => {
@@ -58,7 +59,7 @@ export default function LoshuGridTool() {
       toolName: 'Lo Shu Grid',
       summary: `Driver ${chart.driver} (${LOSHU_NUMBERS[chart.driver].planet}) · Conductor ${chart.conductor} (${LOSHU_NUMBERS[chart.conductor].planet}) · Missing: ${missing.length ? missing.join(', ') : 'none'}`,
     });
-    notify('Lo Shu chart saved to your journal');
+    notify('Lo Shu chart saved on this device');
   };
 
   return (
@@ -124,17 +125,7 @@ export default function LoshuGridTool() {
                   })}
               </div>
 
-              {user ? (
-                <Button variant="outline" size="sm" className="mt-4 w-full" onClick={save}>
-                  <Bookmark className="mr-2 h-4 w-4" /> Save this chart
-                </Button>
-              ) : (
-                <button
-                  onClick={() => window.dispatchEvent(new CustomEvent('vc:open-auth'))}
-                  className="mt-4 w-full rounded-lg border border-white/10 py-2 text-xs text-white/50 transition-colors hover:text-gold-400">
-                  Sign in to save your chart
-                </button>
-              )}
+              <SaveOnDeviceButton label="Save this chart" onSave={save} size="sm" className="mt-4 w-full" />
             </Card>
 
             {/* Interpretation */}

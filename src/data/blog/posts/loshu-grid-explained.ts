@@ -4,14 +4,13 @@ export default {
   id: 'loshu-grid-explained',
   slug: 'loshu-grid-explained',
   title: 'Lo Shu Grid Explained: Reading Your Birth-Date Magic Square',
-  seoTitle: 'Lo Shu Grid Explained — How to Read Your Birth-Date Magic Square',
+  seoTitle: 'Lo Shu Grid Explained: Read Your Birth-Date Magic Square',
   excerpt:
     "Learn to plot your birth date into the ancient Lo Shu Grid, decode its nine planetary numbers, and read the classic arrows of strength and weakness.",
   category: 'numerology',
   tags: ['lo shu grid', 'numerology', 'magic square', 'birth date numbers', 'vedic numerology'],
   authorId: 'parikshiva',
   publishedAt: '2026-07-23',
-  heroImage: '/og/blog/loshu-grid-explained.png',
   keyTakeaways: [
     'The Lo Shu Grid is a 3×3 magic square where every row, column and diagonal sums to 15.',
     'String your birth date\'s digits together, drop any zeros, then plot each digit into its fixed home cell.',

@@ -1,6 +1,7 @@
 import { motion, type Variants } from 'framer-motion';
 import type { ReactNode } from 'react';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import { skipEntrance } from '@/lib/hydration';
 
 export const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -9,7 +10,7 @@ export function Reveal({
   children, className, delay = 0, y = 30,
 }: { children: ReactNode; className?: string; delay?: number; y?: number }) {
   const reduced = usePrefersReducedMotion();
-  if (reduced) return <div className={className}>{children}</div>;
+  if (reduced || skipEntrance()) return <div className={className}>{children}</div>;
   return (
     <motion.div
       className={className}
@@ -30,7 +31,7 @@ export function RevealStagger({
   children, className, stagger = 0.09,
 }: { children: ReactNode; className?: string; stagger?: number }) {
   const reduced = usePrefersReducedMotion();
-  if (reduced) return <div className={className}>{children}</div>;
+  if (reduced || skipEntrance()) return <div className={className}>{children}</div>;
   return (
     <motion.div
       className={className}
@@ -51,7 +52,7 @@ const itemVar: Variants = {
 
 export function RevealItem({ children, className }: { children: ReactNode; className?: string }) {
   const reduced = usePrefersReducedMotion();
-  if (reduced) return <div className={className}>{children}</div>;
+  if (reduced || skipEntrance()) return <div className={className}>{children}</div>;
   return <motion.div className={className} variants={itemVar}>{children}</motion.div>;
 }
 

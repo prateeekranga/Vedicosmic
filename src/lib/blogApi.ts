@@ -87,7 +87,7 @@ function fromInput(input: Partial<BlogPost>) {
 }
 
 /** Public, unauthenticated reads — used by the live site (Blog.tsx, BlogPostPage.tsx, ToolPage.tsx)
- *  and, via fetchDbPosts.mjs, by the Node build scripts (prerender.mjs/generate-seo-files.mjs).
+ *  and, via fetchDbPosts.mjs, by the Node build scripts (ssg.mjs/generate-seo-files.mjs).
  *  RLS restricts these to `hidden = false` rows automatically for the anon role. The
  *  `published_at <= now` filter is what makes scheduling work: the admin editor lets a post be
  *  marked visible with a future publish time, and it simply won't be in this result set — no

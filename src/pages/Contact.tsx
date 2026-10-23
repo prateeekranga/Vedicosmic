@@ -10,7 +10,7 @@ import { faqPageSchema } from '@/lib/schema';
 export default function Contact() {
   const content = CONTACT_CONTENT;
   useSEO({
-    key: '/contact', path: '/contact', title: 'Contact · VediCosmic',
+    key: '/contact', path: '/contact', title: 'Contact VediCosmic: Questions and Corrections',
     description: 'Questions, corrections or feedback about VediCosmic’s tools and articles: write to hello@vedicosmic.com.',
     jsonLd: faqPageSchema(content.faqs),
   });

@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "postbuild": "node scripts/generate-seo-files.mjs && node scripts/generate-og-images.mjs && node scripts/prerender.mjs && node scripts/check-claims.mjs",
+    "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr",
+    "postbuild": "node scripts/ssg.mjs && node scripts/generate-seo-files.mjs && node scripts/generate-htaccess.mjs && node scripts/generate-og-images.mjs && node scripts/check-claims.mjs",
     "build:standalone": "vite build --config vite.standalone.config.ts",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
@@ -14,7 +14,9 @@
     "lint": "eslint .",
     "check:links": "node scripts/check-links.mjs",
     "smoke": "node scripts/smoke.mjs",
-    "a11y": "node scripts/axe.mjs"
+    "a11y": "node scripts/axe.mjs",
+    "verify": "node scripts/verify-prerender.mjs",
+    "check:server": "node scripts/check-server.mjs"
   },
   "dependencies": {
     "@sentry/browser": "9.47.2",

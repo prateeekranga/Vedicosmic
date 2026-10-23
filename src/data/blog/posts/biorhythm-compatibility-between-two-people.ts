@@ -4,7 +4,7 @@ export default {
   id: 'biorhythm-compatibility-between-two-people',
   slug: 'biorhythm-compatibility-between-two-people',
   title: 'Biorhythm Compatibility: Comparing Cycles Between Two People',
-  seoTitle: 'Biorhythm Compatibility: How to Compare Cycles Between Two People',
+  seoTitle: 'Biorhythm Compatibility: Comparing Two People’s Cycles',
   excerpt:
     "Can biorhythm cycles be compared between two people? A look at biorhythm compatibility theory, how it's calculated, and what science actually says.",
   category: 'cosmology',

@@ -4,14 +4,13 @@ export default {
   id: 'urdhvaretas-brahmacharya-yogic-view',
   slug: 'urdhvaretas-brahmacharya-yogic-view',
   title: 'Ūrdhvaretas & Brahmacharya: The Yogic View of Sexual Energy and Willpower',
-  seoTitle: 'Ūrdhvaretas & Brahmacharya Explained — The Yogic View of Sexual Energy, Willpower & Urge Control',
+  seoTitle: 'Ūrdhvaretas & Brahmacharya: The Yogic View of Urge Control',
   excerpt:
     'A compassionate look at Brahmacharya and ūrdhvaretas — the yogic view of sexual energy — and how these ideas can gently support urge control.',
   category: 'spiritual-living',
   tags: ['brahmacharya', 'urdhvaretas', 'kundalini', 'urge control', 'yogic philosophy', 'subtle body'],
   authorId: 'parikshiva',
   publishedAt: '2026-07-26',
-  heroImage: '/og/blog/urdhvaretas-brahmacharya-yogic-view.png',
   keyTakeaways: [
     'Brahmacharya is one of the yamas in Patanjali\'s Yoga Sutras — "conduct that leads toward the divine" — traditionally read as sexual restraint, though many modern teachers understand it more broadly as mindful, non-exploitative use of vital energy.',
     'Ūrdhvaretas describes a yogic idea of redirecting sexual and vital energy upward through the subtle body, rather than only dissipating it — a concept closely linked to Kundalini practice.',

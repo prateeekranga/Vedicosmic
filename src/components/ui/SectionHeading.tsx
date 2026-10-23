@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 import { SparkleUnderline } from '@/components/motion/SparkleUnderline';
+import { enter } from '@/lib/hydration';
 
 export function SectionHeading({
   eyebrow, title, subtitle, center = true, glow = false, as = 'h2',
@@ -8,7 +9,7 @@ export function SectionHeading({
   const Heading = as;
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={enter({ opacity: 0, y: 24 })}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ type: 'spring', stiffness: 120, damping: 18 }}

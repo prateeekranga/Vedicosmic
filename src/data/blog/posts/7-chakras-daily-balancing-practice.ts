@@ -11,7 +11,6 @@ export default {
   tags: ['7 chakras', 'chakra practice', 'daily ritual', 'chakra balancing', 'meditation', 'chakras'],
   authorId: 'parikshiva',
   publishedAt: '2026-07-28',
-  heroImage: '/og/blog/7-chakras-daily-balancing-practice.png',
   keyTakeaways: [
     'A full 7-chakra practice can take as little as 10 minutes — roughly one minute of focused breath or intention per chakra.',
     'Each step pairs a chakra with one simple physical or mental cue rather than a long, complicated ritual.',

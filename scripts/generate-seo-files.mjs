@@ -22,20 +22,21 @@ async function loadData() {
   return { TOOLS, STATIC_ROUTES, BLOG_POSTS, BLOG_CATEGORIES, SITE_URL, SITE_NAME, SITE_DESCRIPTION };
 }
 
-function priorityFor(routePath, isNew) {
-  if (routePath === '/') return '1.0';
-  if (routePath === '/tools' || routePath === '/blog') return '0.9';
-  if (routePath.startsWith('/blog/category/')) return '0.7';
-  if (routePath.startsWith('/tools/')) return isNew ? '0.85' : '0.8';
-  if (routePath.startsWith('/blog/')) return '0.8';
-  return '0.5';
+const SITEMAPS = { pages: 'sitemap-pages.xml', tools: 'sitemap-tools.xml', blog: 'sitemap-blog.xml' };
+
+function urlset(entries, SITE_URL) {
+  const urls = entries.map((p) => [
+    '  <url>',
+    `    <loc>${SITE_URL}${p.path}</loc>`,
+    ...(p.lastmod ? [`    <lastmod>${p.lastmod.slice(0, 10)}</lastmod>`] : []),
+    '  </url>',
+  ].join('\n'));
+  return ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', ...urls, '</urlset>', ''].join('\n');
 }
 
-function buildSitemap(routes, SITE_URL) {
-  const urls = routes.map((r) =>
-    `  <url>\n    <loc>${SITE_URL}${r.path}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>${priorityFor(r.path, r.isNew)}</priority>\n  </url>`,
-  ).join('\n');
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
+function sitemapIndex(SITE_URL) {
+  const items = Object.values(SITEMAPS).map((file) => `  <sitemap>\n    <loc>${SITE_URL}/${file}</loc>\n  </sitemap>`);
+  return ['<?xml version="1.0" encoding="UTF-8"?>', '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', ...items, '</sitemapindex>', ''].join('\n');
 }
 
 function buildLlmsTxt({ SITE_NAME, SITE_DESCRIPTION, SITE_URL, tools, BLOG_POSTS, pages }) {
@@ -52,17 +53,19 @@ async function main() {
   // Only live, indexable pages: noindex pages (coming-soon tools, /courses) stay out.
   const pages = data.STATIC_ROUTES.filter((r) => r.indexable);
   const tools = data.TOOLS.filter((t) => t.indexable && t.status === 'live');
-  const routes = [
-    ...pages.map((r) => ({ path: r.path })),
-    ...tools.map((t) => ({ path: `/tools/${t.slug}`, isNew: !!t.isNew })),
-    ...data.BLOG_POSTS.map((p) => ({ path: `/blog/${p.slug}` })),
-    ...data.BLOG_CATEGORIES.filter((c) => c.id !== 'all').map((c) => ({ path: `/blog/category/${c.id}` })),
-  ];
+  // Sitemaps list exactly the pages the static build wrote that are live and indexable.
+  const manifest = JSON.parse(await fs.readFile(path.join(root, 'dist-ssr', 'pages.json'), 'utf8'));
   const distDir = path.join(root, 'dist');
   await fs.mkdir(distDir, { recursive: true });
-  await fs.writeFile(path.join(distDir, 'sitemap.xml'), buildSitemap(routes, data.SITE_URL));
+  let count = 0;
+  for (const [group, file] of Object.entries(SITEMAPS)) {
+    const entries = manifest.filter((p) => p.group === group && p.indexable);
+    count += entries.length;
+    await fs.writeFile(path.join(distDir, file), urlset(entries, data.SITE_URL));
+  }
+  await fs.writeFile(path.join(distDir, 'sitemap.xml'), sitemapIndex(data.SITE_URL));
   await fs.writeFile(path.join(distDir, 'llms.txt'), buildLlmsTxt({ ...data, tools, pages }));
-  console.log(`[seo] wrote sitemap.xml (${routes.length} urls) and llms.txt to dist/`);
+  console.log(`[seo] wrote sitemap.xml (index of ${Object.keys(SITEMAPS).length}, ${count} urls) and llms.txt to dist/`);
 }
 
 main().catch((err) => { console.error(err); process.exitCode = 1; });

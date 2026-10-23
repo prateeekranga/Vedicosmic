@@ -11,7 +11,6 @@ export default {
   tags: ['what are chakras', 'chakra myths', 'chakra benefits', 'chakra misconceptions', 'chakras'],
   authorId: 'parikshiva',
   publishedAt: '2026-07-28',
-  heroImage: '/og/blog/what-are-chakras-used-for-benefits-myths.png',
   keyTakeaways: [
     'Chakras are traditionally used as a reflective framework — a lens for noticing recurring emotional or behavioural patterns.',
     'Reported benefits (calm, focus, self-awareness) generally come from the accompanying practices — breathwork, meditation, movement — not from the chakra concept alone.',

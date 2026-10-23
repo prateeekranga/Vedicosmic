@@ -1,20 +1,18 @@
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { useRef, type ReactNode, type MouseEvent } from 'react';
-import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
-
-const supportsFineHover = () =>
-  typeof window !== 'undefined' && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+import { useFineHover, usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
 /** Wraps an element so it drifts a few px toward the cursor on hover, spring-snapping back on leave. */
 export function Magnetic({ children, strength = 0.35, max = 10 }: { children: ReactNode; strength?: number; max?: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = usePrefersReducedMotion();
+  const fineHover = useFineHover();
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const sx = useSpring(x, { stiffness: 200, damping: 16, mass: 0.4 });
   const sy = useSpring(y, { stiffness: 200, damping: 16, mass: 0.4 });
 
-  if (reduced || !supportsFineHover()) return <>{children}</>;
+  if (reduced || !fineHover) return <>{children}</>;
 
   function handleMove(e: MouseEvent<HTMLDivElement>) {
     const el = ref.current;

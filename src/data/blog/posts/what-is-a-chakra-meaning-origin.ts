@@ -4,14 +4,13 @@ export default {
   id: 'what-is-a-chakra-meaning-origin',
   slug: 'what-is-a-chakra-meaning-origin',
   title: 'What Is a Chakra? Meaning, Origin & How the System Developed',
-  seoTitle: 'What Is a Chakra? Meaning, Sanskrit Origin & History Explained',
+  seoTitle: 'What Is a Chakra? Meaning, Sanskrit Origin & History',
   excerpt:
     'What does "chakra" actually mean, where does the concept come from, and how did the seven-chakra system as we know it develop over time?',
   category: 'energy',
   tags: ['what is chakras', 'chakra meaning', 'chakra history', 'tantric tradition', 'yoga philosophy', 'chakras'],
   authorId: 'parikshiva',
   publishedAt: '2026-07-28',
-  heroImage: '/og/blog/what-is-a-chakra-meaning-origin.png',
   keyTakeaways: [
     'The word "chakra" is Sanskrit for "wheel" or "disc," describing a point where subtle energy is said to gather in the body.',
     'Chakras were first described in early Yoga Upanishads and developed more fully in medieval tantric texts.',

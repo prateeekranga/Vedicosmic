@@ -4,14 +4,13 @@ export default {
   id: 'pranayama-for-beginners',
   slug: 'pranayama-for-beginners',
   title: 'Pranayama for Beginners: 5 Breathing Techniques to Calm Your Mind',
-  seoTitle: 'Pranayama for Beginners — 5 Breathing Techniques to Calm the Mind & Body',
+  seoTitle: 'Pranayama for Beginners: 5 Calming Breathing Techniques',
   excerpt:
     "A practical beginner's guide to pranayama, the yogic art of breath control: five techniques, from calming Bhramari to energizing Kapalabhati, with safe steps.",
   category: 'meditation-yoga',
   tags: ['pranayama', 'breathing techniques', 'nadi shodhana', 'yoga breathing', 'breathwork', 'beginner yoga'],
   authorId: 'parikshiva',
   publishedAt: '2026-07-23',
-  heroImage: '/og/blog/pranayama-for-beginners.png',
   keyTakeaways: [
     'Pranayama is the yogic practice of consciously working with the breath — slowing, lengthening or pausing it to influence the mind.',
     'Nadi Shodhana (alternate nostril breathing) is the most forgiving starting point — gentle, calming and safe for most healthy adults.',

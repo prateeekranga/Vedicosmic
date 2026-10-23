@@ -4,14 +4,13 @@ export default {
   id: 'chakra-information-reference-guide',
   slug: 'chakra-information-reference-guide',
   title: 'Chakra Information: A Complete Reference Guide to All 7 Centers',
-  seoTitle: 'Chakra Information: Sanskrit Names, Location, Element & Mudra',
+  seoTitle: 'Chakra Reference: Sanskrit Names, Location, Element, Mudra',
   excerpt:
     'A dense, at-a-glance reference for chakra information — Sanskrit name, location, element, seed sound and mudra for each of the 7 chakras.',
   category: 'energy',
   tags: ['chakra information', 'chakra reference', 'chakra facts', 'chakra mudra', 'chakras', 'subtle body'],
   authorId: 'parikshiva',
   publishedAt: '2026-07-28',
-  heroImage: '/og/blog/chakra-information-reference-guide.png',
   keyTakeaways: [
     'Each chakra has five traditional identifiers: Sanskrit name, physical location, element, seed sound, and a paired mudra.',
     'This reference lists all seven together for quick lookup, rather than a narrative explanation of each one.',

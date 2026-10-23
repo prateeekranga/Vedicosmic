@@ -11,7 +11,6 @@ export default {
   tags: ['master number', 'numerology', 'life path number', 'master numbers 11 22 33', 'numerology calculator'],
   authorId: 'parikshiva',
   publishedAt: '2026-07-28',
-  heroImage: '/og/blog/how-to-calculate-master-number.png',
   keyTakeaways: [
     'A Master Number (11, 22 or 33) appears when a stage of digit-sum reduction lands exactly on one of those three totals.',
     'The rule is simple: if a sum equals 11, 22 or 33, stop reducing and keep it whole — do not reduce it further to 2, 4 or 6.',

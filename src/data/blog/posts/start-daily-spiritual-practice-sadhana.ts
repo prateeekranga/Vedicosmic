@@ -4,14 +4,13 @@ export default {
   id: 'start-daily-spiritual-practice-sadhana',
   slug: 'start-daily-spiritual-practice-sadhana',
   title: 'How to Start a Daily Spiritual Practice (Sadhana) That Actually Sticks',
-  seoTitle: 'How to Start a Daily Sadhana — Build a Spiritual Practice That Sticks',
+  seoTitle: 'How to Start a Daily Sadhana That Sticks',
   excerpt:
     'Sadhana means a disciplined daily spiritual practice. Learn why consistency beats intensity, and five realistic ways to make yours actually stick.',
   category: 'spiritual-living',
   tags: ['sadhana', 'daily spiritual practice', 'meditation habit', 'spiritual discipline', 'habit formation', 'mindfulness'],
   authorId: 'parikshiva',
   publishedAt: '2026-07-23',
-  heroImage: '/og/blog/start-daily-spiritual-practice-sadhana.png',
   keyTakeaways: [
     'Sadhana means a disciplined daily spiritual practice — consistency beats intensity, so a modest daily habit outlasts an occasional marathon session.',
     'Anchor your practice to a fixed time, start absurdly small, and stack it onto a habit you already have.',

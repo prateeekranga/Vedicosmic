@@ -4,7 +4,7 @@ export default {
   id: 'vedic-chakras-jyotish-navagraha-connection',
   slug: 'vedic-chakras-jyotish-navagraha-connection',
   title: 'Vedic Chakras: How the Chakra System Connects to Jyotish and the Navagraha',
-  seoTitle: 'Vedic Chakras Explained: Linking the 7 Chakras to the Navagraha',
+  seoTitle: 'Vedic Chakras: Linking the 7 Chakras to the Navagraha',
   excerpt:
     'How does the chakra system show up in Vedic astrology? A look at how Jyotish practitioners connect the 7 chakras to the Navagraha, the nine planets.',
   category: 'energy',

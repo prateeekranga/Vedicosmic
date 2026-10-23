@@ -4,7 +4,7 @@ export default {
   id: 'chaldean-numerology-explained',
   slug: 'chaldean-numerology-explained',
   title: 'Chaldean Numerology Explained: The Ancient System Before Pythagoras',
-  seoTitle: 'Chaldean Numerology Explained: Calculate Your Compound Number & Name Vibration',
+  seoTitle: 'Chaldean Numerology: Compound Number & Name Vibration',
   excerpt:
     'Discover Chaldean numerology\'s ancient roots, its sound-based letter chart with no 9, and how to calculate a compound number from any name.',
   category: 'numerology',
@@ -18,7 +18,6 @@ export default {
   ],
   authorId: 'parikshiva',
   publishedAt: '2026-07-26',
-  heroImage: '/og/blog/chaldean-numerology-explained.png',
   keyTakeaways: [
     'Chaldean numerology is traditionally said to predate the more familiar Pythagorean system, with practitioners tracing its roots to ancient Babylon and Mesopotamia.',
     'Its letter-to-number chart runs only 1-8 — no letter is ever assigned to 9, which is treated as sacred and held in reserve rather than given out.',

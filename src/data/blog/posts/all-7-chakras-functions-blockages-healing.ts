@@ -4,14 +4,13 @@ export default {
   id: 'all-7-chakras-functions-blockages-healing',
   slug: 'all-7-chakras-functions-blockages-healing',
   title: 'All 7 Chakras Explained: Functions, Blockages & Healing Practices',
-  seoTitle: 'All 7 Chakras: Functions, Signs of Blockage & How to Heal Each One',
+  seoTitle: 'All 7 Chakras: Functions, Blockages & Balancing Each One',
   excerpt:
     'Walk through all 7 chakras with their function, common signs of blockage, and a traditional healing practice for each — Root through Crown.',
   category: 'energy',
   tags: ['all chakras', 'chakra healing', 'chakra blockage', 'chakra balancing', 'energy healing', 'chakras'],
   authorId: 'parikshiva',
   publishedAt: '2026-07-28',
-  heroImage: '/og/blog/all-7-chakras-functions-blockages-healing.png',
   keyTakeaways: [
     'Each of the 7 chakras governs a distinct life function, from safety and belonging (Root) to unity and wisdom (Crown).',
     'A "blocked" chakra shows up as a recurring pattern — over- or under-expression of its theme — not a single event or diagnosis.',

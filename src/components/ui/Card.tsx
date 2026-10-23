@@ -1,10 +1,7 @@
 import { motion, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion';
 import { type ReactNode, type MouseEvent } from 'react';
 import { cn } from '@/lib/cn';
-import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
-
-const supportsFineHover = () =>
-  typeof window !== 'undefined' && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+import { useFineHover, usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
 const BORDER_CHASE =
   'conic-gradient(from 0deg, transparent 0%, #FFD700 12%, transparent 28%, #39B7F0 50%, transparent 68%, #E6B84A 88%, transparent 100%)';
@@ -22,6 +19,7 @@ export function Card({
   children, className, hover = false, accent,
 }: { children: ReactNode; className?: string; hover?: boolean; accent?: Accent }) {
   const reduced = usePrefersReducedMotion();
+  const fineHover = useFineHover();
   const mx = useMotionValue(50);
   const my = useMotionValue(50);
   const rx = useMotionValue(0);
@@ -30,7 +28,7 @@ export function Card({
   const sry = useSpring(ry, { stiffness: 220, damping: 20 });
   const spotlight = useMotionTemplate`radial-gradient(280px circle at ${mx}% ${my}%, rgba(255,215,0,0.16), transparent 70%)`;
 
-  const interactive = hover && !reduced && supportsFineHover();
+  const interactive = hover && !reduced && fineHover;
 
   function handleMove(e: MouseEvent<HTMLDivElement>) {
     if (!interactive) return;

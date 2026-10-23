@@ -24,6 +24,7 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 import { ScrollProgress } from '@/components/ui/ScrollProgress';
 import { SITE_URL } from '@/config/site';
 import type { BlogPost } from '@/types/blog.types';
+import { enter } from '@/lib/hydration';
 
 export default function BlogPostPage() {
   const { slug } = useParams();
@@ -39,7 +40,6 @@ export default function BlogPostPage() {
     path: `/blog/${slug}`,
     title: post ? (post.seoTitle ?? `${post.title} · VediCosmic`) : 'Blog · VediCosmic',
     description: post?.excerpt ?? '',
-    image: post?.heroImage,
     type: 'article',
     ready: !loading,
     jsonLd: post ? [
@@ -87,7 +87,7 @@ function BlogPostBody({ post }: { post: BlogPost }) {
   const shareUrl = `${SITE_URL}/blog/${post.slug}`;
 
   return (
-    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+    <motion.div initial={enter({ opacity: 0, y: 16 })} animate={{ opacity: 1, y: 0 }}>
       <BlogHero category={post.category} heroImage={post.heroImage} title={post.title} />
       <div className="mb-4 flex flex-wrap items-center gap-3">
         {category && <Badge tone="gold">{category.label}</Badge>}

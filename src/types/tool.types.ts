@@ -13,6 +13,8 @@ export interface ToolMeta {
   name: string;
   subtitle: string;
   description: string;
+  /** Head-only description (70–160 characters); the longer `description` shows on the Tools page. */
+  metaDescription?: string;
   /** Richer, keyword-forward title used only for <title>/search snippets — falls back to `${name} · VediCosmic` if unset. */
   seoTitle?: string;
   category: ToolCategory;

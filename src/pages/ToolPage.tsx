@@ -19,10 +19,12 @@ import { ShareResultProvider, useShareText } from '@/contexts/ShareContext';
 import { useSound } from '@/contexts/SoundContext';
 import { useChakraPlayer } from '@/hooks/useChakraPlayer';
 import { useSEO } from '@/hooks/useSEO';
+import { SITE_URL } from '@/config/site';
 import { breadcrumbList, faqPageSchema, softwareApplicationSchema, getToolExtraJsonLd } from '@/lib/schema';
 import type { ToolMeta } from '@/types/tool.types';
 import type { FAQItem } from '@/types/content.types';
 import type { BlogPost } from '@/types/blog.types';
+import { enter, useHydrated } from '@/lib/hydration';
 
 // These four tools each build their own independent AudioContext graph, completely outside
 // ChakraPlayerEngine/Ambient. chakra-frequency-player is also self-managed but is excluded
@@ -59,7 +61,7 @@ export default function ToolPage() {
     key: `tool:${slug}`,
     path: `/tools/${slug}`,
     title: tool ? (tool.seoTitle ?? `${tool.name} · VediCosmic`) : 'Tool · VediCosmic',
-    description: tool?.description ?? '',
+    description: tool ? (tool.metaDescription ?? tool.description) : '',
     ready: !postsLoading,
     noindex: tool ? !tool.indexable : false,
     jsonLd: tool ? [
@@ -100,14 +102,15 @@ function ToolBody({
   tool, faqs, relatedPosts, relatedTools,
 }: { tool: ToolMeta; faqs: FAQItem[]; relatedPosts: BlogPost[]; relatedTools: ToolMeta[] }) {
   const Tool = TOOL_COMPONENTS[tool.slug];
+  const hydrated = useHydrated();
   const shareText = useShareText();
-  const url = window.location.href;
+  const url = `${SITE_URL}/tools/${tool.slug}`;
   const title = `${tool.name} · VediCosmic`;
   const comingSoon = tool.status === 'coming-soon';
 
   return (
     <>
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+      <motion.div initial={enter({ opacity: 0, y: 16 })} animate={{ opacity: 1, y: 0 }}
         className="mb-10 flex flex-wrap items-start justify-between gap-4">
         <div className="max-w-2xl">
           <div className="mb-3 flex items-center gap-3">
@@ -132,7 +135,13 @@ function ToolBody({
         // The h2 keeps heading levels in order: the page h1 above, the tools' own h3 sections below.
         <section aria-labelledby="tool-heading">
           <h2 id="tool-heading" className="sr-only">{tool.name}</h2>
-          <Tool />
+          {hydrated ? <Tool /> : (
+            // Pre-rendered pages carry the tool's surroundings; the tool itself starts in the browser.
+            <div className="grid min-h-[32rem] place-items-center rounded-2xl border border-white/10 p-8 text-center text-sm text-white/60">
+              <p>Loading the {tool.name}…</p>
+              <noscript><p>This tool runs in your browser and needs JavaScript switched on.</p></noscript>
+            </div>
+          )}
           <ResultNote category={tool.category} />
         </section>
       )}

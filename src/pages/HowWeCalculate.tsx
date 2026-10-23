@@ -201,6 +201,7 @@ export default function HowWeCalculate() {
     <LegalLayout
       eyebrow="Method"
       title="How we calculate"
+      seoTitle="How We Calculate Charts and Panchang · VediCosmic"
       updated="23 October 2026"
       intro="The engine, the conventions and the checks behind every chart, panchang and timing on VediCosmic — and the limits you should know about."
       sections={sections}

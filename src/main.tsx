@@ -1,30 +1,31 @@
 import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { initAnalytics } from '@/lib/analytics';
 import { initMonitoring } from '@/lib/monitoring';
+import { markPrerendered } from '@/lib/hydration';
 import '@/styles/globals.css';
 
-createRoot(document.getElementById('root')!).render(
+const container = document.getElementById('root')!;
+const app = (
   <StrictMode>
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </StrictMode>,
+  </StrictMode>
 );
 
-// Signal the prerender script that React has mounted and painted.
-// Falls back to setTimeout for environments without requestIdleCallback.
-const signal = () => { (window as unknown as { __PRERENDER_READY__?: boolean }).__PRERENDER_READY__ = true; };
-if (typeof requestIdleCallback !== 'undefined') {
-  requestIdleCallback(signal, { timeout: 2000 });
+// Pre-rendered pages (scripts/ssg.mjs) arrive with their HTML in place: React takes it over rather
+// than drawing the page again. Client-only pages (the admin, database posts) start empty.
+if (container.hasChildNodes()) {
+  markPrerendered();
+  hydrateRoot(container, app);
 } else {
-  setTimeout(signal, 200);
+  createRoot(container).render(app);
 }
 
 // Analytics and error reporting load only after the page has settled (and only if configured).
 const startIntegrations = () => { initAnalytics(); initMonitoring(); };
 if (typeof requestIdleCallback !== 'undefined') requestIdleCallback(startIntegrations, { timeout: 4000 });
 else setTimeout(startIntegrations, 2000);
-

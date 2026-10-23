@@ -4,7 +4,7 @@ export default {
   id: 'how-to-calculate-biorhythm-cycles',
   slug: 'how-to-calculate-biorhythm-cycles',
   title: 'How to Calculate Your Biorhythm Cycles: A Step-by-Step Guide',
-  seoTitle: 'How to Calculate Your Biorhythm: Physical, Emotional & Intellectual Cycles',
+  seoTitle: 'How to Calculate Your Biorhythm Cycles',
   excerpt:
     "A step-by-step guide to calculating your physical, emotional and intellectual biorhythm cycles by hand, from your date of birth.",
   category: 'cosmology',

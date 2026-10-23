@@ -2,11 +2,12 @@ import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
+import { enter } from '@/lib/hydration';
 
 /** Shown in place of a page/tool that's admin-gated behind a "Coming Soon" flag. */
 export function ComingSoon({ title, blurb }: { title: string; blurb: string }) {
   return (
-    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+    <motion.div initial={enter({ opacity: 0, y: 16 })} animate={{ opacity: 1, y: 0 }}>
       <Card className="mx-auto max-w-xl p-10 text-center sm:p-14">
         <motion.span
           className="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-full bg-gold-bright/10 text-gold-soft"

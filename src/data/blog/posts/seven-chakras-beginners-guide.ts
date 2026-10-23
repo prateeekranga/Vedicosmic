@@ -4,14 +4,13 @@ export default {
   id: 'seven-chakras-beginners-guide',
   slug: 'seven-chakras-beginners-guide',
   title: "The 7 Chakras: A Beginner's Guide to Your Body's Energy Centers",
-  seoTitle: "The 7 Chakras Explained — A Beginner's Guide to the Subtle Body's Energy Centers",
+  seoTitle: 'The 7 Chakras Explained: A Beginner’s Guide',
   excerpt:
     'A calm, practical guide to the 7 chakras — their traditional location, element and core meaning, from the grounding Root to the expansive Crown.',
   category: 'energy',
   tags: ['chakras', 'energy healing', 'root chakra', 'crown chakra', 'subtle body', 'chakra balancing'],
   authorId: 'parikshiva',
   publishedAt: '2026-07-23',
-  heroImage: '/og/blog/seven-chakras-beginners-guide.png',
   keyTakeaways: [
     'The 7 chakras are a symbolic map of the subtle body, from the grounding Root (Muladhara) to the expansive Crown (Sahasrara).',
     'A chakra is "balanced" when its theme moves through life with relative ease, and "blocked" when that theme feels stuck — not a diagnosis, but a lens for reflection.',

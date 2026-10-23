@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect, useRef } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Navbar } from './Navbar';
@@ -8,6 +8,7 @@ import { Starfield } from '@/components/effects/Starfield';
 import { CosmicBackground } from '@/components/effects/CosmicBackground';
 import { BackToTop } from './BackToTop';
 import { ChakraMiniPlayer } from './ChakraMiniPlayer';
+import { enter, markNavigated, useHydrated } from '@/lib/hydration';
 
 // Lazy-load cosmetic-only components — they add no LCP value
 const CosmicCursor = lazy(() => import('@/components/motion/CosmicCursor').then(m => ({ default: m.CosmicCursor })));
@@ -17,6 +18,11 @@ const isDesktop = typeof window !== 'undefined' && window.matchMedia('(pointer: 
 
 export function Layout() {
   const { pathname } = useLocation();
+  const hydrated = useHydrated();
+  const firstPath = useRef(pathname);
+  // From the first in-app navigation on, new pages animate in. Set during render (it only ever
+  // switches off) so the incoming page already sees it.
+  if (pathname !== firstPath.current) markNavigated();
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior }); }, [pathname]);
 
   // The admin dashboard is its own self-contained "app" (WordPress-style admin bar + sidebar,
@@ -30,7 +36,7 @@ export function Layout() {
       {!isAdmin && (
         <>
           {/* Heavy cosmetic effects — lazy, desktop-only */}
-          {isDesktop && (
+          {hydrated && isDesktop && (
             <Suspense fallback={null}>
               <CosmicCursor />
             </Suspense>
@@ -47,7 +53,7 @@ export function Layout() {
         <AnimatePresence mode="wait">
           <motion.div
             key={pathname}
-            initial={{ opacity: 0, y: 12 }}
+            initial={enter({ opacity: 0, y: 12 })}
             animate={{ opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } }}
             exit={{ opacity: 0, y: -8, transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] } }}
           >

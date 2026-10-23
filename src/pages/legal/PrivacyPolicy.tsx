@@ -40,6 +40,7 @@ export default function PrivacyPolicy() {
     <LegalLayout
       eyebrow="Privacy"
       title="Privacy Policy"
+      seoTitle="Privacy Policy: What Stays on Your Device · VediCosmic"
       updated="23 October 2026"
       intro="What VediCosmic collects, what stays on your device, and which outside services your browser talks to — in plain language."
       sections={[

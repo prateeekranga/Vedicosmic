@@ -4,7 +4,7 @@ export default {
   id: 'chakra-meditation-guided-script-seven-centers',
   slug: 'chakra-meditation-guided-script-seven-centers',
   title: 'Chakra Meditation for Beginners: A Guided Script for All 7 Centers',
-  seoTitle: 'Chakra Meditation Script: A Guided Practice for All 7 Chakras',
+  seoTitle: 'Chakra Meditation Script: Guided Practice for 7 Chakras',
   excerpt:
     'A full, read-along chakra meditation script that guides you through all 7 energy centers, root to crown, in about 15 minutes.',
   category: 'energy',

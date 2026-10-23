@@ -15,8 +15,8 @@ export function OrbitalRingsEmblem({ className = '' }: { className?: string }) {
       <circle cx={cx} cy={cy} r={20} fill="rgba(255,215,0,0.15)" />
       {rings.map((ring, i) => {
         const a = (ring.angle * Math.PI) / 180;
-        const px = cx + Math.cos(a) * ring.r;
-        const py = cy + Math.sin(a) * ring.r;
+        const px = +(cx + Math.cos(a) * ring.r).toFixed(3); // rounded: identical in Node and the browser
+        const py = +(cy + Math.sin(a) * ring.r).toFixed(3);
         return (
           <g key={i}>
             <circle cx={cx} cy={cy} r={ring.r} stroke={ring.color} strokeOpacity={0.25} strokeWidth={0.7} fill="none" />

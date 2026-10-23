@@ -4,14 +4,13 @@ export default {
   id: 'what-is-a-yantra-sacred-geometry',
   slug: 'what-is-a-yantra-sacred-geometry',
   title: 'What Is a Yantra? Sacred Geometry and the Math Behind the Sri Yantra',
-  seoTitle: 'What Is a Yantra? Sri Yantra Meaning, Sacred Geometry & the Math Explained',
+  seoTitle: 'What Is a Yantra? Sri Yantra Meaning & Sacred Geometry',
   excerpt:
     'What a yantra actually is, how the Sri Yantra\'s nine triangles are built, and the geometry — and golden ratio claims — behind sacred diagrams.',
   category: 'energy',
   tags: ['yantra', 'sri yantra', 'sacred geometry', 'meditation', 'tantra', 'symbolism'],
   authorId: 'parikshiva',
   publishedAt: '2026-07-26',
-  heroImage: '/og/blog/what-is-a-yantra-sacred-geometry.png',
   keyTakeaways: [
     'A yantra is a geometric diagram used as a focus for meditation and worship in Tantric and Vedic traditions — related to, but distinct from, a mandala.',
     'The Sri Yantra, the most famous example, is built from nine interlocking triangles — four upward "Shiva" triangles and five downward "Shakti" triangles — around a central point, the bindu.',

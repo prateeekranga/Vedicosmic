@@ -11,7 +11,6 @@ export default {
   tags: ['what are the 7 chakras', '7 chakras', 'chakra definitions', 'chakras'],
   authorId: 'parikshiva',
   publishedAt: '2026-07-28',
-  heroImage: '/og/blog/what-are-the-7-chakras-simple-definitions.png',
   keyTakeaways: [
     'The 7 chakras are traditional energy centers, each representing a specific life theme, from grounding to unity.',
     'In one line each: Root (safety), Sacral (creativity), Solar Plexus (confidence), Heart (love), Throat (expression), Third Eye (intuition), Crown (unity).',

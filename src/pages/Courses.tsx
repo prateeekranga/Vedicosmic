@@ -7,7 +7,7 @@ import { useSEO } from '@/hooks/useSEO';
  *  It is noindex and out of the sitemap until a real course is published. */
 export default function Courses() {
   useSEO({
-    key: '/courses', path: '/courses', title: 'Courses · VediCosmic',
+    key: '/courses', path: '/courses', title: 'Courses on Vedic Practice · VediCosmic',
     description: 'VediCosmic courses are being prepared. Write to us to tell us what you would like to learn.',
     noindex: true,
   });

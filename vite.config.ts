@@ -2,19 +2,21 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'node:path';
 
-export default defineConfig({
+export default defineConfig(({ isSsrBuild }) => ({
   plugins: [react()],
   resolve: {
     alias: { '@': path.resolve(__dirname, './src') },
   },
   build: {
     target: 'es2020',
+    // The server bundle (scripts/ssg.mjs) only renders pages; it needs no public files or hashed names.
+    copyPublicDir: !isSsrBuild,
     sourcemap: false,
     cssCodeSplit: true,
     chunkSizeWarningLimit: 600,
     reportCompressedSize: false, // faster builds
     rollupOptions: {
-      output: {
+      output: isSsrBuild ? { entryFileNames: '[name].js', chunkFileNames: 'chunks/[name]-[hash].js' } : {
         manualChunks(id) {
           // Core React runtime — always needed, cache forever. `scheduler` is react-dom's
           // internal dependency; without it here it falls into `vendor`, which creates a
@@ -40,4 +42,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));

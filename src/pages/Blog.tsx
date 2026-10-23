@@ -15,6 +15,7 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import type { BlogPost } from '@/types/blog.types';
+import { enter } from '@/lib/hydration';
 
 /** Editorial spotlight for the latest article — shown only on the unfiltered blog
  *  hub, so search/category/author views stay a plain, predictable grid. */
@@ -95,7 +96,7 @@ export default function Blog() {
       : {
           key: '/blog',
           path: '/blog',
-          title: 'Blog · VediCosmic — Vedic Astrology, Numerology & Spiritual Living',
+          title: 'Blog: Vedic Astrology, Numerology & Practice · VediCosmic',
           description: 'In-depth guides on numerology, Vedic astrology, energy healing, cosmology, rituals, and meditation — free to read, grounded in tradition.',
           ready: !postsLoading,
           jsonLd: breadcrumbList([{ name: 'Home', path: '/' }, { name: 'Blog', path: '/blog' }]),
@@ -190,7 +191,7 @@ export default function Blog() {
               <span className={`text-xs ${active ? 'text-gold-soft/70' : 'text-white/35'}`}>{count}</span>
             </button>
           );
-        })}
+       })}
       </div>
 
       {spotlight && (
@@ -204,7 +205,7 @@ export default function Blog() {
           <AnimatePresence mode="popLayout">
             {gridPosts.map((post, i) => (
               <motion.div key={post.id} layout
-                initial={{ opacity: 0, scale: 0.95, y: 18 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }}
+                initial={enter({ opacity: 0, scale: 0.95, y: 18 })} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: Math.min(i * 0.05, 0.4) }}>
                 <BlogPostCard post={post} />
               </motion.div>

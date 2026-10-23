@@ -4,14 +4,13 @@ export default {
   id: 'daily-card-contemplation-ritual',
   slug: 'daily-card-contemplation-ritual',
   title: 'Daily Card Contemplation: A Simple Reflection Ritual for Beginners',
-  seoTitle: 'Daily Card Contemplation Ritual — A Beginner’s Reflective Journaling Practice',
+  seoTitle: 'Daily Card Contemplation: A Reflective Journaling Ritual',
   excerpt:
     'A daily contemplation card isn’t fortune-telling — it’s a simple reflective mirror. Learn a five-minute ritual for noticing what’s really on your mind.',
   category: 'spiritual-living',
   tags: ['daily reflection', 'contemplation card', 'journaling practice', 'mindfulness ritual', 'self-reflection', 'spiritual practice'],
   authorId: 'parikshiva',
   publishedAt: '2026-07-26',
-  heroImage: '/og/blog/daily-card-contemplation-ritual.png',
   keyTakeaways: [
     'A daily contemplation card is a reflective journaling prompt, not a fortune-telling device — it points a small mirror at your inner state rather than predicting your future.',
     'A randomly-drawn prompt works the same way a chakra assessment or a Lo Shu grid missing number does: as a lens for noticing what’s already present in your mind, not a forecast of what’s to come.',

@@ -4,14 +4,13 @@ export default {
   id: 'ekadashi-fasting-guide',
   slug: 'ekadashi-fasting-guide',
   title: 'Ekadashi Fasting Guide: Dates, Rules & the Spiritual Meaning of Vrat',
-  seoTitle: 'Ekadashi Fasting Guide — Dates, Rules, Vrat Meaning & Health Precautions',
+  seoTitle: 'Ekadashi Fasting Guide: Dates, Rules & Precautions',
   excerpt:
     'What Ekadashi is, why it falls twice a month, and how the traditional fasting vrat works — including who should check with a doctor first.',
   category: 'rituals-festivals',
   tags: ['ekadashi', 'vrat fasting', 'hindu fasting', 'vedic rituals', 'lunar calendar', 'lord vishnu'],
   authorId: 'parikshiva',
   publishedAt: '2026-07-23',
-  heroImage: '/og/blog/ekadashi-fasting-guide.png',
   keyTakeaways: [
     'Ekadashi falls twice a month, on the eleventh day of each lunar fortnight — roughly 24 times a year.',
     'The vrat is built around detachment from excess, freeing energy for prayer and reflection rather than punishing the body.',

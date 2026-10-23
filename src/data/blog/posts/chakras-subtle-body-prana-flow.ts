@@ -11,7 +11,6 @@ export default {
   tags: ['the chakras', 'subtle body', 'prana', 'nadis', 'kundalini', 'chakras'],
   authorId: 'parikshiva',
   publishedAt: '2026-07-28',
-  heroImage: '/og/blog/chakras-subtle-body-prana-flow.png',
   keyTakeaways: [
     'In yogic anatomy, the chakras are not isolated points — they sit along channels of subtle energy called nadis.',
     'Prana is the traditional term for subtle life-force, said to move through the nadis and gather at each chakra.',

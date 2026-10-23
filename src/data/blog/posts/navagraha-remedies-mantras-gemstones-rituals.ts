@@ -4,7 +4,7 @@ export default {
   id: 'navagraha-remedies-mantras-gemstones-rituals',
   slug: 'navagraha-remedies-mantras-gemstones-rituals',
   title: 'Navagraha Remedies: Mantras, Gemstones & Rituals for the 9 Planets',
-  seoTitle: 'Navagraha Remedies: Mantras, Gemstones and Puja Rituals for Each Planet',
+  seoTitle: 'Navagraha Remedies: Mantras, Gems & Puja for Each Planet',
   excerpt:
     'Traditional Navagraha remedies for each of the 9 planets — mantras, gemstones, colors and simple rituals used to pacify a difficult graha.',
   category: 'cosmology',

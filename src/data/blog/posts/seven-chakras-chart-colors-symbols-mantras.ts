@@ -11,7 +11,6 @@ export default {
   tags: ['7 chakras', 'chakra colors', 'chakra symbols', 'bija mantra', 'chakra chart', 'chakras'],
   authorId: 'parikshiva',
   publishedAt: '2026-07-28',
-  heroImage: '/og/blog/seven-chakras-chart-colors-symbols-mantras.png',
   keyTakeaways: [
     'Each of the 7 chakras is traditionally paired with a color, a Sanskrit seed mantra (bija), a lotus symbol and a petal count.',
     "Colors run the visible spectrum from red at the Root to violet (or white/gold) at the Crown, following the chakras' base-to-crown order.",

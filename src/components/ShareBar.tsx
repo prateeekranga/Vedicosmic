@@ -4,6 +4,7 @@ import { WhatsAppIcon, TelegramIcon, XIcon, PinterestIcon } from '@/components/i
 import { shareLink, type SharePlatform } from '@/lib/share';
 import { useToast } from '@/contexts/ToastContext';
 import { trackEvent } from '@/lib/analytics';
+import { useHydrated } from '@/lib/hydration';
 import { cn } from '@/lib/cn';
 
 const ICONS: Record<SharePlatform, React.ComponentType<{ className?: string }>> = {
@@ -32,6 +33,7 @@ const canNativeShare = typeof navigator !== 'undefined' && !!navigator.share;
 export function ShareBar({ url, title, text, className }: ShareBarProps) {
   const { notify } = useToast();
   const [copied, setCopied] = useState(false);
+  const hydrated = useHydrated();
 
   const nativeShare = async () => {
     trackEvent('share_clicked', { channel: 'native' });
@@ -48,10 +50,12 @@ export function ShareBar({ url, title, text, className }: ShareBarProps) {
     } catch { /* clipboard unavailable */ }
   };
 
-  if (canNativeShare) {
+  // The pre-rendered page shows the compact Share button, which phones keep. Browsers without a share
+  // sheet switch to the platform row once running; both are one 36px line, so nothing below moves.
+  if (!hydrated || canNativeShare) {
     return (
       <button type="button" onClick={nativeShare} data-sound="tap"
-        className={cn('inline-flex items-center gap-2 rounded-full border border-white/12 px-4 py-2 text-sm text-white/70 transition-colors hover:border-white/25 hover:text-white', className)}>
+        className={cn('inline-flex h-9 items-center gap-2 rounded-full border border-white/12 px-4 text-sm text-white/70 transition-colors hover:border-white/25 hover:text-white', className)}>
         <Share2 className="h-4 w-4" /> Share
       </button>
     );

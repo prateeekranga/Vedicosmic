@@ -7,12 +7,13 @@ import { RevealStagger, RevealItem } from '@/components/motion/Reveal';
 import { ABOUT_CONTENT } from '@/data/aboutContent';
 import { getPerson } from '@/content/people';
 import { useSEO } from '@/hooks/useSEO';
+import { enter } from '@/lib/hydration';
 
 export default function About() {
   const content = ABOUT_CONTENT;
   const founder = getPerson('parikshiva');
   useSEO({
-    key: '/about', path: '/about', title: 'About · VediCosmic',
+    key: '/about', path: '/about', title: 'About VediCosmic: Free Vedic Tools, No Ads',
     description: 'Who runs VediCosmic, what it is for, and how its free Vedic astrology, panchang and practice tools work.',
   });
   return (
@@ -47,7 +48,7 @@ export default function About() {
         <SectionHeading eyebrow="What you can check" title="Three promises" />
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {content.promises.map((v, i) => (
-            <motion.div key={v.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+            <motion.div key={v.id} initial={enter({ opacity: 0, y: 20 })} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
               <Card className="h-full p-7">
                 <div className="mb-4 text-4xl text-gold-soft">{v.glyph}</div>

@@ -5,7 +5,8 @@ export function NakshatraWheelEmblem({ className = '' }: { className?: string })
   const outerR = 92;
   const points = Array.from({ length: 27 }, (_, i) => {
     const a = (i * 360) / 27 * (Math.PI / 180);
-    return { x: cx + Math.cos(a) * outerR, y: cy + Math.sin(a) * outerR, a };
+    // Rounded so the static build (Node) and the browser produce identical attributes.
+    return { x: +(cx + Math.cos(a) * outerR).toFixed(3), y: +(cy + Math.sin(a) * outerR).toFixed(3), a };
   });
 
   return (

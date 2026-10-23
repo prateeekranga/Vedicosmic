@@ -22,7 +22,6 @@ const TermsOfService = lazy(() => import('@/pages/legal/TermsOfService'));
 const RefundPolicy = lazy(() => import('@/pages/legal/RefundPolicy'));
 const Disclaimer = lazy(() => import('@/pages/legal/Disclaimer'));
 const Legal = lazy(() => import('@/pages/legal/Legal'));
-const BlogOgCard = lazy(() => import('@/pages/og/BlogOgCard'));
 
 function PageLoader() {
   return (
@@ -63,9 +62,6 @@ export default function App() {
               <Route path="/vc-portal-x7" element={<Admin />} />
               <Route path="*" element={<NotFound />} />
             </Route>
-            {/* Outside Layout — no Navbar/Footer/backgrounds. Screenshotted at build time by
-                scripts/generate-og-images.mjs; never linked, and robots.txt disallows /og/. */}
-            <Route path="/og/blog/:slug" element={<BlogOgCard />} />
           </Routes>
         </Suspense>
         </ChakraPlayerProvider>

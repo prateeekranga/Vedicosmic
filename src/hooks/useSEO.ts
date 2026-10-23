@@ -1,25 +1,9 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { getSEOOverrides } from '@/lib/siteContent';
+import { buildHead, HeadContext, type SEOInput } from '@/lib/seoHead';
 import { useOverridesVersion } from './useOverridesVersion';
-import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from '@/config/site';
 
-export interface SEOInput {
-  /** Override lookup key — only the 9 static routes have a matching admin override. */
-  key: string;
-  /** Canonical path, e.g. `/tools/${slug}`. */
-  path: string;
-  /** Full literal title string — brand suffix is the caller's responsibility. */
-  title: string;
-  description: string;
-  image?: string;
-  jsonLd?: object | object[];
-  noindex?: boolean;
-  type?: 'website' | 'article';
-  /** When false, defers setting window.__PRERENDER_READY__ until it flips true — for pages
-   *  still waiting on an async data fetch (e.g. a DB-backed blog post). Defaults to true, so
-   *  every other call site's timing is unaffected. */
-  ready?: boolean;
-}
+export type { SEOInput } from '@/lib/seoHead';
 
 function upsertMeta(attr: 'name' | 'property', key: string, content: string) {
   let el = document.head.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`);
@@ -33,37 +17,26 @@ function upsertCanonical(href: string) {
   el.setAttribute('href', href);
 }
 
-/** Sets per-route title/meta/canonical/JSON-LD, reactive to admin SEO overrides. */
+/**
+ * Sets per-route title/meta/canonical/JSON-LD, reactive to admin SEO overrides. During the static
+ * build there is no document: the input is handed to the build instead, which writes the same tags
+ * into the page's HTML (see buildHead).
+ */
 export function useSEO(input: SEOInput): void {
+  const collector = useContext(HeadContext);
+  if (collector) collector.seo = input;
+
   const version = useOverridesVersion();
   const jsonLdKey = JSON.stringify(input.jsonLd ?? null);
 
   useEffect(() => {
-    const ov = getSEOOverrides()[input.key];
-    const title = ov?.title || input.title;
-    const description = ov?.description || input.description;
-    const imagePath = ov?.ogImage || input.image || DEFAULT_OG_IMAGE;
-    const image = imagePath.startsWith('http') ? imagePath : SITE_URL + imagePath;
-    const url = SITE_URL + input.path;
-
-    document.title = title;
-    upsertMeta('name', 'description', description);
-    upsertMeta('property', 'og:title', title);
-    upsertMeta('property', 'og:description', description);
-    upsertMeta('property', 'og:image', image);
-    upsertMeta('property', 'og:url', url);
-    upsertMeta('property', 'og:type', input.type ?? 'website');
-    upsertMeta('property', 'og:site_name', SITE_NAME);
-    upsertMeta('property', 'og:locale', 'en_IN');
-    upsertMeta('name', 'twitter:title', title);
-    upsertMeta('name', 'twitter:description', description);
-    upsertMeta('name', 'twitter:image', image);
-    upsertMeta('name', 'robots', input.noindex ? 'noindex, follow' : 'index, follow');
-    upsertCanonical(url);
+    const head = buildHead(input, getSEOOverrides()[input.key]);
+    document.title = head.title;
+    for (const [attr, key, content] of head.meta) upsertMeta(attr, key, content);
+    upsertCanonical(head.canonical);
 
     document.querySelectorAll('script[data-seo-jsonld]').forEach((n) => n.remove());
-    const items = input.jsonLd ? (Array.isArray(input.jsonLd) ? input.jsonLd : [input.jsonLd]) : [];
-    const scripts = items.map((obj) => {
+    const scripts = head.jsonLd.map((obj) => {
       const s = document.createElement('script');
       s.type = 'application/ld+json';
       s.setAttribute('data-seo-jsonld', '1');
@@ -71,11 +44,6 @@ export function useSEO(input: SEOInput): void {
       document.head.appendChild(s);
       return s;
     });
-
-    if (input.ready ?? true) {
-      (window as unknown as { __PRERENDER_READY__?: boolean }).__PRERENDER_READY__ = true;
-    }
-
     return () => { scripts.forEach((s) => s.remove()); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [version, input.key, input.path, input.title, input.description, input.image, input.noindex, input.type, input.ready, jsonLdKey]);

@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
 import { RevealStagger, RevealItem } from '@/components/motion/Reveal';
 import { useSEO } from '@/hooks/useSEO';
+import { enter } from '@/lib/hydration';
 
 export interface LegalSection {
   heading: string;
@@ -13,15 +14,20 @@ export interface LegalSection {
 
 /** Shared chrome for the legal/policy pages — mirrors About.tsx's hero + card pattern. */
 export function LegalLayout({
-  eyebrow, title, updated, intro, sections,
-}: { eyebrow: string; title: string; updated: string; intro: string; sections: LegalSection[] }) {
+  eyebrow, title, seoTitle, updated, intro, sections,
+}: {
+  eyebrow: string; title: string;
+  /** Browser-tab and search title, when "<title> · VediCosmic" would be too short. */
+  seoTitle?: string;
+  updated: string; intro: string; sections: LegalSection[];
+}) {
   const { pathname } = useLocation();
-  useSEO({ key: pathname, path: pathname, title: `${title} · VediCosmic`, description: intro });
+  useSEO({ key: pathname, path: pathname, title: seoTitle ?? `${title} · VediCosmic`, description: intro });
   return (
     <div className="pb-24">
       <section className="relative overflow-hidden py-16 sm:py-24">
         <div className="container-vc relative text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+          <motion.div initial={enter({ opacity: 0, y: 20 })} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <Badge tone="cyan">{eyebrow}</Badge>
             <h1 className="mt-5 font-display text-h1 text-white">{title}</h1>
             <p className="mx-auto mt-4 max-w-2xl text-sm text-white/45">Last updated {updated}</p>

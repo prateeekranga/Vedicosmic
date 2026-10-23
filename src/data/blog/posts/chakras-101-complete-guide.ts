@@ -11,7 +11,6 @@ export default {
   tags: ['chakras', 'chakra basics', 'energy centers', 'subtle body', 'chakra system', 'energy healing'],
   authorId: 'parikshiva',
   publishedAt: '2026-07-28',
-  heroImage: '/og/blog/chakras-101-complete-guide.png',
   keyTakeaways: [
     'Chakras are the seven traditional energy centers of the subtle body, running from the base of the spine to the crown of the head.',
     'Each one pairs a Sanskrit name, a location, a classical element and a life theme — from grounding at the Root to unity at the Crown.',

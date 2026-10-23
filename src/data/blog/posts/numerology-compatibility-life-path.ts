@@ -4,7 +4,7 @@ export default {
   id: 'numerology-compatibility-life-path',
   slug: 'numerology-compatibility-life-path',
   title: 'Numerology Compatibility: How Life Path Numbers Affect Relationships',
-  seoTitle: 'Numerology Compatibility Guide: Life Path Number Pairings & Relationships',
+  seoTitle: 'Numerology Compatibility: Life Path Number Pairings',
   excerpt:
     'How numerologists compare two Life Path numbers to describe relationship dynamics — and why the reading stays one reflective lens, never a verdict.',
   category: 'numerology',
@@ -18,7 +18,6 @@ export default {
   ],
   authorId: 'parikshiva',
   publishedAt: '2026-07-23',
-  heroImage: '/og/blog/numerology-compatibility-life-path.png',
   keyTakeaways: [
     'Numerology compatibility compares each partner\'s Life Path number to describe relationship dynamics, not to predict fate.',
     'Odd-Life-Path pairs tend toward independence; even-Life-Path pairs tend toward partnership and structure.',

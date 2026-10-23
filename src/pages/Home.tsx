@@ -15,6 +15,7 @@ import { useAllBlogPosts } from '@/hooks/useAllBlogPosts';
 import { useSEO } from '@/hooks/useSEO';
 import { faqPageSchema } from '@/lib/schema';
 import { SITE_DESCRIPTION } from '@/config/site';
+import { enter } from '@/lib/hydration';
 
 const stagger = {
   hidden: {},
@@ -90,7 +91,7 @@ export default function Home() {
       {/* PILLARS */}
       <section className="container-vc py-20 sm:py-28">
         <h2 className="sr-only">What VediCosmic is</h2>
-        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-80px' }}
+        <motion.div variants={stagger} initial={enter('hidden')} whileInView="show" viewport={{ once: true, margin: '-80px' }}
           className="grid gap-6 md:grid-cols-3">
           {PILLARS.map((p) => (
             <motion.div key={p.title} variants={fadeUp}>
@@ -108,7 +109,7 @@ export default function Home() {
       <section className="container-vc py-16 sm:py-24">
         <SectionHeading eyebrow="Interactive Tools" title="Three tools to start with"
           subtitle="Each one computes its result in your browser and says how it was worked out." glow />
-        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}
+        <motion.div variants={stagger} initial={enter('hidden')} whileInView="show" viewport={{ once: true, margin: '-60px' }}
           className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {featuredTools.map((t) => (
             <motion.div key={t.id} variants={fadeUp}>
@@ -138,7 +139,7 @@ export default function Home() {
       {/* HOW IT WORKS */}
       <section className="container-vc py-16 sm:py-24">
         <SectionHeading eyebrow="How it works" title="Three steps, nothing to sign up for" />
-        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}
+        <motion.div variants={stagger} initial={enter('hidden')} whileInView="show" viewport={{ once: true, margin: '-60px' }}
           className="mt-12 grid gap-6 sm:grid-cols-3">
           {STEPS.map((s) => (
             <motion.div key={s.n} variants={fadeUp}>
@@ -156,7 +157,7 @@ export default function Home() {
       <section className="container-vc py-16 sm:py-24">
         <SectionHeading eyebrow="Explore by path" title="Find the practice that suits you"
           subtitle="Numerology, Vedic astrology and practice tools, grouped by what you want to do." glow />
-        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}
+        <motion.div variants={stagger} initial={enter('hidden')} whileInView="show" viewport={{ once: true, margin: '-60px' }}
           className="mt-12 grid gap-6 md:grid-cols-3">
           {PATHS.map((p) => (
             <motion.div key={p.title} variants={fadeUp}>
@@ -182,7 +183,7 @@ export default function Home() {
         <section className="container-vc py-16 sm:py-24">
           <SectionHeading eyebrow="The Blog" title="Recent articles"
             subtitle="Guides to numerology, Vedic astrology, the panchang and daily practice." />
-          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}
+          <motion.div variants={stagger} initial={enter('hidden')} whileInView="show" viewport={{ once: true, margin: '-60px' }}
             className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {featuredPosts.map((p) => (
               <motion.div key={p.id} variants={fadeUp}>
@@ -202,7 +203,7 @@ export default function Home() {
           <SriYantra className="h-full w-full" stroke="#E6B84A" />
         </div>
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={enter({ opacity: 0, y: 30 })}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
@@ -226,7 +227,7 @@ export default function Home() {
 
       {/* CTA */}
       <section className="container-vc py-20 sm:py-28">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        <motion.div initial={enter({ opacity: 0, y: 30 })} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           className="glass relative overflow-hidden rounded-3xl p-10 text-center sm:p-16">
           <div className="pointer-events-none absolute inset-0 -z-10 opacity-20">
             <SriYantra className="absolute -right-20 -top-20 h-80 w-80" stroke="#39B7F0" />

@@ -6,6 +6,7 @@ export default function Disclaimer() {
     <LegalLayout
       eyebrow="Please read"
       title="Disclaimer"
+      seoTitle="Disclaimer: For Reflection, Not Prediction · VediCosmic"
       updated="23 October 2026"
       intro="VediCosmic offers traditional tools for reflection and practice. Here is what they are, and what they are not."
       sections={[

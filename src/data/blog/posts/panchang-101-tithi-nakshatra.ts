@@ -10,7 +10,6 @@ export default {
   tags: ['panchang', 'hindu calendar', 'tithi', 'muhurta', 'vedic calendar', 'nakshatra'],
   authorId: 'parikshiva',
   publishedAt: '2026-07-23',
-  heroImage: '/og/blog/panchang-101-tithi-nakshatra.png',
   keyTakeaways: [
     'The Panchang combines five limbs — Tithi, Vara, Nakshatra, Yoga and Karana — to describe the character of a single day.',
     'A Tithi is defined by a fixed 12-degree Sun-Moon angle, not by clock time, so it can run 19 to 26 hours and occasionally be skipped or repeated.',

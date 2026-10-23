@@ -7,8 +7,9 @@ export default function RefundPolicy() {
     <LegalLayout
       eyebrow="Payments"
       title="Refund Policy"
+      seoTitle="Refund Policy (Nothing Is Sold) · VediCosmic"
       updated="23 October 2026"
-      intro="VediCosmic sells nothing at present, so there is nothing to refund."
+      intro="VediCosmic sells nothing at present: every tool and article is free, so there is nothing to refund."
       sections={[
         {
           heading: 'Nothing is sold today',

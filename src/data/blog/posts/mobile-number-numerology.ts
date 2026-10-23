@@ -4,7 +4,7 @@ export default {
   id: 'mobile-number-numerology',
   slug: 'mobile-number-numerology',
   title: "Mobile Number Numerology: Does Your Phone Number's Vibration Matter?",
-  seoTitle: "Mobile Number Numerology Explained — Does Your Phone Number's Vibration Matter?",
+  seoTitle: 'Mobile Number Numerology: Does Your Number Matter?',
   excerpt:
     'Learn how mobile number numerology reduces your phone number to a root number, what repeating digits mean, and how to read it against your Life Path.',
   category: 'numerology',
@@ -18,7 +18,6 @@ export default {
   ],
   authorId: 'parikshiva',
   publishedAt: '2026-07-26',
-  heroImage: '/og/blog/mobile-number-numerology.png',
   keyTakeaways: [
     "A mobile number's numerological reading comes from reducing every digit in it to a single root number, using the same digit-sum method as a Life Path number.",
     'Repeating digit pairs and patterns within the number are traditionally read as amplifying — or, in some combinations, unsettling — the energy of the digits involved.',

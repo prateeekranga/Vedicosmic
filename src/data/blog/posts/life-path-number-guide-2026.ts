@@ -4,7 +4,7 @@ export default {
   id: 'life-path-number-guide-2026',
   slug: 'life-path-number-guide-2026',
   title: 'Life Path Number Calculator: Full 2026 Guide to Meaning & Master Numbers',
-  seoTitle: 'Life Path Number Calculator & Guide 2026: Meaning, Master Numbers 11, 22, 33',
+  seoTitle: 'Life Path Number Guide 2026: Meaning & Master Numbers',
   excerpt:
     'Learn to calculate your Life Path number by hand from your birth date, what numbers 1-9 mean, and why Master Numbers 11, 22 and 33 stay whole.',
   category: 'numerology',
@@ -17,7 +17,6 @@ export default {
   ],
   authorId: 'parikshiva',
   publishedAt: '2026-07-23',
-  heroImage: '/og/blog/life-path-number-guide-2026.png',
   keyTakeaways: [
     'Your Life Path number comes from reducing your full birth date to a single digit — no birth time or place needed.',
     'Reduce month, day and year separately, then add the three results together and reduce once more.',

@@ -4,7 +4,7 @@ export default {
   id: 'walking-meditation-root-chakra-grounding',
   slug: 'walking-meditation-root-chakra-grounding',
   title: 'Walking Meditation and the Root Chakra: Grounding Practices Beyond Sitting',
-  seoTitle: 'Walking Meditation for the Root Chakra: A Grounding Practice Guide',
+  seoTitle: 'Walking Meditation for the Root Chakra: Grounding Guide',
   excerpt:
     'Sitting still isn\'t the only way to meditate. A guide to walking meditation as a Root chakra grounding practice — technique, benefits and safety.',
   category: 'energy',

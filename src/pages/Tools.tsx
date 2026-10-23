@@ -7,6 +7,7 @@ import { useSEO } from '@/hooks/useSEO';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { enter } from '@/lib/hydration';
 
 export default function Tools() {
   const [cat, setCat] = useState<string>('all');
@@ -77,7 +78,7 @@ export default function Tools() {
               <span className={`text-xs ${cat === c.id ? 'text-gold-soft/70' : 'text-white/35'}`}>{count}</span>
             </button>
           );
-        })}
+       })}
       </div>
 
       <h2 className="sr-only">All tools</h2>
@@ -86,7 +87,7 @@ export default function Tools() {
           <AnimatePresence mode="popLayout">
             {filtered.map((t, i) => (
               <motion.div key={t.id} layout
-                initial={{ opacity: 0, scale: 0.95, y: 18 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }}
+                initial={enter({ opacity: 0, scale: 0.95, y: 18 })} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: Math.min(i * 0.05, 0.4) }}>
                 <Link to={`/tools/${t.slug}`}>
                   <Card hover accent={t.accent} className="group h-full p-7">

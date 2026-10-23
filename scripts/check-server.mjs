@@ -4,12 +4,10 @@
 // retired courses return 410; every redirect in src/content/redirects.ts is a single 301 to a live
 // page; security and cache headers are set; key pages carry exactly one h1 in their raw HTML.
 // Uses a crawler user-agent, because Hostinger's CDN challenges automated browser-like requests.
-import path from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { loadServerBundle } from './lib/load-ssr.mjs';
 
 const BASE = (process.argv[2] ?? 'https://vedicosmic.com').replace(/\/$/, '');
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const { REDIRECTS } = await import(pathToFileURL(path.join(root, 'dist-ssr', 'entry-server.js')).href);
+const { REDIRECTS } = await loadServerBundle();
 const UA = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
 
 const results = [];

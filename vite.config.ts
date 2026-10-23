@@ -7,6 +7,8 @@ export default defineConfig(({ isSsrBuild }) => ({
   resolve: {
     alias: { '@': path.resolve(__dirname, './src') },
   },
+  // Bundled into the server build: Node 18 loads its package entry as CommonJS and loses the named exports.
+  ssr: { noExternal: ['astronomy-engine'] },
   build: {
     target: 'es2020',
     // The server bundle (scripts/ssg.mjs) only renders pages; it needs no public files or hashed names.

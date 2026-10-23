@@ -4,12 +4,13 @@
 // Also writes dist-ssr/pages.json, the page list the sitemap, share-card and verify scripts use.
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
+import { loadServerBundle } from './lib/load-ssr.mjs';
 import { fetchDbPosts } from './lib/fetchDbPosts.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(root, 'dist');
-const { render, routesToRender, headFor } = await import(pathToFileURL(path.join(root, 'dist-ssr', 'entry-server.js')).href);
+const { render, routesToRender, headFor } = await loadServerBundle();
 
 const SEO_BLOCK = /<!--seo-->[\s\S]*?<!--\/seo-->/;
 const ROOT_DIV = '<div id="root"></div>';

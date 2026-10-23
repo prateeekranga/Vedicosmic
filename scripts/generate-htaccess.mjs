@@ -3,12 +3,13 @@
 // Redirects come from src/content/redirects.ts. Run after scripts/ssg.mjs.
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
+import { loadServerBundle } from './lib/load-ssr.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(root, 'dist');
 const staging = process.env.DEPLOY_TARGET === 'staging';
-const { REDIRECTS, GONE_PREFIXES } = await import(pathToFileURL(path.join(root, 'dist-ssr', 'entry-server.js')).href);
+const { REDIRECTS, GONE_PREFIXES } = await loadServerBundle();
 
 const regex = (p) => p.replace(/^\//, '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 

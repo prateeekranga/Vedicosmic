@@ -18,6 +18,7 @@ export default {
   ],
   authorId: 'parikshiva',
   publishedAt: '2026-07-26',
+  updatedAt: '2026-11-14',
   keyTakeaways: [
     "A mobile number's numerological reading comes from reducing every digit in it to a single root number, using the same digit-sum method as a Life Path number.",
     'Repeating digit pairs and patterns within the number are traditionally read as amplifying — or, in some combinations, unsettling — the energy of the digits involved.',
@@ -42,7 +43,7 @@ export default {
       type: 'list',
       style: 'number',
       items: [
-        'Write out the full mobile number, including the country code if you use one consistently, and drop any spaces, dashes or brackets so you have one unbroken string of digits.',
+        'Write out the mobile number without the country code or a leading zero, since everyone in the country shares those, and drop any spaces, dashes or brackets so you have one unbroken string of digits.',
         'Add every digit in that string together to get a first sum.',
         'If the sum is more than one digit, add those digits together again.',
         'Repeat the reduction until a single digit from 1 to 9 remains — this is the root number.',
@@ -119,7 +120,7 @@ export default {
     { type: 'divider' },
     {
       type: 'paragraph',
-      text: "If you're curious what your own mobile number's root number and digit patterns look like — and how they read against your Life Path — the calculator below does the arithmetic instantly and lays out the two-digit combinations for you.",
+      text: "If you're curious what your own mobile number's root number and digit patterns look like — and how they sit with your Mulank and Bhagyank (the day number and the Life Path digit) — the calculator below does the arithmetic instantly and lays out the two-digit combinations for you.",
     },
   ],
   relatedToolSlugs: ['mobile-numerology'],

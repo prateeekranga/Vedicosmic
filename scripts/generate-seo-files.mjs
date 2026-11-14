@@ -17,9 +17,10 @@ async function loadData() {
   const { TOOLS, STATIC_ROUTES } = await vite.ssrLoadModule('/src/content/routes.ts');
   const { BLOG_POSTS } = await vite.ssrLoadModule('/src/data/blog/index.ts');
   const { BLOG_CATEGORIES } = await vite.ssrLoadModule('/src/data/blogCategories.ts');
+  const { TOOL_HUBS } = await vite.ssrLoadModule('/src/content/toolHubs.ts');
   const { SITE_URL, SITE_NAME, SITE_DESCRIPTION } = await vite.ssrLoadModule('/src/config/site.ts');
   await vite.close();
-  return { TOOLS, STATIC_ROUTES, BLOG_POSTS, BLOG_CATEGORIES, SITE_URL, SITE_NAME, SITE_DESCRIPTION };
+  return { TOOLS, STATIC_ROUTES, BLOG_POSTS, BLOG_CATEGORIES, TOOL_HUBS, SITE_URL, SITE_NAME, SITE_DESCRIPTION };
 }
 
 const SITEMAPS = { pages: 'sitemap-pages.xml', tools: 'sitemap-tools.xml', blog: 'sitemap-blog.xml' };
@@ -39,8 +40,13 @@ function sitemapIndex(SITE_URL) {
   return ['<?xml version="1.0" encoding="UTF-8"?>', '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', ...items, '</sitemapindex>', ''].join('\n');
 }
 
-function buildLlmsTxt({ SITE_NAME, SITE_DESCRIPTION, SITE_URL, tools, BLOG_POSTS, pages }) {
-  const toolLines = tools.map((t) => `- [${t.name}](${SITE_URL}/tools/${t.slug}): ${t.description}`).join('\n');
+function buildLlmsTxt({ SITE_NAME, SITE_DESCRIPTION, SITE_URL, tools, TOOL_HUBS, BLOG_POSTS, pages }) {
+  // Tools grouped by category, each group headed by its hub page.
+  const toolLines = TOOL_HUBS.map((hub) => [
+    `### [${hub.h1}](${SITE_URL}${hub.path})`,
+    '',
+    ...tools.filter((t) => t.category === hub.id).map((t) => `- [${t.name}](${SITE_URL}/tools/${t.slug}): ${t.metaDescription ?? t.description}`),
+  ].join('\n')).join('\n\n') + `\n\nMethods and reference checks: ${SITE_URL}/how-we-calculate`;
   const blogLines = BLOG_POSTS.map((p) => `- [${p.title}](${SITE_URL}/blog/${p.slug}): ${p.excerpt}`).join('\n');
   const pageLines = pages.map((r) => `- [${r.seoLabel}](${SITE_URL}${r.path})`).join('\n');
   return `# ${SITE_NAME}\n\n> ${SITE_DESCRIPTION}\n\nVediCosmic is a free Vedic astrology, panchang, numerology and practice website. Every tool runs its calculations in the visitor's browser.\n\n## Tools\n\n${toolLines}\n\n## Blog\n\n${blogLines}\n\n## Pages\n\n${pageLines}\n`;

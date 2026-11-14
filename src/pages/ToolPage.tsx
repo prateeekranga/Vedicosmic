@@ -53,6 +53,17 @@ export function toolCrumbs(tool: ToolMeta): Crumb[] {
   ];
 }
 
+/**
+ * Related tools for a page without curated ones yet: the next four in its category, wrapping
+ * round, so every tool is linked from its neighbours instead of only the first few being linked.
+ */
+function neighbours(tool: ToolMeta): ToolMeta[] {
+  const group = liveTools().filter((t) => t.category === tool.category);
+  const i = group.findIndex((t) => t.slug === tool.slug);
+  if (i < 0) return group.slice(0, 4);
+  return [...group.slice(i + 1), ...group.slice(0, i)].slice(0, 4);
+}
+
 /** The questions shown (and marked up) on a tool page. */
 export function toolFaqs(tool: ToolMeta, content: ToolContent | undefined): FAQItem[] {
   return content ? content.faq.items : getToolFaqs(tool.id);
@@ -148,8 +159,7 @@ function ToolBody({ tool, content, faqs }: { tool: ToolMeta; content: ToolConten
       const t = getTool(r.slug);
       return t && t.status === 'live' ? [{ tool: t, why: r.why }] : [];
     })
-    : liveTools().filter((t) => t.category === tool.category && t.slug !== tool.slug).slice(0, 4)
-      .map((t) => ({ tool: t, why: t.subtitle }));
+    : neighbours(tool).map((t) => ({ tool: t, why: t.subtitle }));
 
   const placeholder = (
     // Pre-rendered pages carry the tool's surroundings; the tool itself starts in the browser.

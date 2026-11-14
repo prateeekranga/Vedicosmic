@@ -4,8 +4,13 @@
  * lists those tools as "copy pending" and fails once a listed tool no longer needs the exemption.
  */
 import type { ToolContent } from '@/types/tool.types';
+import chaldean from './chaldean';
+import lifePath from './life-path';
+import loshuGrid from './loshu-grid';
+import mobileNumerology from './mobile-numerology';
+import numerology from './numerology';
 
-const CONTENT: ToolContent[] = [];
+const CONTENT: ToolContent[] = [numerology, mobileNumerology, loshuGrid, chaldean, lifePath];
 
 const BY_SLUG = new Map(CONTENT.map((c) => [c.slug, c]));
 

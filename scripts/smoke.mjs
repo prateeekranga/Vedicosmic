@@ -32,7 +32,7 @@ const context = await browser.newContext({ viewport: { width: 390, height: 844 }
 const page = await context.newPage();
 
 // 1. One H1 and no skipped heading levels on key pages.
-for (const path of ['/', '/tools', '/courses', '/contact', '/about', '/how-we-calculate', '/tools/astrology', '/tools/nakshatra',
+for (const path of ['/', '/tools', '/tools/category/numerology', '/tools/loshu-grid', '/courses', '/contact', '/about', '/how-we-calculate', '/tools/astrology', '/tools/nakshatra',
   '/blog/best-time-to-meditate-morning-vs-evening', '/privacy-policy']) {
   await open(page, path);
   const { h1, skips } = await headingReport(page);
@@ -42,7 +42,7 @@ for (const path of ['/', '/tools', '/courses', '/contact', '/about', '/how-we-ca
 
 // 2. Pages load without console warnings or errors: no hydration mismatches (React errors 418,
 //    422, 423, 425) on the pre-rendered HTML, and no old animation warnings.
-for (const path of ['/', '/tools', '/tools/astrology', '/blog', '/blog/best-time-to-meditate-morning-vs-evening', '/about']) {
+for (const path of ['/', '/tools', '/tools/category/astrology', '/tools/astrology', '/tools/loshu-grid', '/blog', '/blog/best-time-to-meditate-morning-vs-evening', '/about']) {
   const messages = [];
   const p2 = await context.newPage();
   p2.on('console', (m) => { if (m.type() === 'warning' || m.type() === 'error') messages.push(`${m.type()}: ${m.text()}`); });
@@ -59,6 +59,43 @@ for (const path of ['/', '/tools', '/tools/astrology', '/blog', '/blog/best-time
   const response = await open(page, '/this-page-does-not-exist');
   check('made-up URL: HTTP 404 with the branded page', response?.status() === 404 && /This path is uncharted/i.test(await page.evaluate(() => document.body.innerText)),
     `status ${response?.status()}`);
+}
+
+// 2c. An unknown tool is a missing page: 404, the branded page, and the address stays as typed.
+{
+  const response = await open(page, '/tools/not-a-tool');
+  const text = await page.evaluate(() => document.body.innerText);
+  check('/tools/not-a-tool: HTTP 404 with the branded page', response?.status() === 404 && /This path is uncharted/i.test(text), `status ${response?.status()}`);
+  check('/tools/not-a-tool: the address is not rewritten', new URL(page.url()).pathname === '/tools/not-a-tool', page.url());
+}
+
+// 2d. Lo Shu grid: hand-worked case K1 (15 August 1990, female), an impossible date is refused,
+//     and no request leaves the page carrying the date of birth.
+{
+  await open(page, '/tools/loshu-grid');
+  await page.waitForSelector('select[aria-label="Day"]', { timeout: 15000 });
+  const requests = [];
+  page.on('request', (r) => requests.push({ url: r.url(), body: r.postData() ?? '' }));
+  await page.selectOption('select[aria-label="Day"]', '31');
+  await page.selectOption('select[aria-label="Month"]', '2');
+  await page.selectOption('select[aria-label="Year"]', '1990');
+  check('loshu-grid: 31 February is refused', await page.getByRole('button', { name: 'Make my grid' }).isDisabled()
+    && /has only 28 days/.test(await page.evaluate(() => document.body.innerText)));
+  await page.selectOption('select[aria-label="Day"]', '15');
+  await page.selectOption('select[aria-label="Month"]', '8');
+  await page.selectOption('#loshu-gender', 'female');
+  await page.getByRole('button', { name: 'Make my grid' }).click();
+  await page.waitForSelector('#tool table', { timeout: 10000 });
+  const cells = await page.locator('#tool table button').evaluateAll((els) => els.map((e) => e.textContent.replace(/\s+/g, ' ').trim()));
+  const cell = (n) => cells.find((c) => c.startsWith(String(n))) ?? '';
+  check('loshu-grid: 6 appears twice (Driver and Conductor added)', /appears twice: once as the Driver and once as the Conductor/.test(cell(6)), cell(6));
+  check('loshu-grid: 8 appears twice (date and Kua)', /appears twice: once from the date and once as the Kua number/.test(cell(8)), cell(8));
+  check('loshu-grid: 2, 3, 4 and 7 are missing', [2, 3, 4, 7].every((n) => / missing,/.test(cell(n))) && [1, 5, 6, 8, 9].every((n) => !/ missing,/.test(cell(n))));
+  const text = await page.evaluate(() => document.body.innerText);
+  check('loshu-grid: method line names the numerology engine', /Engine: VediCosmic numerology \d/.test(text));
+  const allowed = (url) => url.startsWith(BASE) || /^https:\/\/fonts\.(googleapis|gstatic)\.com\//.test(url);
+  const leaks = requests.filter((r) => !allowed(r.url) || /1990|08-15|15-08/.test(r.url + r.body));
+  check('loshu-grid: no request carries the date of birth', leaks.length === 0, leaks.map((r) => r.url).join(', '));
 }
 
 // 3. Removed claims are not on screen.
@@ -105,7 +142,7 @@ for (const path of ['/', '/about', '/tools', '/contact', '/courses', '/blog/nume
   await page.getByRole('button', { name: 'Save on this device' }).click();
   await page.waitForTimeout(500);
   await open(page, '/tools/sadhana');
-  check('save: chart listed under "Saved on this device"', await page.getByText('Vedic Birth Chart').first().isVisible());
+  check('save: chart listed under "Saved on this device"', await page.getByText(/^Vedic Birth Chart\s*·/).first().isVisible());
   await page.getByRole('button', { name: /delete everything on this device/i }).click();
   await page.getByRole('button', { name: /yes, delete everything/i }).click();
   await page.waitForTimeout(500);

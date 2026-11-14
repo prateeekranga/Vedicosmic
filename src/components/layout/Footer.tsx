@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { Logo } from '@/components/Logo';
 import { SriYantra } from '@/components/effects/SriYantra';
 import { LEGAL } from '@/content/legal';
+import { FEATURED_TOOLS } from '@/content/routes';
+import { TOOL_HUBS } from '@/content/toolHubs';
 import { RevealStagger, RevealItem } from '@/components/motion/Reveal';
 
 const LEGAL_LINKS: [string, string][] = [
@@ -28,7 +30,7 @@ export function Footer() {
         <SriYantra className="h-full w-full" stroke="#E6B84A" />
       </div>
 
-      <RevealStagger className="container-vc grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr_1fr]">
+      <RevealStagger className="container-vc grid gap-10 py-14 md:grid-cols-3 lg:grid-cols-[1.3fr_1fr_1fr_1fr_1fr_1fr]">
         <RevealItem>
           <Logo size="lg" />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/50">
@@ -40,10 +42,13 @@ export function Footer() {
         </RevealItem>
 
         <RevealItem>
-          <FooterCol title="Explore" links={[['Tools', '/tools'], ['Blog', '/blog'], ['How we calculate', '/how-we-calculate'], ['About', '/about'], ['Contact', '/contact']]} />
+          <FooterCol title="Explore" links={[['Blog', '/blog'], ['How we calculate', '/how-we-calculate'], ['About', '/about'], ['Contact', '/contact']]} />
         </RevealItem>
         <RevealItem>
-          <FooterCol title="Tools" links={[['Numerology', '/tools/numerology'], ['Vedic Astrology', '/tools/astrology'], ['Chakra Test', '/tools/chakra-assessment'], ['Daily Tarot', '/tools/tarot'], ['Sleep & Chakra Sounds', '/tools/chakra-frequency-player']]} />
+          <FooterCol title="Tools" links={[['All tools', '/tools'], ...TOOL_HUBS.map((h): [string, string] => [`${h.label} tools`, h.path])]} />
+        </RevealItem>
+        <RevealItem>
+          <FooterCol title="Popular" links={FEATURED_TOOLS.map((t): [string, string] => [t.label, `/tools/${t.slug}`])} />
         </RevealItem>
         <RevealItem>
           <FooterCol title="Learn" links={[['Astrology articles', '/blog/category/astrology'], ['Numerology articles', '/blog/category/numerology'], ['Meditation & yoga', '/blog/category/meditation-yoga'], ['Rituals & festivals', '/blog/category/rituals-festivals']]} />

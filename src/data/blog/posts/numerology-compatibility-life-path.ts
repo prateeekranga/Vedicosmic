@@ -84,7 +84,6 @@ export default {
       type: 'paragraph',
       text: "Life Path comparison is a useful, portable framework, but it isn't the tradition's deepest tool for relationship matching. Vedic astrology developed **Ashtakoot Guna Milan** specifically for this purpose: a 36-point system that compares two birth charts across eight kootas — including temperament, mutual attraction and long-term compatibility — based on each person's Moon nakshatra at birth. It considers far more astronomical detail than a single reduced number ever could, which is why Kundali matching and numerology compatibility are best read as two honest lenses on the same relationship, not competing verdicts.",
     },
-    { type: 'cta-tool', toolSlug: 'kundali-matching', label: 'Try the Kundali Matching tool' },
     { type: 'divider' },
     {
       type: 'paragraph',

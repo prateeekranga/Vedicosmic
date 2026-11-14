@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { useRef, useState, type ReactNode } from 'react';
-import { createPortal } from 'react-dom';
 import { EASE } from '@/components/motion/Reveal';
+import { cn } from '@/lib/cn';
 
 /** Hover/click dropdown for a top-level nav item — used for Tools. */
 export function NavDropdown({
@@ -24,11 +24,6 @@ export function NavDropdown({
     closeTimer.current = setTimeout(() => setOpen(false), 160);
   };
 
-  // Framer Motion's animate={{ scale, y }} sets an inline `transform` style that
-  // fully overwrites any Tailwind `-translate-x-*` utility on the SAME element
-  // (both target the `transform` CSS property; the inline style wins). So the
-  // horizontal-centering offset must live on a separate, non-animated wrapper —
-  // `left-0 right-0 mx-auto` centers via margins instead, with zero transform.
   const panelBody = (
     <>
       <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br from-gold-bright/[0.05] via-transparent to-brand-cyan/[0.05]" />
@@ -37,38 +32,10 @@ export function NavDropdown({
     </>
   );
 
-  const panelNode = (
-    <AnimatePresence>
-      {open && (
-        wide ? (
-          <div className="fixed left-0 right-0 top-20 z-50 mx-auto w-[min(96vw,940px)]" onMouseEnter={openNow} onMouseLeave={closeSoon}>
-            <motion.div
-              initial={{ opacity: 0, y: 8, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 8, scale: 0.98 }}
-              transition={{ duration: 0.18, ease: EASE }}
-              className={`isolate overflow-hidden rounded-2xl border border-black/5 bg-white shadow-[0_35px_90px_-20px_rgba(0,0,0,0.55)] ring-1 ring-white/60 ring-inset ${panelClassName}`}
-            >
-              {panelBody}
-            </motion.div>
-          </div>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0, y: 8, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 8, scale: 0.98 }}
-            transition={{ duration: 0.18, ease: EASE }}
-            className={`absolute left-1/2 top-full mt-2 -translate-x-1/2 isolate z-50 overflow-hidden rounded-2xl border border-black/5 bg-white shadow-[0_35px_90px_-20px_rgba(0,0,0,0.55)] ring-1 ring-white/60 ring-inset ${panelClassName}`}
-          >
-            {panelBody}
-          </motion.div>
-        )
-      )}
-    </AnimatePresence>
-  );
-
   return (
-    <div className="relative" onMouseEnter={openNow} onMouseLeave={closeSoon}>
+    // The wide (mega-menu) panel is positioned against the fixed header, not this item, so that
+    // it centres on the page: this wrapper is therefore not a positioning context when `wide`.
+    <div className={wide ? undefined : 'relative'} onMouseEnter={openNow} onMouseLeave={closeSoon}>
       <button
         type="button"
         onClick={() => setOpen(!open)}
@@ -83,11 +50,37 @@ export function NavDropdown({
         </motion.span>
       </button>
 
-      {/* wide (mega-menu) panels are portaled to <body> so `fixed` centers on the
-          real viewport — otherwise a transformed ancestor (Framer Motion page
-          transitions use `transform`) turns `fixed` into `absolute`-like behaviour
-          and the panel can clip off-screen instead of centering under the navbar */}
-      {wide ? (typeof document !== 'undefined' ? createPortal(panelNode, document.body) : null) : panelNode}
+      {wide ? (
+        // Always in the page, so its links are part of the pre-rendered HTML that search engines
+        // read. While closed it is invisible and `inert`: not focusable, not announced.
+        <div
+          {...(open ? {} : { inert: '' })}
+          onMouseEnter={openNow}
+          onMouseLeave={closeSoon}
+          className={cn(
+            'absolute inset-x-0 top-full z-50 mx-auto mt-3 w-[min(96vw,940px)] origin-top transition-[opacity,transform,visibility] duration-200',
+            open ? 'visible translate-y-0 scale-100 opacity-100' : 'pointer-events-none invisible translate-y-2 scale-[0.98] opacity-0',
+          )}
+        >
+          <div className={`isolate overflow-hidden rounded-2xl border border-black/5 bg-white shadow-[0_35px_90px_-20px_rgba(0,0,0,0.55)] ring-1 ring-white/60 ring-inset ${panelClassName}`}>
+            {panelBody}
+          </div>
+        </div>
+      ) : (
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ opacity: 0, y: 8, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 8, scale: 0.98 }}
+              transition={{ duration: 0.18, ease: EASE }}
+              className={`absolute left-1/2 top-full mt-2 -translate-x-1/2 isolate z-50 overflow-hidden rounded-2xl border border-black/5 bg-white shadow-[0_35px_90px_-20px_rgba(0,0,0,0.55)] ring-1 ring-white/60 ring-inset ${panelClassName}`}
+            >
+              {panelBody}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
     </div>
   );
 }

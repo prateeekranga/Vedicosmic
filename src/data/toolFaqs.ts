@@ -22,7 +22,7 @@ const TOOL_SPECIFIC_FAQS: Record<string, FAQItem[]> = {
     { id: 'life-path-calc', header: 'What is a Life Path number and how is it calculated?', body: 'Your Life Path number is found by reducing your full birth date — day, month and year — down to a single digit (or a master number 11, 22, 33), and is considered the most important number in numerology, describing your core purpose and life lessons.' },
   ],
   astrology: [
-    { id: 'sidereal-vs-tropical', header: 'Why is my Vedic Moon sign different from my Western sun sign?', body: 'Vedic (Jyotish) astrology uses the sidereal zodiac, measured against the fixed stars, while Western astrology uses the tropical zodiac fixed to the seasons — the two have drifted about 24° apart due to the precession of the equinoxes, so your Vedic placements are often one sign earlier.' },
+    { id: 'sidereal-vs-tropical', header: 'Why does my kundli show a different sign from my Western horoscope?', body: 'Vedic (Jyotish) astrology uses the sidereal zodiac, measured against the fixed stars, while Western astrology uses the tropical zodiac fixed to the seasons — the two have drifted about 24° apart due to the precession of the equinoxes, so your Vedic placements are often one sign earlier.' },
   ],
   'planetary-hours': [
     { id: 'hora-use', header: 'What are planetary hours (hora) used for?', body: "Each day and night is divided into 12 unequal 'hora' hours, each ruled by one of the seven classical planets — timing important activities (starting work, travel, ceremonies) to match a favourable planetary hour is a traditional practice in Vedic astrology (Muhurta)." },

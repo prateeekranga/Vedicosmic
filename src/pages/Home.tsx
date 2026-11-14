@@ -39,9 +39,9 @@ const STEPS = [
 ];
 
 const PATHS = [
-  { Icon: Hash, title: 'Numerology', text: 'Life Path, Lo Shu, Chaldean & your full blueprint.', tone: 'gold' as const },
-  { Icon: Telescope, title: 'Astrology', text: 'Birth chart, planetary hours & the Navagraha mandala.', tone: 'cyan' as const },
-  { Icon: Flower2, title: 'Energy & Meditation', text: 'Chakras, mantra japa, Trataka gaze & crystal guidance.', tone: 'violet' as const },
+  { Icon: Hash, title: 'Numerology', text: 'Lo Shu grid, Life Path, name numbers and mobile numbers.', tone: 'gold' as const, to: '/tools/category/numerology' },
+  { Icon: Telescope, title: 'Astrology', text: 'Kundli, nakshatra, Rahu Kaal and hora for your city.', tone: 'cyan' as const, to: '/tools/category/astrology' },
+  { Icon: Flower2, title: 'Energy & Meditation', text: 'Chakras, mantra japa, Trataka gaze & crystal guidance.', tone: 'violet' as const, to: '/tools/category/energy' },
 ];
 
 export default function Home() {
@@ -161,7 +161,7 @@ export default function Home() {
           className="mt-12 grid gap-6 md:grid-cols-3">
           {PATHS.map((p) => (
             <motion.div key={p.title} variants={fadeUp}>
-              <Link to="/tools">
+              <Link to={p.to}>
                 <Card hover className="group h-full p-8 text-center">
                   <span className="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-white/5 text-gold-soft">
                     <p.Icon className="h-8 w-8" />

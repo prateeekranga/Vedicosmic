@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { getTool } from '@/content/routes';
 import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
 import { RevealStagger, RevealItem } from '@/components/motion/Reveal';
@@ -10,6 +11,10 @@ import { enter } from '@/lib/hydration';
 export interface LegalSection {
   heading: string;
   body: ReactNode;
+  /** Anchor for links from other pages, e.g. /how-we-calculate#panchang. */
+  id?: string;
+  /** Slugs of the tools that rely on this section; listed under it as links. */
+  tools?: readonly string[];
 }
 
 /** Shared chrome for the legal/policy pages — mirrors About.tsx's hero + card pattern. */
@@ -40,11 +45,25 @@ export function LegalLayout({
         {sections.map((s, i) => (
           <RevealItem key={s.heading}>
             <Card className="p-7 sm:p-8">
-              <h2 className="font-heading text-h4 text-gold-pale">
+              <h2 id={s.id} className="scroll-mt-24 font-heading text-h4 text-gold-pale">
                 <span className="mr-2 text-white/60">{String(i + 1).padStart(2, '0')}</span>
                 {s.heading}
               </h2>
               <div className="mt-3 space-y-3 text-sm leading-relaxed text-white/65">{s.body}</div>
+              {s.tools && s.tools.length > 0 && (
+                <p className="mt-4 text-xs leading-relaxed text-white/60">
+                  Tools that use this:{' '}
+                  {s.tools.flatMap((slug) => {
+                    const tool = getTool(slug);
+                    return tool && tool.status === 'live' ? [tool] : [];
+                  }).map((tool, j) => (
+                    <span key={tool.slug}>
+                      {j > 0 && ', '}
+                      <Link to={`/tools/${tool.slug}`} className="text-brand-cyan-soft underline underline-offset-2 hover:text-white">{tool.name}</Link>
+                    </span>
+                  ))}
+                </p>
+              )}
             </Card>
           </RevealItem>
         ))}

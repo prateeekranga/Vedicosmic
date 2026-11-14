@@ -9,5 +9,5 @@ const NOTE: Record<ToolCategory, string> = {
 
 /** One plain line under every tool, so no result reads as a promise or a treatment. */
 export function ResultNote({ category }: { category: ToolCategory }) {
-  return <p className="mt-6 text-center text-xs text-white/45">{NOTE[category]}</p>;
+  return <p className="mt-6 text-center text-xs text-white/60">{NOTE[category]}</p>;
 }

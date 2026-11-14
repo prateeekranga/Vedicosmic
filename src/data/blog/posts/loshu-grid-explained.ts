@@ -11,6 +11,7 @@ export default {
   tags: ['lo shu grid', 'numerology', 'magic square', 'birth date numbers', 'vedic numerology'],
   authorId: 'parikshiva',
   publishedAt: '2026-07-23',
+  updatedAt: '2026-11-14',
   keyTakeaways: [
     'The Lo Shu Grid is a 3×3 magic square where every row, column and diagonal sums to 15.',
     'String your birth date\'s digits together, drop any zeros, then plot each digit into its fixed home cell.',
@@ -53,6 +54,17 @@ export default {
         "Place each digit into its **fixed** home cell using the traditional layout — top row 4, 9, 2; middle row 3, 5, 7; bottom row 8, 1, 6 — writing the digit once for every time it appeared. So the '9' cell would show 9 9, and the '1' cell would show 1 1.",
         "Leave any digit that never appeared as an empty cell. In our example, the cells for 2, 3, 4, 6 and 7 stay blank — these are the numbers you'll read as \"missing\" in the next section.",
       ],
+    },
+    { type: 'heading', level: 3, text: 'Adding the Driver, Conductor and Kua' },
+    {
+      type: 'paragraph',
+      text:
+        "That is the basic grid, built from the date alone. Most Indian teachers go one step further and write three more numbers into it. The **Driver** (Mulank) is the day of birth added down to one digit: 1 + 5 = 6. The **Conductor** (Bhagyank) is every digit of the date added down: 1 + 5 + 8 + 1 + 9 + 9 = 33, then 3 + 3 = 6. The **Kua** number comes from the year and differs for men and women; for a woman born in 1990 it is 8.",
+    },
+    {
+      type: 'paragraph',
+      text:
+        "With those added, our example gains two 6s and a second 8, so only 2, 3, 4 and 7 remain missing. One exception is widely taught: when the birth day is 1 to 9, 10, 20 or 30, the Driver is not written again, because that day has already put its digit in the grid. Our calculator follows this fuller method and has a switch to show the date digits alone, so you can see both.",
     },
     { type: 'diagram', id: 'loshu-grid', caption: 'The Lo Shu Grid\'s fixed layout — top row 4, 9, 2; middle row 3, 5, 7; bottom row 8, 1, 6.' },
     { type: 'cta-tool', toolSlug: 'loshu-grid', label: 'Build Your Lo Shu Grid Instantly' },
@@ -103,8 +115,8 @@ export default {
         '**Thought Plane** (4-3-8, left column): a patient, far-sighted planner when complete; carrying long-term plans through to the end asks for extra focus when empty.',
         '**Will Plane** (9-5-1, centre column): powerful determination when complete; steady self-discipline is worth deliberate practice when empty.',
         '**Action Plane** (2-7-6, right column): capable, active hands when complete; beginning and sustaining practical activity is an area to nurture when empty.',
-        '**Golden Diagonal** (4-5-6): rare when complete, read as exceptional resolve and the will to finish what you start.',
-        '**Silver Diagonal** (2-5-8): also rare when complete, read as deep compassion and a spiritual, service-oriented temperament.',
+        '**Golden Yog** (4-5-6): the diagonal teachers call the success line, read when complete as steady effort that tends to be recognised.',
+        '**Silver Yog** (2-5-8): the other diagonal, traditionally linked with property and with building security patiently.',
       ],
     },
     {

@@ -76,7 +76,7 @@ export const TOOL_HUBS: ToolHub[] = [
     title: 'Meditation, Pranayama, Japa & Puja Tools for Daily Practice',
     description: 'Free practice tools: a pranayama timer, 108-bead japa counter, Trataka, chakra test, sound bath, virtual puja and a daily sadhana page. No sign-up.',
     intro: [
-      'These are tools for doing a practice, not for reading about one. Each keeps to a single job: pacing the breath, counting a mala, holding a steady gaze, mixing a sound bath, or walking through a short puja when you cannot reach a shrine. They run in the browser, need no account, and keep any streak or saved result on your own device.',
+      'These are tools for doing a practice, not for reading about one. Each keeps to a single job: pacing the breath, counting a mala, holding a steady gaze, mixing a sound bath, or walking through a short puja when you cannot reach a shrine. They run in the browser, need no account, and keep any streak or saved result on your own device. None of them asks you to believe anything first: pick one, try it for a few minutes, and keep the ones that help.',
       'They are offered for steadiness and reflection, not as treatment. Breathing practices should stay comfortable throughout, so stop if you feel dizzy, and see a doctor about any health concern.',
     ],
     guide: {

@@ -17,6 +17,7 @@ export default {
   ],
   authorId: 'parikshiva',
   publishedAt: '2026-07-23',
+  updatedAt: '2026-11-14',
   keyTakeaways: [
     'Your Life Path number comes from reducing your full birth date to a single digit — no birth time or place needed.',
     'Reduce month, day and year separately, then add the three results together and reduce once more.',
@@ -25,9 +26,9 @@ export default {
   ],
   howToSteps: [
     { name: 'Write out your full birth date', text: 'Write your day, month and four-digit year — for example, 23 November 1990.' },
-    { name: 'Reduce the month', text: 'Add the month\'s digits together. November is the 11th month, so 1 + 1 = 2.' },
+    { name: 'Reduce the month', text: 'Add the month\'s digits together, unless it is 11. November is the 11th month, and 11 is a Master Number, so it stays 11.' },
     { name: 'Reduce the day', text: 'Add the day\'s digits together. 23 becomes 2 + 3 = 5.' },
-    { name: 'Reduce the year', text: 'Add all four digits of the year together, then reduce again if needed. 1990 becomes 1 + 9 + 9 + 0 = 19, and 19 reduces to 1 + 9 = 1.' },
+    { name: 'Reduce the year', text: 'Add all four digits of the year together, then reduce again if needed. 1990 becomes 1 + 9 + 9 + 0 = 19, then 1 + 9 = 10, then 1 + 0 = 1.' },
     { name: 'Add the three reduced numbers', text: 'Add month + day + year together.' },
     { name: 'Reduce to a single digit', text: 'Reduce the final sum to one digit — unless it lands on 11, 22 or 33, in which case stop there and keep it whole.' },
   ],
@@ -50,9 +51,9 @@ export default {
       style: 'number',
       items: [
         'Write out your full birth date — day, month and four-digit year (for example, 23 November 1990).',
-        'Reduce the month to a single digit by adding its digits together. November is the 11th month, so 1 + 1 = 2.',
+        'Reduce the month by adding its digits together, unless it is 11. November is the 11th month, and 11 is a Master Number, so it stays 11.',
         'Reduce the day the same way. 23 becomes 2 + 3 = 5.',
-        'Reduce the year by adding all four digits together, then reducing again if needed. 1990 becomes 1 + 9 + 9 + 0 = 19, and 19 reduces to 1 + 9 = 1.',
+        'Reduce the year by adding all four digits together, then reducing again if needed. 1990 becomes 1 + 9 + 9 + 0 = 19, then 1 + 9 = 10, then 1 + 0 = 1.',
         'Add the three reduced numbers together: month + day + year.',
         "Reduce that final sum to a single digit — unless it lands on 11, 22 or 33, in which case stop there and keep it whole.",
       ],
@@ -65,11 +66,11 @@ export default {
       type: 'list',
       style: 'bullet',
       items: [
-        'Month (November = 11): 1 + 1 = **2**',
+        'Month (November = 11): a Master Number, so it stays **11**',
         'Day (23): 2 + 3 = **5**',
-        'Year (1990): 1 + 9 + 9 + 0 = 19 → 1 + 9 = **1**',
-        'Sum of the three: 2 + 5 + 1 = **8**',
-        "8 is already a single digit and isn't 11, 22 or 33, so this birth date's Life Path number is **8**.",
+        'Year (1990): 1 + 9 + 9 + 0 = 19 → 1 + 9 = 10 → 1 + 0 = **1**',
+        'Sum of the three: 11 + 5 + 1 = 17 → 1 + 7 = **8**',
+        "8 is a single digit and isn't 11, 22 or 33, so this birth date's Life Path number is **8**.",
       ],
     },
     {
@@ -80,7 +81,7 @@ export default {
     {
       type: 'cta-tool',
       toolSlug: 'numerology',
-      label: 'See your full Blueprint — Life Path, Expression & more',
+      label: 'See all your core numbers: Life Path, Expression and more',
     },
     {
       type: 'callout',

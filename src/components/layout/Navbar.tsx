@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/Button';
 import { NavDropdown } from '@/components/layout/NavDropdown';
 import { useSound } from '@/contexts/SoundContext';
 import { TOOL_CATEGORIES, liveTools } from '@/content/routes';
+import { hubPath } from '@/content/toolHubs';
+import type { ToolCategory } from '@/types/tool.types';
 
 function SoundToggle({ className = '' }: { className?: string }) {
   const { enabled, toggle } = useSound();
@@ -45,6 +47,7 @@ const LEGAL_LINKS = [
 const LIVE_TOOLS = liveTools();
 const TOOLS_PER_CATEGORY = TOOL_CATEGORIES.filter((c) => c.id !== 'all').map((c) => ({
   ...c,
+  hub: hubPath(c.id as ToolCategory),
   tools: LIVE_TOOLS.filter((t) => t.category === c.id),
 }));
 const MAX_PER_CATEGORY = 4;
@@ -53,9 +56,9 @@ function ToolsPanel() {
   return (
     <div className="w-full">
       <div className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-4">
-        {TOOLS_PER_CATEGORY.map(({ id, label, tools }) => (
+        {TOOLS_PER_CATEGORY.map(({ id, label, hub, tools }) => (
           <div key={id}>
-            <p className="mb-1.5 px-3 text-xs font-semibold uppercase tracking-wider text-cosmic-darker/40">{label}</p>
+            <Link to={hub} className="mb-1.5 block px-3 text-xs font-semibold uppercase tracking-wider text-cosmic-darker/60 hover:text-gold-600">{label}</Link>
             <div className="space-y-0.5">
               {tools.slice(0, MAX_PER_CATEGORY).map((tool) => (
                 <Link
@@ -70,8 +73,8 @@ function ToolsPanel() {
                 </Link>
               ))}
               {tools.length > MAX_PER_CATEGORY && (
-                <Link to="/tools" className="block px-3 py-1.5 text-xs text-sky-700 hover:underline">
-                  +{tools.length - MAX_PER_CATEGORY} more
+                <Link to={hub} className="block px-3 py-1.5 text-xs text-sky-700 hover:underline">
+                  +{tools.length - MAX_PER_CATEGORY} more {label.toLowerCase()} tools
                 </Link>
               )}
             </div>

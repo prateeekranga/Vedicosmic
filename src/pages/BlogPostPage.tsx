@@ -6,6 +6,7 @@ import { useBlogPost } from '@/hooks/useBlogPost';
 import { useAllBlogPosts } from '@/hooks/useAllBlogPosts';
 import { getBlogCategory } from '@/data/blogCategories';
 import { getPerson } from '@/content/people';
+import { getTool } from '@/content/routes';
 import { estimateReadingTime } from '@/lib/blogUtils';
 import { useSEO } from '@/hooks/useSEO';
 import { breadcrumbList, blogPostingSchema, faqPageSchema, howToSchema } from '@/lib/schema';
@@ -138,6 +139,8 @@ function BlogPostBody({ post }: { post: BlogPost }) {
         </div>
       )}
 
+      <RelatedTools slugs={post.relatedToolSlugs ?? []} />
+
       <div className="mt-12 sm:mt-16 flex items-center justify-between border-t border-white/8 pt-8">
         <Button variant="ghost" to="/blog"><ArrowLeft className="h-4 w-4" /> All articles</Button>
       </div>
@@ -151,5 +154,29 @@ function BlogPostBody({ post }: { post: BlogPost }) {
         </div>
       )}
     </motion.div>
+  );
+}
+
+/** The tools an article is about, as plain links at its end. Coming-soon tools are left out. */
+function RelatedTools({ slugs }: { slugs: string[] }) {
+  const tools = slugs.flatMap((slug) => {
+    const tool = getTool(slug);
+    return tool && tool.status === 'live' ? [tool] : [];
+  });
+  if (!tools.length) return null;
+  return (
+    <section className="mt-12 sm:mt-16">
+      <h2 className="mb-5 font-heading text-h4 text-white">Tools for this article</h2>
+      <ul className="grid gap-3 sm:grid-cols-2">
+        {tools.map((t) => (
+          <li key={t.slug}>
+            <Link to={`/tools/${t.slug}`} className="group block h-full rounded-xl border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-white/25">
+              <span className="block font-heading text-base text-white group-hover:text-gold-pale">{t.name}</span>
+              <span className="mt-1 block text-xs leading-snug text-white/60">{t.subtitle}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }

@@ -20,8 +20,7 @@ export * from './pythagorean';
 export * from './chaldean';
 export * from './mobile';
 
-/** Shown beside results; bump the version whenever a rule or table changes. */
-export const NUMEROLOGY_ENGINE = { name: 'VediCosmic numerology', version: '1.0.0' } as const;
+export { NUMEROLOGY_ENGINE } from './version';
 
 export interface WesternProfile {
   lifePath: CoreNumber;

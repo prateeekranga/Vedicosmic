@@ -51,14 +51,12 @@ export function LoShuGrid({
                 const n = NUMBERS[d];
                 const s = result.sources[d];
                 const present = count > 0;
-                const label = present
-                  ? `${d}, ${n.planet}, appears ${times(count)}: ${sourceWords(result, d, view)}`
-                  : `${d}, ${n.planet}, missing`;
+                // The button's name is its own text, starting with what is visible ("9 ×2 Mars"),
+                // so voice-control users can say what they see; the rest is for screen readers.
                 return (
                   <td key={d} className="p-0">
                     <button
                       type="button"
-                      aria-label={label}
                       aria-pressed={selected === d}
                       onClick={() => setSelected(selected === d ? null : d)}
                       className={cn(
@@ -68,11 +66,15 @@ export function LoShuGrid({
                       )}
                       style={present ? { background: n.colour.fill, color: n.colour.ink } : undefined}
                     >
-                      <span aria-hidden="true" className={cn('font-heading text-2xl font-bold leading-none sm:text-3xl', !present && 'text-white/70')}>
+                      <span className={cn('font-heading text-2xl font-bold leading-none sm:text-3xl', !present && 'text-white/70')}>
                         {d}{count > 1 && <span className="ml-1 text-base font-semibold sm:text-lg">×{count}</span>}
                       </span>
-                      <span aria-hidden="true" className={cn('mt-1 text-[0.65rem] font-medium uppercase tracking-wide', !present && 'text-white/60')}>
+                      {' '}
+                      <span className={cn('mt-1 text-[0.65rem] font-medium uppercase tracking-wide', !present && 'text-white/60')}>
                         {present ? n.planet : 'missing'}
+                      </span>
+                      <span className="sr-only">
+                        {present ? `, appears ${times(count)}: ${sourceWords(result, d, view)}` : `, ${n.planet}`}
                       </span>
                       {!dateOnly && (s.driver || s.conductor || s.kua) ? (
                         <span aria-hidden="true" className="absolute right-1 top-1 flex gap-0.5">

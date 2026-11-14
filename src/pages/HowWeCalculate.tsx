@@ -3,7 +3,9 @@ import { LegalLayout, type LegalSection } from './legal/LegalLayout';
 import { ENGINE } from '@/engine/sky';
 import { POLAR_LATITUDE } from '@/engine/ascendant';
 import vectors from '../../tests/golden/vectors.json';
-import { PANCHANG_REFERENCE_DAYS } from '@/content/referenceChecks';
+import { NUMEROLOGY_REFERENCE_CASES, PANCHANG_REFERENCE_DAYS } from '@/content/referenceChecks';
+import { METHOD_SECTIONS } from '@/content/methodSections';
+import { NUMEROLOGY_ENGINE } from '@/engine/numerology/version';
 
 const link = 'text-brand-cyan-soft underline underline-offset-2 hover:text-white';
 const th = 'py-1.5 pr-3 text-left text-xs font-medium uppercase tracking-wide text-white/60';
@@ -24,6 +26,7 @@ const sections: LegalSection[] = [
   },
   {
     heading: 'Zodiac and ayanamsa',
+    id: 'ayanamsa', tools: METHOD_SECTIONS.ayanamsa,
     body: (
       <p>
         Positions are sidereal, using the Lahiri (Chitrapaksha) ayanamsa in its mean form, without nutation: 23.2455° on
@@ -35,6 +38,7 @@ const sections: LegalSection[] = [
   },
   {
     heading: 'Lagna and houses',
+    id: 'lagna-houses', tools: METHOD_SECTIONS['lagna-houses'],
     body: (
       <>
         <p>
@@ -52,6 +56,7 @@ const sections: LegalSection[] = [
   },
   {
     heading: 'Grahas',
+    id: 'grahas', tools: METHOD_SECTIONS.grahas,
     body: (
       <p>
         Sun, Moon, Mars, Mercury, Jupiter, Venus and Saturn are apparent geocentric positions. Rahu is the mean lunar node and
@@ -62,6 +67,7 @@ const sections: LegalSection[] = [
   },
   {
     heading: 'Time and place',
+    id: 'time-place', tools: METHOD_SECTIONS['time-place'],
     body: (
       <>
         <p>
@@ -87,6 +93,7 @@ const sections: LegalSection[] = [
   },
   {
     heading: 'Panchang and daily timings',
+    id: 'panchang', tools: METHOD_SECTIONS.panchang,
     body: (
       <>
         <p>
@@ -106,6 +113,7 @@ const sections: LegalSection[] = [
   },
   {
     heading: 'Vrat dates',
+    id: 'vrat-dates', tools: METHOD_SECTIONS['vrat-dates'],
     body: (
       <p>
         Ekadashi, Purnima, Amavasya and Durga Ashtami fall on the day whose sunrise is in that tithi; Pradosh on the day the
@@ -117,6 +125,7 @@ const sections: LegalSection[] = [
   },
   {
     heading: 'Vimshottari dasha',
+    id: 'vimshottari-dasha', tools: METHOD_SECTIONS['vimshottari-dasha'],
     body: (
       <p>
         The first period belongs to the lord of the Moon’s birth nakshatra, and the share of it still to run is the share of
@@ -126,7 +135,99 @@ const sections: LegalSection[] = [
     ),
   },
   {
+    heading: 'Numerology: one method on every page',
+    id: 'numerology', tools: METHOD_SECTIONS.numerology,
+    body: (
+      <>
+        <p>
+          The numerology calculators share one set of rules ({NUMEROLOGY_ENGINE.name} {NUMEROLOGY_ENGINE.version}), so a date of
+          birth gives the same Mulank, Bhagyank and Life Path on whichever page you enter it. Dates are handled as plain
+          day, month and year numbers, so the result never shifts with your time zone, and an impossible date such as
+          31 February is refused.
+        </p>
+        <p>
+          Numerology has no independent reference to test against in the way astronomy has. Our tests fix this method and
+          keep every page on it; they cannot show that the method is the right one. Where teachers differ, the sections
+          below say which rule we follow.
+        </p>
+      </>
+    ),
+  },
+  {
+    heading: 'Lo Shu grid, Driver, Conductor and Kua',
+    id: 'numerology-loshu', tools: METHOD_SECTIONS['numerology-loshu'],
+    body: (
+      <>
+        <ul className="list-disc space-y-1 pl-5">
+          <li>Driver (Mulank): the day of the month added down to one digit. Conductor (Bhagyank): every digit of the full date added down to one digit. Neither keeps 11, 22 or 33.</li>
+          <li>Grid: every digit of the day, month and four-digit year is written in its cell of the square, whose rows are 4 9 2, 3 5 7 and 8 1 6. Zero has no cell and is left out.</li>
+          <li>Added numbers: the Conductor and the Kua number are written into the grid as well. So is the Driver, except when the birth day is 1 to 9, 10, 20 or 30, because that day already puts the Driver’s digit in the grid.</li>
+          <li>Kua: the digits of the calendar year of birth added down to one digit; 11 minus that digit for a man, 4 plus that digit for a woman, added down again. A result of 5 is read as 2 for a man and 8 for a woman.</li>
+          <li>Lines: the three rows, three columns and two diagonals are each reported as complete, two of three, one of three or empty.</li>
+          <li>Kua directions: the four favourable directions of the Eight Mansions school of feng shui for each Kua number.</li>
+        </ul>
+        <p>
+          Other teachers fill the grid from the date digits alone, write the Driver every time, use only the last two
+          digits of the year, or leave the Kua out. Feng shui teachers who count the Chinese solar year use the previous
+          year for births before 4 February; the Lo Shu page tells you when that would change your Kua. Each of these is
+          one setting in our code, so a rule can be changed and re-tested in one place.
+        </p>
+      </>
+    ),
+  },
+  {
+    heading: 'Life Path and the Western name numbers',
+    id: 'numerology-western', tools: METHOD_SECTIONS['numerology-western'],
+    body: (
+      <ul className="list-disc space-y-1 pl-5">
+        <li>Life Path: the month, the day and the year are each added down first, keeping 11, 22 and 33, then added together and reduced again. Adding all eight digits in one line always gives the same single digit but can give a different master number; where it does, the page shows both.</li>
+        <li>Name numbers use the Pythagorean letter values (A, J, S = 1 through I, R = 9), word by word. Expression takes every letter, Soul Urge the vowels A, E, I, O and U, and Personality the consonants. Y is always a consonant.</li>
+        <li>Personal year: the birth month and day added to the calendar year, reduced to one digit; it changes on 1 January. Personal month adds the calendar month, and personal day the day of the month.</li>
+        <li>Pinnacles: month plus day, day plus year, the sum of those two, and month plus year, each from single digits. The first ends at 36 minus the Life Path digit and the next two last nine years each. Challenges are the differences between the same pairs.</li>
+      </ul>
+    ),
+  },
+  {
+    heading: 'Chaldean name numbers',
+    id: 'numerology-names', tools: METHOD_SECTIONS['numerology-names'],
+    body: (
+      <>
+        <p>
+          Letter values are those printed by Cheiro (Count Louis Hamon) in his Book of Numbers, 1926: A, I, J, Q, Y = 1;
+          B, K, R = 2; C, G, L, S = 3; D, M, T = 4; E, H, N, X = 5; U, V, W = 6; O, Z = 7; F, P = 8. No letter is 9, and a
+          digit typed in a name keeps its own value.
+        </p>
+        <p>
+          The compound number is the total of the whole name and the root is that total added down to one digit. Cheiro
+          describes the compounds from 10 to 52; a larger total has its digits added until it falls in that range. His
+          readings are restated in plain words, and his sterner warnings are given as cautions about conduct, not as
+          forecasts.
+        </p>
+      </>
+    ),
+  },
+  {
+    heading: 'Friendly numbers',
+    id: 'numerology-relations', tools: METHOD_SECTIONS['numerology-relations'],
+    body: (
+      <>
+        <p>
+          Indian numerology gives each number a planet: 1 Sun, 2 Moon, 3 Jupiter, 4 Rahu, 5 Mercury, 6 Venus, 7 Ketu,
+          8 Saturn, 9 Mars. Wherever a page speaks of friendly numbers, lucky numbers, the harmony of Driver and Conductor,
+          or how a mobile number sits with a date of birth, it reads one table of friendships between those planets.
+        </p>
+        <p>
+          For the seven visible planets the table is the natural friendship (naisargika maitri) of the Brihat Parashara
+          Hora Shastra. Rahu and Ketu are not in that list, so we follow the convention most teachers use: Rahu sides with
+          Mercury, Venus and Saturn, and Ketu with Mars, Venus and Saturn. No page turns these friendships into a
+          percentage or a single verdict, because the tradition offers no arithmetic for one.
+        </p>
+      </>
+    ),
+  },
+  {
     heading: 'How we check the results',
+    id: 'checks',
     body: (
       <>
         <p>
@@ -149,6 +250,11 @@ const sections: LegalSection[] = [
           London, New York, Toronto and Sydney — on 12 dates of 2026, including daylight-saving changes. The reference
           charts we pass are listed below. One of them (L01) has the Moon 0.009° from the end of the zodiac; the chart
           marks it as borderline, because no calculation can promise which side such a Moon falls.
+        </p>
+        <p>
+          The numerology rules are checked differently, since there is nothing independent to compare them with:{' '}
+          {NUMEROLOGY_REFERENCE_CASES} cases worked out by hand must match exactly, every date from 1900 to 2099 is tested for
+          a consistent grid, and the Conductor must equal the Life Path digit on all of them.
         </p>
       </>
     ),
@@ -180,6 +286,7 @@ const sections: LegalSection[] = [
   },
   {
     heading: 'Known limits',
+    id: 'limits',
     body: (
       <ul className="list-disc space-y-1 pl-5">
         <li>A birth time that is a few minutes out can change the Lagna, and an hour can change the Moon’s nakshatra. The charts say when this is likely.</li>
@@ -188,7 +295,7 @@ const sections: LegalSection[] = [
         <li>The reference checks cover 1900–2100. Dates far outside that range have not been checked.</li>
         <li>Regional panchangs can differ on vrat rules, so a date may differ by a day from your family’s calendar.</li>
         <li>
-          Astrology is a tradition of reflection, not a science of prediction. See the{' '}
+          Astrology and numerology are traditions of reflection, not sciences of prediction. See the{' '}
           <Link to="/disclaimer" className={link}>disclaimer</Link>.
         </li>
       </ul>
@@ -201,9 +308,9 @@ export default function HowWeCalculate() {
     <LegalLayout
       eyebrow="Method"
       title="How we calculate"
-      seoTitle="How We Calculate Charts and Panchang · VediCosmic"
-      updated="23 October 2026"
-      intro="The engine, the conventions and the checks behind every chart, panchang and timing on VediCosmic — and the limits you should know about."
+      seoTitle="How We Calculate Charts, Panchang & Numerology · VediCosmic"
+      updated="14 November 2026"
+      intro="The engine, the conventions and the checks behind every chart, panchang, timing and numerology result on VediCosmic, and the limits you should know about."
       sections={sections}
     />
   );

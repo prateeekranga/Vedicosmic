@@ -79,7 +79,7 @@ export default {
         "Sound healing and Solfeggio-labeled meditation tracks are a traditional and modern wellness practice for relaxation and focus. They are not a scientifically verified medical treatment, do not repair DNA or cure disease, and should never replace professional medical or psychological care.",
     },
   ],
-  relatedToolSlugs: ['soundbath', 'mantra-timer'],
+  relatedToolSlugs: ['chakra-frequency-player', 'soundbath', 'mantra-timer'],
   faqs: [
     {
       id: 'chakra-sound-healing-faq-1',

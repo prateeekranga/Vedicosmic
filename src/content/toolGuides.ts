@@ -31,6 +31,10 @@ export const TOOL_GUIDES: Record<string, ToolGuide[]> = {
     { slug: 'chakra-visualization-meditation-techniques', title: 'How to Meditate on Your Chakras: Visualization Techniques for Each Center' },
     { slug: 'walking-meditation-root-chakra-grounding', title: 'Walking Meditation and the Root Chakra: Grounding Practices Beyond Sitting' },
   ],
+  'chakra-frequency-player': [
+    { slug: 'chakra-meditation-guided-script-seven-centers', title: 'Chakra Meditation for Beginners: A Guided Script for All 7 Centers' },
+    { slug: 'chakra-sound-healing-solfeggio-frequencies', title: 'Chakra Sound Healing: Do Solfeggio Frequencies Really Work?' },
+  ],
   chaldean: [
     { slug: 'chaldean-numerology-explained', title: 'Chaldean Numerology Explained: The Ancient System Before Pythagoras' },
   ],

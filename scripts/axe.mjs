@@ -10,12 +10,27 @@ import { chromium } from 'playwright-core';
 const BASE = (process.argv[2] ?? 'http://localhost:4173').replace(/\/$/, '');
 const OUT = process.argv[3]; // optional: write the full report as JSON here
 const FAIL_ON = new Set(['critical']);
-const PAGES = ['/', '/tools', '/tools/sadhana', '/tools/nakshatra', '/tools/planetary-hours', '/tools/astrology',
+const PAGES = ['/', '/tools', '/tools/category/numerology', '/tools/loshu-grid', '/tools/life-path', '/tools/sadhana', '/tools/nakshatra', '/tools/planetary-hours', '/tools/astrology',
   '/tools/muhurta', '/tools/vrat-calendar', '/blog/best-time-to-meditate-morning-vs-evening', '/about', '/contact',
   '/privacy-policy', '/how-we-calculate'];
 
 // Pages whose results only appear after input: fill the form so the results are checked too.
 const PREPARE = {
+  '/tools/loshu-grid': async (page) => {
+    await page.selectOption('select[aria-label="Day"]', '15');
+    await page.selectOption('select[aria-label="Month"]', '8');
+    await page.selectOption('select[aria-label="Year"]', '1990');
+    await page.selectOption('#loshu-gender', 'female');
+    await page.getByRole('button', { name: 'Make my grid' }).click();
+    await page.waitForSelector('#tool table', { timeout: 10000 });
+  },
+  '/tools/life-path': async (page) => {
+    await page.selectOption('select[aria-label="Day"]', '15');
+    await page.selectOption('select[aria-label="Month"]', '8');
+    await page.selectOption('select[aria-label="Year"]', '1990');
+    await page.getByRole('button', { name: 'Show my Life Path' }).click();
+    await page.waitForTimeout(800);
+  },
   '/tools/astrology': async (page) => {
     await page.selectOption('select[aria-label="Day"]', '20');
     await page.selectOption('select[aria-label="Month"]', '3');

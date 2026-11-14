@@ -11,6 +11,7 @@ export default {
   tags: ['master number', 'numerology', 'life path number', 'master numbers 11 22 33', 'numerology calculator'],
   authorId: 'parikshiva',
   publishedAt: '2026-07-28',
+  updatedAt: '2026-11-14',
   keyTakeaways: [
     'A Master Number (11, 22 or 33) appears when a stage of digit-sum reduction lands exactly on one of those three totals.',
     'The rule is simple: if a sum equals 11, 22 or 33, stop reducing and keep it whole — do not reduce it further to 2, 4 or 6.',
@@ -55,7 +56,7 @@ export default {
     {
       type: 'paragraph',
       text:
-        "Here's a worked example using a full birth date, 29 November 1988: the day (29) reduces to 2 + 9 = 11 — a Master Number, so it stays as 11. The month (November = 11th month) reduces to 1 + 1 = 2. The year (1988) reduces to 1 + 9 + 8 + 8 = 26, then 2 + 6 = 8. Adding the three together — 11 + 2 + 8 — gives 21, which reduces to 2 + 1 = 3, a single digit, not a Master Number in the final total, even though one appeared along the way.",
+        "Here's a worked example using a full birth date, 29 November 1988: the day (29) reduces to 2 + 9 = 11 — a Master Number, so it stays as 11. The month (November = 11th month) is 11 as well, so it also stays as 11. The year (1988) reduces to 1 + 9 + 8 + 8 = 26, then 2 + 6 = 8. Adding the three together — 11 + 11 + 8 — gives 30, which reduces to 3 + 0 = 3, a single digit, not a Master Number in the final total, even though two appeared along the way.",
     },
     {
       type: 'cta-tool',
@@ -89,7 +90,7 @@ export default {
         "Only a small share of birth dates or names produce a Master Number — most people land on a single digit, and that is not a lesser result. A single-digit number is the settled, foundational form of the same system, not a consolation prize.",
     },
     { type: 'divider' },
-    { type: 'cta-tool', toolSlug: 'numerology', label: 'See Your Full Numerology Blueprint' },
+    { type: 'cta-tool', toolSlug: 'numerology', label: 'See all your core numbers in the Numerology Calculator' },
   ],
   relatedToolSlugs: ['life-path', 'numerology'],
   faqs: [

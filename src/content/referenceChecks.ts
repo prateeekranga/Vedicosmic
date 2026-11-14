@@ -3,3 +3,6 @@
  * not bundle the test data. tests/golden/panchang.test.ts checks it matches the reference file.
  */
 export const PANCHANG_REFERENCE_DAYS = 240;
+
+/** Hand-worked numerology cases in tests/golden/numerology.vectors.json (tests/toolContent.test.ts checks the count). */
+export const NUMEROLOGY_REFERENCE_CASES = 26;

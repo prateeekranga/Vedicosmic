@@ -41,6 +41,10 @@ jobs:
         run: npm test
       - name: Build (static pages, sitemaps, server rules, share cards, claims check)
         run: npm run build
+        env:
+          # Umami website ID, a public value. Empty until the owner sets the repository variable;
+          # while empty, analytics stays off and nothing is loaded or sent.
+          VITE_UMAMI_WEBSITE_ID: ${{ vars.UMAMI_WEBSITE_ID }}
       - name: Verify the pre-rendered pages
         run: npm run verify
       - name: Internal links

@@ -124,9 +124,39 @@ export const CHAKRAS: Chakra[] = [
   },
 ];
 
-export function chakraStatus(score: number): { label: string; tone: 'error' | 'warning' | 'success' | 'cyan' } {
-  if (score < 7) return { label: 'Blocked', tone: 'error' };
-  if (score <= 10) return { label: 'Partially Open', tone: 'warning' };
-  if (score <= 13) return { label: 'Balanced', tone: 'success' };
-  return { label: 'Overactive', tone: 'cyan' };
+export type ChakraLevel = 'blocked' | 'partial' | 'balanced';
+
+export interface ChakraScore { raw: number; percent: number }
+
+/** Each chakra has three statements answered 1 (rarely) to 4 (almost always). */
+export const CHAKRA_RAW_MIN = 3;
+export const CHAKRA_RAW_MAX = 12;
+
+/**
+ * Totals per chakra from the answers in question order (three per chakra, in CHAKRAS order).
+ * `raw` is the 3–12 total the status bands read; `percent` is only for drawing.
+ */
+export function chakraScores(answers: readonly number[]): ChakraScore[] {
+  return CHAKRAS.map((ch, ci) => {
+    let raw = 0;
+    for (let k = 0; k < ch.questions.length; k++) raw += answers[ci * ch.questions.length + k] ?? 0;
+    return { raw, percent: Math.round((raw / (ch.questions.length * 4)) * 100) };
+  });
+}
+
+/**
+ * Reads a chakra's raw total (3–12). Every statement describes the open, settled state, so the
+ * questionnaire can show how open a chakra feels but cannot measure an "overactive" one.
+ */
+export function chakraStatus(raw: number): { level: ChakraLevel; label: string; tone: 'error' | 'warning' | 'success' } {
+  if (raw <= 6) return { level: 'blocked', label: 'Blocked', tone: 'error' };
+  if (raw <= 10) return { level: 'partial', label: 'Partially Open', tone: 'warning' };
+  return { level: 'balanced', label: 'Balanced', tone: 'success' };
+}
+
+/** The sentence shown under a chakra's bar, matched to its status. */
+export function chakraReading(ch: Chakra, level: ChakraLevel): string {
+  if (level === 'balanced') return ch.balanced;
+  if (level === 'blocked') return ch.blocked;
+  return `Open at times and held back at others. Signs it is tightening: ${ch.blocked.charAt(0).toLowerCase()}${ch.blocked.slice(1)}`;
 }

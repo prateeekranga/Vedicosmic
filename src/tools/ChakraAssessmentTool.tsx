@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Flower2, ChevronRight, RotateCcw } from 'lucide-react';
-import { CHAKRAS, chakraStatus } from '@/data/chakras';
+import { CHAKRAS, chakraReading, chakraScores, chakraStatus } from '@/data/chakras';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -24,14 +24,12 @@ export default function ChakraAssessmentTool() {
   const { saveReading } = useDeviceStore();
   const { notify } = useToast();
 
-  const scores = useMemo(() => {
-    return CHAKRAS.map((_, ci) => {
-      const qs = QUESTIONS.map((q, i) => ({ ...q, i })).filter((q) => q.chakra === ci);
-      const sum = qs.reduce((s, q) => s + (answers[q.i] ?? 0), 0);
-      const max = qs.length * 4;
-      return Math.round((sum / max) * 100);
-    });
-  }, [answers]);
+  // `raw` (3–12) decides the status; `percent` only sizes the radar and the bars.
+  const totals = useMemo(
+    () => chakraScores(QUESTIONS.map((_, i) => answers[i] ?? 0)),
+    [answers],
+  );
+  const scores = totals.map((t) => t.percent);
 
   const answer = (v: number) => {
     setAnswers((a) => ({ ...a, [step]: v }));
@@ -120,7 +118,7 @@ export default function ChakraAssessmentTool() {
 
             <div className="grid gap-4 sm:grid-cols-2">
               {CHAKRAS.map((ch, i) => {
-                const st = chakraStatus(scores[i]);
+                const st = chakraStatus(totals[i].raw);
                 return (
                   <motion.div key={ch.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.06 }}>
@@ -139,7 +137,7 @@ export default function ChakraAssessmentTool() {
                           initial={{ width: 0 }} animate={{ width: `${scores[i]}%` }} transition={{ delay: 0.3 + i * 0.05 }} />
                       </div>
                       <p className="mt-3 text-xs leading-relaxed text-white/55">
-                        {scores[i] < 45 ? ch.blocked : ch.balanced}
+                        {chakraReading(ch, st.level)}
                       </p>
                       <div className="mt-3 text-xs text-white/45">
                         <span className="text-white/60">Restore with:</span> {ch.yoga.slice(0, 2).join(', ')} · crystals: {ch.crystals.slice(0, 2).join(', ')}

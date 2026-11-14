@@ -163,5 +163,6 @@ axe (`tools-1/axe.json`, 16 pages, results on screen for the birth chart, Lo Shu
 9 serious (13 before this round's fixes). `/tools`, the numerology hub, Lo Shu Grid and Life Path have no
 violations. The remaining serious ones are the site-wide low-contrast patterns on older pages, for Phase 4/8.
 
-Checks added this round: 83 numerology tests (hand-worked cases, every date 1900–2099, content lint), 19
-content tests for tool pages, tool-page guards in `scripts/verify-prerender.mjs`, and 14 new smoke checks.
+Checks added this round: 83 unit tests (331 → 414), of which 55 are numerology (hand-worked cases, every date
+1900–2099, a lint of the reading text), 19 cover tool-page content and 7 the chakra scoring; tool-page guards in
+`scripts/verify-prerender.mjs`; and 14 new smoke checks (54 → 68).

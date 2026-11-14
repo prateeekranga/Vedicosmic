@@ -1,0 +1,8 @@
+{
+  "name": "vedicosmic-site",
+  "private": true,
+  "description": "Pre-built site published by the CI workflow. Do not edit; change the main branch instead.",
+  "scripts": {
+    "build": "node -e \"console.log('Site is pre-built in dist/')\""
+  }
+}

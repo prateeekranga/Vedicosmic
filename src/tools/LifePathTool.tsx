@@ -1,270 +1,240 @@
-import { DateSelect } from '@/components/ui/DateSelect';
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Wand2 } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Compass, RotateCcw } from 'lucide-react';
 import {
-  LOSHU_NUMBERS, LOSHU_LAYOUT, buildLoshuChart, kuaNumber, reduceTo9,
-} from '@/data/loshu';
-import { chaldean } from '@/lib/chaldean';
+  birthdayNumber, formatYMD, lifePath, loShu, parseISODate, personalCycles, pinnacleAt, pinnacles, relationsOf, toISODate,
+  type CalcStep, type CoreNumber, type LoShuResult, type PersonalCycles, type Pinnacle, type YMD,
+} from '@/engine/numerology';
+import { localDateKey } from '@/engine/time';
+import { NUMBERS, masterNote } from '@/data/numerology/numbers';
 import {
-  STRENGTH, WEAKNESS, LUCKY_COLORS, LUCKY_NUMBERS, CYCLE, CALCULATORS, type CalculatorId,
-} from '@/data/predictions';
+  CHALLENGE_TEXT, CORE_ROLE, CYCLE_TEXT, KARMIC_DEBT_TEXT, LIFE_PATH_TEXT, NUMBER_TRAIT, PINNACLE_TEXT,
+} from '@/data/numerology/westernText';
+import { REPORT_FOOTER, coreLabel, coreWorking, lifePathSections, type Report } from '@/lib/numerologyReport';
+import { takeResultLink } from '@/lib/resultLink';
 import { Button } from '@/components/ui/Button';
-import { Input, Select } from '@/components/ui/Field';
-import { ShareBar } from '@/components/ShareBar';
+import { Card } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
+import { BirthFields } from '@/components/numerology/BirthFields';
+import { NumberCard } from '@/components/numerology/NumberCard';
+import { HowCalculated, NumerologyMethodLine } from '@/components/numerology/HowCalculated';
+import { ResultActions } from '@/components/numerology/ResultActions';
+import { PrintReport } from '@/components/numerology/PrintReport';
+import { useDeviceStore } from '@/contexts/DeviceStoreContext';
 import { useShareResult } from '@/contexts/ShareContext';
+import { useToast } from '@/contexts/ToastContext';
 
 interface Result {
-  calc: CalculatorId;
-  name: string;
-  driver: number; conductor: number; kua: number | null;
-  counts: Record<number, number>;
-  nameRoot: number; nameCompound: number;
-  personal: number;
+  date: YMD;
+  today: YMD;
+  lifePath: CoreNumber;
+  birthday: CoreNumber;
+  grid: LoShuResult;
+  pinnacles: Pinnacle[];
+  cycles: PersonalCycles;
 }
 
-const todayLabel = () => new Date().toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' });
+const H3 = 'mb-3 font-heading text-h5 text-white';
 
-function shareLineFor(r: Result): string {
-  switch (r.calc) {
-    case 'free-dob':
-      return `My Lo Shu Driver number is ${r.driver} (${LOSHU_NUMBERS[r.driver]?.keyword}) ✨`;
-    case 'name-number':
-      return `${r.name} vibrates to ${r.nameRoot} — ${LOSHU_NUMBERS[r.nameRoot]?.planet} ✨`;
-    case 'lucky-color':
-    case 'lucky-number':
-      return `My Driver number is ${r.driver} (${LOSHU_NUMBERS[r.driver]?.keyword}) — here's what's lucky for me ✨`;
-    case 'today':
-    case 'month':
-    case 'year':
-      return `${r.calc === 'today' ? 'Today' : r.calc === 'month' ? 'This month' : 'This year'} carries a ${r.personal}-vibration for me ✨`;
-    default:
-      return 'My numerology reading, from VediCosmic ✨';
-  }
+function build(date: YMD): Result {
+  // "Today" is the visitor's own calendar date.
+  const today = parseISODate(localDateKey())!;
+  return {
+    date, today,
+    lifePath: lifePath(date), birthday: birthdayNumber(date), grid: loShu(date, null),
+    pinnacles: pinnacles(date), cycles: personalCycles(date, today),
+  };
+}
+
+function steps(r: Result): CalcStep[] {
+  const lp = r.lifePath;
+  return [
+    ...lp.parts.map((p) => ({
+      key: `part-${p.label}`, label: p.label,
+      working: p.total === p.reduced ? `${p.total} is kept as it is.` : `${String(p.total).split('').join(' + ')} added down gives ${p.reduced}.`,
+      result: String(p.reduced),
+    })),
+    { key: 'lp', label: 'Life Path', working: `${coreWorking(lp)}.`, result: coreLabel(lp) },
+    { key: 'py', label: 'Personal year', working: `Birth month ${r.date.m} and day ${r.date.d} added to the year ${r.today.y}, then added down to one digit.`, result: String(r.cycles.year) },
+    { key: 'pm', label: 'Personal month', working: `Personal year ${r.cycles.year} plus the calendar month ${r.today.m}, added down.`, result: String(r.cycles.month) },
+    { key: 'pd', label: 'Personal day', working: `Personal month ${r.cycles.month} plus the day of the month ${r.today.d}, added down.`, result: String(r.cycles.day) },
+  ];
 }
 
 export default function LifePathTool() {
-  const [name, setName] = useState('');
   const [dob, setDob] = useState('');
-  const [gender, setGender] = useState<'' | 'male' | 'female'>('');
-  const [calc, setCalc] = useState<CalculatorId | ''>('');
   const [result, setResult] = useState<Result | null>(null);
-  const [error, setError] = useState('');
-  useShareResult(result ? shareLineFor(result) : null);
+  const heading = useRef<HTMLHeadingElement>(null);
+  const { saveReading } = useDeviceStore();
+  const { notify } = useToast();
 
-  const needsDob: CalculatorId[] = ['free-dob', 'lucky-color', 'lucky-number', 'today', 'month', 'year'];
-  const needsName: CalculatorId[] = ['name-number'];
-
-  const run = () => {
-    if (!calc) { setError('Please choose a calculator.'); return; }
-    if (needsName.includes(calc) && !name.trim()) { setError('Please enter a name.'); return; }
-    if (needsDob.includes(calc) && !dob) { setError('Please enter your date of birth.'); return; }
-    setError('');
-
-    const chart = dob ? buildLoshuChart(dob) : null;
-    const nameRes = name.trim() ? chaldean(name) : null;
-    const now = new Date();
-    let personal = 0;
-    if (chart) {
-      const py = reduceTo9(reduceTo9(chart.day) + reduceTo9(chart.month) + reduceTo9(now.getFullYear()));
-      const pm = reduceTo9(py + (now.getMonth() + 1));
-      const pd = reduceTo9(pm + now.getDate());
-      personal = calc === 'year' ? py : calc === 'month' ? pm : pd;
-    }
-
-    setResult({
-      calc,
-      name: name.trim(),
-      driver: chart?.driver ?? 0,
-      conductor: chart?.conductor ?? 0,
-      kua: chart && gender ? kuaNumber(chart.year, gender) : null,
-      counts: chart?.counts ?? {},
-      nameRoot: nameRes?.root ?? 0,
-      nameCompound: nameRes?.compound ?? 0,
-      personal,
-    });
+  const compute = (iso: string) => {
+    const date = parseISODate(iso);
+    if (date) setResult(build(date));
   };
 
-  return (
-    <div className="space-y-8">
-      {/* Galaxy form */}
-      <div className="relative overflow-hidden rounded-3xl border border-white/12 bg-cosmic-darker/55 p-6 backdrop-blur-md sm:p-8">
-        <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30"
-          style={{ backgroundImage: 'radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
-        <div className="relative grid gap-4 sm:grid-cols-2">
-          <Input id="lp-name" label="Full name" placeholder="Enter name" value={name}
-            onChange={(e) => setName(e.target.value)} />
-          <DateSelect value={dob} onChange={setDob} />
-          <Select id="lp-gender" label="Gender" value={gender}
-            onChange={(e) => setGender(e.target.value as '' | 'male' | 'female')}>
-            <option value="">Select gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </Select>
-          <Select id="lp-calc" label="Select calculator" value={calc}
-            onChange={(e) => setCalc(e.target.value as CalculatorId)}>
-            <option value="">Select calculator</option>
-            {CALCULATORS.map((c) => <option key={c.id} value={c.id}>{c.label}</option>)}
-          </Select>
-        </div>
-        <div className="relative mt-6 flex items-center gap-4">
-          <Button onClick={run}><Wand2 className="mr-2 h-4 w-4" /> Get results</Button>
-          {error && <span className="text-sm text-error">{error}</span>}
-        </div>
-      </div>
+  useEffect(() => {
+    const link = takeResultLink();
+    if (!link) return;
+    setDob(link.dob);
+    compute(link.dob);
+  }, []);
 
-      <AnimatePresence mode="wait">
-        {result && (
-          <motion.div key={result.calc + result.driver + result.nameCompound + result.personal}
-            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-            className="rounded-3xl border border-white/10 bg-cosmic-light/30 p-6 backdrop-blur-sm sm:p-8">
-            <p className="mb-1 text-sm font-medium text-brand-cyan-300">Hey {result.name || 'seeker'},</p>
-            <p className="mb-6 text-xs uppercase tracking-[0.2em] text-white/45">
-              Your {CALCULATORS.find((c) => c.id === result.calc)?.label}
+  useEffect(() => { if (result) heading.current?.focus(); }, [result]);
+
+  useShareResult(result ? `My Life Path number is ${coreLabel(result.lifePath)} (${NUMBER_TRAIT[result.lifePath.value]}).` : null);
+
+  const save = () => {
+    if (!result) return;
+    saveReading({
+      toolId: 'life-path', toolName: 'Life Path Number',
+      summary: `Life Path ${coreLabel(result.lifePath)} · Mulank ${result.grid.driver} · Bhagyank ${result.grid.conductor} · Personal year ${result.cycles.year}`,
+    });
+    notify('Life Path report saved on this device');
+  };
+
+  const lp = result?.lifePath;
+  const master = lp ? masterNote(lp.value) : null;
+  const friends = result ? relationsOf(result.grid.driver) : null;
+  const current = result ? pinnacleAt(result.pinnacles, result.cycles.age) : null;
+  const report: Report | null = result ? {
+    title: 'Life Path Report', subtitle: `Date of birth: ${formatYMD(result.date)}`,
+    sections: lifePathSections(result.date, result.lifePath, result.birthday, result.grid, result.pinnacles, result.cycles, result.today),
+    footer: REPORT_FOOTER,
+  } : null;
+
+  return (
+    <div className="space-y-10">
+      <Card className="p-6 sm:p-8">
+        <div className="sm:max-w-md">
+          <BirthFields idPrefix="lifepath" dob={dob} onDob={setDob} withGender={false} />
+        </div>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Button onClick={() => compute(dob)} disabled={!dob}>
+            <Compass className="mr-2 h-4 w-4" /> Show my Life Path
+          </Button>
+          {result && (
+            <Button variant="ghost" onClick={() => { setResult(null); setDob(''); }}>
+              <RotateCcw className="mr-2 h-4 w-4" /> Start again
+            </Button>
+          )}
+        </div>
+      </Card>
+
+      {result && lp && friends && current && report && (
+        <div className="space-y-10">
+          <section>
+            <h3 ref={heading} tabIndex={-1} className={`${H3} outline-none`}>Your Life Path number</h3>
+            <Card className="p-6 sm:p-8">
+              <div className="flex flex-wrap items-center gap-5">
+                <span className="grid h-20 min-w-20 place-items-center rounded-2xl px-3 font-display text-4xl font-bold"
+                  style={{ background: NUMBERS[result.grid.conductor].colour.fill, color: NUMBERS[result.grid.conductor].colour.ink }}>
+                  {lp.value}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="font-heading text-h4 text-white">
+                    Life Path {coreLabel(lp)} · {master ? master.archetype : NUMBERS[result.grid.conductor].archetype}
+                  </p>
+                  <p className="mt-1 text-sm text-white/60">Pythagorean (Western) · {coreWorking(lp)}</p>
+                </div>
+              </div>
+              <p className="mt-5 max-w-3xl text-body leading-relaxed text-white/75">{LIFE_PATH_TEXT[lp.value]}</p>
+              {lp.karmicDebt && <p className="mt-3 max-w-3xl text-sm leading-relaxed text-white/65">{KARMIC_DEBT_TEXT[lp.karmicDebt]}</p>}
+              {lp.alternative && (
+                <p className="mt-3 max-w-3xl text-sm leading-relaxed text-white/65">
+                  Other calculators may show {lp.alternative.value}. That comes from adding every digit of the date in one go. This page reduces the month, day and year separately first, which is the method most teachers use for master numbers; the single digit, {lp.root}, is the same either way.
+                </p>
+              )}
+            </Card>
+          </section>
+
+          <section>
+            <h3 className={H3}>Mulank, Bhagyank and Birthday number</h3>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <NumberCard label="Mulank · Driver" value={result.grid.driver} system="Lo Shu (Indian)" note="From the day you were born.">
+                {NUMBERS[result.grid.driver].strength}
+              </NumberCard>
+              <NumberCard label="Bhagyank · Conductor" value={result.grid.conductor} system="Lo Shu (Indian)" note="From the whole date. Always the same digit as the Life Path.">
+                {NUMBERS[result.grid.conductor].growthEdge}
+              </NumberCard>
+              <NumberCard label="Birthday number" value={result.birthday.value} system="Pythagorean (Western)" note={CORE_ROLE.birthday}>
+                Read as {NUMBER_TRAIT[result.birthday.value]}.
+              </NumberCard>
+            </div>
+            <p className="mt-3 text-sm text-white/65">
+              To see these numbers placed in the square, with missing and repeated numbers, open the{' '}
+              <Link to="/tools/loshu-grid" className="text-brand-cyan-soft underline underline-offset-2 hover:text-white">Lo Shu Grid Calculator</Link>.
             </p>
-            <ReportBody r={result} />
-            <div className="mt-6 flex flex-wrap items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.02] px-5 py-3.5">
-              <p className="text-sm text-white/60">Share your result</p>
-              <ShareBar url={window.location.href} title="Numerology & Lo Shu Calculator · VediCosmic"
-                text={shareLineFor(result)} className="ml-auto" />
+          </section>
+
+          <section>
+            <h3 className={H3}>Friendly numbers and colours for Mulank {result.grid.driver}</h3>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              <Fact label="Friendly numbers" value={friends.friends.join(', ') || 'None'} />
+              <Fact label="Neutral numbers" value={friends.neutral.join(', ') || 'None'} />
+              <Fact label="Numbers its planet is cool towards" value={friends.enemies.join(', ') || 'None'} />
+              <Fact label={`Colours linked with ${NUMBERS[result.grid.driver].planet}`} value={NUMBERS[result.grid.driver].colours.join(', ')} />
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
+            <p className="mt-3 max-w-3xl text-xs leading-relaxed text-white/60">
+              Often called lucky and unlucky numbers and colours. They follow the traditional friendships between the planets that rule each number, and are a matter of preference, not of fortune.
+            </p>
+          </section>
 
-function Chip({ children, color }: { children: React.ReactNode; color?: string }) {
-  return (
-    <span className="inline-flex items-center gap-1.5 rounded-lg border border-white/12 bg-white/5 px-3 py-1.5 text-sm text-white/80">
-      {color && <span className="h-3.5 w-3.5 rounded-full" style={{ background: color }} />}
-      {children}
-    </span>
-  );
-}
-
-function NumberBadge({ n }: { n: number }) {
-  const info = LOSHU_NUMBERS[n] ?? LOSHU_NUMBERS[1];
-  return (
-    <span className="grid h-8 w-8 place-items-center rounded-lg text-sm font-bold text-[#1a1330]" style={{ background: info.color }}>{n}</span>
-  );
-}
-
-function StrengthWeakness({ n }: { n: number }) {
-  return (
-    <div className="mt-6 grid gap-4 sm:grid-cols-2">
-      <div className="rounded-2xl border border-success/25 bg-success/5 p-5">
-        <span className="inline-block rounded-full bg-success/20 px-3 py-0.5 text-xs font-medium text-success">Strength</span>
-        <p className="mt-3 text-sm leading-relaxed text-white/75">{STRENGTH[n]}</p>
-      </div>
-      <div className="rounded-2xl border border-error/25 bg-error/5 p-5">
-        <span className="inline-block rounded-full bg-error/20 px-3 py-0.5 text-xs font-medium text-error">Weakness</span>
-        <p className="mt-3 text-sm leading-relaxed text-white/75">{WEAKNESS[n]}</p>
-      </div>
-    </div>
-  );
-}
-
-function MiniGrid({ counts }: { counts: Record<number, number> }) {
-  return (
-    <div className="mx-auto grid w-full max-w-[280px] grid-cols-3 gap-2">
-      {LOSHU_LAYOUT.flat().map((n) => {
-        const info = LOSHU_NUMBERS[n];
-        const c = counts[n] || 0;
-        return (
-          <div key={n} className="flex aspect-square flex-col items-center justify-center rounded-xl text-center"
-            style={{ background: c ? info.color : 'rgba(255,255,255,0.04)', border: c ? 'none' : '1px dashed rgba(255,255,255,0.15)' }}>
-            <span className="font-heading text-lg font-bold" style={{ color: c ? '#1a1330' : 'rgba(255,255,255,0.25)' }}>
-              {c ? String(n).repeat(c) : n}
-            </span>
-            <span className="text-[0.6rem] font-semibold tracking-wider" style={{ color: c ? 'rgba(26,19,48,0.65)' : 'rgba(255,255,255,0.28)' }}>
-              {info.planet.toUpperCase()}
-            </span>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-function ReportBody({ r }: { r: Result }) {
-  switch (r.calc) {
-    case 'free-dob':
-      return (
-        <div>
-          <MiniGrid counts={r.counts} />
-          <div className="mt-5 flex flex-wrap justify-center gap-2.5">
-            <Chip><span className="text-white/50">Driver</span> <NumberBadge n={r.driver} /></Chip>
-            <Chip><span className="text-white/50">Conductor</span> <NumberBadge n={r.conductor} /></Chip>
-            {r.kua != null && <Chip><span className="text-white/50">Kua</span> <NumberBadge n={r.kua} /></Chip>}
-          </div>
-          <StrengthWeakness n={r.driver} />
-        </div>
-      );
-    case 'name-number':
-      return (
-        <div className="text-center">
-          <div className="flex items-center justify-center gap-3">
-            <div className="grid h-28 w-28 place-items-center rounded-full font-display text-5xl font-bold text-white"
-              style={{ background: LOSHU_NUMBERS[r.nameRoot]?.color, boxShadow: `0 0 50px -10px ${LOSHU_NUMBERS[r.nameRoot]?.color}` }}>
-              {r.nameRoot}
+          <section>
+            <h3 className={H3}>Your personal year, month and day</h3>
+            <p className="mb-4 text-sm text-white/65">For {formatYMD(result.today)}. The personal year changes on 1 January.</p>
+            <div className="grid gap-3 md:grid-cols-3">
+              <NumberCard label={`Personal year · ${CYCLE_TEXT[result.cycles.year].keyword}`} value={result.cycles.year} system="Pythagorean (Western)">
+                {CYCLE_TEXT[result.cycles.year].year}
+              </NumberCard>
+              <NumberCard label={`Personal month · ${CYCLE_TEXT[result.cycles.month].keyword}`} value={result.cycles.month} system="Pythagorean (Western)">
+                {CYCLE_TEXT[result.cycles.month].short}
+              </NumberCard>
+              <NumberCard label={`Personal day · ${CYCLE_TEXT[result.cycles.day].keyword}`} value={result.cycles.day} system="Pythagorean (Western)">
+                {CYCLE_TEXT[result.cycles.day].short}
+              </NumberCard>
             </div>
-            <div className="grid h-20 w-20 place-items-center rounded-full bg-teal-cosmic font-heading text-lg font-semibold text-white">Σ-{r.nameCompound}</div>
-          </div>
-          <p className="mt-4 text-lg font-medium text-white">{r.name} vibrates to {r.nameRoot} — {LOSHU_NUMBERS[r.nameRoot]?.planet}</p>
-          <StrengthWeakness n={r.nameRoot} />
+          </section>
+
+          <section>
+            <h3 className={H3}>Pinnacles and challenges</h3>
+            <p className="mb-4 max-w-3xl text-sm leading-relaxed text-white/65">
+              Western numerology divides a life into four long chapters. Each has a pinnacle, its main theme, and a challenge that runs beside it.
+            </p>
+            <ol className="grid gap-3 md:grid-cols-2">
+              {result.pinnacles.map((p) => (
+                <li key={p.index} className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h4 className="font-medium text-white">
+                      Ages {p.fromAge}{p.toAge === null ? ' onwards' : `–${p.toAge}`}: pinnacle {p.number}
+                    </h4>
+                    {p.index === current.index && <Badge tone="gold">Now</Badge>}
+                  </div>
+                  <p className="mt-2 text-sm leading-relaxed text-white/70">{PINNACLE_TEXT[p.number]}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-white/60">{CHALLENGE_TEXT[p.challenge]}</p>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          <section className="space-y-4">
+            <HowCalculated steps={steps(result)} />
+            <NumerologyMethodLine method="Life Path by the component method: month, day and year are each added down first, keeping 11, 22 and 33." />
+            <ResultActions toolSlug="life-path" link={{ dob: toISODate(result.date), gender: null }} onSave={save} saveLabel="Save this report" />
+          </section>
+
+          <PrintReport report={report} />
         </div>
-      );
-    case 'lucky-color': {
-      const set = LUCKY_COLORS[r.driver];
-      return (
-        <div className="space-y-5">
-          <p className="text-sm text-white/60">Based on your Driver number <b className="text-white">{r.driver}</b> ({LOSHU_NUMBERS[r.driver].planet}).</p>
-          <div>
-            <p className="mb-2 text-xs uppercase tracking-wider text-success">Lucky colours</p>
-            <div className="flex flex-wrap gap-2">{set.lucky.map((c) => <Chip key={c.n} color={c.hex}>{c.n}</Chip>)}</div>
-          </div>
-          <div>
-            <p className="mb-2 text-xs uppercase tracking-wider text-error">Colours to avoid</p>
-            <div className="flex flex-wrap gap-2">{set.avoid.map((c) => <Chip key={c.n} color={c.hex}>{c.n}</Chip>)}</div>
-          </div>
-        </div>
-      );
-    }
-    case 'lucky-number': {
-      const set = LUCKY_NUMBERS[r.driver];
-      const Row = ({ label, nums, tone }: { label: string; nums: number[]; tone: string }) => (
-        <div>
-          <p className={`mb-2 text-xs uppercase tracking-wider ${tone}`}>{label}</p>
-          <div className="flex flex-wrap gap-2">{nums.map((n) => <NumberBadge key={n} n={n} />)}</div>
-        </div>
-      );
-      return (
-        <div className="space-y-5">
-          <p className="text-sm text-white/60">Based on your Driver number <b className="text-white">{r.driver}</b> ({LOSHU_NUMBERS[r.driver].planet}).</p>
-          <Row label="Friendly numbers" nums={set.friend} tone="text-success" />
-          <Row label="Neutral numbers" nums={set.neutral} tone="text-white/55" />
-          <Row label="Numbers to avoid" nums={set.avoid} tone="text-error" />
-        </div>
-      );
-    }
-    case 'today':
-    case 'month':
-    case 'year': {
-      const frame = r.calc === 'today' ? `Today, ${todayLabel()}` : r.calc === 'month' ? 'This month' : 'This year';
-      return (
-        <div>
-          <div className="flex items-center gap-3">
-            <NumberBadge n={r.personal} />
-            <p className="text-lg font-medium text-white">{frame} carries a {r.personal}-vibration</p>
-          </div>
-          <p className="mt-4 text-sm leading-relaxed text-white/75">{CYCLE[r.personal]}</p>
-          <p className="mt-3 text-xs text-white/40">Ruled by {LOSHU_NUMBERS[r.personal].planet} · {LOSHU_NUMBERS[r.personal].keyword}</p>
-        </div>
-      );
-    }
-    default:
-      return null;
-  }
+      )}
+    </div>
+  );
+}
+
+function Fact({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+      <h4 className="text-xs uppercase tracking-wide text-white/55">{label}</h4>
+      <p className="mt-1 font-heading text-lg text-white">{value}</p>
+    </div>
+  );
 }

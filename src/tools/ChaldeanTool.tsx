@@ -1,110 +1,162 @@
-import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, Sparkles } from 'lucide-react';
-import { chaldean } from '@/lib/chaldean';
-import { LOSHU_NUMBERS } from '@/data/loshu';
-import { NUMBER_COLORS } from '@/data/predictions';
+import { useMemo, useState } from 'react';
+import { X } from 'lucide-react';
+import { chaldeanName, expression, normalizeName, type ChaldeanResult } from '@/engine/numerology';
+import { NUMBERS } from '@/data/numerology/numbers';
+import { COMPOUND_SOURCE, compoundReading } from '@/data/numerology/chaldeanCompounds';
+import { REPORT_FOOTER, chaldeanSections, coreLabel } from '@/lib/numerologyReport';
 import { Card } from '@/components/ui/Card';
+import { Input } from '@/components/ui/Field';
+import { HowCalculated, NumerologyMethodLine } from '@/components/numerology/HowCalculated';
+import { ResultActions } from '@/components/numerology/ResultActions';
+import { PrintReport } from '@/components/numerology/PrintReport';
+import { useDeviceStore } from '@/contexts/DeviceStoreContext';
+import { useShareResult } from '@/contexts/ShareContext';
+import { useToast } from '@/contexts/ToastContext';
 
-const KIND_LABEL: Record<string, string> = {
-  name: 'Name vibration', number: 'Number vibration', mixed: 'Mixed vibration', date: 'Date vibration',
-};
+const H3 = 'mb-3 font-heading text-h5 text-white';
+
+/** A name's compound and root with its colour chip. */
+function Summary({ result, label }: { result: ChaldeanResult; label: string }) {
+  const info = NUMBERS[result.root];
+  const reading = result.compoundKey ? compoundReading(result.compoundKey) : null;
+  return (
+    <Card className="h-full p-6">
+      <p className="text-xs uppercase tracking-wide text-white/55">{label}</p>
+      <div className="mt-3 flex flex-wrap items-center gap-4">
+        <span className="grid h-16 min-w-16 place-items-center rounded-2xl px-2 font-display text-3xl font-bold"
+          style={{ background: info.colour.fill, color: info.colour.ink }}>{result.root}</span>
+        <div>
+          <p className="font-heading text-h4 text-white">Root {result.root} · {info.planet}</p>
+          <p className="text-sm text-white/60">Compound {result.compound} · Chaldean</p>
+        </div>
+      </div>
+      <p className="mt-4 text-sm leading-relaxed text-white/75">{info.strength}</p>
+      {reading && (
+        <div className="mt-4 rounded-xl border border-white/10 bg-white/[0.03] p-4">
+          <h4 className="text-sm font-medium text-white">
+            Compound {result.compoundKey}{reading.symbol ? ` · ${reading.symbol}` : ''}
+          </h4>
+          <p className="mt-1 text-sm leading-relaxed text-white/70">{reading.text}</p>
+          {result.compoundKey !== result.compound && (
+            <p className="mt-1 text-xs text-white/55">{result.compound} is above 52, so its digits are added to reach {result.compoundKey}.</p>
+          )}
+          {reading.sameAs && <p className="mt-1 text-xs text-white/55">Cheiro gives {reading.number} the same reading as {reading.sameAs}.</p>}
+        </div>
+      )}
+    </Card>
+  );
+}
 
 export default function ChaldeanTool() {
   const [raw, setRaw] = useState('');
-  const result = useMemo(() => chaldean(raw), [raw]);
-  const info = result ? LOSHU_NUMBERS[result.root] : null;
-  const color = result ? NUMBER_COLORS[result.root] : '#5E7785';
+  const [other, setOther] = useState('');
+  const result = useMemo(() => chaldeanName(raw), [raw]);
+  const second = useMemo(() => chaldeanName(other), [other]);
+  const name = useMemo(() => normalizeName(raw), [raw]);
+  const western = useMemo(() => (name.letters ? expression(name) : null), [name]);
+  const { saveReading } = useDeviceStore();
+  const { notify } = useToast();
+
+  useShareResult(result ? `A name I checked has the Chaldean compound number ${result.compound} and root ${result.root} (${NUMBERS[result.root].planet}).` : null);
+
+  const save = () => {
+    if (!result) return;
+    saveReading({ toolId: 'chaldean', toolName: 'Chaldean Numerology', summary: `Compound ${result.compound} · Root ${result.root} (${NUMBERS[result.root].planet})` });
+    notify('Name number saved on this device');
+  };
+
+  const typed = raw.trim().length > 0;
 
   return (
-    <div className="space-y-8">
-      {/* Galaxy input */}
-      <div className="relative overflow-hidden rounded-3xl border border-white/12 bg-cosmic-darker/60 p-5 backdrop-blur-md sm:p-7">
-        <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40"
-          style={{ backgroundImage: 'radial-gradient(rgba(255,255,255,0.10) 1px, transparent 1px)', backgroundSize: '18px 18px' }} />
-        <div className="relative">
-          <label className="mb-2 block text-xs uppercase tracking-[0.25em] text-brand-cyan-300">Name or number or DOB</label>
-          <div className="flex items-center gap-3 rounded-2xl border border-white/15 bg-cosmic-dark/70 px-4 py-3">
-            <input
-              value={raw}
-              onChange={(e) => setRaw(e.target.value)}
-              placeholder="e.g. Parteek · 9876543210 · 15-08-1996"
-              className="w-full bg-transparent font-heading text-2xl text-white outline-none placeholder:text-white/25"
-              autoFocus
-            />
+    <div className="space-y-10">
+      <Card className="p-6 sm:p-8">
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="relative">
+            <Input id="chaldean-name" label="Name, word or number" value={raw} autoComplete="off"
+              placeholder="e.g. Rahul Sharma" onChange={(e) => setRaw(e.target.value)}
+              aria-describedby="chaldean-help" className="pr-11 text-lg" />
             {raw && (
-              <button onClick={() => setRaw('')} aria-label="Clear" className="text-white/40 transition-colors hover:text-white">
-                <X className="h-6 w-6" />
+              <button type="button" onClick={() => setRaw('')} aria-label="Clear the name"
+                className="absolute bottom-3 right-3 text-white/55 hover:text-white">
+                <X className="h-5 w-5" />
               </button>
             )}
           </div>
-          {result && <p className="mt-2 text-right text-sm text-white/40">{result.count} characters</p>}
+          <Input id="chaldean-other" label="Compare another spelling (optional)" value={other} autoComplete="off"
+            placeholder="e.g. Rahull Sharma" onChange={(e) => setOther(e.target.value)} className="text-lg" />
         </div>
-      </div>
-
-      {result && info ? (
-        <Card className="relative overflow-hidden p-6 sm:p-10">
-          <motion.div aria-hidden className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full blur-3xl"
-            animate={{ backgroundColor: color }} transition={{ duration: 0.5 }} style={{ opacity: 0.18 }} />
-
-          {/* the two-circle emblem — colour transitions live as you type */}
-          <div className="relative flex items-center justify-center py-4">
-            <motion.div
-              animate={{ backgroundColor: color, boxShadow: `0 0 60px -8px ${color}` }}
-              transition={{ duration: 0.5 }}
-              className="relative grid h-40 w-40 place-items-center rounded-full sm:h-52 sm:w-52"
-            >
-              <AnimatePresence mode="popLayout">
-                <motion.span key={result.root}
-                  initial={{ opacity: 0, scale: 0.4, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.4, y: -10 }} transition={{ type: 'spring', stiffness: 260, damping: 18 }}
-                  className="font-display text-6xl font-bold text-white drop-shadow sm:text-7xl">
-                  {result.root}
-                </motion.span>
-              </AnimatePresence>
-            </motion.div>
-            <div className="relative -ml-6 grid h-24 w-24 place-items-center rounded-full sm:-ml-8 sm:h-28 sm:w-28"
-              style={{ background: '#1F8A50', boxShadow: '0 0 40px -10px #1F8A50' }}>
-              <AnimatePresence mode="popLayout">
-                <motion.span key={result.compound}
-                  initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.6 }}
-                  className="font-heading text-xl font-semibold text-white sm:text-2xl">
-                  Σ-{result.compound}
-                </motion.span>
-              </AnimatePresence>
-            </div>
-          </div>
-
-          <p className="mt-2 text-center font-heading text-h4 text-gradient-gold">Chaldean Numerology</p>
-
-          <div className="mx-auto mt-6 max-w-xl text-center">
-            <p className="text-lg font-medium text-white">
-              {KIND_LABEL[result.kind]} · ruled by {info.planet} <span className="text-white/40">({info.sanskrit})</span>
-            </p>
-            <p className="mt-2 text-sm leading-relaxed text-white/65">{info.trait}</p>
-            <p className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-gold-400/30 bg-gold-400/5 px-3 py-1 text-xs text-gold-300">
-              <Sparkles className="h-3.5 w-3.5" /> {info.keyword}
-            </p>
-          </div>
-
-          {/* per-character breakdown — each glyph shows its Chaldean value */}
-          <div className="mt-7 flex flex-wrap justify-center gap-1.5">
-            {result.breakdown.map((b, i) => (
-              <motion.span key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.02 }}
-                className="inline-flex min-w-[2.4rem] flex-col items-center rounded-lg border border-white/10 bg-white/5 px-2 py-1">
-                <span className="font-mono text-sm text-white">{b.ch}</span>
-                <span className="text-[0.65rem]" style={{ color }}>{b.val}</span>
-              </motion.span>
-            ))}
-          </div>
-          <p className="mt-4 text-center text-xs text-white/40">
-            {result.breakdown.map((b) => b.val).join(' + ')} = {result.compound} → {result.root}
-          </p>
-        </Card>
-      ) : (
-        <p className="py-10 text-center text-sm text-white/40">
-          Start typing a name, phone number, or date — its Chaldean total appears instantly, and the colour shifts with every number.
+        <p id="chaldean-help" className="mt-3 text-xs leading-relaxed text-white/55">
+          The result updates as you type. Use the spelling you actually sign with. A business or brand name works the same way, and digits keep their own value.
         </p>
+        {typed && name.hasNonLatin && (
+          <p role="alert" className="mt-3 text-sm text-warning">
+            Chaldean values are defined for the English alphabet only, so letters from other scripts cannot be counted. Please type the name in English letters.
+          </p>
+        )}
+        {typed && !result && !name.hasNonLatin && (
+          <p role="alert" className="mt-3 text-sm text-warning">Nothing here can be counted yet. Type letters A to Z or digits.</p>
+        )}
+      </Card>
+
+      {result && (
+        <div className="space-y-10">
+          {/* One short line for screen readers; the full result would be read out on every keystroke. */}
+          <p role="status" className="sr-only">Compound {result.compound}, root {result.root}, {NUMBERS[result.root].planet}.</p>
+          <section>
+            <h3 className={H3}>Name number</h3>
+            <div className={`grid gap-4 ${second ? 'md:grid-cols-2' : ''}`}>
+              <Summary result={result} label={second ? 'First spelling' : 'Your entry'} />
+              {second && <Summary result={second} label="Second spelling" />}
+            </div>
+            {second && (
+              <p className="mt-3 text-sm leading-relaxed text-white/65">
+                {second.root === result.root
+                  ? `Both spellings come to the same root, ${result.root}; only the compound number differs (${result.compound} and ${second.compound}).`
+                  : `The spellings give different roots: ${result.root} (${NUMBERS[result.root].planet}) and ${second.root} (${NUMBERS[second.root].planet}).`}
+              </p>
+            )}
+          </section>
+
+          <section>
+            <h3 className={H3}>Letter by letter</h3>
+            <div className="space-y-4">
+              {result.words.map((w, i) => (
+                <div key={`${w.word}-${i}`} className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <h4 className="font-heading text-lg text-white">{w.word}</h4>
+                    <p className="text-sm text-white/65">Total {w.total}, root {w.root}</p>
+                  </div>
+                  <ul className="mt-3 flex flex-wrap gap-1.5" aria-label={`Letter values for ${w.word}`}>
+                    {w.letters.map((l, j) => (
+                      <li key={j} className="grid w-9 rounded-md border border-white/10 py-1 text-center">
+                        <span className="text-sm font-medium text-white">{l.ch}</span>
+                        <span className="text-xs text-white/60">{l.value}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+            {result.words.length > 1 && (
+              <p className="mt-3 text-sm leading-relaxed text-white/65">
+                Some teachers add each word down first and then add the roots: {result.words.map((w) => w.root).join(' + ')} = {result.perWordTotal}. The root is the same either way.
+              </p>
+            )}
+            {western && (
+              <p className="mt-3 text-sm leading-relaxed text-white/65">
+                For comparison, the Western (Pythagorean) letter values give this name an Expression number of {coreLabel(western)}. The two systems use different tables, so the numbers need not match.
+              </p>
+            )}
+          </section>
+
+          <section className="space-y-4">
+            <HowCalculated steps={result.steps} />
+            <NumerologyMethodLine method={`Cheiro’s Chaldean letter values (1 to 8; no letter is 9). ${COMPOUND_SOURCE}`} />
+            <ResultActions toolSlug="chaldean" onSave={save} saveLabel="Save these numbers" />
+          </section>
+
+          <PrintReport report={{ title: 'Chaldean Name Number', subtitle: `Entry: ${raw.trim()}`, sections: chaldeanSections(result), footer: REPORT_FOOTER }} />
+        </div>
       )}
     </div>
   );

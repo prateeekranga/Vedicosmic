@@ -1,174 +1,199 @@
-import { useMemo, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Smartphone, Sparkles } from 'lucide-react';
-import { analyseMobile, lifePathNum, type MobileResult, type MobileCombinationHit } from '@/lib/numerology';
-import { NUMBER_MEANINGS } from '@/data/numerology';
-import type { CombinationImpact } from '@/data/mobileCombinations';
+import { useEffect, useRef, useState } from 'react';
+import { RotateCcw, Smartphone } from 'lucide-react';
+import {
+  analyseMobile, normalizeMobile, parseISODate, relationTone, type Digit, type MobilePair, type MobileResult, type PairRelation,
+} from '@/engine/numerology';
+import { NUMBERS } from '@/data/numerology/numbers';
+import { DOUBLE_TEXT, PAIR_TEXT, ROOT_FIT_TEXT, SAME_ROOT_TEXT, TONE_LABEL, ZERO_TEXT } from '@/data/numerology/mobileText';
+import { REPORT_FOOTER, mobileSections } from '@/lib/numerologyReport';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Input } from '@/components/ui/Field';
 import { DateSelect } from '@/components/ui/DateSelect';
-import { ShareBar } from '@/components/ShareBar';
+import { HowCalculated, NumerologyMethodLine } from '@/components/numerology/HowCalculated';
+import { ResultActions } from '@/components/numerology/ResultActions';
+import { PrintReport } from '@/components/numerology/PrintReport';
+import { useDeviceStore } from '@/contexts/DeviceStoreContext';
 import { useShareResult } from '@/contexts/ShareContext';
+import { useToast } from '@/contexts/ToastContext';
 
-const VERDICT_TONE: Record<MobileResult['verdict'], 'success' | 'warning' | 'cyan'> = {
-  'Highly Auspicious': 'success',
-  Neutral: 'cyan',
-  Challenging: 'warning',
-};
+const H3 = 'mb-3 font-heading text-h5 text-white';
+const TONE_BADGE = { supportive: 'success', mixed: 'neutral', challenging: 'warning' } as const;
 
-const IMPACT_TONE: Record<CombinationImpact, 'success' | 'error' | 'cyan'> = {
-  Benefic: 'success',
-  Malefic: 'error',
-  Neutral: 'cyan',
-};
+function pairText(p: MobilePair): string {
+  if (p.kind === 'zero') return ZERO_TEXT;
+  if (p.kind === 'double') return DOUBLE_TEXT[p.pair[0] as Digit];
+  return PAIR_TEXT[p.relation!];
+}
 
 export default function MobileNumerologyTool() {
   const [number, setNumber] = useState('');
   const [dob, setDob] = useState('');
   const [result, setResult] = useState<MobileResult | null>(null);
-
-  // Life Path is calculated automatically from the date of birth — no manual entry.
-  const lifePath = useMemo(() => {
-    if (!dob) return null;
-    const [y, m, d] = dob.split('-').map(Number);
-    return lifePathNum(d, m, y);
-  }, [dob]);
+  const [error, setError] = useState('');
+  const heading = useRef<HTMLHeadingElement>(null);
+  const { saveReading } = useDeviceStore();
+  const { notify } = useToast();
 
   const analyse = () => {
-    const digits = number.replace(/\D/g, '');
-    if (digits.length < 6) return;
-    setResult(analyseMobile(number, lifePath?.root));
+    if (!normalizeMobile(number).valid) {
+      setError('Please enter a phone number of 7 to 15 digits.');
+      setResult(null);
+      return;
+    }
+    setError('');
+    const date = dob ? parseISODate(dob) : null;
+    setResult(analyseMobile(number, date ? { date } : undefined));
   };
 
-  const meaning = result ? NUMBER_MEANINGS[result.root] : null;
-  const maxCount = result ? Math.max(...result.frequency.map((f) => f.count), 1) : 1;
-  useShareResult(result && meaning ? `My mobile number's vibration is ${result.root} — ${meaning.name} (${result.verdict}) ✨` : null);
+  useEffect(() => { if (result) heading.current?.focus(); }, [result]);
+
+  useShareResult(result ? `The mobile number I checked has the root number ${result.root} (${NUMBERS[result.root].planet}).` : null);
+
+  const save = () => {
+    if (!result) return;
+    saveReading({ toolId: 'mobile-numerology', toolName: 'Mobile Number Numerology', summary: `Root ${result.root} (${NUMBERS[result.root].planet}) · digit total ${result.total}` });
+    notify('Result saved on this device');
+  };
+
+  const info = result ? NUMBERS[result.root] : null;
+  const max = result ? Math.max(...result.frequency, 1) : 1;
 
   return (
     <div className="space-y-10">
       <Card className="p-6 sm:p-8">
-        <p className="mb-6 text-sm leading-relaxed text-white/60">
-          Every phone number carries a vibration — the single-digit root of all its digits. Discover your number's
-          frequency, how well it harmonises with your own Life Path, and what each adjacent pair of digits means
-          under the classical Two-Digit Combination chart.
-        </p>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Input id="mob-num" label="Mobile number" inputMode="numeric" placeholder="e.g. 98765 43210"
-            value={number} onChange={(e) => setNumber(e.target.value)} />
-          <DateSelect value={dob} onChange={setDob} label="Your date of birth (optional, for Life Path)" />
+        <div className="grid gap-4 md:grid-cols-2">
+          <Input id="mobile-number" label="Mobile number" type="tel" inputMode="tel" autoComplete="off"
+            placeholder="e.g. 98765 43210" value={number} error={error || undefined}
+            aria-describedby="mobile-help" onChange={(e) => setNumber(e.target.value)} />
+          <DateSelect value={dob} onChange={setDob} label="Your date of birth (optional)" />
         </div>
-        {lifePath && (
-          <p className="mt-3 text-xs text-white/45">
-            Life Path {lifePath.value}{lifePath.master && <span className="text-white/30"> (root {lifePath.root})</span>} —
-            calculated automatically from your date of birth.
-          </p>
-        )}
-        <Button className="mt-6" onClick={analyse} disabled={number.replace(/\D/g, '').length < 6}>
-          <Smartphone className="h-4 w-4" /> Analyse frequency
-        </Button>
+        <p id="mobile-help" className="mt-3 text-xs leading-relaxed text-white/55">
+          A leading +91 or 0 is left out, since every number in the country shares it. Add your date of birth to see how the number sits with your Mulank and Bhagyank. The number is not sent to us.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Button onClick={analyse} disabled={!number.trim()}>
+            <Smartphone className="mr-2 h-4 w-4" /> Read this number
+          </Button>
+          {result && (
+            <Button variant="ghost" onClick={() => { setResult(null); setNumber(''); setDob(''); }}>
+              <RotateCcw className="mr-2 h-4 w-4" /> Start again
+            </Button>
+          )}
+        </div>
       </Card>
 
-      <AnimatePresence mode="wait">
-        {result && meaning && (
-          <motion.div key="r" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-            className="space-y-6">
-            <Card className="flex flex-col items-center gap-4 p-8 text-center">
-              <Badge tone={VERDICT_TONE[result.verdict]}>{result.verdict}</Badge>
-              <motion.div initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: 'spring', stiffness: 200, damping: 14 }}
-                className="font-display text-7xl text-gradient-gold">{result.root}</motion.div>
-              <p className="text-sm text-white/50">Digit sum {result.total} reduces to root {result.root}</p>
-              <h3 className="font-heading text-h3 text-white">{meaning.name}</h3>
-              <p className="max-w-lg text-sm leading-relaxed text-white/65">{meaning.strengths}</p>
-              {result.compatibility != null && (
-                <div className="mt-2 w-full max-w-xs">
-                  <div className="mb-1 flex justify-between text-xs text-white/50">
-                    <span>Compatibility with your Life Path {lifePath?.value}</span><span>{result.compatibility}%</span>
-                  </div>
-                  <div className="h-2 overflow-hidden rounded-full bg-white/10">
-                    <motion.div className="h-full rounded-full bg-cyan-sheen"
-                      initial={{ width: 0 }} animate={{ width: `${result.compatibility}%` }}
-                      transition={{ duration: 0.9, ease: 'easeOut' }} />
-                  </div>
+      {result && info && (
+        <div className="space-y-10">
+          <section>
+            <h3 ref={heading} tabIndex={-1} className={`${H3} outline-none`}>The number’s root</h3>
+            <Card className="p-6 sm:p-8">
+              <div className="flex flex-wrap items-center gap-5">
+                <span className="grid h-20 min-w-20 place-items-center rounded-2xl px-3 font-display text-4xl font-bold"
+                  style={{ background: info.colour.fill, color: info.colour.ink }}>{result.root}</span>
+                <div>
+                  <p className="font-heading text-h4 text-white">Root {result.root} · {info.planet} · {info.keyword}</p>
+                  <p className="mt-1 text-sm text-white/60">The digits add to {result.total}.</p>
                 </div>
-              )}
-              <div className="mt-2 flex flex-wrap items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.02] px-5 py-3.5">
-                <p className="text-sm text-white/60">Share your result</p>
-                <ShareBar url={window.location.href} title="Mobile Number Numerology · VediCosmic"
-                  text={`My mobile number's vibration is ${result.root} — ${meaning.name} (${result.verdict}) ✨`} className="ml-auto" />
               </div>
+              <p className="mt-5 max-w-3xl text-body leading-relaxed text-white/75">{info.strength}</p>
+              <p className="mt-3 max-w-3xl text-sm leading-relaxed text-white/60">
+                No number is lucky or unlucky in itself. What tradition reads is how a number’s planet sits with the planets of your own birth numbers.
+              </p>
             </Card>
+          </section>
 
-            <div className="grid gap-6 md:grid-cols-2">
-              <Card className="p-6">
-                <span className="eyebrow">Digit frequency</span>
-                <div className="mt-4 flex items-end justify-between gap-1.5" style={{ height: 120 }}>
-                  {result.frequency.map((f, i) => (
-                    <div key={f.digit} className="flex flex-1 flex-col items-center gap-1">
-                      <motion.div className="w-full rounded-t bg-gradient-to-t from-brand-cyan/40 to-brand-cyan"
-                        initial={{ height: 0 }} animate={{ height: `${(f.count / maxCount) * 90}px` }}
-                        transition={{ delay: i * 0.04, duration: 0.5 }} style={{ minHeight: f.count ? 4 : 0 }} />
-                      <span className="text-[10px] text-white/40">{f.digit}</span>
-                    </div>
-                  ))}
-                </div>
-              </Card>
-              <Card className="p-6">
-                <span className="eyebrow">Patterns & notes</span>
-                <ul className="mt-4 space-y-3 text-sm text-white/70">
-                  <li className="flex justify-between"><span>Cleaned number</span><span className="font-mono text-white/90">{result.cleaned}</span></li>
-                  <li className="flex justify-between"><span>Ruling planet</span><span className="text-white/90">{meaning.planet}</span></li>
-                  <li className="flex justify-between"><span>Two-digit combinations</span><span className="text-white/90">{result.combinations.length} found below</span></li>
-                </ul>
-                <p className="mt-4 text-xs leading-relaxed text-white/45">
-                  This is a reflective tool, not a directive one. A “challenging” root simply asks for more conscious
-                  intention — no number is inherently lucky or unlucky.
-                </p>
-              </Card>
-            </div>
+          {result.withBirth && (
+            <section>
+              <h3 className={H3}>With your birth numbers</h3>
+              <div className="grid gap-3 md:grid-cols-2">
+                <Fit label={`Mulank (Driver) ${result.withBirth.driver}`} own={result.withBirth.driver} root={result.root} relation={result.withBirth.rootToDriver} />
+                <Fit label={`Bhagyank (Conductor) ${result.withBirth.conductor}`} own={result.withBirth.conductor} root={result.root} relation={result.withBirth.rootToConductor} />
+              </div>
+              <p className="mt-3 text-sm leading-relaxed text-white/65">
+                {result.withBirth.suppliesMissing.length
+                  ? `This number contains ${result.withBirth.suppliesMissing.join(', ')}, which ${result.withBirth.suppliesMissing.length === 1 ? 'is' : 'are'} missing from your Lo Shu grid. Some teachers count that in a number’s favour.`
+                  : 'This number contains none of the numbers missing from your Lo Shu grid.'}
+              </p>
+            </section>
+          )}
 
-            {result.combinations.length > 0 && (
-              <Card className="p-0">
-                <div className="p-6 pb-0">
-                  <span className="eyebrow">Two-Digit Combination Analysis</span>
-                  <p className="mt-2 text-xs leading-relaxed text-white/45">
-                    Every adjacent pair of digits in your number, read against the classical chart — each pairing
-                    carries its own blend of the two ruling planets involved.
-                  </p>
-                </div>
-                <div className="mt-5 overflow-x-auto">
-                  <table className="w-full min-w-[560px] text-left text-sm">
-                    <thead className="border-b border-white/10 text-xs uppercase tracking-wider text-white/40">
-                      <tr>
-                        <th className="p-3 pl-6">Two Digit Combo</th>
-                        <th className="p-3">Impact</th>
-                        <th className="p-3 pr-6">Result</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {result.combinations.map((c: MobileCombinationHit, i: number) => (
-                        <motion.tr key={c.pair} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.03 }}
-                          className="border-b border-white/5 last:border-0">
-                          <td className="p-3 pl-6 font-mono text-base font-semibold text-white">{c.pair}</td>
-                          <td className="p-3"><Badge tone={IMPACT_TONE[c.impact]}>{c.impact}</Badge></td>
-                          <td className="p-3 pr-6 leading-snug text-white/70">{c.result}</td>
-                        </motion.tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <p className="p-6 pt-4 text-xs leading-relaxed text-white/35">
-                  A reflective lens, not a directive one — "Malefic" simply flags a pairing worth conscious
-                  awareness, not a fixed fate.
-                </p>
-              </Card>
+          <section>
+            <h3 className={H3}>How often each digit appears</h3>
+            <table className="w-full max-w-xl text-sm">
+              <caption className="sr-only">How many times each digit from 0 to 9 appears in the number</caption>
+              <thead className="sr-only"><tr><th scope="col">Digit</th><th scope="col">Times</th></tr></thead>
+              <tbody>
+                {result.frequency.map((count, digit) => (
+                  <tr key={digit}>
+                    <th scope="row" className="w-8 py-1 text-left font-heading text-base text-white">{digit}</th>
+                    <td className="py-1">
+                      <span className="flex items-center gap-3">
+                        <span aria-hidden="true" className="h-2.5 rounded-full bg-brand-cyan/70" style={{ width: `${(count / max) * 70}%`, minWidth: count ? '0.5rem' : 0 }} />
+                        <span className="text-white/75">{count === 0 ? 'not present' : count === 1 ? 'once' : `${count} times`}</span>
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {result.heavy.length > 0 && (
+              <p className="mt-3 text-sm leading-relaxed text-white/65">
+                Appearing three times or more: {result.heavy.map((h) => `${h.digit} (${h.count} times)`).join(', ')}. A heavily repeated digit is read as that planet’s theme sounding strongly in the number.
+              </p>
             )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </section>
+
+          <section>
+            <h3 className={H3}>Neighbouring pairs</h3>
+            <p className="mb-4 max-w-3xl text-sm leading-relaxed text-white/65">
+              Each pair of digits side by side is read through the friendship between its two planets.
+            </p>
+            <ul className="grid gap-3 md:grid-cols-2">
+              {result.pairs.map((p) => {
+                const tone = p.relation ? relationTone(p.relation) : null;
+                return (
+                  <li key={p.pair.join('')} className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h4 className="font-heading text-lg text-white">{p.pair.join('')}</h4>
+                      {p.count > 1 && <span className="text-xs text-white/55">appears {p.count} times</span>}
+                      {p.kind === 'planetary' && (
+                        <span className="text-xs text-white/55">{NUMBERS[p.pair[0] as Digit].planet} and {NUMBERS[p.pair[1] as Digit].planet}</span>
+                      )}
+                      {tone && <Badge tone={TONE_BADGE[tone]}>{TONE_LABEL[tone]}</Badge>}
+                    </div>
+                    <p className="mt-2 text-sm leading-relaxed text-white/70">{pairText(p)}</p>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+
+          <section className="space-y-4">
+            <HowCalculated steps={result.steps} />
+            <NumerologyMethodLine method="The digits are added down to a root; pairs and fit follow the traditional friendships between the planets." />
+            <ResultActions toolSlug="mobile-numerology" onSave={save} />
+          </section>
+
+          <PrintReport report={{ title: 'Mobile Number Numerology', subtitle: `Number: ${result.digits.join('')}`, sections: mobileSections(result), footer: REPORT_FOOTER }} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Fit({ label, own, root, relation }: { label: string; own: Digit; root: Digit; relation: PairRelation }) {
+  const same = own === root;
+  const tone = same ? 'supportive' : relationTone(relation.mutual);
+  return (
+    <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+      <div className="flex flex-wrap items-center gap-2">
+        <h4 className="font-medium text-white">{label}</h4>
+        <Badge tone={TONE_BADGE[tone]}>{TONE_LABEL[tone]}</Badge>
+      </div>
+      <p className="mt-1 text-xs text-white/55">{NUMBERS[root].planet} with {NUMBERS[own].planet}</p>
+      <p className="mt-2 text-sm leading-relaxed text-white/70">{same ? SAME_ROOT_TEXT : ROOT_FIT_TEXT[relation.mutual]}</p>
     </div>
   );
 }

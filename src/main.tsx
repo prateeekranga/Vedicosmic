@@ -5,7 +5,12 @@ import App from './App';
 import { initAnalytics } from '@/lib/analytics';
 import { initMonitoring } from '@/lib/monitoring';
 import { markPrerendered } from '@/lib/hydration';
+import { captureResultLink } from '@/lib/resultLink';
 import '@/styles/globals.css';
+
+// A shared result link carries a date of birth after "#". Read it and clean the address bar
+// before anything else runs, so it is never part of a recorded page view.
+captureResultLink();
 
 const container = document.getElementById('root')!;
 const app = (

@@ -13,6 +13,7 @@ import { matchPeople, type MatchReport, type PersonInput } from '@/lib/matchmaki
 import { useDeviceStore } from '@/contexts/DeviceStoreContext';
 import { SaveOnDeviceButton } from '@/components/device/SaveOnDeviceButton';
 import { useToast } from '@/contexts/ToastContext';
+import { parseISODate } from '@/engine/numerology/core';
 
 function useCountUp(target: number, dur = 1200) {
   const [v, setV] = useState(0);
@@ -32,13 +33,8 @@ function useCountUp(target: number, dur = 1200) {
 interface FormPerson { name: string; gender: 'male' | 'female'; dob: string; time: string; place: ChosenPlace | null }
 const blankPerson = (): FormPerson => ({ name: '', gender: 'male', dob: '', time: '06:00', place: null });
 
-/** DateSelect allows day 1-31 regardless of month — catch rollover dates like Feb 30. */
-function isValidISODate(iso: string): boolean {
-  if (!iso) return false;
-  const [y, m, d] = iso.split('-').map(Number);
-  const dt = new Date(iso + 'T00:00:00');
-  return dt.getFullYear() === y && dt.getMonth() + 1 === m && dt.getDate() === d;
-}
+/** A real calendar date in YYYY-MM-DD form. */
+const isValidISODate = (iso: string): boolean => parseISODate(iso) !== null;
 
 function sameEntry(a: FormPerson, b: FormPerson): boolean {
   return a.name.trim().toLowerCase() === b.name.trim().toLowerCase()
@@ -109,7 +105,7 @@ export default function KundaliMatchingTool() {
           <div className="mb-6 text-center">
             <span className="mx-auto mb-3 grid h-12 w-12 place-items-center rounded-full bg-gold-400/10 text-gold-300"><Heart className="h-6 w-6" /></span>
             <h2 className="font-heading text-h3 text-white">Kundali Matching</h2>
-            <p className="mt-1 text-sm text-white/55">Enter both birth details to reveal your Ashtakoot (Guna Milan) score and numerology compatibility.</p>
+            <p className="mt-1 text-sm text-white/55">Enter both birth details to see the Ashtakoot (Guna Milan) score.</p>
           </div>
           <div className="mb-4 flex justify-center">
             <Button variant="ghost" size="sm" onClick={swap}><ArrowLeftRight className="mr-2 h-4 w-4" /> Swap Person A &amp; B</Button>
@@ -132,7 +128,7 @@ export default function KundaliMatchingTool() {
     );
   }
 
-  const { ashtakoot, numerology } = report;
+  const { ashtakoot } = report;
 
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mx-auto max-w-3xl space-y-8">
@@ -151,8 +147,7 @@ export default function KundaliMatchingTool() {
         <h3 className="mb-3 font-heading text-h5 text-white">Overall picture</h3>
         <p className="text-sm leading-relaxed text-white/70">
           The 8-koota Ashtakoot system scores {ashtakoot.total} out of 36 — {ashtakoot.tier.label.toLowerCase()}.
-          Numerologically, your Life Path and Expression numbers align at {numerology.overallPercent}%.
-          Neither system alone tells the whole story — read both alongside your own lived experience of each other, never as a verdict.
+          A score is one thing many families consider; read it alongside your own experience of each other, never as a verdict.
         </p>
       </Card>
 
@@ -182,24 +177,6 @@ export default function KundaliMatchingTool() {
           },
         ]} defaultOpen="nadi" />
       </div>
-
-      <Card className="p-6 sm:p-8">
-        <h3 className="mb-4 font-heading text-h5 text-white">Numerology compatibility</h3>
-        <div className="space-y-4">
-          {[numerology.lifePath, numerology.expression].map((n) => (
-            <div key={n.label}>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-white/70">{n.label}: {n.a} &amp; {n.b}</span>
-                <span className="text-gold-soft">{n.score}%</span>
-              </div>
-              <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-                <div className="h-full rounded-full bg-brand-cyan" style={{ width: `${n.score}%` }} />
-              </div>
-              {n.traditionallyCompatible && <Badge tone="cyan" className="mt-2">Traditionally compatible numbers</Badge>}
-            </div>
-          ))}
-        </div>
-      </Card>
 
       <p className="text-center text-xs text-white/40">
         Moon positions are calculated on your device (Lahiri ayanamsa), with each birth time read in the birth place’s own time zone. A score is one thing many families consider; it is not a verdict on a relationship.

@@ -6,32 +6,45 @@ VediCosmic is a free Vedic astrology, panchang, numerology and practice website.
 
 ## Tools
 
-- [Numerology Blueprint](https://vedicosmic.com/tools/numerology): Free numerology calculator: enter your name and birth date to reveal your Life Path, Expression, Soul Urge, Personality, Birthday and Personal Year numbers as animated orbs, a core-number wheel and your highlighted Lo Shu grid — computed instantly and privately in your browser.
-- [Mobile Number Analysis](https://vedicosmic.com/tools/mobile-numerology): Free mobile number numerology calculator: find the root number of your phone number, its repeating digit patterns, and how well it harmonises with your Life Path — including two-digit combination analysis.
-- [Lo Shu Grid](https://vedicosmic.com/tools/loshu-grid): Free Lo Shu Grid calculator: drop your birth-date digits into the ancient 3×3 magic square and instantly read its ruling planets, repeated-number energies, missing numbers, and arrows of strength and weakness.
-- [Chaldean Numerology](https://vedicosmic.com/tools/chaldean): Free Chaldean numerology calculator: type any name, phone number or date of birth to instantly see its Chaldean compound number, reduced root number, ruling planet, and a full per-letter breakdown.
-- [Find Your Life Path](https://vedicosmic.com/tools/life-path): Free Life Path number calculator and full numerology console in one: get your DOB chart, name number, lucky colours and numbers, plus a personal prediction for today, this month, and this year.
-- [Vedic Birth Chart](https://vedicosmic.com/tools/astrology): Free Vedic birth chart calculator: enter your birth date, time and place to cast a sidereal Rashi chart with your Lagna (Ascendant), Moon and Sun signs, all nine grahas with nakshatra and pada, whole-sign houses and Vimshottari dasha — calculated privately in your browser.
-- [Planetary Hours](https://vedicosmic.com/tools/planetary-hours): Free planetary hours (hora) calculator: see exactly which planet rules this very hour wherever you are, and the best activities to align with each planetary hour throughout the day and night.
-- [Navagraha Mandala](https://vedicosmic.com/tools/planet-mandala): A free interactive Navagraha mandala: spin a living 360° orbital map of the nine Vedic planets (grahas), watch them circle the Sun, and tap any graha to learn its meaning and mythology.
-- [Chakra Balance](https://vedicosmic.com/tools/chakra-assessment): Free chakra test: answer 21 reflective questions to map the balance of your seven chakras on an animated radar chart, revealing which energy centres may need attention.
-- [Japa Mantra Counter](https://vedicosmic.com/tools/mantra-timer): Free 108-bead japa mala counter: chant along with eight sacred mantras, track every round with a satisfying tap, and keep a personal daily streak — no physical mala required.
-- [Trataka Focus](https://vedicosmic.com/tools/tratak): Free Trataka (candle gazing) meditation guide: fix your gaze on a luminous bindu, candle flame, Om symbol or Sri Yantra in distraction-free full screen, with a timer, breath pacer, and a closing afterimage ritual.
-- [Crystal Guide](https://vedicosmic.com/tools/crystals): Free crystal guide: browse twelve crystals by the intentions traditionally associated with them (love, protection, clarity, abundance and more), see how each is used, and build your own crystal kit.
-- [Daily Contemplation Card](https://vedicosmic.com/tools/tarot): A free daily contemplation card: draw one original Vedic-flavoured card each day, reflect on the prompt it offers, and keep a private journal of your insights over time.
-- [Sacred Geometry Lab](https://vedicosmic.com/tools/yantra): Free sacred geometry lab: watch fourteen classical yantras (including the Sri Yantra) draw themselves stroke by stroke, and learn the precise mathematics — ratios, angles, the golden ratio — encoded in each.
-- [Biorhythm Cycles](https://vedicosmic.com/tools/biorhythm): Free biorhythm calculator: plot your physical (23-day), emotional (28-day) and intellectual (33-day) cycles around today and see exactly where each wave sits right now.
-- [Vastu Home Guide](https://vedicosmic.com/tools/vastu): Free Vastu Shastra compass: see which of the eight directions suits every room of your home — kitchen, bedroom, pooja room, entrance and more — with the element and classical reasoning behind each placement.
-- [Kundalini Awakening](https://vedicosmic.com/tools/kundalini): A free, safety-first guided Kundalini meditation, two ways: follow the full video breath guide, or take the immersive animated journey as the coiled serpent rises through all seven chakras with rising tones, spoken bija mantras (English or हिन्दी) and selectable music.
-- [Pranayama Breath Coach](https://vedicosmic.com/tools/pranayama): Free pranayama breathing coach: a glowing orb paces your breath through five classical techniques — Box breathing, 4-7-8, Nadi Shodhana and more — with voice pacing in English or हिन्दी and a nostril guide for alternate-nostril breathing.
-- [Cosmic Sound Bath](https://vedicosmic.com/tools/soundbath): Free online sound bath: mix six sacred, generatively synthesised layers — tanpura, singing bowls, Om, rain, chimes and earth hum — live on your own sliders, with presets like Temple Rain and Deep Space. Nothing here is a recording.
-- [Chakra Frequency Player](https://vedicosmic.com/tools/chakra-frequency-player): Free chakra frequency and sleep meditation player: choose from seven chakra tones and classic Solfeggio frequencies, layer in binaural or isochronic beats, and drift off with a crossfading sleep timer — every tone is synthesised live in your browser with the Web Audio API, not a recording.
-- [Muhurta Finder](https://vedicosmic.com/tools/muhurta): Free Muhurta finder: a live 24-hour day-wheel computed from real sunrise and sunset for your location, showing the golden Abhijit and Brahma Muhurta windows to use, and Rahu Kaal, Yamaganda and Gulika Kaal periods to avoid.
-- [Nakshatra Explorer](https://vedicosmic.com/tools/nakshatra): Free Nakshatra calculator: explore an interactive sky-wheel of all 27 lunar mansions, or enter your birth date and time to instantly find your janma nakshatra (birth star) and pada, with its ruling deity, symbol and nature.
-- [Urdhva Shakti](https://vedicosmic.com/tools/urdhva): A free, compassionate companion for breaking free from porn: a one-tap Urge SOS with guided breath and upward-energy visualisation, a growing streak, the honest science of the dopamine loop, and a 90-day path toward ūrdhvaretas.
-- [Daily Sādhana](https://vedicosmic.com/tools/sadhana): Free daily sadhana home base: see today’s tithi, nakshatra and a living moon phase at a glance, follow a three-step guided practice flow, and track your streak, the next sacred day, and today’s auspicious timing.
-- [Ekadashi & Vrat Calendar](https://vedicosmic.com/tools/vrat-calendar): Free Ekadashi and vrat calendar: a living Hindu lunar calendar with an animated moon phase, computing today’s tithi and the upcoming Ekadashi, Purnima, Amavasya, Pradosh and more from the real positions of the Sun and Moon.
-- [Puja & Aarti](https://vedicosmic.com/tools/puja-aarti): Free virtual puja and aarti: step into an online shrine for seven deities, ring the temple bell, offer flowers, blow the conch, or perform a full Aarti with a circling flame and each deity’s traditional invocation — all generated live, no audio files needed.
+### [Numerology Calculators](https://vedicosmic.com/tools/category/numerology)
+
+- [Numerology Calculator](https://vedicosmic.com/tools/numerology): Enter your name and date of birth to get your Life Path, Expression, Soul Urge and Personality numbers, with Mulank, Bhagyank, Kua and a Lo Shu grid.
+- [Mobile Number Numerology](https://vedicosmic.com/tools/mobile-numerology): Check the numerology of a mobile number: its root number, repeated digits and two-digit pairs, and how it sits with your Mulank and Bhagyank. Free.
+- [Lo Shu Grid Calculator](https://vedicosmic.com/tools/loshu-grid): Make your Lo Shu grid from your date of birth: see missing and repeated numbers, the planes, and your Mulank, Bhagyank and Kua number. Free, no sign-up.
+- [Chaldean Numerology Calculator](https://vedicosmic.com/tools/chaldean): Type a name or a business name to get its Chaldean compound and root numbers, the ruling planet and a letter-by-letter working. Free, in your browser.
+- [Life Path Number Calculator](https://vedicosmic.com/tools/life-path): Work out your Life Path number from your date of birth, with Mulank, Bhagyank, lucky numbers and colours, and your personal day, month and year.
+
+### [Vedic Astrology Calculators](https://vedicosmic.com/tools/category/astrology)
+
+- [Kundli (Vedic Birth Chart)](https://vedicosmic.com/tools/astrology): Make a free kundli from your date, time and place of birth: Lagna, Moon sign, nine grahas with nakshatra and pada, houses and Vimshottari dasha.
+- [Hora Calculator](https://vedicosmic.com/tools/planetary-hours): See the hora running now and the planetary hours of the day and night for your city, counted from sunrise, with what each planet traditionally favours.
+- [Navagraha Mandala](https://vedicosmic.com/tools/planet-mandala): Meet the nine grahas, from Surya to Ketu, on an interactive mandala: each one’s nature, colour and symbolism. Illustrative, not live positions.
+- [Rahu Kaal & Muhurat Finder](https://vedicosmic.com/tools/muhurta): Today’s Rahu Kaal, Yamaganda, Gulika Kaal, Abhijit muhurat and Brahma muhurta for any city and date, worked out from that day’s sunrise and sunset.
+- [Nakshatra Finder](https://vedicosmic.com/tools/nakshatra): Find your janma nakshatra and pada from your date, time and place of birth, then explore all 27 nakshatras with their deities, symbols and nature.
+
+### [Practice Tools: Breath, Mantra and Meditation](https://vedicosmic.com/tools/category/energy)
+
+- [Chakra Test](https://vedicosmic.com/tools/chakra-assessment): Answer 21 questions to see how your seven chakras compare on a radar chart, with a practice for each. A reflection exercise, not a diagnosis.
+- [Japa Counter](https://vedicosmic.com/tools/mantra-timer): Count mantra japa on a 108-bead digital mala, one tap per bead, with eight mantras to choose from and a daily streak kept on your device. Free.
+- [Trataka Meditation](https://vedicosmic.com/tools/tratak): Practise Trataka on a candle flame, bindu, Om or Sri Yantra in full screen, with a timer, breath pacing and guidance for the closed-eye afterimage.
+- [Crystal Guide](https://vedicosmic.com/tools/crystals): Browse twelve crystals by the intentions traditionally linked to them, such as calm, clarity and protection, and keep a kit saved on your device.
+- [Daily Contemplation Card](https://vedicosmic.com/tools/tarot): Draw one original contemplation card a day, reflect on its prompt and keep a private journal on your device. A reflection practice, not prediction.
+- [Vastu Directions](https://vedicosmic.com/tools/vastu): Which direction suits the kitchen, bedroom, pooja room and entrance? A room-by-room Vastu Shastra guide with the element and reasoning for each.
+- [Kundalini Meditation](https://vedicosmic.com/tools/kundalini): A gentle guided Kundalini meditation: a breath-paced video or an animated journey through the seven chakras with bija mantras. Stop if uncomfortable.
+- [Pranayama Timer](https://vedicosmic.com/tools/pranayama): A guided breathing timer for Box breathing, 4-7-8, Nadi Shodhana, Bhastrika and slow belly breath, with voice cues in English or Hindi. Stop if dizzy.
+- [Sound Bath Mixer](https://vedicosmic.com/tools/soundbath): Mix your own sound bath from six generated layers: tanpura, singing bowls, Om, rain, chimes and earth hum. Runs live in your browser, no recordings.
+- [Chakra Frequency Player](https://vedicosmic.com/tools/chakra-frequency-player): Play seven chakra tones and Solfeggio frequencies with optional binaural or isochronic beats and a sleep timer. For relaxation, not treatment.
+- [Urdhva Shakti](https://vedicosmic.com/tools/urdhva): A private companion for quitting porn: a one-tap urge SOS with guided breathing, a streak kept on your device, and daily reflections. No sign-up.
+- [Daily Sādhana](https://vedicosmic.com/tools/sadhana): Start your daily sadhana: today’s tithi, nakshatra and moon phase, a three-step practice flow, and a streak kept on your device. Free, no sign-up.
+- [Virtual Puja & Aarti](https://vedicosmic.com/tools/puja-aarti): Offer a virtual puja to one of seven deities: ring the bell, offer flowers, blow the conch or perform an aarti with the traditional invocation. Free.
+
+### [Calendar and Cosmology Tools](https://vedicosmic.com/tools/category/cosmology)
+
+- [Sacred Geometry Lab](https://vedicosmic.com/tools/yantra): Watch fourteen classical yantras, including the Sri Yantra, draw themselves stroke by stroke, and learn the ratios and angles behind each design.
+- [Biorhythm Calculator](https://vedicosmic.com/tools/biorhythm): Enter your date of birth to chart your physical, emotional and intellectual biorhythm cycles for today and the weeks around it. A traditional model.
+- [Ekadashi & Vrat Calendar](https://vedicosmic.com/tools/vrat-calendar): When is the next Ekadashi? See Ekadashi, Purnima, Amavasya, Pradosh and Sankashti Chaturthi dates for your city over the next 45 days. Free.
+
+Methods and reference checks: https://vedicosmic.com/how-we-calculate
 
 ## Blog
 

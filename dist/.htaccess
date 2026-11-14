@@ -11,6 +11,8 @@ RewriteRule ^(.*)$ https://vedicosmic.com/$1 [R=301,L]
 
 # Changed URLs: a single 301 each. (REDIRECT_STATUS is empty only for the visitor's own request,
 # so these never fire on the internal rewrites below.)
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteRule ^tools/category/?$ /tools [R=301,L]
 
 # Gone for good.
 RewriteRule ^courses/.+ - [G,L]

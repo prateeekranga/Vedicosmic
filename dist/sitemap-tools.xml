@@ -2,18 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://vedicosmic.com/tools/numerology</loc>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://vedicosmic.com/tools/mobile-numerology</loc>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://vedicosmic.com/tools/loshu-grid</loc>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://vedicosmic.com/tools/chaldean</loc>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://vedicosmic.com/tools/life-path</loc>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://vedicosmic.com/tools/astrology</loc>
@@ -77,5 +82,18 @@
   </url>
   <url>
     <loc>https://vedicosmic.com/tools/puja-aarti</loc>
+  </url>
+  <url>
+    <loc>https://vedicosmic.com/tools/category/numerology</loc>
+    <lastmod>2026-11-14</lastmod>
+  </url>
+  <url>
+    <loc>https://vedicosmic.com/tools/category/astrology</loc>
+  </url>
+  <url>
+    <loc>https://vedicosmic.com/tools/category/energy</loc>
+  </url>
+  <url>
+    <loc>https://vedicosmic.com/tools/category/cosmology</loc>
   </url>
 </urlset>

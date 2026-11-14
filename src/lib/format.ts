@@ -63,3 +63,14 @@ export function formatDateIn(utcMs: number, zone: string, opts: Intl.DateTimeFor
 export function formatIsoDate(date: string, opts: Intl.DateTimeFormatOptions = { weekday: 'short', day: 'numeric', month: 'short' }): string {
   return new Date(`${date}T12:00:00Z`).toLocaleDateString('en-IN', { timeZone: 'UTC', ...opts });
 }
+
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+/**
+ * A YYYY-MM-DD date written out as "14 November 2026". Uses a fixed month list rather than the
+ * runtime's locale data, so the static build and every browser print exactly the same text.
+ */
+export function formatLongDate(date: string): string {
+  const [y, m, d] = date.split('-').map(Number);
+  return `${d} ${MONTHS[m - 1]} ${y}`;
+}

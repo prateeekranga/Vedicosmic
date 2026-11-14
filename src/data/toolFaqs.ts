@@ -1,11 +1,10 @@
 import type { FAQItem } from '@/types/content.types';
 
-/** Shown on every tool page — the two questions any first-time visitor actually has. */
-const UNIVERSAL_FAQS: FAQItem[] = [
-  { id: 'universal-free', header: 'Is this tool free to use?', body: 'Yes. Every tool on VediCosmic is free, with no sign-up. If you choose to save a result, it stays in this browser on your device.' },
-  { id: 'universal-privacy', header: 'Is my personal data stored or shared?', body: 'No. Calculations run in your browser, and your name, birth details and results are not sent to us. Anything you choose to save is kept in this browser only, and you can delete it from the Daily Sādhana page.' },
-];
-
+/**
+ * Questions about one tool, used until that tool has its own page content
+ * (src/content/toolContent/<slug>.ts). The general "is it free / is my data stored" answers live
+ * once on the Tools page instead of being repeated on every tool.
+ */
 const TOOL_SPECIFIC_FAQS: Record<string, FAQItem[]> = {
   numerology: [
     { id: 'numerology-system', header: 'Which numerology system does the Blueprint use?', body: 'The Numerology Blueprint uses the Pythagorean system for your core numbers (Life Path, Expression, Soul Urge, Personality) and layers in the classical Lo Shu grid and Kua number from Vedic/Chinese numerology — giving you both traditions in one reading.' },
@@ -95,5 +94,5 @@ const TOOL_SPECIFIC_FAQS: Record<string, FAQItem[]> = {
 };
 
 export function getToolFaqs(toolId: string): FAQItem[] {
-  return [...UNIVERSAL_FAQS, ...(TOOL_SPECIFIC_FAQS[toolId] ?? [])];
+  return TOOL_SPECIFIC_FAQS[toolId] ?? [];
 }

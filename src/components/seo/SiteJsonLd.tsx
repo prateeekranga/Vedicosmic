@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
-import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, DEFAULT_OG_IMAGE } from '@/config/site';
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, DEFAULT_OG_IMAGE, ORGANIZATION_ID, WEBSITE_ID } from '@/config/site';
 
 /** Site-wide Organization + WebSite JSON-LD. The static build writes it into every page's head too. */
 export const SITE_SCHEMA = [
   {
     '@context': 'https://schema.org',
     '@type': 'Organization',
+    '@id': ORGANIZATION_ID,
     name: SITE_NAME,
     url: SITE_URL,
     logo: SITE_URL + DEFAULT_OG_IMAGE,
@@ -14,9 +15,12 @@ export const SITE_SCHEMA = [
   {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
+    '@id': WEBSITE_ID,
     name: SITE_NAME,
     url: SITE_URL,
     description: SITE_DESCRIPTION,
+    inLanguage: 'en-IN',
+    publisher: { '@id': ORGANIZATION_ID },
   },
 ];
 

@@ -46,5 +46,5 @@ export function useSEO(input: SEOInput): void {
     });
     return () => { scripts.forEach((s) => s.remove()); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [version, input.key, input.path, input.title, input.description, input.image, input.noindex, input.type, input.ready, jsonLdKey]);
+  }, [version, input.key, input.path, input.title, input.description, input.image, input.imageAlt, input.noindex, input.type, input.ready, jsonLdKey]);
 }

@@ -10,6 +10,8 @@ import App from './App';
 import { HeadContext, buildHead, headToHtml, jsonForScript, type HeadCollector, type SEOInput } from '@/lib/seoHead';
 import { SITE_SCHEMA } from '@/components/seo/SiteJsonLd';
 import { STATIC_ROUTES, TOOLS, TOOL_CATEGORIES } from '@/content/routes';
+import { TOOL_HUBS } from '@/content/toolHubs';
+import { getToolContent } from '@/content/toolContent';
 import { BLOG_POSTS } from '@/data/blog';
 import { BLOG_CATEGORIES } from '@/data/blogCategories';
 
@@ -61,13 +63,29 @@ const PAGE_EYEBROW: Record<string, string> = { '/': 'Free Vedic tools', '/tools'
 const toolCategory = (id: string) => TOOL_CATEGORIES.find((c) => c.id === id)?.label ?? 'Tool';
 const blogCategory = (id: string) => BLOG_CATEGORIES.find((c) => c.id === id)?.label ?? 'Article';
 
+/** The most recent review date among a category's tools, if any of them has page copy yet. */
+function newestReview(category: string): string | undefined {
+  const dates = TOOLS.filter((t) => t.category === category)
+    .map((t) => getToolContent(t.slug)?.lastReviewed)
+    .filter((d): d is string => !!d)
+    .sort();
+  return dates[dates.length - 1];
+}
+
 /** Every URL the static build writes, in sitemap groups, with the label its share card carries. */
 export function routesToRender() {
   return {
     pages: STATIC_ROUTES.map((r) => ({ path: r.path, indexable: r.indexable, eyebrow: PAGE_EYEBROW[r.path] ?? 'VediCosmic' })),
-    tools: TOOLS.map((t) => ({
-      path: `/tools/${t.slug}`, indexable: t.indexable && t.status === 'live', eyebrow: `Free tool · ${toolCategory(t.category)}`, sub: t.subtitle,
-    })),
+    tools: [
+      // A tool's date is the day its page copy was last reviewed, so the daily rebuild never bumps it.
+      ...TOOLS.map((t) => ({
+        path: `/tools/${t.slug}`, indexable: t.indexable && t.status === 'live', lastmod: getToolContent(t.slug)?.lastReviewed,
+        eyebrow: `Free tool · ${toolCategory(t.category)}`, sub: t.subtitle,
+      })),
+      ...TOOL_HUBS.map((h) => ({
+        path: h.path, indexable: true, lastmod: newestReview(h.id), eyebrow: 'Free tools', sub: h.label,
+      })),
+    ],
     blog: [
       ...BLOG_POSTS.map((p) => ({
         path: `/blog/${p.slug}`, indexable: true, lastmod: p.updatedAt ?? p.publishedAt, eyebrow: `Article · ${blogCategory(p.category)}`,

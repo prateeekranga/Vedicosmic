@@ -13,6 +13,8 @@ export type AnalyticsEvent =
   | 'view_today' | 'city_set' | 'chart_created' | 'chart_saved' | 'share_clicked'
   | 'sadhana_started' | 'sadhana_completed' | 'streak_3' | 'streak_7' | 'streak_30'
   | 'waitlist_submit' | 'match_started' | 'match_result_viewed' | 'pwa_installed' | 'language_switched'
+  // Any tool: first interaction with it, and the first result it shows (once per visit each)
+  | 'tool_used' | 'result_viewed'
   // Chakra Frequency Player
   | 'player_play' | 'player_pause' | 'player_stop' | 'player_timer_set' | 'player_record_download';
 

@@ -1,15 +1,18 @@
-import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from '@/config/site';
+import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE, ORGANIZATION_ID, WEBSITE_ID } from '@/config/site';
 import type { FAQItem } from '@/types/content.types';
-import type { ToolMeta } from '@/types/tool.types';
+import type { ToolContent, ToolMeta } from '@/types/tool.types';
 import type { BlogPost } from '@/types/blog.types';
 import { getPerson } from '@/content/people';
 import { getBlogCategory } from '@/data/blogCategories';
 import { estimateWordCount } from '@/lib/blogUtils';
+import { shareImageFor } from '@/lib/seoHead';
 
-export function faqPageSchema(faqs: FAQItem[]) {
+/** Only list questions whose answers are visible on the page (scripts/verify-prerender checks this). */
+export function faqPageSchema(faqs: FAQItem[], id?: string) {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
+    ...(id ? { '@id': id } : {}),
     mainEntity: faqs.map((f) => ({
       '@type': 'Question',
       name: f.header,
@@ -18,10 +21,11 @@ export function faqPageSchema(faqs: FAQItem[]) {
   };
 }
 
-export function breadcrumbList(items: { name: string; path: string }[]) {
+export function breadcrumbList(items: { name: string; path: string }[], id?: string) {
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
+    ...(id ? { '@id': id } : {}),
     itemListElement: items.map((it, i) => ({
       '@type': 'ListItem',
       position: i + 1,
@@ -31,39 +35,119 @@ export function breadcrumbList(items: { name: string; path: string }[]) {
   };
 }
 
-export function softwareApplicationSchema(tool: ToolMeta) {
+const toolPath = (tool: ToolMeta) => `/tools/${tool.slug}`;
+export const toolPageTitle = (tool: ToolMeta) => tool.seoTitle ?? `${tool.name} · VediCosmic`;
+export const toolPageDescription = (tool: ToolMeta) => tool.metaDescription ?? tool.description;
+
+/** The page itself: what it is about, where it sits in the site and what its main content is. */
+export function webPageSchema(page: {
+  path: string; name: string; description: string;
+  type?: 'WebPage' | 'CollectionPage';
+  dateModified?: string;
+  about?: { name: string; sameAs?: string };
+  hasBreadcrumb?: boolean;
+  mainEntityId?: string;
+}) {
+  const url = SITE_URL + page.path;
   return {
     '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: tool.name,
-    description: tool.description,
-    applicationCategory: 'UtilitiesApplication',
-    operatingSystem: 'Any (runs in browser)',
-    url: `${SITE_URL}/tools/${tool.slug}`,
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'INR' },
+    '@type': page.type ?? 'WebPage',
+    '@id': `${url}#webpage`,
+    url,
+    name: page.name,
+    description: page.description,
+    inLanguage: 'en-IN',
+    ...(page.dateModified ? { dateModified: page.dateModified } : {}),
+    isPartOf: { '@id': WEBSITE_ID },
+    ...(page.about ? { about: { '@type': 'Thing', name: page.about.name, ...(page.about.sameAs ? { sameAs: page.about.sameAs } : {}) } } : {}),
+    ...(page.hasBreadcrumb ? { breadcrumb: { '@id': `${url}#breadcrumb` } } : {}),
+    ...(page.mainEntityId ? { mainEntity: { '@id': page.mainEntityId } } : {}),
+    primaryImageOfPage: { '@type': 'ImageObject', url: SITE_URL + shareImageFor(page.path), width: 1200, height: 630 },
   };
 }
 
-export function audioObjectSchema(tool: ToolMeta) {
+/**
+ * A working tool, described as a free web application. No ratings or reviews: the site collects
+ * none, so it claims none (scripts/check-claims.mjs enforces this).
+ */
+export function webApplicationSchema(tool: ToolMeta, content?: ToolContent) {
+  const url = SITE_URL + toolPath(tool);
   return {
     '@context': 'https://schema.org',
-    '@type': 'AudioObject',
+    '@type': 'WebApplication',
+    '@id': `${url}#app`,
+    url,
     name: tool.name,
-    description: tool.description,
-    contentUrl: `${SITE_URL}/tools/${tool.slug}`,
-    embedUrl: `${SITE_URL}/tools/${tool.slug}`,
+    ...(content?.aliases?.length ? { alternateName: content.aliases } : {}),
+    description: toolPageDescription(tool),
+    applicationCategory: content?.appCategory ?? 'LifestyleApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'Requires JavaScript',
+    inLanguage: 'en-IN',
     isAccessibleForFree: true,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'INR' },
+    ...(content?.features.length ? { featureList: content.features } : {}),
+    image: SITE_URL + shareImageFor(toolPath(tool)),
+    ...(content ? { dateModified: content.lastReviewed } : {}),
+    publisher: { '@id': ORGANIZATION_ID },
+    isPartOf: { '@id': WEBSITE_ID },
   };
 }
 
-/** Per-tool extra JSON-LD beyond the generic SoftwareApplication/FAQPage/BreadcrumbList every
- *  tool page already gets — keyed by slug, mirrors src/data/toolFaqs.ts's lookup shape. */
-const TOOL_EXTRA_SCHEMA: Record<string, (tool: ToolMeta) => object[]> = {
-  'chakra-frequency-player': (tool) => [audioObjectSchema(tool)],
-};
+/** A list of pages, in order (the tools on a hub). */
+export function itemListSchema(items: { name: string; path: string }[], id?: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    ...(id ? { '@id': id } : {}),
+    numberOfItems: items.length,
+    itemListElement: items.map((it, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: it.name,
+      url: SITE_URL + it.path,
+    })),
+  };
+}
 
-export function getToolExtraJsonLd(tool: ToolMeta): object[] {
-  return TOOL_EXTRA_SCHEMA[tool.slug]?.(tool) ?? [];
+/** A procedure someone could follow without the page; the steps must be visible on it. */
+export function howToFromSteps(name: string, description: string, steps: { name: string; text: string }[], id?: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    ...(id ? { '@id': id } : {}),
+    name,
+    description,
+    step: steps.map((s, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: s.name,
+      text: s.text,
+    })),
+  };
+}
+
+/** Every structured-data object for a tool page, in one place so the page and its tests agree. */
+export function toolPageJsonLd(
+  tool: ToolMeta, content: ToolContent | undefined, crumbs: { name: string; path: string }[], faqs: FAQItem[],
+): object[] {
+  const path = toolPath(tool);
+  const url = SITE_URL + path;
+  const live = tool.status === 'live';
+  return [
+    webPageSchema({
+      path, name: toolPageTitle(tool), description: toolPageDescription(tool),
+      dateModified: content?.lastReviewed, about: content?.topic, hasBreadcrumb: true,
+      mainEntityId: live ? `${url}#app` : undefined,
+    }),
+    // Only working tools are described as applications.
+    ...(live ? [webApplicationSchema(tool, content)] : []),
+    breadcrumbList(crumbs, `${url}#breadcrumb`),
+    ...(faqs.length ? [faqPageSchema(faqs, `${url}#faq`)] : []),
+    ...(content?.howToUse.asHowTo
+      ? [howToFromSteps(content.howToUse.heading, content.lede, content.howToUse.steps, `${url}#howto`)]
+      : []),
+  ];
 }
 
 export function blogPostingSchema(post: BlogPost) {
@@ -96,16 +180,5 @@ export function blogPostingSchema(post: BlogPost) {
 }
 
 export function howToSchema(post: BlogPost) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'HowTo',
-    name: post.title,
-    description: post.excerpt,
-    step: (post.howToSteps ?? []).map((s, i) => ({
-      '@type': 'HowToStep',
-      position: i + 1,
-      name: s.name,
-      text: s.text,
-    })),
-  };
+  return howToFromSteps(post.title, post.excerpt, post.howToSteps ?? []);
 }

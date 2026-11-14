@@ -158,7 +158,7 @@ export default function KundaliMatchingTool() {
 
       <div>
         <h3 className="mb-3 font-heading text-h5 text-white">The eight kootas</h3>
-        <Accordion items={[
+        <Accordion heading="h4" items={[
           ...ashtakoot.kootas.map((k) => ({
             id: k.key,
             header: (

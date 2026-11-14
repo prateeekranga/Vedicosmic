@@ -217,7 +217,7 @@ export default function VastuTool() {
       <div>
         <span className="eyebrow">The science behind it</span>
         <div className="mt-3">
-          <Accordion items={PRINCIPLES} defaultOpen="mandala" />
+          <Accordion items={PRINCIPLES} defaultOpen="mandala" heading={false} />
         </div>
       </div>
     </div>

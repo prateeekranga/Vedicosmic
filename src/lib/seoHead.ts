@@ -11,6 +11,8 @@ export interface SEOInput {
   description: string;
   /** Share image; defaults to the page's generated card (see shareImageFor). */
   image?: string;
+  /** Describes the share image for screen readers; defaults to the title. */
+  imageAlt?: string;
   jsonLd?: object | object[];
   noindex?: boolean;
   type?: 'website' | 'article';
@@ -40,6 +42,7 @@ export function buildHead(input: SEOInput, ov: SEOOverride = {}): HeadTags {
   const imagePath = ov.ogImage || input.image || shareImageFor(input.path);
   const image = imagePath.startsWith('http') ? imagePath : SITE_URL + imagePath;
   const url = SITE_URL + input.path;
+  const imageAlt = input.imageAlt || title;
   return {
     title,
     canonical: url,
@@ -50,6 +53,7 @@ export function buildHead(input: SEOInput, ov: SEOOverride = {}): HeadTags {
       ['property', 'og:image', image],
       ['property', 'og:image:width', '1200'],
       ['property', 'og:image:height', '630'],
+      ['property', 'og:image:alt', imageAlt],
       ['property', 'og:url', url],
       ['property', 'og:type', input.type ?? 'website'],
       ['property', 'og:site_name', SITE_NAME],
@@ -58,6 +62,7 @@ export function buildHead(input: SEOInput, ov: SEOOverride = {}): HeadTags {
       ['name', 'twitter:title', title],
       ['name', 'twitter:description', description],
       ['name', 'twitter:image', image],
+      ['name', 'twitter:image:alt', imageAlt],
       ['name', 'robots', input.noindex ? 'noindex, follow' : 'index, follow'],
     ],
     jsonLd: input.jsonLd ? (Array.isArray(input.jsonLd) ? input.jsonLd : [input.jsonLd]) : [],

@@ -24,6 +24,14 @@ describe('trackEvent', () => {
     expect(track).toHaveBeenCalledWith('chart_created', { tool: 'astrology' });
   });
 
+  it('sends the generic tool events with the tool slug only', async () => {
+    const { trackEvent, track } = await loadWith('test-site');
+    trackEvent('tool_used', { tool: 'loshu-grid', dob: '1990-08-15' } as Parameters<typeof trackEvent>[1]);
+    trackEvent('result_viewed', { tool: 'loshu-grid' });
+    expect(track).toHaveBeenNthCalledWith(1, 'tool_used', { tool: 'loshu-grid' });
+    expect(track).toHaveBeenNthCalledWith(2, 'result_viewed', { tool: 'loshu-grid' });
+  });
+
   it('sends nothing while no website ID is set', async () => {
     const { trackEvent, track } = await loadWith('');
     trackEvent('share_clicked', { channel: 'whatsapp' });

@@ -1,0 +1,171 @@
+{
+ "tool": "Lighthouse CI 0.15.1, mobile, local serve@14.2.4 dist",
+ "date": "2026-11-14",
+ "runs": [
+  {
+   "url": "/tools/nakshatra",
+   "performance": 70,
+   "accessibility": 96,
+   "bestPractices": 100,
+   "seo": 100,
+   "lcpMs": 4367,
+   "tbtMs": 39,
+   "cls": 0.192,
+   "transferKB": 693
+  },
+  {
+   "url": "/tools/nakshatra",
+   "performance": 70,
+   "accessibility": 96,
+   "bestPractices": 100,
+   "seo": 100,
+   "lcpMs": 4132,
+   "tbtMs": 34,
+   "cls": 0.216,
+   "transferKB": 693
+  },
+  {
+   "url": "/tools/nakshatra",
+   "performance": 72,
+   "accessibility": 96,
+   "bestPractices": 100,
+   "seo": 100,
+   "lcpMs": 4128,
+   "tbtMs": 2,
+   "cls": 0.192,
+   "transferKB": 693
+  },
+  {
+   "url": "/tools/planetary-hours",
+   "performance": 81,
+   "accessibility": 96,
+   "bestPractices": 100,
+   "seo": 100,
+   "lcpMs": 4225,
+   "tbtMs": 0,
+   "cls": 0.001,
+   "transferKB": 578
+  },
+  {
+   "url": "/tools/planetary-hours",
+   "performance": 80,
+   "accessibility": 96,
+   "bestPractices": 100,
+   "seo": 100,
+   "lcpMs": 4208,
+   "tbtMs": 0,
+   "cls": 0.001,
+   "transferKB": 578
+  },
+  {
+   "url": "/tools/planetary-hours",
+   "performance": 79,
+   "accessibility": 96,
+   "bestPractices": 100,
+   "seo": 100,
+   "lcpMs": 4432,
+   "tbtMs": 5,
+   "cls": 0.001,
+   "transferKB": 578
+  },
+  {
+   "url": "/tools/sadhana",
+   "performance": 84,
+   "accessibility": 96,
+   "bestPractices": 100,
+   "seo": 100,
+   "lcpMs": 3679,
+   "tbtMs": 83,
+   "cls": 0.001,
+   "transferKB": 650
+  },
+  {
+   "url": "/tools/sadhana",
+   "performance": 84,
+   "accessibility": 96,
+   "bestPractices": 100,
+   "seo": 100,
+   "lcpMs": 3661,
+   "tbtMs": 89,
+   "cls": 0.002,
+   "transferKB": 650
+  },
+  {
+   "url": "/tools/sadhana",
+   "performance": 84,
+   "accessibility": 96,
+   "bestPractices": 100,
+   "seo": 100,
+   "lcpMs": 3669,
+   "tbtMs": 69,
+   "cls": 0.001,
+   "transferKB": 650
+  },
+  {
+   "url": "/tools/loshu-grid",
+   "performance": 84,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 100,
+   "lcpMs": 3668,
+   "tbtMs": 1,
+   "cls": 0.035,
+   "transferKB": 543
+  },
+  {
+   "url": "/tools/loshu-grid",
+   "performance": 82,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 100,
+   "lcpMs": 3941,
+   "tbtMs": 0,
+   "cls": 0.035,
+   "transferKB": 543
+  },
+  {
+   "url": "/tools/loshu-grid",
+   "performance": 82,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 100,
+   "lcpMs": 3942,
+   "tbtMs": 0,
+   "cls": 0.035,
+   "transferKB": 543
+  },
+  {
+   "url": "/tools",
+   "performance": 79,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 100,
+   "lcpMs": 3615,
+   "tbtMs": 0,
+   "cls": 0.143,
+   "transferKB": 592
+  },
+  {
+   "url": "/tools",
+   "performance": 79,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 100,
+   "lcpMs": 3615,
+   "tbtMs": 5,
+   "cls": 0.157,
+   "transferKB": 593
+  },
+  {
+   "url": "/tools",
+   "performance": 80,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 100,
+   "lcpMs": 3312,
+   "tbtMs": 0,
+   "cls": 0.157,
+   "transferKB": 593
+  }
+ ]
+}

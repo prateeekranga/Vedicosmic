@@ -77,7 +77,7 @@ const content: ToolContent = {
   appCategory: 'LifestyleApplication',
   topic: { name: 'Lo Shu Square', sameAs: 'https://en.wikipedia.org/wiki/Lo_Shu_Square' },
   aliases: ['Lo Shu Grid', 'Loshu Grid Calculator'],
-  frame: 'standard',
+  frame: 'compact',
   keywords: { primary: 'lo shu grid calculator', secondary: ['lo shu grid by date of birth', 'missing numbers in lo shu grid', 'driver conductor kua number', 'mulank bhagyank'] },
 };
 

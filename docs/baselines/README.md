@@ -137,3 +137,31 @@ without the SPA fallback). Phase 2 measured the client-rendered build Hostinger 
 axe (`phase-3/axe.json`): 0 critical. The homepage now shows 15 low-contrast elements that were invisible to
 axe before, because sections below the fold used to wait at opacity 0 for their entrance animation; they are
 the same site-wide patterns (faint step numbers, blog-card dates) listed for Phase 4/8.
+
+## After tools round 1 (`tools-1/`)
+
+Same server and settings as Phase 3 (`serve@14.2.4 dist`, mobile, median of three runs). This round rebuilt the
+numerology tools and the tool page template; it changed no fonts or site-wide scripts.
+
+| Page | Perf | LCP | TBT | CLS | Transfer |
+|---|---|---|---|---|---|
+| `/tools/sadhana` | 68 → 84 | 4.7 → 3.7 s | 337 → 83 ms | 0.001 → 0.001 | 854 → 650 KB |
+| `/tools/nakshatra` | 59 → 70 | 5.4 → 4.1 s | 222 → 34 ms | 0.205 → 0.192 | 879 → 693 KB |
+| `/tools/planetary-hours` | 75 → 80 | 4.7 → 4.2 s | 127 → 0 ms | 0.002 → 0.001 | 767 → 578 KB |
+| `/tools/loshu-grid` (new) | 82 | 3.9 s | 0 ms | 0.035 | 543 KB |
+| `/tools` (new) | 79 | 3.6 s | 0 ms | 0.157 | 593 KB |
+
+- Tool pages download about 200 KB less: each tool is now its own chunk, and a tool page no longer loads every
+  other tool and every blog article. The tool page chunk went from 385 KB to 70 KB (raw).
+- Accessibility is 100 on the two pages measured for the first time; SEO and best practices stay at 100.
+- `/tools` CLS 0.157 and Nakshatra's 0.192 have the same cause as before: the heading re-wraps when the Cinzel
+  web font arrives. Phase 4 self-hosts the fonts with metric-matched fallbacks.
+- These are local runs on one machine and move between runs; they are a comparison with the Phase 3 table,
+  not a measurement of the live site.
+
+axe (`tools-1/axe.json`, 16 pages, results on screen for the birth chart, Lo Shu grid and Life Path): 0 critical,
+9 serious (13 before this round's fixes). `/tools`, the numerology hub, Lo Shu Grid and Life Path have no
+violations. The remaining serious ones are the site-wide low-contrast patterns on older pages, for Phase 4/8.
+
+Checks added this round: 83 numerology tests (hand-worked cases, every date 1900–2099, content lint), 19
+content tests for tool pages, tool-page guards in `scripts/verify-prerender.mjs`, and 14 new smoke checks.

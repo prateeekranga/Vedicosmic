@@ -1,0 +1,141 @@
+{
+  "base": "http://localhost:4173",
+  "date": "2026-11-14T17:31:58.166Z",
+  "report": [
+    {
+      "path": "/",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodes": 15,
+          "sample": "div:nth-child(1) > .h-full.relative > .p-7.bg-cosmic-light\\/40.shadow-card > .text-5xl.text-gold-soft\\/30.font-display"
+        }
+      ]
+    },
+    {
+      "path": "/tools",
+      "violations": []
+    },
+    {
+      "path": "/tools/category/numerology",
+      "violations": []
+    },
+    {
+      "path": "/tools/loshu-grid",
+      "violations": []
+    },
+    {
+      "path": "/tools/life-path",
+      "violations": []
+    },
+    {
+      "path": "/tools/sadhana",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodes": 1,
+          "sample": ".text-white\\/35"
+        }
+      ]
+    },
+    {
+      "path": "/tools/nakshatra",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodes": 5,
+          "sample": ".text-\\[11px\\]"
+        }
+      ]
+    },
+    {
+      "path": "/tools/planetary-hours",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodes": 24,
+          "sample": ".relative:nth-child(1) > .p-5.bg-cosmic-light\\/40.backdrop-blur-sm > .space-y-1\\.5 > .hover\\:bg-white\\/3.gap-3.py-2:nth-child(1) > .text-white\\/40.text-xs"
+        }
+      ]
+    },
+    {
+      "path": "/tools/astrology",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodes": 3,
+          "sample": ".relative:nth-child(1) > .p-5.bg-cosmic-light\\/40.backdrop-blur-sm > .flex-wrap.mt-3.gap-2 > .bg-violet-chakra\\/12.border-violet-chakra\\/30.text-violet-chakra"
+        }
+      ]
+    },
+    {
+      "path": "/tools/muhurta",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodes": 5,
+          "sample": "div:nth-child(1) > .relative > .sm\\:p-5.p-4.bg-cosmic-light\\/40 > .justify-between.flex-wrap.gap-2 > .font-medium.text-white.gap-2 > .text-white\\/40"
+        }
+      ]
+    },
+    {
+      "path": "/tools/vrat-calendar",
+      "violations": []
+    },
+    {
+      "path": "/blog/best-time-to-meditate-morning-vs-evening",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodes": 11,
+          "sample": ".text-white\\/45 > span:nth-child(1)"
+        },
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "nodes": 1,
+          "sample": ".hover\\:underline.text-brand-cyan-soft[href$=\"disclaimer\"]"
+        }
+      ]
+    },
+    {
+      "path": "/about",
+      "violations": []
+    },
+    {
+      "path": "/contact",
+      "violations": []
+    },
+    {
+      "path": "/privacy-policy",
+      "violations": [
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "nodes": 1,
+          "sample": "p > .text-brand-cyan-soft.hover\\:underline[href=\"mailto:hello@vedicosmic.com\"]"
+        }
+      ]
+    },
+    {
+      "path": "/how-we-calculate",
+      "violations": []
+    }
+  ]
+}

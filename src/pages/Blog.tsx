@@ -27,19 +27,20 @@ function SpotlightPost({ post }: { post: BlogPost }) {
 
   return (
     <Link to={`/blog/${post.slug}`}>
-      <Card hover className="group grid overflow-hidden p-0 lg:grid-cols-2">
-        <div className="relative aspect-[16/10] overflow-hidden bg-cosmic-light lg:aspect-auto">
+      <Card hover className="group grid overflow-hidden p-0 lg:grid-cols-2 xl:grid-cols-[3fr_2fr]">
+        {/* Beside the text the picture fills a fixed-height frame, so a tall photo cannot stretch the card. */}
+        <div className="relative aspect-[16/10] overflow-hidden bg-cosmic-light lg:aspect-auto lg:min-h-[24rem] xl:min-h-[28rem]">
           {post.heroImage && (
             <img
               src={post.heroImage} alt={post.title} loading="eager" decoding="async"
-              className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+              className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 lg:absolute lg:inset-0"
               onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.nextElementSibling?.classList.remove('hidden'); }}
             />
           )}
           <CategoryEmblem category={post.category} className={`absolute inset-0 h-full w-full opacity-70 ${post.heroImage ? 'hidden' : ''}`} />
           <div className="absolute inset-0 bg-gradient-to-t from-cosmic-darker via-transparent to-transparent lg:bg-gradient-to-r" />
         </div>
-        <div className="flex flex-col justify-center p-6 sm:p-8">
+        <div className="flex flex-col justify-center p-6 sm:p-8 xl:p-10">
           <div className="flex flex-wrap items-center gap-2">
             <Badge tone="gold">Latest Article</Badge>
             {category && <Badge>{category.label}</Badge>}
@@ -195,13 +196,13 @@ export default function Blog() {
       </div>
 
       {spotlight && (
-        <div className="mx-auto mt-12 sm:mt-16 max-w-5xl">
+        <div className="mt-12 sm:mt-16">
           <SpotlightPost post={spotlight} />
         </div>
       )}
 
       {gridPosts.length > 0 ? (
-        <motion.div layout className="mt-12 sm:mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <motion.div layout className="mt-12 sm:mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
           <AnimatePresence mode="popLayout">
             {gridPosts.map((post, i) => (
               <motion.div key={post.id} layout

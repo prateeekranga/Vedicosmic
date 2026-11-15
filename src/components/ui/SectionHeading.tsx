@@ -2,10 +2,15 @@ import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 import { SparkleUnderline } from '@/components/motion/SparkleUnderline';
 import { enter } from '@/lib/hydration';
+import { cn } from '@/lib/cn';
 
 export function SectionHeading({
-  eyebrow, title, subtitle, center = true, glow = false, as = 'h2',
-}: { eyebrow?: string; title: ReactNode; subtitle?: string; center?: boolean; glow?: boolean; as?: 'h1' | 'h2' }) {
+  eyebrow, title, subtitle, center = true, glow = false, as = 'h2', className,
+}: {
+  eyebrow?: string; title: ReactNode; subtitle?: string; center?: boolean; glow?: boolean; as?: 'h1' | 'h2';
+  /** Extra classes, e.g. to left-align a centred heading on wide screens. */
+  className?: string;
+}) {
   const Heading = as;
   return (
     <motion.div
@@ -13,7 +18,7 @@ export function SectionHeading({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ type: 'spring', stiffness: 120, damping: 18 }}
-      className={center ? 'mx-auto max-w-2xl text-center' : 'max-w-2xl'}
+      className={cn(center ? 'mx-auto max-w-2xl text-center' : 'max-w-2xl', className)}
     >
       {eyebrow && <span className="eyebrow mb-3">✦ {eyebrow}</span>}
       <Heading className="font-heading text-h2 text-white">{title}</Heading>

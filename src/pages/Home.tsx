@@ -217,10 +217,11 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="container-vc py-16 sm:py-24">
+      {/* Wide screens: the heading to the left, the questions to the right. */}
+      <section className="container-vc py-16 sm:py-24 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] lg:items-start lg:gap-16">
         <SectionHeading eyebrow="Questions" title="Common questions"
-          subtitle="Short answers about cost, privacy and accuracy." />
-        <div className="mx-auto mt-12 max-w-3xl">
+          subtitle="Short answers about cost, privacy and accuracy." className="lg:mx-0 lg:text-left" />
+        <div className="mx-auto mt-12 max-w-3xl lg:mx-0 lg:mt-0 lg:max-w-none">
           <Accordion items={content.faqs} defaultOpen="f1" />
         </div>
       </section>

@@ -19,7 +19,7 @@ VediCosmic is a free Vedic astrology, panchang, numerology and practice website.
 - [Kundli (Vedic Birth Chart)](https://vedicosmic.com/tools/astrology): Make a free kundli from your date, time and place of birth: Lagna, Moon sign, nine grahas with nakshatra and pada, houses and Vimshottari dasha.
 - [Hora Calculator](https://vedicosmic.com/tools/planetary-hours): See the hora running now and the planetary hours of the day and night for your city, counted from sunrise, with what each planet traditionally favours.
 - [Navagraha Mandala](https://vedicosmic.com/tools/planet-mandala): Meet the nine grahas, from Surya to Ketu, on an interactive mandala: each one’s nature, colour and symbolism. Illustrative, not live positions.
-- [Rahu Kaal & Muhurat Finder](https://vedicosmic.com/tools/muhurta): Today’s Rahu Kaal, Yamaganda, Gulika Kaal, Abhijit muhurat and Brahma muhurta for any city and date, worked out from that day’s sunrise and sunset.
+- [Panchang & Choghadiya](https://vedicosmic.com/tools/panchang): Today’s panchang for your city: tithi, nakshatra, yoga and karana with end times, sunrise and moonrise, Rahu Kaal, Abhijit muhurat and Choghadiya.
 - [Nakshatra Finder](https://vedicosmic.com/tools/nakshatra): Find your janma nakshatra and pada from your date, time and place of birth, then explore all 27 nakshatras with their deities, symbols and nature.
 
 ### [Practice Tools: Breath, Mantra and Meditation](https://vedicosmic.com/tools/category/energy)

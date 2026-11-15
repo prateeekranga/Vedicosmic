@@ -8,6 +8,7 @@ import { NUMBERS } from '@/data/numerology/numbers';
 import { DIRECTION_NAME, LINE_TEXT } from '@/data/numerology/loshuText';
 import { arrowGeometry, arrowKind, inArrowOrder, type ArrowKind } from '@/components/numerology/loshuGeometry';
 import type { PrintGrid, TimelineSegment } from '@/lib/print/types';
+import { encode } from 'uqr';
 
 /**
  * The VediCosmic print emblem: the Lo Shu square inside an eight-petalled lotus, ringed by 108
@@ -236,5 +237,34 @@ export function Meter({ level, max }: { level: number; max: number }) {
     <span className="pd-meter" aria-hidden="true">
       {Array.from({ length: max }, (_, i) => <span key={i} className={i < level ? 'pd-meter-step pd-meter-step--on' : 'pd-meter-step'} />)}
     </span>
+  );
+}
+
+/**
+ * The dark squares of a QR code as one path, one run of squares per rectangle, in units of one
+ * square. Medium error correction still scans with a fold or a smudge across the code.
+ */
+export function qrPath(url: string): { size: number; d: string } {
+  const { size, data } = encode(url, { ecc: 'M', border: 0 });
+  let d = '';
+  data.forEach((row, y) => {
+    for (let x = 0; x < size; x++) {
+      if (!row[x]) continue;
+      let w = 1;
+      while (x + w < size && row[x + w]) w++;
+      d += `M${x} ${y}h${w}v1h-${w}z`;
+      x += w - 1;
+    }
+  });
+  return { size, d };
+}
+
+/** A QR code drawn in black on the white paper; the light margin around it comes from print.css. */
+export function QrCode({ url }: { url: string }) {
+  const { size, d } = qrPath(url);
+  return (
+    <svg className="pd-qr-code" viewBox={`0 0 ${size} ${size}`} shapeRendering="crispEdges" aria-hidden="true">
+      <path d={d} />
+    </svg>
   );
 }

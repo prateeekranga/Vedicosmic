@@ -10,6 +10,9 @@ import {
   type Pinnacle, type YMD,
 } from '@/engine/numerology';
 import { NUMEROLOGY_ENGINE } from '@/engine/numerology/version';
+import { toISODate } from '@/engine/numerology/core';
+import { SITE_URL } from '@/config/site';
+import { buildResultLink } from '@/lib/resultLink';
 import { NUMBERS, masterNote } from '@/data/numerology/numbers';
 import {
   DIRECTION_NAME, KUA_DIRECTION_TEXT, KUA_GROUP_TEXT, KUA_TEXT, LINE_STATUS_LABEL, LINE_TEXT, MISSING_TEXT, RELATION_TEXT,
@@ -32,6 +35,8 @@ import { coreLabel, coreWorking } from '@/lib/numerologyReport';
 import type { PrintBlock, PrintCard, PrintGrid, PrintReportData, PrintSection, PrintTile } from './types';
 
 const SITE = 'vedicosmic.com';
+/** The QR code for a tool that cannot be reopened from a link: it opens the tool itself. */
+const toolQr = (slug: string) => ({ url: `${SITE_URL}/tools/${slug}`, reopens: false });
 const DISCLAIMER = 'Numerology is a tradition offered for reflection, not a prediction or advice.';
 const ENGINE = `${NUMEROLOGY_ENGINE.name} ${NUMEROLOGY_ENGINE.version}`;
 
@@ -254,6 +259,7 @@ export function loShuPrint(r: LoShuResult, now: DashaNow | null, today: YMD): Pr
     ],
     sections,
     link: `${SITE}/tools/loshu-grid`,
+    qr: { url: buildResultLink('loshu-grid', { dob: toISODate(r.date), gender: r.gender }), reopens: true },
     method: `Date digits with the Driver, Conductor and Kua added to the grid; zeros have no cell. Dasha periods start with the Driver and turn on the birthday. ${ENGINE}.`,
     preparedOn: formatYMD(today),
     disclaimer: DISCLAIMER,
@@ -337,6 +343,7 @@ export function lifePathPrint(p: {
       working(p.steps),
     ],
     link: `${SITE}/tools/life-path`,
+    qr: { url: buildResultLink('life-path', { dob: toISODate(p.date), gender: null }), reopens: true },
     method: `Life Path by the component method: month, day and year are each added down first, keeping 11, 22 and 33. ${ENGINE}.`,
     preparedOn: formatYMD(p.today),
     disclaimer: DISCLAIMER,
@@ -480,6 +487,7 @@ export function numerologyPrint(p: {
     ],
     sections,
     link: `${SITE}/tools/numerology`,
+    qr: toolQr('numerology'),
     method: `Western numbers use Pythagorean letter values and the component method; the grid, Mulank, Bhagyank and dasha follow the Indian Lo Shu method; the name number uses Cheiro’s Chaldean values. ${ENGINE}.`,
     preparedOn: formatYMD(p.today),
     disclaimer: DISCLAIMER,
@@ -551,6 +559,7 @@ export function chaldeanPrint(p: { entry: string; result: ChaldeanResult; second
     ],
     sections,
     link: `${SITE}/tools/chaldean`,
+    qr: toolQr('chaldean'),
     method: `Cheiro’s Chaldean letter values, 1 to 8; no letter is 9. ${ENGINE}.`,
     preparedOn: formatYMD(p.today),
     disclaimer: DISCLAIMER,
@@ -767,6 +776,7 @@ export function mobilePrint(m: MobileResult, dob: YMD | null, today: YMD): Print
     ],
     sections,
     link: `${SITE}/tools/mobile-numerology`,
+    qr: toolQr('mobile-numerology'),
     method: `The digits are added down to a root; the compatibility level and the fit of the ending follow the traditional friendships between the planets; pairs follow the two-digit combination chart; the Number score adds four parts, each with its arithmetic. ${ENGINE}.`,
     preparedOn: formatYMD(today),
     disclaimer: DISCLAIMER,

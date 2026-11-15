@@ -96,6 +96,12 @@ export interface PrintReportData {
   sections: PrintSection[];
   /** The address that opens this tool again, without any personal details. */
   link: string;
+  /**
+   * What the QR code on the report opens. Tools that can be reopened from a date of birth get a
+   * link to this result, with the date after "#" (browsers never send that part to a server);
+   * the others get the tool's own address, because names and phone numbers are never put in links.
+   */
+  qr: { url: string; reopens: boolean };
   /** One sentence on how the numbers were worked out. */
   method: string;
   /** Long date the report was made, e.g. "15 November 2026". */

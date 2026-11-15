@@ -3,7 +3,7 @@
  * running header and footer, the page size, and the file name a browser offers when the report is
  * saved as a PDF.
  *
- * Nothing here leaves the device. The visitor's own details ("prepared by", colour, paper, cover)
+ * Nothing here leaves the device. The visitor's own details ("prepared by", colour, paper, cover, QR code)
  * are kept in this browser only when they tick "remember"; the name and notes on a report are
  * never stored.
  */
@@ -23,18 +23,20 @@ export interface PrintOptions {
   paper: PrintPaper;
   /** A title page before the report. */
   cover: boolean;
+  /** A QR code in the closing lines that opens the result (or the tool) again. */
+  qr: boolean;
   /** Ids of sections left out. */
   omit: string[];
-  /** Keep preparedBy, colour, paper and cover on this device. */
+  /** Keep preparedBy, colour, paper, cover and QR code on this device. */
   remember: boolean;
 }
 
 export const DEFAULT_PRINT_OPTIONS: PrintOptions = {
-  preparedFor: '', preparedBy: '', note: '', colour: 'colour', paper: 'A4', cover: false, omit: [], remember: false,
+  preparedFor: '', preparedBy: '', note: '', colour: 'colour', paper: 'A4', cover: false, qr: true, omit: [], remember: false,
 };
 
 const KEY = 'vc:print:v1';
-type Remembered = Pick<PrintOptions, 'preparedBy' | 'colour' | 'paper' | 'cover'>;
+type Remembered = Pick<PrintOptions, 'preparedBy' | 'colour' | 'paper' | 'cover' | 'qr'>;
 
 /** The visitor's remembered print preferences, or the defaults. Never throws. */
 export function loadPrintPreferences(): PrintOptions {
@@ -48,6 +50,8 @@ export function loadPrintPreferences(): PrintOptions {
       colour: r.colour === 'ink' ? 'ink' : 'colour',
       paper: r.paper === 'letter' ? 'letter' : 'A4',
       cover: r.cover === true,
+      // Saved before the QR code existed: keep the default.
+      qr: r.qr !== false,
       remember: true,
     };
   } catch {
@@ -59,7 +63,7 @@ export function loadPrintPreferences(): PrintOptions {
 export function savePrintPreferences(o: PrintOptions): void {
   try {
     if (o.remember) {
-      const keep: Remembered = { preparedBy: o.preparedBy.trim(), colour: o.colour, paper: o.paper, cover: o.cover };
+      const keep: Remembered = { preparedBy: o.preparedBy.trim(), colour: o.colour, paper: o.paper, cover: o.cover, qr: o.qr };
       localStorage.setItem(KEY, JSON.stringify(keep));
     } else {
       localStorage.removeItem(KEY);

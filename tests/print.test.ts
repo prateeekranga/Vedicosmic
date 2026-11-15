@@ -16,6 +16,9 @@ import {
 import { DEFAULT_PRINT_OPTIONS, cssString, pageCss, pdfTitle, type PrintOptions } from '@/lib/print/printSettings';
 import type { PrintBlock, PrintReportData } from '@/lib/print/types';
 import { PrintDocumentBody } from '@/components/print/PrintDocument';
+import { qrPath } from '@/components/print/PrintGraphics';
+import { SITE_URL } from '@/config/site';
+import { encode } from 'uqr';
 import { claimHits } from './helpers/claims';
 
 const today: YMD = { y: 2026, m: 11, d: 15 };
@@ -263,5 +266,54 @@ describe('the printed document', () => {
     expect(html).toContain(report.method);
     // The cover already carries the brand, so the first page does not repeat it.
     expect(html).not.toContain('pd-head');
+  });
+
+  it('prints a QR code unless it is turned off', () => {
+    const html = render({});
+    expect(html).toContain('class="pd-qr"');
+    expect(html).toContain('Scan to open this result again');
+    expect(html).toContain('the date stays on the phone that scans it');
+    const off = render({ qr: false });
+    expect(off).not.toContain('pd-qr');
+    expect(off).not.toContain('the date stays on the phone');
+    const mobile = renderToStaticMarkup(createElement(PrintDocumentBody, {
+      report: mobilePrint(analyseMobile('9876543210')!, null, today), options: DEFAULT_PRINT_OPTIONS,
+    }));
+    expect(mobile).toContain('Scan to open this tool');
+    expect(mobile).not.toContain('the date stays on the phone');
+  });
+});
+
+describe('the QR code', () => {
+  it('reopens a Lo Shu or Life Path result from the date of birth, after the "#"', () => {
+    expect(loShuReport(ymd(1985, 6, 14), 'male').qr).toEqual({ url: `${SITE_URL}/tools/loshu-grid#dob=1985-06-14&g=m`, reopens: true });
+    expect(loShuReport(ymd(1990, 8, 15), null).qr.url).toBe(`${SITE_URL}/tools/loshu-grid#dob=1990-08-15`);
+    expect(lifePathReport(ymd(1992, 1, 28)).qr).toEqual({ url: `${SITE_URL}/tools/life-path#dob=1992-01-28`, reopens: true });
+  });
+
+  it('never carries a name or a phone number', () => {
+    const named = [numerologyReport('Asha Rao', ymd(1990, 8, 15), 'female'), chaldeanReport('Asha Rao')];
+    const phone = mobilePrint(analyseMobile('98171 45678', { date: ymd(1985, 6, 14) })!, ymd(1985, 6, 14), today);
+    for (const r of [...named, phone]) {
+      expect(r.qr.reopens, r.title).toBe(false);
+      expect(r.qr.url, r.title).toMatch(new RegExp(`^${SITE_URL}/tools/[a-z-]+$`));
+    }
+  });
+
+  it('draws every dark square of the code exactly once', () => {
+    const url = `${SITE_URL}/tools/loshu-grid#dob=1985-06-14&g=m`;
+    const { size, data } = encode(url, { ecc: 'M', border: 0 });
+    const { size: drawn, d } = qrPath(url);
+    expect(drawn).toBe(size);
+    const painted = Array.from({ length: size }, () => Array<boolean>(size).fill(false));
+    for (const [, x, y, w] of d.matchAll(/M(\d+) (\d+)h(\d+)v1h-\3z/g)) {
+      for (let i = 0; i < Number(w); i++) {
+        expect(painted[Number(y)][Number(x) + i]).toBe(false);
+        painted[Number(y)][Number(x) + i] = true;
+      }
+    }
+    expect(painted).toEqual(data);
+    // The three finder squares sit in the corners.
+    for (const [r, c] of [[0, 0], [0, size - 7], [size - 7, 0]]) expect(data[r].slice(c, c + 7).every(Boolean)).toBe(true);
   });
 });

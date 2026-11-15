@@ -325,3 +325,8 @@
 }
 .pd-about p + p { margin-top: 0.5mm; }
 .pd-about-disclaimer { font-style: italic; }
+/* The white around the code is its quiet zone: scanners need about four squares of it. */
+.pd-qr { flex: none; margin: 0 0 0 auto; padding-left: 2.5mm; width: 21mm; display: flex; flex-direction: column; align-items: center; gap: 1.8mm; }
+.pd-qr-code { display: block; width: 18mm; height: 18mm; background: #fff; }
+.pd-qr-code path { fill: #000; }
+.pd-qr figcaption { font-size: 6.4pt; line-height: 1.2; text-align: center; color: var(--pd-muted); }

@@ -3,7 +3,7 @@ import { LegalLayout, type LegalSection } from './legal/LegalLayout';
 import { ENGINE } from '@/engine/sky';
 import { POLAR_LATITUDE } from '@/engine/ascendant';
 import vectors from '../../tests/golden/vectors.json';
-import { NUMEROLOGY_REFERENCE_CASES, PANCHANG_REFERENCE_DAYS } from '@/content/referenceChecks';
+import { LUNAR_MONTH_REFERENCE_CASES, NUMEROLOGY_REFERENCE_CASES, PANCHANG_REFERENCE_DAYS } from '@/content/referenceChecks';
 import { METHOD_SECTIONS } from '@/content/methodSections';
 import { NUMEROLOGY_ENGINE } from '@/engine/numerology/version';
 
@@ -107,7 +107,13 @@ const sections: LegalSection[] = [
           <li>Rahu Kaal, Yamaganda and Gulika Kaal: one of eight equal parts of the daytime, chosen by weekday.</li>
           <li>Abhijit muhurta: the eighth of fifteen equal parts of the daytime (traditionally not used on Wednesdays). Brahma muhurta: 96 to 48 minutes before sunrise.</li>
           <li>Choghadiya: eight equal parts of the day and eight of the night, in the traditional order for each weekday. Horas: twelve equal parts of each.</li>
+          <li>Moonrise and moonset: the Moon’s upper edge on the same horizon, seen from the place itself. The Panchang page gives the first of each between sunrise and the next sunrise, and says when a day has none.</li>
+          <li>Lunar month: from new moon to new moon, named after the sidereal sign the Sun enters during it (Chaitra for Mesha). A month in which the Sun enters no sign is adhika and takes the name of the month after it. The purnimanta name is the same in the bright fortnight and one month ahead in the dark fortnight, except in an adhika month.</li>
         </ul>
+        <p>
+          When the Sun is within a quarter of a degree of changing sign at a new moon, a panchang using another ayanamsa
+          could name the month differently, and the page says so.
+        </p>
       </>
     ),
   },
@@ -265,6 +271,8 @@ const sections: LegalSection[] = [
             <tr className="border-t border-white/8"><td className={td}>Nine grahas, 3 charts (Swiss Ephemeris)</td><td className={td}>0.02°</td><td className={td}>0.0015° (5″)</td></tr>
             <tr className="border-t border-white/8"><td className={td}>Sunrise and sunset, {PANCHANG_REFERENCE_DAYS} days (NASA JPL DE421)</td><td className={td}>1 minute</td><td className={td}>3 seconds</td></tr>
             <tr className="border-t border-white/8"><td className={td}>Tithi, nakshatra, yoga and karana end times, {PANCHANG_REFERENCE_DAYS} days (NASA JPL DE421)</td><td className={td}>2 minutes</td><td className={td}>12 seconds</td></tr>
+            <tr className="border-t border-white/8"><td className={td}>Moonrise and moonset, {PANCHANG_REFERENCE_DAYS} days (NASA JPL DE421)</td><td className={td}>2 minutes</td><td className={td}>1 second</td></tr>
+            <tr className="border-t border-white/8"><td className={td}>Lunar month name and new moons, {LUNAR_MONTH_REFERENCE_CASES} dates 2019–2032 (NASA JPL DE421)</td><td className={td}>name exact, 2 minutes</td><td className={td}>15 seconds</td></tr>
           </tbody>
         </table>
         <p>

@@ -241,12 +241,12 @@ export const TOOLS: ToolMeta[] = [
     status: 'live', indexable: true,
   },
   {
-    id: 'muhurta', slug: 'muhurta', name: 'Rahu Kaal & Muhurat Finder',
-    h1: 'Rahu Kaal and Muhurat Finder',
-    subtitle: 'Today’s auspicious & inauspicious windows',
-    seoTitle: 'Rahu Kaal Today & Abhijit Muhurat Timings for Your City',
-    description: 'Free Muhurta finder: a live 24-hour day-wheel computed from real sunrise and sunset for your location, showing the golden Abhijit and Brahma Muhurta windows to use, and Rahu Kaal, Yamaganda and Gulika Kaal periods to avoid.',
-    metaDescription: 'Today’s Rahu Kaal, Yamaganda, Gulika Kaal, Abhijit muhurat and Brahma muhurta for any city and date, worked out from that day’s sunrise and sunset.',
+    id: 'panchang', slug: 'panchang', name: 'Panchang & Choghadiya',
+    h1: 'Today’s Panchang, Rahu Kaal and Choghadiya',
+    subtitle: 'Tithi, nakshatra, Rahu Kaal and Choghadiya for your city',
+    seoTitle: 'Today’s Panchang: Tithi, Rahu Kaal & Choghadiya by City',
+    description: 'Free daily panchang for any city and date: tithi, nakshatra, yoga and karana with their end times, sunrise, sunset, moonrise and moonset, the lunar month, Rahu Kaal, Yamaganda, Gulika Kaal, Abhijit and Brahma muhurta on a 24-hour dial, and the day and night Choghadiya.',
+    metaDescription: 'Today’s panchang for your city: tithi, nakshatra, yoga and karana with end times, sunrise and moonrise, Rahu Kaal, Abhijit muhurat and Choghadiya.',
     category: 'astrology', accent: 'gold', Icon: Sun, isNew: true,
     status: 'live', indexable: true,
   },
@@ -321,7 +321,7 @@ export const TOOL_CATEGORIES: { id: ToolMeta['category'] | 'all'; label: string 
 /** Tools linked from the footer and other short lists, by the terms people search for them. */
 export const FEATURED_TOOLS: { slug: string; label: string }[] = [
   { slug: 'astrology', label: 'Kundli' },
-  { slug: 'muhurta', label: 'Rahu Kaal today' },
+  { slug: 'panchang', label: 'Panchang and Rahu Kaal today' },
   { slug: 'nakshatra', label: 'Nakshatra finder' },
   { slug: 'planetary-hours', label: 'Hora calculator' },
   { slug: 'numerology', label: 'Numerology calculator' },

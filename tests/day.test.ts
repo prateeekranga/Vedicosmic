@@ -7,6 +7,8 @@ import { describe, expect, it } from 'vitest';
 import { activeAt, dayOverview } from '@/engine/day';
 import { CHOGHADIYA_QUALITY } from '@/engine/muhurta';
 import { clockLabel, clockLabelOn, durationLabel } from '@/lib/format';
+import { DEFAULT_PLACE } from '@/lib/places';
+import { getToolContent } from '@/content/toolContent';
 
 const DELHI = { lat: 28.6139, lon: 77.209, zone: 'Asia/Kolkata' };
 const NEW_YORK = { lat: 40.7128, lon: -74.006, zone: 'America/New_York' };
@@ -77,6 +79,35 @@ describe('day overview', () => {
     expect(activeAt(day.choghadiya, third.start)).toBe(third);
     expect(activeAt(day.choghadiya, third.end - 1)).toBe(third);
     expect(activeAt(day.choghadiya, day.panchang.sunrise - 1)).toBeNull();
+  });
+});
+
+describe('worked examples on the tool pages', () => {
+  const day = dayOverview('2026-11-15', DEFAULT_PLACE)!;
+  const zone = DEFAULT_PLACE.zone;
+
+  it('matches the Panchang page example for New Delhi on 15 November 2026', () => {
+    const example = getToolContent('panchang')!.method.example!;
+    expect(clockLabel(day.panchang.sunrise, zone)).toBe('6:44 am');
+    expect(clockLabel(day.panchang.sunset, zone)).toBe('5:28 pm');
+    expect(day.panchang.vara).toBe(0);
+    expect(day.panchang.tithi[0].name).toBe('Shukla Shashthi');
+    expect(clockLabelOn(day.panchang.tithi[0].ends, zone, day.date)).toBe('2:02 am, 16 Nov');
+    expect([day.month.amanta.name, day.month.purnimanta.name]).toEqual(['Kartika', 'Kartika']);
+    expect([clockLabel(day.rahuKaal.start, zone), clockLabel(day.rahuKaal.end, zone)]).toEqual(['4:07 pm', '5:28 pm']);
+    for (const text of ['6:44 am', '5:28 pm', 'Shukla Shashthi of Kartika', '2:02 am on the 16th', '4:07 pm to 5:28 pm']) {
+      expect(example, text).toContain(text);
+    }
+  });
+
+  it('matches the Hora page example and its summer figures', () => {
+    const example = getToolContent('planetary-hours')!.method.example!;
+    expect(durationLabel(day.dayLength)).toBe('10 h 44 min');
+    expect(Math.round(day.dayLength / 12 / 60000)).toBe(54);
+    for (const text of ['6:44 am', '5:28 pm', '10 hours 44 minutes', 'about 54 minutes']) expect(example, text).toContain(text);
+    const june = dayOverview('2026-06-21', DEFAULT_PLACE)!;
+    expect(Math.round(june.dayLength / 12 / 60000)).toBe(70);
+    expect(Math.round(june.nightLength / 12 / 60000)).toBe(50);
   });
 });
 

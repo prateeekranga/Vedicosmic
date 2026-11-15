@@ -6,6 +6,8 @@
 export const REDIRECTS: { from: string; to: string }[] = [
   // The category hubs live at /tools/category/<id>; the bare folder has no page of its own.
   { from: '/tools/category', to: '/tools' },
+  // The Rahu Kaal and Muhurat Finder became part of the Panchang page (tools round 2, November 2026).
+  { from: '/tools/muhurta', to: '/tools/panchang' },
 ];
 
 /** Path prefixes gone for good, answered with 410: the course pages never existed as real courses. */

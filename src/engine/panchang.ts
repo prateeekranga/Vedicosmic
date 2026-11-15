@@ -259,8 +259,14 @@ const nearSignChange = (utcMs: number) => {
  * the name of the following month. An adhika month keeps its own name in both fortnights.
  */
 export function lunarMonth(utcMs: number): LunarMonth {
-  const starts = newMoonBefore(utcMs);
-  const ends = newMoonAfter(utcMs);
+  // The search gives each new moon to within a minute; it is then settled on the instant Amavasya
+  // ends by this module's own tithi angle, so the month and the tithi always change together.
+  const settle = (approx: number) => Math.round(reach('tithi', 0, approx));
+  let starts = settle(newMoonBefore(utcMs));
+  let ends = settle(newMoonAfter(utcMs));
+  // Within that minute of a new moon the two searches can land on the same lunation's wrong side.
+  if (starts > utcMs) { ends = starts; starts = settle(newMoonBefore(starts - 86400000)); }
+  if (ends <= utcMs) { starts = ends; ends = settle(newMoonAfter(ends + 86400000)); }
   const s0 = sunSign(starts), s1 = sunSign(ends);
   const adhika = s0 === s1;
   const month = (index: number, extra: boolean): MonthName => ({ index, name: LUNAR_MONTHS[index], adhika: extra });

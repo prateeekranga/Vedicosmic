@@ -77,8 +77,8 @@ export default {
     },
     {
       type: 'cta-tool',
-      toolSlug: 'muhurta',
-      label: 'Find an auspicious Muhurta for your event',
+      toolSlug: 'panchang',
+      label: 'See today’s panchang for your city',
     },
     {
       type: 'paragraph',
@@ -102,7 +102,7 @@ export default {
       text: 'The Panchang is, at its heart, a remarkably old and remarkably precise way of describing time — not as a blank sequence of identical days, but as a rhythm with its own recurring texture, built from the real, calculable motion of the Sun and Moon. Whether you use it to plan a wedding, mark an Ekadashi fast, or simply understand why your grandmother always asks "what Tithi is it today," the five limbs give you a genuine window into one of the Vedic tradition\'s oldest living systems.',
     },
   ],
-  relatedToolSlugs: ['muhurta', 'vrat-calendar', 'planetary-hours'],
+  relatedToolSlugs: ['panchang', 'vrat-calendar', 'planetary-hours'],
   faqs: [
     {
       id: 'panchang-101-tithi-nakshatra-faq-1',

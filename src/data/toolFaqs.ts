@@ -21,12 +21,6 @@ const TOOL_SPECIFIC_FAQS: Record<string, FAQItem[]> = {
   'life-path': [
     { id: 'life-path-calc', header: 'What is a Life Path number and how is it calculated?', body: 'Your Life Path number is found by reducing your full birth date — day, month and year — down to a single digit (or a master number 11, 22, 33), and is considered the most important number in numerology, describing your core purpose and life lessons.' },
   ],
-  astrology: [
-    { id: 'sidereal-vs-tropical', header: 'Why does my kundli show a different sign from my Western horoscope?', body: 'Vedic (Jyotish) astrology uses the sidereal zodiac, measured against the fixed stars, while Western astrology uses the tropical zodiac fixed to the seasons — the two have drifted about 24° apart due to the precession of the equinoxes, so your Vedic placements are often one sign earlier.' },
-  ],
-  'planetary-hours': [
-    { id: 'hora-use', header: 'What are planetary hours (hora) used for?', body: "Each day and night is divided into 12 unequal 'hora' hours, each ruled by one of the seven classical planets — timing important activities (starting work, travel, ceremonies) to match a favourable planetary hour is a traditional practice in Vedic astrology (Muhurta)." },
-  ],
   'planet-mandala': [
     { id: 'navagraha-what', header: 'What are the Navagraha in Vedic astrology?', body: 'The Navagraha are the nine "planets" of Vedic astrology — the Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn, plus the two lunar nodes Rahu and Ketu — each governing different areas of life and combining to shape a birth chart.' },
   ],
@@ -68,12 +62,6 @@ const TOOL_SPECIFIC_FAQS: Record<string, FAQItem[]> = {
     { id: 'binaural-safety', header: 'Are binaural beats safe to listen to?', body: 'Binaural beats are generally considered safe for most listeners, but they rely on your two ears hearing two slightly different tones — always use stereo headphones, keep the volume moderate, and stop if you feel dizzy or uneasy; avoid using them while driving or operating machinery.' },
     { id: 'sleep-use', header: 'Can I use this while sleeping?', body: "Yes — the sleep timer fades the tones out and stops playback automatically after your chosen duration, so you can fall asleep without worrying about audio playing all night; just keep your device from locking or the browser tab from being closed if you want it to run for the full timer." },
   ],
-  muhurta: [
-    { id: 'rahu-kaal', header: 'What is Rahu Kaal and why do people avoid starting things during it?', body: 'Rahu Kaal is a roughly 90-minute period each day, at a different time depending on the weekday, traditionally considered inauspicious for beginning new ventures — this finder works out its start and end from the day’s sunrise and sunset at your chosen place, shown in that place’s local time.' },
-  ],
-  nakshatra: [
-    { id: 'nakshatra-importance', header: 'What is a nakshatra and why does it matter in Vedic astrology?', body: 'A nakshatra is one of 27 lunar mansions the Moon passes through, considered in Vedic astrology to be even more personally revealing than your Moon sign (Rashi) alone — your janma nakshatra is traditionally used for naming ceremonies, muhurta timing, and marriage compatibility (Kundali matching).' },
-  ],
   'kundali-matching': [
     { id: 'what-is-guna-milan', header: 'What is Ashtakoot (Guna Milan)?', body: 'Ashtakoot, or Guna Milan, is the classical Vedic system for matching two people’s birth Nakshatras across 8 factors — Varna, Vashya, Tara, Yoni, Graha Maitri, Gana, Bhakoot and Nadi — worth 36 points in total, traditionally used to assess marriage compatibility.' },
     { id: 'good-score', header: 'What counts as a good Guna Milan score?', body: 'Traditionally: below 18 out of 36 is considered worth a thoughtful conversation, 18–24 a workable match, 25–32 a strong match, and 33–36 an excellent match — though the individual koota breakdown (especially Nadi) often matters more than the total alone.' },
@@ -81,12 +69,6 @@ const TOOL_SPECIFIC_FAQS: Record<string, FAQItem[]> = {
   ],
   urdhva: [
     { id: 'urdhva-professional-help', header: 'Is this a substitute for professional help with compulsive behaviour?', body: "No — this tool offers grounding techniques and honest education for the moment of urge, but if the pull feels compulsive, talking to a counsellor, therapist or trusted elder alongside this practice is a sign of strength, not failure." },
-  ],
-  sadhana: [
-    { id: 'sadhana-streak', header: 'What is a daily sadhana and why keep a streak?', body: "Sadhana means a consistent spiritual practice — the streak here isn't about perfection, it's a gentle visual reminder that small, repeated daily effort, even a few minutes, compounds into real transformation over time." },
-  ],
-  'vrat-calendar': [
-    { id: 'ekadashi-calc', header: 'How are Ekadashi dates calculated?', body: "Ekadashi falls on the 11th tithi (lunar day) of each paksha (fortnight), determined by the angular difference between the Sun and Moon — this calendar works out when each tithi begins and ends for your chosen place and marks the day whose sunrise falls in Ekadashi (the udaya tithi), rather than reading a fixed yearly list. Some traditions use other rules, so confirm the exact day and parana time with your local panchang." },
   ],
   'puja-aarti': [
     { id: 'virtual-puja', header: 'Can a virtual puja really replace a real one?', body: "Nothing replaces a physical shrine and real ritual objects, but this tool is designed for moments you can't reach one — a quiet ritual pause during travel, illness, or a busy day — using the same traditional structure, mantras and invocations as an in-person Aarti." },

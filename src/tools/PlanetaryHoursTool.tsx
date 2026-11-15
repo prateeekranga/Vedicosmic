@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
 import { horas as horasFor, type Hora } from '@/engine/muhurta';
-import { sunTimesAt } from '@/engine/panchang';
+import { daySunTimes, sunTimesAt } from '@/engine/panchang';
 import { HORA_ACTIVITIES } from '@/data/planetaryActivities';
 import { HORA_META } from '@/data/grahas';
 import { formatClock, formatIsoDate } from '@/lib/format';
@@ -21,10 +22,17 @@ export default function PlanetaryHoursTool() {
     return () => clearInterval(t);
   }, []);
 
+  // A link from the Panchang page can ask for another day with ?date=YYYY-MM-DD.
+  const [params] = useSearchParams();
+  const asked = params.get('date');
+  const askedDate = asked && /^\d{4}-\d{2}-\d{2}$/.test(asked) && !Number.isNaN(Date.parse(`${asked}T12:00:00Z`)) ? asked : null;
+
   // The hora day runs sunrise to sunrise: before today's sunrise it is still yesterday's.
-  const day = useMemo(() => sunTimesAt(now, place), [now, place]);
+  const today = useMemo(() => sunTimesAt(now, place), [now, place]);
+  const otherDay = askedDate !== null && askedDate !== today?.date;
+  const day = useMemo(() => (otherDay ? daySunTimes(askedDate!, place) : today), [otherDay, askedDate, place, today]);
   const horas = useMemo(() => (day ? horasFor(day.sunrise, day.sunset, day.nextSunrise, day.vara) : []), [day]);
-  const current = horas.find((h) => now >= h.start && now < h.end);
+  const current = otherDay ? undefined : horas.find((h) => now >= h.start && now < h.end);
   const clock = (ms: number) => formatClock(ms, place.zone);
 
   return (
@@ -42,10 +50,16 @@ export default function PlanetaryHoursTool() {
             sunset {clock(day.sunset)}. Times are local to {place.label}.
           </p>
         )}
+        {otherDay && (
+          <p className="mt-2 text-xs text-white/70">
+            Showing another day, so no hora is marked as current.{' '}
+            <Link to="/tools/planetary-hours" className="text-brand-cyan-soft underline underline-offset-2 hover:text-white">Show today’s horas</Link>
+          </p>
+        )}
       </Card>
 
       {!day && (
-        <Card className="p-6 text-sm text-white/60">The Sun does not rise and set at this place today, so there are no horas to show.</Card>
+        <Card className="p-6 text-sm text-white/60">The Sun does not rise and set at this place on this day, so there are no horas to show.</Card>
       )}
 
       {current && (

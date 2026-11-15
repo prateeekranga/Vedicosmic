@@ -13,7 +13,7 @@ function read(): ChosenPlace {
 }
 
 /**
- * The city used for daily timings (panchang, muhurta, horas, vrats), shared by those tools and
+ * The city used for daily timings (panchang, horas, vrats), shared by those tools and
  * remembered in this browser as a preference. Never used for birth places, which are not stored.
  */
 export function usePreferredPlace() {

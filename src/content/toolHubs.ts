@@ -62,7 +62,7 @@ export const TOOL_HUBS: ToolHub[] = [
       items: [
         { question: 'What are my Lagna, Moon sign and current dasha?', toolSlug: 'astrology', answer: 'The birth chart gives the Ascendant, all nine grahas with their nakshatra and pada, the houses and the Vimshottari dasha periods.' },
         { question: 'Which nakshatra was I born under?', toolSlug: 'nakshatra', answer: 'The nakshatra finder works out your birth star and pada from the Moon’s position, and lets you browse all 27.' },
-        { question: 'When is Rahu Kaal today where I live?', toolSlug: 'muhurta', answer: 'The muhurat finder lists Rahu Kaal, Yamaganda, Gulika, Abhijit and Brahma muhurta from that day’s sunrise and sunset in your city.' },
+        { question: 'When is Rahu Kaal today where I live?', toolSlug: 'panchang', answer: 'The Panchang page lists Rahu Kaal, Yamaganda, Gulika, Abhijit and Brahma muhurta from that day’s sunrise and sunset in your city, beside the tithi, nakshatra and Choghadiya.' },
         { question: 'Which planet rules this hour?', toolSlug: 'planetary-hours', answer: 'The hora calculator shows the planetary hour running now and the full sequence for the day and night.' },
         { question: 'Who are the nine grahas?', toolSlug: 'planet-mandala', answer: 'The Navagraha mandala introduces each of the nine with its nature, colour and symbolism.' },
       ],

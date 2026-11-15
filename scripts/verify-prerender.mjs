@@ -49,9 +49,9 @@ const descriptions = new Map();
  * The list only ever shrinks.
  */
 const COPY_PENDING = new Set([
-  'astrology', 'planetary-hours', 'planet-mandala', 'muhurta', 'nakshatra', 'kundali-matching',
+  'planet-mandala', 'kundali-matching',
   'chakra-assessment', 'mantra-timer', 'tratak', 'crystals', 'tarot', 'vastu', 'kundalini', 'pranayama', 'soundbath',
-  'chakra-frequency-player', 'urdhva', 'sadhana', 'puja-aarti', 'yantra', 'biorhythm', 'vrat-calendar',
+  'chakra-frequency-player', 'urdhva', 'puja-aarti', 'yantra', 'biorhythm',
 ]);
 const MIN_UNIQUE_WORDS = 350;
 const MIN_INBOUND_PAGES = 5;

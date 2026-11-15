@@ -11,7 +11,7 @@ const BASE = (process.argv[2] ?? 'http://localhost:4173').replace(/\/$/, '');
 const OUT = process.argv[3]; // optional: write the full report as JSON here
 const FAIL_ON = new Set(['critical']);
 const PAGES = ['/', '/tools', '/tools/category/numerology', '/tools/loshu-grid', '/tools/life-path', '/tools/numerology', '/tools/mobile-numerology', '/tools/sadhana', '/tools/nakshatra', '/tools/planetary-hours', '/tools/astrology',
-  '/tools/muhurta', '/tools/vrat-calendar', '/blog/best-time-to-meditate-morning-vs-evening', '/about', '/contact',
+  '/tools/panchang', '/tools/vrat-calendar', '/blog/best-time-to-meditate-morning-vs-evening', '/about', '/contact',
   '/privacy-policy', '/how-we-calculate'];
 
 // Pages whose results only appear after input: fill the form so the results are checked too.

@@ -187,3 +187,30 @@ dasha section and the name numbers in a real browser.
 
 Lighthouse was not re-run for these two commits. They add no fonts, images or site-wide scripts; the Lo Shu and
 Numerology Calculator chunks grew by the new sections.
+
+## After tools round 2 (15 November 2026, `upgrade/tools-2`)
+
+This round adds the Panchang page and merges the Rahu Kaal and Muhurat Finder into it (`/tools/muhurta` answers
+with a 301 to `/tools/panchang`). It also writes the page copy for six tools: panchang, kundli, nakshatra, hora,
+vrat calendar and daily sadhana.
+
+New reference checks (Skyfield with NASA JPL DE421, `tests/golden/panchang-moon-reference.json`):
+
+| Check | Cases | Tolerance | Largest difference |
+|---|---|---|---|
+| Moonrise and moonset | 240 days (20 places × 12 dates) | 2 minutes | 1 second |
+| Lunar month name, adhika months | 336 dates, 2019–2032 | exact | none |
+| New moon instants | 336 dates, 2019–2032 | 2 minutes | 15 seconds |
+
+Re-running the reference script reproduced the existing sunrise and tithi fixture byte for byte.
+
+axe (18 pages, with the Panchang page in place of the Muhurta page): 0 critical, 8 serious (9 before). The
+Panchang page has no violations; the Muhurta page it replaces had one, for low-contrast text. The remaining eight
+are the site-wide low-contrast patterns on older pages, for Phase 4/8.
+
+Checks added: 592 unit tests (438 → 1,030), of which 579 are the reference cases above and 13 cover the day
+overview, clock labels and the worked examples printed on the Panchang and Hora pages. Smoke checks 86 → 91: the
+five limbs, Sun and Moon times, Rahu Kaal and the muhurtas, both Choghadiya tables and the day buttons on the
+Panchang page, and the Hora page opening on a date from the address. Tool pages with their own copy: 5 → 11.
+
+Lighthouse was not re-run locally for this round; CI runs it on every push.

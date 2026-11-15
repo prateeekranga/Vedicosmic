@@ -36,7 +36,7 @@ export default {
       text:
         "Meditating before the day's obligations begin means practicing on a relatively calm, unhurried mind, before emails, conversations and decisions have accumulated. Many people also find it easier to protect a consistent morning slot, since evenings are more prone to last-minute plans, fatigue, or simply forgetting once the day gets busy. The tradeoff is that mornings can feel groggy, and some people need a short warm-up (a few stretches, a glass of water) before they can settle into stillness at all.",
     },
-    { type: 'cta-tool', toolSlug: 'muhurta', label: 'Check Today\'s Auspicious Timing With the Free Muhurta Tool' },
+    { type: 'cta-tool', toolSlug: 'panchang', label: 'See Today\'s Brahma Muhurta Time on the Panchang Page' },
     { type: 'heading', level: 2, text: 'The Case for Evening Meditation' },
     {
       type: 'paragraph',
@@ -87,7 +87,7 @@ export default {
     { type: 'divider' },
     { type: 'internal-link', postSlug: 'chakra-meditation-guided-script-seven-centers', label: 'Ready to practice? Follow our full guided chakra meditation script' },
   ],
-  relatedToolSlugs: ['muhurta', 'sadhana', 'mantra-timer'],
+  relatedToolSlugs: ['panchang', 'sadhana', 'mantra-timer'],
   faqs: [
     {
       id: 'best-time-to-meditate-faq-1',

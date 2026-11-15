@@ -7,7 +7,9 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { useDeviceStore } from '@/contexts/DeviceStoreContext';
 import { SavedOnDevice } from '@/components/device/SavedOnDevice';
-import { skyAt } from '@/engine/panchang';
+import { skyAt, sunTimesAt } from '@/engine/panchang';
+import { dayOverview } from '@/engine/day';
+import { clockLabelOn } from '@/lib/format';
 import { vratsBetween } from '@/engine/vrat';
 import { dateInZone } from '@/engine/time';
 import { formatIsoDate } from '@/lib/format';
@@ -54,6 +56,12 @@ export default function SadhanaTool() {
   const [done, setDone] = useState<Record<string, boolean>>({});
   const [place] = usePreferredPlace();
   const pan = useMemo(() => skyAt(Date.now()), []);
+  // The day's tithi is the one in force at sunrise, as a panchang prints it; before sunrise it is still yesterday's day.
+  const today = useMemo(() => {
+    const times = sunTimesAt(Date.now(), place);
+    return times ? dayOverview(times.date, place) : null;
+  }, [place]);
+  const tithi = today?.panchang.tithi[0];
   const nextVrat = useMemo(() => vratsBetween(dateInZone(Date.now(), place.zone), 30, place)[0], [place]);
   const ctx = useMemo(dayContext, []);
   const streak = streakNow;
@@ -85,10 +93,16 @@ export default function SadhanaTool() {
             <h2 className="mt-1 font-heading text-h2 text-white">{ctx.g}</h2>
             <p className="mt-1 max-w-lg text-sm text-white/60">{ctx.s}</p>
             <div className="mt-3 flex flex-wrap gap-2">
-              <Badge tone="gold">{pan.tithi.name}</Badge>
-              <Badge tone="cyan">Moon in {pan.nakshatra}</Badge>
-              <Badge tone="neutral">{pan.tithi.paksha === 'Shukla' ? 'Waxing' : 'Waning'}</Badge>
+              <Badge tone="gold">{tithi ? tithi.name : pan.tithi.name}</Badge>
+              <Badge tone="cyan">Moon in {today ? today.panchang.nakshatra[0].name : pan.nakshatra}</Badge>
+              <Badge tone="neutral">{(today ? today.panchang.paksha : pan.tithi.paksha) === 'Shukla' ? 'Waxing' : 'Waning'}</Badge>
             </div>
+            {today && tithi && (
+              <p className="mt-2 text-xs text-white/70">
+                Tithi at sunrise in {place.label.split(',')[0]}, until {clockLabelOn(tithi.ends, place.zone, today.date)}.{' '}
+                <Link to="/tools/panchang" className="text-brand-cyan-soft underline underline-offset-2 hover:text-white">Full panchang</Link>
+              </p>
+            )}
           </div>
           <motion.div animate={{ y: [0, -5, 0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}>
             <MiniMoon phase={pan.moonPhase} />
@@ -171,7 +185,7 @@ export default function SadhanaTool() {
           <div>
             <p className="text-sm font-medium text-white">Timing</p>
             <p className="text-xs leading-snug text-white/50">{ctx.ideal}</p>
-            <Link to="/tools/muhurta" className="mt-1 inline-flex items-center gap-1 text-xs text-gold-300">Muhurta wheel <ArrowRight className="h-3 w-3" /></Link>
+            <Link to="/tools/panchang" className="mt-1 inline-flex items-center gap-1 text-xs text-gold-300">Today’s panchang <ArrowRight className="h-3 w-3" /></Link>
           </div>
         </Card>
       </div>

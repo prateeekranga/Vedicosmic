@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { dayOverview } from '@/engine/day';
-import { LUNAR_MONTHS, lunarMonth } from '@/engine/panchang';
+import { LUNAR_MONTHS, elementIndex, lunarMonth } from '@/engine/panchang';
+import { LUNAR_MONTH_REFERENCE_CASES, PANCHANG_REFERENCE_DAYS } from '@/content/referenceChecks';
 import reference from './panchang-moon-reference.json';
 
 // Independent reference: Skyfield with JPL DE421 (scripts/reference/panchang_reference.py).
@@ -26,6 +27,18 @@ describe('moonrise and moonset against JPL DE421 references', () => {
     }
   });
 
+  it('stays within the largest difference stated on /how-we-calculate (1 second)', () => {
+    expect(reference.moon.length).toBe(PANCHANG_REFERENCE_DAYS);
+    let worst = 0;
+    for (const c of reference.moon) {
+      const day = dayOverview(c.date, { lat: c.latitude, lon: c.longitude, zone: c.timezone })!;
+      for (const key of ['moonrise', 'moonset'] as const) {
+        if (day.moon[key] !== null && c[key] !== null) worst = Math.max(worst, Math.abs(day.moon[key]! - Date.parse(c[key]!)));
+      }
+    }
+    expect(worst).toBeLessThan(1500);
+  });
+
   it('includes days with no moonrise and days with no moonset', () => {
     expect(reference.moon.some((c) => c.moonrise === null)).toBe(true);
     expect(reference.moon.some((c) => c.moonset === null)).toBe(true);
@@ -45,6 +58,27 @@ describe('lunar month against JPL DE421 references (2019 to 2032)', () => {
     // The reference's own margin and the engine's flag agree on which months are close calls.
     expect(m.borderline).toBe(c.sun_degrees_from_sign_change < 0.25);
     expect(m.kshaya).toBe(false);
+  });
+
+  it('stays within the largest difference stated on /how-we-calculate (15 seconds)', () => {
+    expect(reference.months.length).toBe(LUNAR_MONTH_REFERENCE_CASES);
+    let worst = 0;
+    for (const c of reference.months) {
+      const m = lunarMonth(Date.parse(c.instant));
+      worst = Math.max(worst, Math.abs(m.starts - Date.parse(c.new_moon_before)), Math.abs(m.ends - Date.parse(c.new_moon_after)));
+    }
+    expect(worst).toBeLessThan(15500);
+  });
+
+  it('changes month at the very instant Amavasya ends', () => {
+    for (const c of reference.months.filter((_, i) => i % 6 === 0)) {
+      const m = lunarMonth(Date.parse(c.instant));
+      expect(elementIndex('tithi', m.starts - 2000)).toBe(29);
+      expect(elementIndex('tithi', m.starts + 2000)).toBe(0);
+      // An instant five seconds either side of the new moon is placed in the right month.
+      expect(Math.abs(lunarMonth(m.ends - 5000).ends - m.ends)).toBeLessThan(1000);
+      expect(Math.abs(lunarMonth(m.ends + 5000).starts - m.ends)).toBeLessThan(1000);
+    }
   });
 
   it('names the adhika months of 2020, 2023, 2026, 2029 and 2031', () => {

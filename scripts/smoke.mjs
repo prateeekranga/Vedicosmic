@@ -251,8 +251,28 @@ for (const path of ['/', '/about', '/tools', '/contact', '/courses', '/blog/nume
   await page.waitForSelector('text=Ekadashi', { timeout: 15000 }).catch(() => {});
   check('/tools/vrat-calendar: lists an Ekadashi in the next 45 days', /Ekadashi/.test(await page.evaluate(() => document.body.innerText)));
 
-  await open(page, '/tools/muhurta');
-  check('/tools/muhurta: shows Rahu Kaal with times', /Rahu Kaal[\s\S]*\d{1,2}:\d{2}/.test(await page.evaluate(() => document.body.innerText)));
+  await open(page, '/tools/panchang?date=2026-11-15');
+  await page.waitForSelector('[data-testid="panchang-limbs"]', { timeout: 15000 }).catch(() => {});
+  {
+    // New Delhi is the place until a visitor chooses one, so these are fixed, hand-checked values.
+    const limbs = await page.locator('[data-testid="panchang-limbs"]').innerText().catch(() => '');
+    check('/tools/panchang: the five limbs with end times', /Panchang for Sunday, 15 November 2026/i.test(limbs) && /Shukla Shashthi/i.test(limbs) && /until 2:02 am, 16 Nov/.test(limbs) && /Uttara Ashadha/i.test(limbs) && /Kartika/i.test(limbs), limbs.slice(0, 160));
+    const sky = await page.locator('[data-testid="panchang-sun-moon"]').innerText().catch(() => '');
+    check('/tools/panchang: Sun and Moon times', /6:44 am/.test(sky) && /5:28 pm/.test(sky) && /11:41 am/.test(sky) && /10:18 pm/.test(sky), sky.replace(/\s+/g, ' ').slice(0, 160));
+    const windows = await page.locator('[data-testid="panchang-windows"]').innerText().catch(() => '');
+    check('/tools/panchang: Rahu Kaal and the muhurtas with times', /Rahu Kaal[\s\S]*4:07 pm to 5:28 pm/.test(windows) && /Abhijit Muhurta/i.test(windows) && /Brahma Muhurta/i.test(windows));
+    const dayRows = await page.locator('[data-testid="panchang-choghadiya-day"] tbody tr').count();
+    const nightRows = await page.locator('[data-testid="panchang-choghadiya-night"] tbody tr').count();
+    const chog = await page.locator('[data-testid="panchang-choghadiya-day"]').innerText().catch(() => '');
+    check('/tools/panchang: day and night Choghadiya, classed in words', dayRows === 8 && nightRows === 8 && /Udveg[\s\S]*Avoid/.test(chog) && /Amrit[\s\S]*Good/.test(chog), `rows ${dayRows}/${nightRows}`);
+    await page.getByRole('button', { name: 'Next day' }).click();
+    await page.waitForTimeout(600);
+    check('/tools/panchang: the next-day button moves the date', /Monday, 16 November 2026/i.test(await page.locator('[data-testid="panchang-limbs"]').innerText().catch(() => '')));
+  }
+
+  await open(page, '/tools/planetary-hours?date=2026-11-15');
+  await page.waitForSelector('text=Day horas', { timeout: 15000 }).catch(() => {});
+  check('/tools/planetary-hours: opens on the date asked for', /Hora day of Sunday, 15 November/i.test(await page.evaluate(() => document.body.innerText)));
 
   await open(page, '/how-we-calculate');
   check('/how-we-calculate: lists the reference charts', /Reference charts we pass/.test(await page.evaluate(() => document.body.innerText)));

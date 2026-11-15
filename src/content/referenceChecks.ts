@@ -6,3 +6,6 @@ export const PANCHANG_REFERENCE_DAYS = 240;
 
 /** Hand-worked numerology cases in tests/golden/numerology.vectors.json (tests/toolContent.test.ts checks the count). */
 export const NUMEROLOGY_REFERENCE_CASES = 26;
+
+/** Dates in the lunar month reference set (tests/golden/panchang-moon.test.ts checks the count). */
+export const LUNAR_MONTH_REFERENCE_CASES = 336;

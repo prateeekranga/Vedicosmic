@@ -86,7 +86,7 @@ export const TOOL_GUIDES: Record<string, ToolGuide[]> = {
   'mobile-numerology': [
     { slug: 'mobile-number-numerology', title: "Mobile Number Numerology: Does Your Phone Number's Vibration Matter?" },
   ],
-  muhurta: [
+  panchang: [
     { slug: 'panchang-101-tithi-nakshatra', title: 'Panchang 101: Tithi, Nakshatra, Yoga & Karana Explained' },
     { slug: 'best-time-to-meditate-morning-vs-evening', title: 'Best Time to Meditate: Morning vs Evening Practice' },
   ],

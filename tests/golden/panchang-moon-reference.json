@@ -1,0 +1,5775 @@
+{
+ "meta": {
+  "generator": "scripts/reference/panchang_reference.py",
+  "tool": "Skyfield 1.53 with JPL DE421 (development only, not shipped)",
+  "conventions": "Moonrise/moonset: upper limb, standard refraction, sea level, from the place itself; the first of each between sunrise and the next sunrise, null when there is none. Lunar month: new moon to new moon, index 0 = Chaitra; adhika when the Sun is in one sidereal sign (mean Lahiri) at both new moons; purnimanta dark fortnight takes the next name. Times are UTC.",
+  "tolerances": {
+   "moonrise_moonset_minutes": 2,
+   "new_moon_minutes": 2
+  }
+ },
+ "moon": [
+  {
+   "city": "Delhi",
+   "latitude": 28.6139,
+   "longitude": 77.209,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-01-14",
+   "next_sunrise": "2026-01-15T01:44:59Z",
+   "moonrise": "2026-01-14T22:56:15Z",
+   "moonset": "2026-01-14T08:18:52Z"
+  },
+  {
+   "city": "Delhi",
+   "latitude": 28.6139,
+   "longitude": 77.209,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-02-17",
+   "next_sunrise": "2026-02-18T01:27:06Z",
+   "moonrise": null,
+   "moonset": "2026-02-17T12:39:01Z"
+  },
+  {
+   "city": "Delhi",
+   "latitude": 28.6139,
+   "longitude": 77.209,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-03-29",
+   "next_sunrise": "2026-03-30T00:43:51Z",
+   "moonrise": "2026-03-29T09:41:02Z",
+   "moonset": "2026-03-29T23:02:56Z"
+  },
+  {
+   "city": "Delhi",
+   "latitude": 28.6139,
+   "longitude": 77.209,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-04-05",
+   "next_sunrise": "2026-04-06T00:35:52Z",
+   "moonrise": "2026-04-05T16:24:01Z",
+   "moonset": "2026-04-05T02:07:07Z"
+  },
+  {
+   "city": "Delhi",
+   "latitude": 28.6139,
+   "longitude": 77.209,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-05-12",
+   "next_sunrise": "2026-05-13T00:01:46Z",
+   "moonrise": "2026-05-12T21:17:46Z",
+   "moonset": "2026-05-12T08:51:24Z"
+  },
+  {
+   "city": "Delhi",
+   "latitude": 28.6139,
+   "longitude": 77.209,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-06-21",
+   "next_sunrise": "2026-06-21T23:54:07Z",
+   "moonrise": "2026-06-21T06:18:56Z",
+   "moonset": "2026-06-21T18:39:03Z"
+  },
+  {
+   "city": "Delhi",
+   "latitude": 28.6139,
+   "longitude": 77.209,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-07-30",
+   "next_sunrise": "2026-07-31T00:11:57Z",
+   "moonrise": "2026-07-30T14:20:50Z",
+   "moonset": "2026-07-30T00:35:06Z"
+  },
+  {
+   "city": "Delhi",
+   "latitude": 28.6139,
+   "longitude": 77.209,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-08-26",
+   "next_sunrise": "2026-08-27T00:26:37Z",
+   "moonrise": "2026-08-26T12:20:58Z",
+   "moonset": "2026-08-26T23:23:54Z"
+  },
+  {
+   "city": "Delhi",
+   "latitude": 28.6139,
+   "longitude": 77.209,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-09-23",
+   "next_sunrise": "2026-09-24T00:40:26Z",
+   "moonrise": "2026-09-23T10:52:07Z",
+   "moonset": "2026-09-23T22:09:31Z"
+  },
+  {
+   "city": "Delhi",
+   "latitude": 28.6139,
+   "longitude": 77.209,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-10-25",
+   "next_sunrise": "2026-10-26T00:58:48Z",
+   "moonrise": "2026-10-25T11:26:10Z",
+   "moonset": "2026-10-26T00:56:54Z"
+  },
+  {
+   "city": "Delhi",
+   "latitude": 28.6139,
+   "longitude": 77.209,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-11-08",
+   "next_sunrise": "2026-11-09T01:08:53Z",
+   "moonrise": "2026-11-09T01:05:22Z",
+   "moonset": "2026-11-08T11:09:14Z"
+  },
+  {
+   "city": "Delhi",
+   "latitude": 28.6139,
+   "longitude": 77.209,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-12-31",
+   "next_sunrise": "2027-01-01T01:43:49Z",
+   "moonrise": "2026-12-31T19:55:39Z",
+   "moonset": "2026-12-31T06:40:02Z"
+  },
+  {
+   "city": "Mumbai",
+   "latitude": 19.076,
+   "longitude": 72.8777,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-01-14",
+   "next_sunrise": "2026-01-15T01:44:41Z",
+   "moonrise": "2026-01-14T22:49:03Z",
+   "moonset": "2026-01-14T09:00:23Z"
+  },
+  {
+   "city": "Mumbai",
+   "latitude": 19.076,
+   "longitude": 72.8777,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-02-17",
+   "next_sunrise": "2026-02-18T01:35:12Z",
+   "moonrise": null,
+   "moonset": "2026-02-17T13:07:44Z"
+  },
+  {
+   "city": "Mumbai",
+   "latitude": 19.076,
+   "longitude": 72.8777,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-03-29",
+   "next_sunrise": "2026-03-30T01:04:24Z",
+   "moonrise": "2026-03-29T10:11:26Z",
+   "moonset": "2026-03-29T23:11:16Z"
+  },
+  {
+   "city": "Mumbai",
+   "latitude": 19.076,
+   "longitude": 72.8777,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-04-05",
+   "next_sunrise": "2026-04-06T00:58:35Z",
+   "moonrise": "2026-04-05T16:20:05Z",
+   "moonset": "2026-04-05T02:44:33Z"
+  },
+  {
+   "city": "Mumbai",
+   "latitude": 19.076,
+   "longitude": 72.8777,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-05-12",
+   "next_sunrise": "2026-05-13T00:34:45Z",
+   "moonrise": "2026-05-12T21:36:26Z",
+   "moonset": "2026-05-12T09:11:14Z"
+  },
+  {
+   "city": "Mumbai",
+   "latitude": 19.076,
+   "longitude": 72.8777,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-06-21",
+   "next_sunrise": "2026-06-22T00:32:03Z",
+   "moonrise": "2026-06-21T06:38:05Z",
+   "moonset": "2026-06-21T18:58:10Z"
+  },
+  {
+   "city": "Mumbai",
+   "latitude": 19.076,
+   "longitude": 72.8777,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-07-30",
+   "next_sunrise": "2026-07-31T00:44:56Z",
+   "moonrise": "2026-07-30T14:24:49Z",
+   "moonset": "2026-07-30T01:09:32Z"
+  },
+  {
+   "city": "Mumbai",
+   "latitude": 19.076,
+   "longitude": 72.8777,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-08-26",
+   "next_sunrise": "2026-08-27T00:52:26Z",
+   "moonrise": "2026-08-26T12:23:16Z",
+   "moonset": "2026-08-26T23:55:26Z"
+  },
+  {
+   "city": "Mumbai",
+   "latitude": 19.076,
+   "longitude": 72.8777,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-09-23",
+   "next_sunrise": "2026-09-24T00:57:43Z",
+   "moonrise": "2026-09-23T10:57:05Z",
+   "moonset": "2026-09-23T22:38:12Z"
+  },
+  {
+   "city": "Mumbai",
+   "latitude": 19.076,
+   "longitude": 72.8777,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-10-25",
+   "next_sunrise": "2026-10-26T01:06:19Z",
+   "moonrise": "2026-10-25T11:54:36Z",
+   "moonset": "2026-10-26T01:01:15Z"
+  },
+  {
+   "city": "Mumbai",
+   "latitude": 19.076,
+   "longitude": 72.8777,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-11-08",
+   "next_sunrise": "2026-11-09T01:12:34Z",
+   "moonrise": "2026-11-09T01:05:09Z",
+   "moonset": "2026-11-08T11:42:39Z"
+  },
+  {
+   "city": "Mumbai",
+   "latitude": 19.076,
+   "longitude": 72.8777,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-12-31",
+   "next_sunrise": "2027-01-01T01:41:41Z",
+   "moonrise": "2026-12-31T20:02:37Z",
+   "moonset": "2026-12-31T07:06:04Z"
+  },
+  {
+   "city": "Kolkata",
+   "latitude": 22.5726,
+   "longitude": 88.3639,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-01-14",
+   "next_sunrise": "2026-01-15T00:48:54Z",
+   "moonrise": "2026-01-14T21:53:30Z",
+   "moonset": "2026-01-14T07:48:19Z"
+  },
+  {
+   "city": "Kolkata",
+   "latitude": 22.5726,
+   "longitude": 88.3639,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-02-17",
+   "next_sunrise": "2026-02-18T00:36:31Z",
+   "moonrise": null,
+   "moonset": "2026-02-17T11:59:37Z"
+  },
+  {
+   "city": "Kolkata",
+   "latitude": 22.5726,
+   "longitude": 88.3639,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-03-29",
+   "next_sunrise": "2026-03-30T00:01:23Z",
+   "moonrise": "2026-03-29T09:02:40Z",
+   "moonset": "2026-03-29T22:11:05Z"
+  },
+  {
+   "city": "Kolkata",
+   "latitude": 22.5726,
+   "longitude": 88.3639,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-04-05",
+   "next_sunrise": "2026-04-05T23:54:48Z",
+   "moonrise": "2026-04-05T15:23:23Z",
+   "moonset": "2026-04-05T01:34:04Z"
+  },
+  {
+   "city": "Kolkata",
+   "latitude": 22.5726,
+   "longitude": 88.3639,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-05-12",
+   "next_sunrise": "2026-05-12T23:27:23Z",
+   "moonrise": "2026-05-12T20:32:39Z",
+   "moonset": "2026-05-12T08:06:15Z"
+  },
+  {
+   "city": "Kolkata",
+   "latitude": 22.5726,
+   "longitude": 88.3639,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-06-21",
+   "next_sunrise": "2026-06-21T23:22:57Z",
+   "moonrise": "2026-06-21T05:33:24Z",
+   "moonset": "2026-06-21T17:54:20Z"
+  },
+  {
+   "city": "Kolkata",
+   "latitude": 22.5726,
+   "longitude": 88.3639,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-07-30",
+   "next_sunrise": "2026-07-30T23:37:31Z",
+   "moonrise": "2026-07-30T13:26:09Z",
+   "moonset": "2026-07-29T23:59:31Z"
+  },
+  {
+   "city": "Kolkata",
+   "latitude": 22.5726,
+   "longitude": 88.3639,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-08-26",
+   "next_sunrise": "2026-08-26T23:47:31Z",
+   "moonrise": "2026-08-26T11:25:08Z",
+   "moonset": "2026-08-26T22:46:25Z"
+  },
+  {
+   "city": "Kolkata",
+   "latitude": 22.5726,
+   "longitude": 88.3639,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-09-23",
+   "next_sunrise": "2026-09-23T23:55:47Z",
+   "moonrise": "2026-09-23T09:58:05Z",
+   "moonset": "2026-09-23T21:30:11Z"
+  },
+  {
+   "city": "Kolkata",
+   "latitude": 22.5726,
+   "longitude": 88.3639,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-10-25",
+   "next_sunrise": "2026-10-26T00:07:48Z",
+   "moonrise": "2026-10-25T10:47:14Z",
+   "moonset": "2026-10-26T00:01:23Z"
+  },
+  {
+   "city": "Kolkata",
+   "latitude": 22.5726,
+   "longitude": 88.3639,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-11-08",
+   "next_sunrise": "2026-11-09T00:15:23Z",
+   "moonrise": "2026-11-09T00:07:09Z",
+   "moonset": "2026-11-08T10:33:36Z"
+  },
+  {
+   "city": "Kolkata",
+   "latitude": 22.5726,
+   "longitude": 88.3639,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-12-31",
+   "next_sunrise": "2027-01-01T00:46:31Z",
+   "moonrise": "2026-12-31T19:02:11Z",
+   "moonset": "2026-12-31T05:59:44Z"
+  },
+  {
+   "city": "Chennai",
+   "latitude": 13.0827,
+   "longitude": 80.2707,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-01-14",
+   "next_sunrise": "2026-01-15T01:05:07Z",
+   "moonrise": "2026-01-14T22:04:21Z",
+   "moonset": "2026-01-14T08:43:09Z"
+  },
+  {
+   "city": "Chennai",
+   "latitude": 13.0827,
+   "longitude": 80.2707,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-02-17",
+   "next_sunrise": "2026-02-18T01:00:22Z",
+   "moonrise": null,
+   "moonset": "2026-02-17T12:43:04Z"
+  },
+  {
+   "city": "Chennai",
+   "latitude": 13.0827,
+   "longitude": 80.2707,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-03-29",
+   "next_sunrise": "2026-03-30T00:36:38Z",
+   "moonrise": "2026-03-29T09:47:42Z",
+   "moonset": "2026-03-29T22:35:32Z"
+  },
+  {
+   "city": "Chennai",
+   "latitude": 13.0827,
+   "longitude": 80.2707,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-04-05",
+   "next_sunrise": "2026-04-06T00:32:02Z",
+   "moonrise": "2026-04-05T15:37:11Z",
+   "moonset": "2026-04-05T02:25:11Z"
+  },
+  {
+   "city": "Chennai",
+   "latitude": 13.0827,
+   "longitude": 80.2707,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-05-12",
+   "next_sunrise": "2026-05-13T00:13:58Z",
+   "moonrise": "2026-05-12T21:06:36Z",
+   "moonset": "2026-05-12T08:41:36Z"
+  },
+  {
+   "city": "Chennai",
+   "latitude": 13.0827,
+   "longitude": 80.2707,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-06-21",
+   "next_sunrise": "2026-06-22T00:13:59Z",
+   "moonrise": "2026-06-21T06:08:09Z",
+   "moonset": "2026-06-21T18:28:38Z"
+  },
+  {
+   "city": "Chennai",
+   "latitude": 13.0827,
+   "longitude": 80.2707,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-07-30",
+   "next_sunrise": "2026-07-31T00:24:07Z",
+   "moonrise": "2026-07-30T13:46:38Z",
+   "moonset": "2026-07-30T00:48:08Z"
+  },
+  {
+   "city": "Chennai",
+   "latitude": 13.0827,
+   "longitude": 80.2707,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-08-26",
+   "next_sunrise": "2026-08-27T00:27:37Z",
+   "moonrise": "2026-08-26T11:44:06Z",
+   "moonset": "2026-08-26T23:32:25Z"
+  },
+  {
+   "city": "Chennai",
+   "latitude": 13.0827,
+   "longitude": 80.2707,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-09-23",
+   "next_sunrise": "2026-09-24T00:28:04Z",
+   "moonrise": "2026-09-23T10:19:27Z",
+   "moonset": "2026-09-23T22:13:36Z"
+  },
+  {
+   "city": "Chennai",
+   "latitude": 13.0827,
+   "longitude": 80.2707,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-10-25",
+   "next_sunrise": "2026-10-26T00:31:08Z",
+   "moonrise": "2026-10-25T11:30:13Z",
+   "moonset": "2026-10-26T00:22:43Z"
+  },
+  {
+   "city": "Chennai",
+   "latitude": 13.0827,
+   "longitude": 80.2707,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-11-08",
+   "next_sunrise": "2026-11-09T00:35:13Z",
+   "moonrise": "2026-11-09T00:24:17Z",
+   "moonset": "2026-11-08T11:21:05Z"
+  },
+  {
+   "city": "Chennai",
+   "latitude": 13.0827,
+   "longitude": 80.2707,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-12-31",
+   "next_sunrise": "2027-01-01T01:01:06Z",
+   "moonrise": "2026-12-31T19:25:48Z",
+   "moonset": "2026-12-31T06:40:26Z"
+  },
+  {
+   "city": "Bengaluru",
+   "latitude": 12.9716,
+   "longitude": 77.5946,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-01-14",
+   "next_sunrise": "2026-01-15T01:15:38Z",
+   "moonrise": "2026-01-14T22:15:12Z",
+   "moonset": "2026-01-14T08:54:26Z"
+  },
+  {
+   "city": "Bengaluru",
+   "latitude": 12.9716,
+   "longitude": 77.5946,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-02-17",
+   "next_sunrise": "2026-02-18T01:10:58Z",
+   "moonrise": null,
+   "moonset": "2026-02-17T12:54:17Z"
+  },
+  {
+   "city": "Bengaluru",
+   "latitude": 12.9716,
+   "longitude": 77.5946,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-03-29",
+   "next_sunrise": "2026-03-30T00:47:22Z",
+   "moonrise": "2026-03-29T09:58:56Z",
+   "moonset": "2026-03-29T22:46:26Z"
+  },
+  {
+   "city": "Bengaluru",
+   "latitude": 12.9716,
+   "longitude": 77.5946,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-04-05",
+   "next_sunrise": "2026-04-06T00:42:47Z",
+   "moonrise": "2026-04-05T15:48:03Z",
+   "moonset": "2026-04-05T02:36:25Z"
+  },
+  {
+   "city": "Bengaluru",
+   "latitude": 12.9716,
+   "longitude": 77.5946,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-05-12",
+   "next_sunrise": "2026-05-13T00:24:50Z",
+   "moonrise": "2026-05-12T21:17:37Z",
+   "moonset": "2026-05-12T08:52:43Z"
+  },
+  {
+   "city": "Bengaluru",
+   "latitude": 12.9716,
+   "longitude": 77.5946,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-06-21",
+   "next_sunrise": "2026-06-22T00:24:53Z",
+   "moonrise": "2026-06-21T06:19:14Z",
+   "moonset": "2026-06-21T18:39:38Z"
+  },
+  {
+   "city": "Bengaluru",
+   "latitude": 12.9716,
+   "longitude": 77.5946,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-07-30",
+   "next_sunrise": "2026-07-31T00:34:59Z",
+   "moonrise": "2026-07-30T13:57:29Z",
+   "moonset": "2026-07-30T00:59:23Z"
+  },
+  {
+   "city": "Bengaluru",
+   "latitude": 12.9716,
+   "longitude": 77.5946,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-08-26",
+   "next_sunrise": "2026-08-27T00:38:24Z",
+   "moonrise": "2026-08-26T11:54:57Z",
+   "moonset": "2026-08-26T23:43:38Z"
+  },
+  {
+   "city": "Bengaluru",
+   "latitude": 12.9716,
+   "longitude": 77.5946,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-09-23",
+   "next_sunrise": "2026-09-24T00:38:46Z",
+   "moonrise": "2026-09-23T10:30:19Z",
+   "moonset": "2026-09-23T22:24:47Z"
+  },
+  {
+   "city": "Bengaluru",
+   "latitude": 12.9716,
+   "longitude": 77.5946,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-10-25",
+   "next_sunrise": "2026-10-26T00:41:44Z",
+   "moonrise": "2026-10-25T11:41:21Z",
+   "moonset": "2026-10-26T00:33:43Z"
+  },
+  {
+   "city": "Bengaluru",
+   "latitude": 12.9716,
+   "longitude": 77.5946,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-11-08",
+   "next_sunrise": "2026-11-09T00:45:47Z",
+   "moonrise": "2026-11-09T00:35:12Z",
+   "moonset": "2026-11-08T11:32:16Z"
+  },
+  {
+   "city": "Bengaluru",
+   "latitude": 12.9716,
+   "longitude": 77.5946,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-12-31",
+   "next_sunrise": "2027-01-01T01:11:36Z",
+   "moonrise": "2026-12-31T19:36:46Z",
+   "moonset": "2026-12-31T06:51:30Z"
+  },
+  {
+   "city": "Hyderabad",
+   "latitude": 17.385,
+   "longitude": 78.4867,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-01-14",
+   "next_sunrise": "2026-01-15T01:19:22Z",
+   "moonrise": "2026-01-14T22:21:43Z",
+   "moonset": "2026-01-14T08:41:05Z"
+  },
+  {
+   "city": "Hyderabad",
+   "latitude": 17.385,
+   "longitude": 78.4867,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-02-17",
+   "next_sunrise": "2026-02-18T01:11:15Z",
+   "moonrise": null,
+   "moonset": "2026-02-17T12:46:11Z"
+  },
+  {
+   "city": "Hyderabad",
+   "latitude": 17.385,
+   "longitude": 78.4867,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-03-29",
+   "next_sunrise": "2026-03-30T00:42:30Z",
+   "moonrise": "2026-03-29T09:50:08Z",
+   "moonset": "2026-03-29T22:46:42Z"
+  },
+  {
+   "city": "Hyderabad",
+   "latitude": 17.385,
+   "longitude": 78.4867,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-04-05",
+   "next_sunrise": "2026-04-06T00:37:02Z",
+   "moonrise": "2026-04-05T15:53:16Z",
+   "moonset": "2026-04-05T02:24:40Z"
+  },
+  {
+   "city": "Hyderabad",
+   "latitude": 17.385,
+   "longitude": 78.4867,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-05-12",
+   "next_sunrise": "2026-05-13T00:14:52Z",
+   "moonrise": "2026-05-12T21:13:34Z",
+   "moonset": "2026-05-12T08:48:15Z"
+  },
+  {
+   "city": "Hyderabad",
+   "latitude": 17.385,
+   "longitude": 78.4867,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-06-21",
+   "next_sunrise": "2026-06-22T00:12:57Z",
+   "moonrise": "2026-06-21T06:15:02Z",
+   "moonset": "2026-06-21T18:35:25Z"
+  },
+  {
+   "city": "Hyderabad",
+   "latitude": 17.385,
+   "longitude": 78.4867,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-07-30",
+   "next_sunrise": "2026-07-31T00:25:01Z",
+   "moonrise": "2026-07-30T13:59:32Z",
+   "moonset": "2026-07-30T00:48:57Z"
+  },
+  {
+   "city": "Hyderabad",
+   "latitude": 17.385,
+   "longitude": 78.4867,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-08-26",
+   "next_sunrise": "2026-08-27T00:31:22Z",
+   "moonrise": "2026-08-26T11:57:42Z",
+   "moonset": "2026-08-26T23:34:23Z"
+  },
+  {
+   "city": "Hyderabad",
+   "latitude": 17.385,
+   "longitude": 78.4867,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-09-23",
+   "next_sunrise": "2026-09-24T00:35:15Z",
+   "moonrise": "2026-09-23T10:31:58Z",
+   "moonset": "2026-09-23T22:16:41Z"
+  },
+  {
+   "city": "Hyderabad",
+   "latitude": 17.385,
+   "longitude": 78.4867,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-10-25",
+   "next_sunrise": "2026-10-26T00:42:16Z",
+   "moonrise": "2026-10-25T11:33:16Z",
+   "moonset": "2026-10-26T00:35:38Z"
+  },
+  {
+   "city": "Hyderabad",
+   "latitude": 17.385,
+   "longitude": 78.4867,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-11-08",
+   "next_sunrise": "2026-11-09T00:47:53Z",
+   "moonrise": "2026-11-09T00:38:55Z",
+   "moonset": "2026-11-08T11:22:09Z"
+  },
+  {
+   "city": "Hyderabad",
+   "latitude": 17.385,
+   "longitude": 78.4867,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-12-31",
+   "next_sunrise": "2027-01-01T01:16:04Z",
+   "moonrise": "2026-12-31T19:37:34Z",
+   "moonset": "2026-12-31T06:44:25Z"
+  },
+  {
+   "city": "Varanasi",
+   "latitude": 25.3176,
+   "longitude": 82.9739,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-01-14",
+   "next_sunrise": "2026-01-15T01:15:31Z",
+   "moonrise": "2026-01-14T22:23:06Z",
+   "moonset": "2026-01-14T08:03:45Z"
+  },
+  {
+   "city": "Varanasi",
+   "latitude": 25.3176,
+   "longitude": 82.9739,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-02-17",
+   "next_sunrise": "2026-02-18T01:00:43Z",
+   "moonrise": null,
+   "moonset": "2026-02-17T12:18:55Z"
+  },
+  {
+   "city": "Varanasi",
+   "latitude": 25.3176,
+   "longitude": 82.9739,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-03-29",
+   "next_sunrise": "2026-03-30T00:22:00Z",
+   "moonrise": "2026-03-29T09:21:32Z",
+   "moonset": "2026-03-29T22:35:55Z"
+  },
+  {
+   "city": "Varanasi",
+   "latitude": 25.3176,
+   "longitude": 82.9739,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-04-05",
+   "next_sunrise": "2026-04-06T00:14:47Z",
+   "moonrise": "2026-04-05T15:52:03Z",
+   "moonset": "2026-04-05T01:50:35Z"
+  },
+  {
+   "city": "Varanasi",
+   "latitude": 25.3176,
+   "longitude": 82.9739,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-05-12",
+   "next_sunrise": "2026-05-12T23:44:26Z",
+   "moonrise": "2026-05-12T20:54:30Z",
+   "moonset": "2026-05-12T08:28:06Z"
+  },
+  {
+   "city": "Varanasi",
+   "latitude": 25.3176,
+   "longitude": 82.9739,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-06-21",
+   "next_sunrise": "2026-06-21T23:38:35Z",
+   "moonrise": "2026-06-21T05:55:25Z",
+   "moonset": "2026-06-21T18:16:00Z"
+  },
+  {
+   "city": "Varanasi",
+   "latitude": 25.3176,
+   "longitude": 82.9739,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-07-30",
+   "next_sunrise": "2026-07-30T23:54:36Z",
+   "moonrise": "2026-07-30T13:52:13Z",
+   "moonset": "2026-07-30T00:17:09Z"
+  },
+  {
+   "city": "Varanasi",
+   "latitude": 25.3176,
+   "longitude": 82.9739,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-08-26",
+   "next_sunrise": "2026-08-27T00:06:39Z",
+   "moonrise": "2026-08-26T11:51:43Z",
+   "moonset": "2026-08-26T23:04:53Z"
+  },
+  {
+   "city": "Varanasi",
+   "latitude": 25.3176,
+   "longitude": 82.9739,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-09-23",
+   "next_sunrise": "2026-09-24T00:17:22Z",
+   "moonrise": "2026-09-23T10:23:52Z",
+   "moonset": "2026-09-23T21:49:28Z"
+  },
+  {
+   "city": "Varanasi",
+   "latitude": 25.3176,
+   "longitude": 82.9739,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-10-25",
+   "next_sunrise": "2026-10-26T00:32:11Z",
+   "moonrise": "2026-10-25T11:06:21Z",
+   "moonset": "2026-10-26T00:27:48Z"
+  },
+  {
+   "city": "Varanasi",
+   "latitude": 25.3176,
+   "longitude": 82.9739,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-11-08",
+   "next_sunrise": "2026-11-09T00:40:52Z",
+   "moonrise": "2026-11-09T00:34:45Z",
+   "moonset": "2026-11-08T10:51:16Z"
+  },
+  {
+   "city": "Varanasi",
+   "latitude": 25.3176,
+   "longitude": 82.9739,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-12-31",
+   "next_sunrise": "2027-01-01T01:13:40Z",
+   "moonrise": "2026-12-31T19:27:42Z",
+   "moonset": "2026-12-31T06:19:27Z"
+  },
+  {
+   "city": "Jaipur",
+   "latitude": 26.9124,
+   "longitude": 75.7873,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-01-14",
+   "next_sunrise": "2026-01-15T01:47:19Z",
+   "moonrise": "2026-01-14T22:57:19Z",
+   "moonset": "2026-01-14T08:29:15Z"
+  },
+  {
+   "city": "Jaipur",
+   "latitude": 26.9124,
+   "longitude": 75.7873,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-02-17",
+   "next_sunrise": "2026-02-18T01:31:02Z",
+   "moonrise": null,
+   "moonset": "2026-02-17T12:46:59Z"
+  },
+  {
+   "city": "Jaipur",
+   "latitude": 26.9124,
+   "longitude": 75.7873,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-03-29",
+   "next_sunrise": "2026-03-30T00:50:10Z",
+   "moonrise": "2026-03-29T09:49:20Z",
+   "moonset": "2026-03-29T23:06:58Z"
+  },
+  {
+   "city": "Jaipur",
+   "latitude": 26.9124,
+   "longitude": 75.7873,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-04-05",
+   "next_sunrise": "2026-04-06T00:42:35Z",
+   "moonrise": "2026-04-05T16:25:43Z",
+   "moonset": "2026-04-05T02:16:42Z"
+  },
+  {
+   "city": "Jaipur",
+   "latitude": 26.9124,
+   "longitude": 75.7873,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-05-12",
+   "next_sunrise": "2026-05-13T00:10:27Z",
+   "moonrise": "2026-05-12T21:23:45Z",
+   "moonset": "2026-05-12T08:57:41Z"
+  },
+  {
+   "city": "Jaipur",
+   "latitude": 26.9124,
+   "longitude": 75.7873,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-06-21",
+   "next_sunrise": "2026-06-22T00:03:45Z",
+   "moonrise": "2026-06-21T06:25:04Z",
+   "moonset": "2026-06-21T18:45:07Z"
+  },
+  {
+   "city": "Jaipur",
+   "latitude": 26.9124,
+   "longitude": 75.7873,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-07-30",
+   "next_sunrise": "2026-07-31T00:20:38Z",
+   "moonrise": "2026-07-30T14:24:02Z",
+   "moonset": "2026-07-30T00:44:10Z"
+  },
+  {
+   "city": "Jaipur",
+   "latitude": 26.9124,
+   "longitude": 75.7873,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-08-26",
+   "next_sunrise": "2026-08-27T00:33:56Z",
+   "moonrise": "2026-08-26T12:23:51Z",
+   "moonset": "2026-08-26T23:32:24Z"
+  },
+  {
+   "city": "Jaipur",
+   "latitude": 26.9124,
+   "longitude": 75.7873,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-09-23",
+   "next_sunrise": "2026-09-24T00:46:07Z",
+   "moonrise": "2026-09-23T10:55:30Z",
+   "moonset": "2026-09-23T22:17:28Z"
+  },
+  {
+   "city": "Jaipur",
+   "latitude": 26.9124,
+   "longitude": 75.7873,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-10-25",
+   "next_sunrise": "2026-10-26T01:02:38Z",
+   "moonrise": "2026-10-25T11:34:01Z",
+   "moonset": "2026-10-26T01:00:14Z"
+  },
+  {
+   "city": "Jaipur",
+   "latitude": 26.9124,
+   "longitude": 75.7873,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-11-08",
+   "next_sunrise": "2026-11-09T01:11:59Z",
+   "moonrise": "2026-11-09T01:07:48Z",
+   "moonset": "2026-11-08T11:18:02Z"
+  },
+  {
+   "city": "Jaipur",
+   "latitude": 26.9124,
+   "longitude": 75.7873,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-12-31",
+   "next_sunrise": "2027-01-01T01:45:48Z",
+   "moonrise": "2026-12-31T19:59:28Z",
+   "moonset": "2026-12-31T06:47:25Z"
+  },
+  {
+   "city": "Ahmedabad",
+   "latitude": 23.0225,
+   "longitude": 72.5714,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-01-14",
+   "next_sunrise": "2026-01-15T01:52:53Z",
+   "moonrise": "2026-01-14T23:00:13Z",
+   "moonset": "2026-01-14T08:52:19Z"
+  },
+  {
+   "city": "Ahmedabad",
+   "latitude": 23.0225,
+   "longitude": 72.5714,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-02-17",
+   "next_sunrise": "2026-02-18T01:40:05Z",
+   "moonrise": null,
+   "moonset": "2026-02-17T13:04:48Z"
+  },
+  {
+   "city": "Ahmedabad",
+   "latitude": 23.0225,
+   "longitude": 72.5714,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-03-29",
+   "next_sunrise": "2026-03-30T01:04:21Z",
+   "moonrise": "2026-03-29T10:07:51Z",
+   "moonset": "2026-03-29T23:16:15Z"
+  },
+  {
+   "city": "Ahmedabad",
+   "latitude": 23.0225,
+   "longitude": 72.5714,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-04-05",
+   "next_sunrise": "2026-04-06T00:57:40Z",
+   "moonrise": "2026-04-05T16:29:59Z",
+   "moonset": "2026-04-05T02:38:03Z"
+  },
+  {
+   "city": "Ahmedabad",
+   "latitude": 23.0225,
+   "longitude": 72.5714,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-05-12",
+   "next_sunrise": "2026-05-13T00:29:48Z",
+   "moonrise": "2026-05-12T21:37:18Z",
+   "moonset": "2026-05-12T09:11:48Z"
+  },
+  {
+   "city": "Ahmedabad",
+   "latitude": 23.0225,
+   "longitude": 72.5714,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-06-21",
+   "next_sunrise": "2026-06-22T00:25:10Z",
+   "moonrise": "2026-06-21T06:38:55Z",
+   "moonset": "2026-06-21T18:58:51Z"
+  },
+  {
+   "city": "Ahmedabad",
+   "latitude": 23.0225,
+   "longitude": 72.5714,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-07-30",
+   "next_sunrise": "2026-07-31T00:39:59Z",
+   "moonrise": "2026-07-30T14:31:31Z",
+   "moonset": "2026-07-30T01:04:20Z"
+  },
+  {
+   "city": "Ahmedabad",
+   "latitude": 23.0225,
+   "longitude": 72.5714,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-08-26",
+   "next_sunrise": "2026-08-27T00:50:19Z",
+   "moonrise": "2026-08-26T12:30:38Z",
+   "moonset": "2026-08-26T23:51:22Z"
+  },
+  {
+   "city": "Ahmedabad",
+   "latitude": 23.0225,
+   "longitude": 72.5714,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-09-23",
+   "next_sunrise": "2026-09-24T00:58:58Z",
+   "moonrise": "2026-09-23T11:03:23Z",
+   "moonset": "2026-09-23T22:35:16Z"
+  },
+  {
+   "city": "Ahmedabad",
+   "latitude": 23.0225,
+   "longitude": 72.5714,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-10-25",
+   "next_sunrise": "2026-10-26T01:11:26Z",
+   "moonrise": "2026-10-25T11:51:37Z",
+   "moonset": "2026-10-26T01:07:59Z"
+  },
+  {
+   "city": "Ahmedabad",
+   "latitude": 23.0225,
+   "longitude": 72.5714,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-11-08",
+   "next_sunrise": "2026-11-09T01:19:12Z",
+   "moonrise": "2026-11-09T01:13:37Z",
+   "moonset": "2026-11-08T11:37:42Z"
+  },
+  {
+   "city": "Ahmedabad",
+   "latitude": 23.0225,
+   "longitude": 72.5714,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-12-31",
+   "next_sunrise": "2027-01-01T01:50:36Z",
+   "moonrise": "2026-12-31T20:08:15Z",
+   "moonset": "2026-12-31T07:04:01Z"
+  },
+  {
+   "city": "Guwahati",
+   "latitude": 26.1445,
+   "longitude": 91.7362,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-01-14",
+   "next_sunrise": "2026-01-15T00:42:03Z",
+   "moonrise": "2026-01-14T21:48:57Z",
+   "moonset": "2026-01-14T07:25:33Z"
+  },
+  {
+   "city": "Guwahati",
+   "latitude": 26.1445,
+   "longitude": 91.7362,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-02-17",
+   "next_sunrise": "2026-02-18T00:26:30Z",
+   "moonrise": null,
+   "moonset": "2026-02-17T11:41:28Z"
+  },
+  {
+   "city": "Guwahati",
+   "latitude": 26.1445,
+   "longitude": 91.7362,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-03-29",
+   "next_sunrise": "2026-03-29T23:46:41Z",
+   "moonrise": "2026-03-29T08:43:53Z",
+   "moonset": "2026-03-29T22:00:54Z"
+  },
+  {
+   "city": "Guwahati",
+   "latitude": 26.1445,
+   "longitude": 91.7362,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-04-05",
+   "next_sunrise": "2026-04-05T23:39:17Z",
+   "moonrise": "2026-04-05T15:17:35Z",
+   "moonset": "2026-04-05T01:12:53Z"
+  },
+  {
+   "city": "Guwahati",
+   "latitude": 26.1445,
+   "longitude": 91.7362,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-05-12",
+   "next_sunrise": "2026-05-12T23:08:00Z",
+   "moonrise": "2026-05-12T20:18:35Z",
+   "moonset": "2026-05-12T07:51:27Z"
+  },
+  {
+   "city": "Guwahati",
+   "latitude": 26.1445,
+   "longitude": 91.7362,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-06-21",
+   "next_sunrise": "2026-06-21T23:01:41Z",
+   "moonrise": "2026-06-21T05:18:52Z",
+   "moonset": "2026-06-21T17:40:06Z"
+  },
+  {
+   "city": "Guwahati",
+   "latitude": 26.1445,
+   "longitude": 91.7362,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-07-30",
+   "next_sunrise": "2026-07-30T23:18:08Z",
+   "moonrise": "2026-07-30T13:17:35Z",
+   "moonset": "2026-07-29T23:39:15Z"
+  },
+  {
+   "city": "Guwahati",
+   "latitude": 26.1445,
+   "longitude": 91.7362,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-08-26",
+   "next_sunrise": "2026-08-26T23:30:50Z",
+   "moonrise": "2026-08-26T11:17:12Z",
+   "moonset": "2026-08-26T22:27:14Z"
+  },
+  {
+   "city": "Guwahati",
+   "latitude": 26.1445,
+   "longitude": 91.7362,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-09-23",
+   "next_sunrise": "2026-09-23T23:42:18Z",
+   "moonrise": "2026-09-23T09:49:09Z",
+   "moonset": "2026-09-23T21:12:04Z"
+  },
+  {
+   "city": "Guwahati",
+   "latitude": 26.1445,
+   "longitude": 91.7362,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-10-25",
+   "next_sunrise": "2026-10-25T23:57:59Z",
+   "moonrise": "2026-10-25T10:29:28Z",
+   "moonset": "2026-10-25T23:52:23Z"
+  },
+  {
+   "city": "Guwahati",
+   "latitude": 26.1445,
+   "longitude": 91.7362,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-11-08",
+   "next_sunrise": "2026-11-09T00:07:01Z",
+   "moonrise": "2026-11-08T23:59:55Z",
+   "moonset": "2026-11-08T10:13:57Z"
+  },
+  {
+   "city": "Guwahati",
+   "latitude": 26.1445,
+   "longitude": 91.7362,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-12-31",
+   "next_sunrise": "2027-01-01T00:40:21Z",
+   "moonrise": "2026-12-31T18:52:15Z",
+   "moonset": "2026-12-31T05:42:53Z"
+  },
+  {
+   "city": "Srinagar",
+   "latitude": 34.0837,
+   "longitude": 74.7973,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-01-14",
+   "next_sunrise": "2026-01-15T02:06:18Z",
+   "moonrise": "2026-01-14T23:23:16Z",
+   "moonset": "2026-01-14T08:12:57Z"
+  },
+  {
+   "city": "Srinagar",
+   "latitude": 34.0837,
+   "longitude": 74.7973,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-02-17",
+   "next_sunrise": "2026-02-18T01:42:45Z",
+   "moonrise": null,
+   "moonset": "2026-02-17T12:41:58Z"
+  },
+  {
+   "city": "Srinagar",
+   "latitude": 34.0837,
+   "longitude": 74.7973,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-03-29",
+   "next_sunrise": "2026-03-30T00:51:19Z",
+   "moonrise": "2026-03-29T09:42:54Z",
+   "moonset": "2026-03-29T23:18:57Z"
+  },
+  {
+   "city": "Srinagar",
+   "latitude": 34.0837,
+   "longitude": 74.7973,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-04-05",
+   "next_sunrise": "2026-04-06T00:41:54Z",
+   "moonrise": "2026-04-05T16:48:47Z",
+   "moonset": "2026-04-05T02:03:58Z"
+  },
+  {
+   "city": "Srinagar",
+   "latitude": 34.0837,
+   "longitude": 74.7973,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-05-12",
+   "next_sunrise": "2026-05-13T00:00:58Z",
+   "moonrise": "2026-05-12T21:27:01Z",
+   "moonset": "2026-05-12T09:00:15Z"
+  },
+  {
+   "city": "Srinagar",
+   "latitude": 34.0837,
+   "longitude": 74.7973,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-06-21",
+   "next_sunrise": "2026-06-21T23:49:55Z",
+   "moonrise": "2026-06-21T06:28:12Z",
+   "moonset": "2026-06-21T18:47:58Z"
+  },
+  {
+   "city": "Srinagar",
+   "latitude": 34.0837,
+   "longitude": 74.7973,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-07-30",
+   "next_sunrise": "2026-07-31T00:11:10Z",
+   "moonrise": "2026-07-30T14:39:46Z",
+   "moonset": "2026-07-30T00:34:10Z"
+  },
+  {
+   "city": "Srinagar",
+   "latitude": 34.0837,
+   "longitude": 74.7973,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-08-26",
+   "next_sunrise": "2026-08-27T00:30:38Z",
+   "moonrise": "2026-08-26T12:41:03Z",
+   "moonset": "2026-08-26T23:24:55Z"
+  },
+  {
+   "city": "Srinagar",
+   "latitude": 34.0837,
+   "longitude": 74.7973,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-09-23",
+   "next_sunrise": "2026-09-24T00:50:04Z",
+   "moonrise": "2026-09-23T11:10:23Z",
+   "moonset": "2026-09-23T22:12:27Z"
+  },
+  {
+   "city": "Srinagar",
+   "latitude": 34.0837,
+   "longitude": 74.7973,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-10-25",
+   "next_sunrise": "2026-10-26T01:14:52Z",
+   "moonrise": "2026-10-25T11:29:05Z",
+   "moonset": null
+  },
+  {
+   "city": "Srinagar",
+   "latitude": 34.0837,
+   "longitude": 74.7973,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-11-08",
+   "next_sunrise": "2026-11-09T01:27:31Z",
+   "moonrise": null,
+   "moonset": "2026-11-08T11:08:47Z"
+  },
+  {
+   "city": "Srinagar",
+   "latitude": 34.0837,
+   "longitude": 74.7973,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-12-31",
+   "next_sunrise": "2027-01-01T02:06:23Z",
+   "moonrise": "2026-12-31T20:13:01Z",
+   "moonset": "2026-12-31T06:44:27Z"
+  },
+  {
+   "city": "Thiruvananthapuram",
+   "latitude": 8.5241,
+   "longitude": 76.9366,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-01-14",
+   "next_sunrise": "2026-01-15T01:11:11Z",
+   "moonrise": "2026-01-14T22:08:03Z",
+   "moonset": "2026-01-14T09:06:31Z"
+  },
+  {
+   "city": "Thiruvananthapuram",
+   "latitude": 8.5241,
+   "longitude": 76.9366,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-02-17",
+   "next_sunrise": "2026-02-18T01:09:50Z",
+   "moonrise": null,
+   "moonset": "2026-02-17T13:01:15Z"
+  },
+  {
+   "city": "Thiruvananthapuram",
+   "latitude": 8.5241,
+   "longitude": 76.9366,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-03-29",
+   "next_sunrise": "2026-03-30T00:51:14Z",
+   "moonrise": "2026-03-29T10:06:36Z",
+   "moonset": "2026-03-29T22:45:18Z"
+  },
+  {
+   "city": "Thiruvananthapuram",
+   "latitude": 8.5241,
+   "longitude": 76.9366,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-04-05",
+   "next_sunrise": "2026-04-06T00:47:32Z",
+   "moonrise": "2026-04-05T15:42:10Z",
+   "moonset": "2026-04-05T02:46:57Z"
+  },
+  {
+   "city": "Thiruvananthapuram",
+   "latitude": 8.5241,
+   "longitude": 76.9366,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-05-12",
+   "next_sunrise": "2026-05-13T00:33:39Z",
+   "moonrise": "2026-05-12T21:20:42Z",
+   "moonset": "2026-05-12T08:56:10Z"
+  },
+  {
+   "city": "Thiruvananthapuram",
+   "latitude": 8.5241,
+   "longitude": 76.9366,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-06-21",
+   "next_sunrise": "2026-06-22T00:35:37Z",
+   "moonrise": "2026-06-21T06:22:27Z",
+   "moonset": "2026-06-21T18:42:53Z"
+  },
+  {
+   "city": "Thiruvananthapuram",
+   "latitude": 8.5241,
+   "longitude": 76.9366,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-07-30",
+   "next_sunrise": "2026-07-31T00:43:47Z",
+   "moonrise": "2026-07-30T13:54:38Z",
+   "moonset": "2026-07-30T01:08:37Z"
+  },
+  {
+   "city": "Thiruvananthapuram",
+   "latitude": 8.5241,
+   "longitude": 76.9366,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-08-26",
+   "next_sunrise": "2026-08-27T00:44:23Z",
+   "moonrise": "2026-08-26T11:51:26Z",
+   "moonset": "2026-08-26T23:51:45Z"
+  },
+  {
+   "city": "Thiruvananthapuram",
+   "latitude": 8.5241,
+   "longitude": 76.9366,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-09-23",
+   "next_sunrise": "2026-09-24T00:41:19Z",
+   "moonrise": "2026-09-23T10:27:52Z",
+   "moonset": "2026-09-23T22:31:46Z"
+  },
+  {
+   "city": "Thiruvananthapuram",
+   "latitude": 8.5241,
+   "longitude": 76.9366,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-10-25",
+   "next_sunrise": "2026-10-26T00:40:22Z",
+   "moonrise": "2026-10-25T11:48:23Z",
+   "moonset": "2026-10-26T00:31:00Z"
+  },
+  {
+   "city": "Thiruvananthapuram",
+   "latitude": 8.5241,
+   "longitude": 76.9366,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-11-08",
+   "next_sunrise": "2026-11-09T00:42:54Z",
+   "moonrise": "2026-11-09T00:30:44Z",
+   "moonset": "2026-11-08T11:41:15Z"
+  },
+  {
+   "city": "Thiruvananthapuram",
+   "latitude": 8.5241,
+   "longitude": 76.9366,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-12-31",
+   "next_sunrise": "2027-01-01T01:06:26Z",
+   "moonrise": "2026-12-31T19:35:07Z",
+   "moonset": "2026-12-31T06:57:33Z"
+  },
+  {
+   "city": "Sonipat",
+   "latitude": 28.9931,
+   "longitude": 77.0151,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-01-14",
+   "next_sunrise": "2026-01-15T01:46:32Z",
+   "moonrise": "2026-01-14T22:58:10Z",
+   "moonset": "2026-01-14T08:18:38Z"
+  },
+  {
+   "city": "Sonipat",
+   "latitude": 28.9931,
+   "longitude": 77.0151,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-02-17",
+   "next_sunrise": "2026-02-18T01:28:16Z",
+   "moonrise": null,
+   "moonset": "2026-02-17T12:39:21Z"
+  },
+  {
+   "city": "Sonipat",
+   "latitude": 28.9931,
+   "longitude": 77.0151,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-03-29",
+   "next_sunrise": "2026-03-30T00:44:29Z",
+   "moonrise": "2026-03-29T09:41:18Z",
+   "moonset": "2026-03-29T23:04:08Z"
+  },
+  {
+   "city": "Sonipat",
+   "latitude": 28.9931,
+   "longitude": 77.0151,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-04-05",
+   "next_sunrise": "2026-04-06T00:36:24Z",
+   "moonrise": "2026-04-05T16:25:47Z",
+   "moonset": "2026-04-05T02:07:04Z"
+  },
+  {
+   "city": "Sonipat",
+   "latitude": 28.9931,
+   "longitude": 77.0151,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-05-12",
+   "next_sunrise": "2026-05-13T00:01:52Z",
+   "moonrise": "2026-05-12T21:18:31Z",
+   "moonset": "2026-05-12T08:52:08Z"
+  },
+  {
+   "city": "Sonipat",
+   "latitude": 28.9931,
+   "longitude": 77.0151,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-06-21",
+   "next_sunrise": "2026-06-21T23:53:59Z",
+   "moonrise": "2026-06-21T06:19:41Z",
+   "moonset": "2026-06-21T18:39:47Z"
+  },
+  {
+   "city": "Sonipat",
+   "latitude": 28.9931,
+   "longitude": 77.0151,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-07-30",
+   "next_sunrise": "2026-07-31T00:12:03Z",
+   "moonrise": "2026-07-30T14:22:14Z",
+   "moonset": "2026-07-30T00:35:11Z"
+  },
+  {
+   "city": "Sonipat",
+   "latitude": 28.9931,
+   "longitude": 77.0151,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-08-26",
+   "next_sunrise": "2026-08-27T00:27:02Z",
+   "moonrise": "2026-08-26T12:22:26Z",
+   "moonset": "2026-08-26T23:24:07Z"
+  },
+  {
+   "city": "Sonipat",
+   "latitude": 28.9931,
+   "longitude": 77.0151,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-09-23",
+   "next_sunrise": "2026-09-24T00:41:13Z",
+   "moonrise": "2026-09-23T10:53:28Z",
+   "moonset": "2026-09-23T22:09:51Z"
+  },
+  {
+   "city": "Sonipat",
+   "latitude": 28.9931,
+   "longitude": 77.0151,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-10-25",
+   "next_sunrise": "2026-10-26T01:00:00Z",
+   "moonrise": "2026-10-25T11:26:30Z",
+   "moonset": "2026-10-26T00:58:19Z"
+  },
+  {
+   "city": "Sonipat",
+   "latitude": 28.9931,
+   "longitude": 77.0151,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-11-08",
+   "next_sunrise": "2026-11-09T01:10:15Z",
+   "moonrise": "2026-11-09T01:06:58Z",
+   "moonset": "2026-11-08T11:09:21Z"
+  },
+  {
+   "city": "Sonipat",
+   "latitude": 28.9931,
+   "longitude": 77.0151,
+   "timezone": "Asia/Kolkata",
+   "date": "2026-12-31",
+   "next_sunrise": "2027-01-01T01:45:26Z",
+   "moonrise": "2026-12-31T19:56:56Z",
+   "moonset": "2026-12-31T06:40:28Z"
+  },
+  {
+   "city": "Kathmandu",
+   "latitude": 27.7172,
+   "longitude": 85.324,
+   "timezone": "Asia/Kathmandu",
+   "date": "2026-01-14",
+   "next_sunrise": "2026-01-15T01:10:45Z",
+   "moonrise": "2026-01-14T22:19:58Z",
+   "moonset": "2026-01-14T07:47:51Z"
+  },
+  {
+   "city": "Kathmandu",
+   "latitude": 27.7172,
+   "longitude": 85.324,
+   "timezone": "Asia/Kathmandu",
+   "date": "2026-02-17",
+   "next_sunrise": "2026-02-18T00:53:44Z",
+   "moonrise": null,
+   "moonset": "2026-02-17T12:06:17Z"
+  },
+  {
+   "city": "Kathmandu",
+   "latitude": 27.7172,
+   "longitude": 85.324,
+   "timezone": "Asia/Kathmandu",
+   "date": "2026-03-29",
+   "next_sunrise": "2026-03-30T00:11:45Z",
+   "moonrise": "2026-03-29T09:08:27Z",
+   "moonset": "2026-03-29T22:28:48Z"
+  },
+  {
+   "city": "Kathmandu",
+   "latitude": 27.7172,
+   "longitude": 85.324,
+   "timezone": "Asia/Kathmandu",
+   "date": "2026-04-05",
+   "next_sunrise": "2026-04-06T00:03:59Z",
+   "moonrise": "2026-04-05T15:48:02Z",
+   "moonset": "2026-04-05T01:35:49Z"
+  },
+  {
+   "city": "Kathmandu",
+   "latitude": 27.7172,
+   "longitude": 85.324,
+   "timezone": "Asia/Kathmandu",
+   "date": "2026-05-12",
+   "next_sunrise": "2026-05-12T23:30:55Z",
+   "moonrise": "2026-05-12T20:44:41Z",
+   "moonset": "2026-05-12T08:17:48Z"
+  },
+  {
+   "city": "Kathmandu",
+   "latitude": 27.7172,
+   "longitude": 85.324,
+   "timezone": "Asia/Kathmandu",
+   "date": "2026-06-21",
+   "next_sunrise": "2026-06-21T23:23:45Z",
+   "moonrise": "2026-06-21T05:45:18Z",
+   "moonset": "2026-06-21T18:06:04Z"
+  },
+  {
+   "city": "Kathmandu",
+   "latitude": 27.7172,
+   "longitude": 85.324,
+   "timezone": "Asia/Kathmandu",
+   "date": "2026-07-30",
+   "next_sunrise": "2026-07-30T23:41:04Z",
+   "moonrise": "2026-07-30T13:46:15Z",
+   "moonset": "2026-07-30T00:03:01Z"
+  },
+  {
+   "city": "Kathmandu",
+   "latitude": 27.7172,
+   "longitude": 85.324,
+   "timezone": "Asia/Kathmandu",
+   "date": "2026-08-26",
+   "next_sunrise": "2026-08-26T23:55:01Z",
+   "moonrise": "2026-08-26T11:46:10Z",
+   "moonset": "2026-08-26T22:51:31Z"
+  },
+  {
+   "city": "Kathmandu",
+   "latitude": 27.7172,
+   "longitude": 85.324,
+   "timezone": "Asia/Kathmandu",
+   "date": "2026-09-23",
+   "next_sunrise": "2026-09-24T00:07:58Z",
+   "moonrise": "2026-09-23T10:17:38Z",
+   "moonset": "2026-09-23T21:36:51Z"
+  },
+  {
+   "city": "Kathmandu",
+   "latitude": 27.7172,
+   "longitude": 85.324,
+   "timezone": "Asia/Kathmandu",
+   "date": "2026-10-25",
+   "next_sunrise": "2026-10-26T00:25:20Z",
+   "moonrise": "2026-10-25T10:53:57Z",
+   "moonset": "2026-10-26T00:21:33Z"
+  },
+  {
+   "city": "Kathmandu",
+   "latitude": 27.7172,
+   "longitude": 85.324,
+   "timezone": "Asia/Kathmandu",
+   "date": "2026-11-08",
+   "next_sunrise": "2026-11-09T00:35:02Z",
+   "moonrise": "2026-11-09T00:29:45Z",
+   "moonset": "2026-11-08T10:37:33Z"
+  },
+  {
+   "city": "Kathmandu",
+   "latitude": 27.7172,
+   "longitude": 85.324,
+   "timezone": "Asia/Kathmandu",
+   "date": "2026-12-31",
+   "next_sunrise": "2027-01-01T01:09:23Z",
+   "moonrise": "2026-12-31T19:20:47Z",
+   "moonset": "2026-12-31T06:07:42Z"
+  },
+  {
+   "city": "Dubai",
+   "latitude": 25.2048,
+   "longitude": 55.2708,
+   "timezone": "Asia/Dubai",
+   "date": "2026-01-14",
+   "next_sunrise": "2026-01-15T03:06:07Z",
+   "moonrise": "2026-01-15T00:17:50Z",
+   "moonset": "2026-01-14T09:58:11Z"
+  },
+  {
+   "city": "Dubai",
+   "latitude": 25.2048,
+   "longitude": 55.2708,
+   "timezone": "Asia/Dubai",
+   "date": "2026-02-17",
+   "next_sunrise": "2026-02-18T02:51:21Z",
+   "moonrise": null,
+   "moonset": "2026-02-17T14:14:22Z"
+  },
+  {
+   "city": "Dubai",
+   "latitude": 25.2048,
+   "longitude": 55.2708,
+   "timezone": "Asia/Dubai",
+   "date": "2026-03-29",
+   "next_sunrise": "2026-03-30T02:12:46Z",
+   "moonrise": "2026-03-29T11:17:06Z",
+   "moonset": "2026-03-30T00:29:14Z"
+  },
+  {
+   "city": "Dubai",
+   "latitude": 25.2048,
+   "longitude": 55.2708,
+   "timezone": "Asia/Dubai",
+   "date": "2026-04-05",
+   "next_sunrise": "2026-04-06T02:05:35Z",
+   "moonrise": "2026-04-05T17:46:54Z",
+   "moonset": "2026-04-05T03:44:35Z"
+  },
+  {
+   "city": "Dubai",
+   "latitude": 25.2048,
+   "longitude": 55.2708,
+   "timezone": "Asia/Dubai",
+   "date": "2026-05-12",
+   "next_sunrise": "2026-05-13T01:35:24Z",
+   "moonrise": "2026-05-12T22:47:53Z",
+   "moonset": "2026-05-12T10:23:23Z"
+  },
+  {
+   "city": "Dubai",
+   "latitude": 25.2048,
+   "longitude": 55.2708,
+   "timezone": "Asia/Dubai",
+   "date": "2026-06-21",
+   "next_sunrise": "2026-06-22T01:29:40Z",
+   "moonrise": "2026-06-21T07:50:32Z",
+   "moonset": "2026-06-21T20:09:12Z"
+  },
+  {
+   "city": "Dubai",
+   "latitude": 25.2048,
+   "longitude": 55.2708,
+   "timezone": "Asia/Dubai",
+   "date": "2026-07-30",
+   "next_sunrise": "2026-07-31T01:45:38Z",
+   "moonrise": "2026-07-30T15:45:30Z",
+   "moonset": "2026-07-30T02:12:29Z"
+  },
+  {
+   "city": "Dubai",
+   "latitude": 25.2048,
+   "longitude": 55.2708,
+   "timezone": "Asia/Dubai",
+   "date": "2026-08-26",
+   "next_sunrise": "2026-08-27T01:57:36Z",
+   "moonrise": "2026-08-26T13:45:04Z",
+   "moonset": "2026-08-27T01:00:11Z"
+  },
+  {
+   "city": "Dubai",
+   "latitude": 25.2048,
+   "longitude": 55.2708,
+   "timezone": "Asia/Dubai",
+   "date": "2026-09-23",
+   "next_sunrise": "2026-09-24T02:08:12Z",
+   "moonrise": "2026-09-23T12:17:09Z",
+   "moonset": "2026-09-23T23:44:43Z"
+  },
+  {
+   "city": "Dubai",
+   "latitude": 25.2048,
+   "longitude": 55.2708,
+   "timezone": "Asia/Dubai",
+   "date": "2026-10-25",
+   "next_sunrise": "2026-10-26T02:22:55Z",
+   "moonrise": "2026-10-25T13:00:12Z",
+   "moonset": null
+  },
+  {
+   "city": "Dubai",
+   "latitude": 25.2048,
+   "longitude": 55.2708,
+   "timezone": "Asia/Dubai",
+   "date": "2026-11-08",
+   "next_sunrise": "2026-11-09T02:31:34Z",
+   "moonrise": "2026-11-09T02:29:45Z",
+   "moonset": "2026-11-08T12:45:04Z"
+  },
+  {
+   "city": "Dubai",
+   "latitude": 25.2048,
+   "longitude": 55.2708,
+   "timezone": "Asia/Dubai",
+   "date": "2026-12-31",
+   "next_sunrise": "2027-01-01T03:04:16Z",
+   "moonrise": "2026-12-31T21:22:41Z",
+   "moonset": "2026-12-31T08:12:53Z"
+  },
+  {
+   "city": "Singapore",
+   "latitude": 1.3521,
+   "longitude": 103.8198,
+   "timezone": "Asia/Singapore",
+   "date": "2026-01-14",
+   "next_sunrise": "2026-01-14T23:12:27Z",
+   "moonrise": "2026-01-14T20:01:19Z",
+   "moonset": "2026-01-14T07:30:01Z"
+  },
+  {
+   "city": "Singapore",
+   "latitude": 1.3521,
+   "longitude": 103.8198,
+   "timezone": "Asia/Singapore",
+   "date": "2026-02-17",
+   "next_sunrise": "2026-02-17T23:16:22Z",
+   "moonrise": null,
+   "moonset": "2026-02-17T11:16:51Z"
+  },
+  {
+   "city": "Singapore",
+   "latitude": 1.3521,
+   "longitude": 103.8198,
+   "timezone": "Asia/Singapore",
+   "date": "2026-03-29",
+   "next_sunrise": "2026-03-29T23:05:38Z",
+   "moonrise": "2026-03-29T08:23:09Z",
+   "moonset": "2026-03-29T20:48:19Z"
+  },
+  {
+   "city": "Singapore",
+   "latitude": 1.3521,
+   "longitude": 103.8198,
+   "timezone": "Asia/Singapore",
+   "date": "2026-04-05",
+   "next_sunrise": "2026-04-05T23:03:18Z",
+   "moonrise": "2026-04-05T13:37:34Z",
+   "moonset": "2026-04-05T01:08:14Z"
+  },
+  {
+   "city": "Singapore",
+   "latitude": 1.3521,
+   "longitude": 103.8198,
+   "timezone": "Asia/Singapore",
+   "date": "2026-05-12",
+   "next_sunrise": "2026-05-12T22:55:45Z",
+   "moonrise": "2026-05-12T19:30:23Z",
+   "moonset": "2026-05-12T07:06:21Z"
+  },
+  {
+   "city": "Singapore",
+   "latitude": 1.3521,
+   "longitude": 103.8198,
+   "timezone": "Asia/Singapore",
+   "date": "2026-06-21",
+   "next_sunrise": "2026-06-21T23:00:40Z",
+   "moonrise": "2026-06-21T04:32:23Z",
+   "moonset": "2026-06-21T16:53:04Z"
+  },
+  {
+   "city": "Singapore",
+   "latitude": 1.3521,
+   "longitude": 103.8198,
+   "timezone": "Asia/Singapore",
+   "date": "2026-07-30",
+   "next_sunrise": "2026-07-30T23:05:52Z",
+   "moonrise": "2026-07-30T11:55:04Z",
+   "moonset": "2026-07-29T23:27:47Z"
+  },
+  {
+   "city": "Singapore",
+   "latitude": 1.3521,
+   "longitude": 103.8198,
+   "timezone": "Asia/Singapore",
+   "date": "2026-08-26",
+   "next_sunrise": "2026-08-26T23:02:04Z",
+   "moonrise": "2026-08-26T09:50:43Z",
+   "moonset": "2026-08-26T22:09:12Z"
+  },
+  {
+   "city": "Singapore",
+   "latitude": 1.3521,
+   "longitude": 103.8198,
+   "timezone": "Asia/Singapore",
+   "date": "2026-09-23",
+   "next_sunrise": "2026-09-23T22:53:39Z",
+   "moonrise": "2026-09-23T08:28:54Z",
+   "moonset": "2026-09-23T20:47:32Z"
+  },
+  {
+   "city": "Singapore",
+   "latitude": 1.3521,
+   "longitude": 103.8198,
+   "timezone": "Asia/Singapore",
+   "date": "2026-10-25",
+   "next_sunrise": "2026-10-25T22:46:32Z",
+   "moonrise": "2026-10-25T10:03:56Z",
+   "moonset": "2026-10-25T22:30:59Z"
+  },
+  {
+   "city": "Singapore",
+   "latitude": 1.3521,
+   "longitude": 103.8198,
+   "timezone": "Asia/Singapore",
+   "date": "2026-11-08",
+   "next_sunrise": "2026-11-08T22:46:39Z",
+   "moonrise": "2026-11-08T22:28:24Z",
+   "moonset": "2026-11-08T10:00:08Z"
+  },
+  {
+   "city": "Singapore",
+   "latitude": 1.3521,
+   "longitude": 103.8198,
+   "timezone": "Asia/Singapore",
+   "date": "2026-12-31",
+   "next_sunrise": "2026-12-31T23:06:36Z",
+   "moonrise": "2026-12-31T17:37:23Z",
+   "moonset": "2026-12-31T05:12:01Z"
+  },
+  {
+   "city": "London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "timezone": "Europe/London",
+   "date": "2026-01-14",
+   "next_sunrise": "2026-01-15T07:59:27Z",
+   "moonrise": "2026-01-15T06:00:17Z",
+   "moonset": "2026-01-14T12:02:48Z"
+  },
+  {
+   "city": "London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "timezone": "Europe/London",
+   "date": "2026-02-17",
+   "next_sunrise": "2026-02-18T07:08:37Z",
+   "moonrise": "2026-02-17T07:20:06Z",
+   "moonset": "2026-02-17T17:26:03Z"
+  },
+  {
+   "city": "London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "timezone": "Europe/London",
+   "date": "2026-03-29",
+   "next_sunrise": "2026-03-30T05:40:36Z",
+   "moonrise": "2026-03-29T14:22:09Z",
+   "moonset": "2026-03-30T04:48:31Z"
+  },
+  {
+   "city": "London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "timezone": "Europe/London",
+   "date": "2026-04-05",
+   "next_sunrise": "2026-04-06T05:24:48Z",
+   "moonrise": "2026-04-05T23:14:32Z",
+   "moonset": "2026-04-05T06:07:25Z"
+  },
+  {
+   "city": "London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "timezone": "Europe/London",
+   "date": "2026-05-12",
+   "next_sunrise": "2026-05-13T04:11:50Z",
+   "moonrise": "2026-05-13T02:26:42Z",
+   "moonset": "2026-05-12T14:11:11Z"
+  },
+  {
+   "city": "London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "timezone": "Europe/London",
+   "date": "2026-06-21",
+   "next_sunrise": "2026-06-22T03:43:20Z",
+   "moonrise": "2026-06-21T11:40:29Z",
+   "moonset": "2026-06-21T23:45:55Z"
+  },
+  {
+   "city": "London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "timezone": "Europe/London",
+   "date": "2026-07-30",
+   "next_sunrise": "2026-07-31T04:22:39Z",
+   "moonrise": "2026-07-30T20:23:18Z",
+   "moonset": "2026-07-30T04:58:32Z"
+  },
+  {
+   "city": "London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "timezone": "Europe/London",
+   "date": "2026-08-26",
+   "next_sunrise": "2026-08-27T05:05:02Z",
+   "moonrise": "2026-08-26T18:30:19Z",
+   "moonset": "2026-08-27T03:59:06Z"
+  },
+  {
+   "city": "London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "timezone": "Europe/London",
+   "date": "2026-09-23",
+   "next_sunrise": "2026-09-24T05:49:42Z",
+   "moonrise": "2026-09-23T16:50:44Z",
+   "moonset": "2026-09-24T02:55:45Z"
+  },
+  {
+   "city": "London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "timezone": "Europe/London",
+   "date": "2026-10-25",
+   "next_sunrise": "2026-10-26T06:43:23Z",
+   "moonrise": "2026-10-25T16:01:17Z",
+   "moonset": null
+  },
+  {
+   "city": "London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "timezone": "Europe/London",
+   "date": "2026-11-08",
+   "next_sunrise": "2026-11-09T07:08:03Z",
+   "moonrise": null,
+   "moonset": "2026-11-08T15:25:19Z"
+  },
+  {
+   "city": "London",
+   "latitude": 51.5074,
+   "longitude": -0.1278,
+   "timezone": "Europe/London",
+   "date": "2026-12-31",
+   "next_sunrise": "2027-01-01T08:06:11Z",
+   "moonrise": "2027-01-01T02:02:03Z",
+   "moonset": "2026-12-31T11:22:51Z"
+  },
+  {
+   "city": "New York",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "timezone": "America/New_York",
+   "date": "2026-01-14",
+   "next_sunrise": "2026-01-15T12:17:53Z",
+   "moonrise": "2026-01-15T10:07:18Z",
+   "moonset": "2026-01-14T18:01:22Z"
+  },
+  {
+   "city": "New York",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "timezone": "America/New_York",
+   "date": "2026-02-17",
+   "next_sunrise": "2026-02-18T11:45:48Z",
+   "moonrise": "2026-02-17T11:56:49Z",
+   "moonset": "2026-02-17T22:55:42Z"
+  },
+  {
+   "city": "New York",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "timezone": "America/New_York",
+   "date": "2026-03-29",
+   "next_sunrise": "2026-03-30T10:42:45Z",
+   "moonrise": "2026-03-29T19:55:25Z",
+   "moonset": "2026-03-30T09:32:22Z"
+  },
+  {
+   "city": "New York",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "timezone": "America/New_York",
+   "date": "2026-04-05",
+   "next_sunrise": "2026-04-06T10:31:20Z",
+   "moonrise": "2026-04-06T03:31:12Z",
+   "moonset": "2026-04-05T11:53:31Z"
+  },
+  {
+   "city": "New York",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "timezone": "America/New_York",
+   "date": "2026-05-12",
+   "next_sunrise": "2026-05-13T09:40:50Z",
+   "moonrise": "2026-05-13T07:30:55Z",
+   "moonset": "2026-05-12T19:22:23Z"
+  },
+  {
+   "city": "New York",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "timezone": "America/New_York",
+   "date": "2026-06-21",
+   "next_sunrise": "2026-06-22T09:25:16Z",
+   "moonrise": "2026-06-21T16:49:31Z",
+   "moonset": "2026-06-22T04:50:35Z"
+  },
+  {
+   "city": "New York",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "timezone": "America/New_York",
+   "date": "2026-07-30",
+   "next_sunrise": "2026-07-31T09:51:51Z",
+   "moonrise": "2026-07-31T00:57:50Z",
+   "moonset": "2026-07-30T10:40:41Z"
+  },
+  {
+   "city": "New York",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "timezone": "America/New_York",
+   "date": "2026-08-26",
+   "next_sunrise": "2026-08-27T10:18:15Z",
+   "moonrise": "2026-08-26T23:01:21Z",
+   "moonset": "2026-08-27T09:34:33Z"
+  },
+  {
+   "city": "New York",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "timezone": "America/New_York",
+   "date": "2026-09-23",
+   "next_sunrise": "2026-09-24T10:45:37Z",
+   "moonrise": "2026-09-23T21:27:25Z",
+   "moonset": "2026-09-24T08:24:54Z"
+  },
+  {
+   "city": "New York",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "timezone": "America/New_York",
+   "date": "2026-10-25",
+   "next_sunrise": "2026-10-26T11:19:32Z",
+   "moonrise": "2026-10-25T21:26:09Z",
+   "moonset": null
+  },
+  {
+   "city": "New York",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "timezone": "America/New_York",
+   "date": "2026-11-08",
+   "next_sunrise": "2026-11-09T11:35:52Z",
+   "moonrise": null,
+   "moonset": "2026-11-08T21:01:08Z"
+  },
+  {
+   "city": "New York",
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "timezone": "America/New_York",
+   "date": "2026-12-31",
+   "next_sunrise": "2027-01-01T12:20:03Z",
+   "moonrise": "2027-01-01T06:45:45Z",
+   "moonset": "2026-12-31T16:41:46Z"
+  },
+  {
+   "city": "Toronto",
+   "latitude": 43.6532,
+   "longitude": -79.3832,
+   "timezone": "America/Toronto",
+   "date": "2026-01-14",
+   "next_sunrise": "2026-01-15T12:47:54Z",
+   "moonrise": "2026-01-15T10:43:10Z",
+   "moonset": "2026-01-14T18:10:51Z"
+  },
+  {
+   "city": "Toronto",
+   "latitude": 43.6532,
+   "longitude": -79.3832,
+   "timezone": "America/Toronto",
+   "date": "2026-02-17",
+   "next_sunrise": "2026-02-18T12:11:30Z",
+   "moonrise": "2026-02-17T12:23:44Z",
+   "moonset": "2026-02-17T23:14:12Z"
+  },
+  {
+   "city": "Toronto",
+   "latitude": 43.6532,
+   "longitude": -79.3832,
+   "timezone": "America/Toronto",
+   "date": "2026-03-29",
+   "next_sunrise": "2026-03-30T11:02:35Z",
+   "moonrise": "2026-03-29T20:13:06Z",
+   "moonset": "2026-03-30T09:57:32Z"
+  },
+  {
+   "city": "Toronto",
+   "latitude": 43.6532,
+   "longitude": -79.3832,
+   "timezone": "America/Toronto",
+   "date": "2026-04-05",
+   "next_sunrise": "2026-04-06T10:50:08Z",
+   "moonrise": "2026-04-06T04:05:36Z",
+   "moonset": "2026-04-05T12:04:59Z"
+  },
+  {
+   "city": "Toronto",
+   "latitude": 43.6532,
+   "longitude": -79.3832,
+   "timezone": "America/Toronto",
+   "date": "2026-05-12",
+   "next_sunrise": "2026-05-13T09:54:33Z",
+   "moonrise": "2026-05-13T07:51:17Z",
+   "moonset": "2026-05-12T19:45:11Z"
+  },
+  {
+   "city": "Toronto",
+   "latitude": 43.6532,
+   "longitude": -79.3832,
+   "timezone": "America/Toronto",
+   "date": "2026-06-21",
+   "next_sunrise": "2026-06-22T09:36:18Z",
+   "moonrise": "2026-06-21T17:12:32Z",
+   "moonset": "2026-06-22T05:10:45Z"
+  },
+  {
+   "city": "Toronto",
+   "latitude": 43.6532,
+   "longitude": -79.3832,
+   "timezone": "America/Toronto",
+   "date": "2026-07-30",
+   "next_sunrise": "2026-07-31T10:05:41Z",
+   "moonrise": "2026-07-31T01:25:15Z",
+   "moonset": "2026-07-30T10:56:04Z"
+  },
+  {
+   "city": "Toronto",
+   "latitude": 43.6532,
+   "longitude": -79.3832,
+   "timezone": "America/Toronto",
+   "date": "2026-08-26",
+   "next_sunrise": "2026-08-27T10:35:43Z",
+   "moonrise": "2026-08-26T23:29:38Z",
+   "moonset": "2026-08-27T09:51:28Z"
+  },
+  {
+   "city": "Toronto",
+   "latitude": 43.6532,
+   "longitude": -79.3832,
+   "timezone": "America/Toronto",
+   "date": "2026-09-23",
+   "next_sunrise": "2026-09-24T11:07:08Z",
+   "moonrise": "2026-09-23T21:54:19Z",
+   "moonset": "2026-09-24T08:43:17Z"
+  },
+  {
+   "city": "Toronto",
+   "latitude": 43.6532,
+   "longitude": -79.3832,
+   "timezone": "America/Toronto",
+   "date": "2026-10-25",
+   "next_sunrise": "2026-10-26T11:45:41Z",
+   "moonrise": "2026-10-25T21:42:00Z",
+   "moonset": null
+  },
+  {
+   "city": "Toronto",
+   "latitude": 43.6532,
+   "longitude": -79.3832,
+   "timezone": "America/Toronto",
+   "date": "2026-11-08",
+   "next_sunrise": "2026-11-09T12:03:55Z",
+   "moonrise": null,
+   "moonset": "2026-11-08T21:14:37Z"
+  },
+  {
+   "city": "Toronto",
+   "latitude": 43.6532,
+   "longitude": -79.3832,
+   "timezone": "America/Toronto",
+   "date": "2026-12-31",
+   "next_sunrise": "2027-01-01T12:51:05Z",
+   "moonrise": "2027-01-01T07:14:37Z",
+   "moonset": "2026-12-31T16:58:46Z"
+  },
+  {
+   "city": "Sydney",
+   "latitude": -33.8688,
+   "longitude": 151.2093,
+   "timezone": "Australia/Sydney",
+   "date": "2026-01-14",
+   "next_sunrise": "2026-01-14T18:59:29Z",
+   "moonrise": "2026-01-14T15:20:53Z",
+   "moonset": "2026-01-14T05:34:42Z"
+  },
+  {
+   "city": "Sydney",
+   "latitude": -33.8688,
+   "longitude": 151.2093,
+   "timezone": "Australia/Sydney",
+   "date": "2026-02-17",
+   "next_sunrise": "2026-02-17T19:32:48Z",
+   "moonrise": null,
+   "moonset": "2026-02-17T08:40:45Z"
+  },
+  {
+   "city": "Sydney",
+   "latitude": -33.8688,
+   "longitude": 151.2093,
+   "timezone": "Australia/Sydney",
+   "date": "2026-03-29",
+   "next_sunrise": "2026-03-29T20:05:31Z",
+   "moonrise": "2026-03-29T05:53:00Z",
+   "moonset": "2026-03-29T16:54:57Z"
+  },
+  {
+   "city": "Sydney",
+   "latitude": -33.8688,
+   "longitude": 151.2093,
+   "timezone": "Australia/Sydney",
+   "date": "2026-04-05",
+   "next_sunrise": "2026-04-05T20:10:43Z",
+   "moonrise": "2026-04-05T09:09:57Z",
+   "moonset": "2026-04-04T22:58:49Z"
+  },
+  {
+   "city": "Sydney",
+   "latitude": -33.8688,
+   "longitude": 151.2093,
+   "timezone": "Australia/Sydney",
+   "date": "2026-05-12",
+   "next_sunrise": "2026-05-12T20:38:28Z",
+   "moonrise": "2026-05-12T16:14:24Z",
+   "moonset": "2026-05-12T04:00:35Z"
+  },
+  {
+   "city": "Sydney",
+   "latitude": -33.8688,
+   "longitude": 151.2093,
+   "timezone": "Australia/Sydney",
+   "date": "2026-06-21",
+   "next_sunrise": "2026-06-21T21:00:11Z",
+   "moonrise": "2026-06-21T01:24:59Z",
+   "moonset": "2026-06-21T13:38:53Z"
+  },
+  {
+   "city": "Sydney",
+   "latitude": -33.8688,
+   "longitude": 151.2093,
+   "timezone": "Australia/Sydney",
+   "date": "2026-07-30",
+   "next_sunrise": "2026-07-30T20:48:43Z",
+   "moonrise": "2026-07-30T07:47:32Z",
+   "moonset": "2026-07-29T21:10:45Z"
+  },
+  {
+   "city": "Sydney",
+   "latitude": -33.8688,
+   "longitude": 151.2093,
+   "timezone": "Australia/Sydney",
+   "date": "2026-08-26",
+   "next_sunrise": "2026-08-26T20:20:29Z",
+   "moonrise": "2026-08-26T05:37:12Z",
+   "moonset": "2026-08-26T19:42:40Z"
+  },
+  {
+   "city": "Sydney",
+   "latitude": -33.8688,
+   "longitude": 151.2093,
+   "timezone": "Australia/Sydney",
+   "date": "2026-09-23",
+   "next_sunrise": "2026-09-23T19:42:34Z",
+   "moonrise": "2026-09-23T04:24:45Z",
+   "moonset": "2026-09-23T18:11:35Z"
+  },
+  {
+   "city": "Sydney",
+   "latitude": -33.8688,
+   "longitude": 151.2093,
+   "timezone": "Australia/Sydney",
+   "date": "2026-10-25",
+   "next_sunrise": "2026-10-25T19:01:24Z",
+   "moonrise": "2026-10-25T07:22:12Z",
+   "moonset": "2026-10-25T18:31:40Z"
+  },
+  {
+   "city": "Sydney",
+   "latitude": -33.8688,
+   "longitude": 151.2093,
+   "timezone": "Australia/Sydney",
+   "date": "2026-11-08",
+   "next_sunrise": "2026-11-08T18:48:05Z",
+   "moonrise": "2026-11-08T18:14:02Z",
+   "moonset": "2026-11-08T07:36:29Z"
+  },
+  {
+   "city": "Sydney",
+   "latitude": -33.8688,
+   "longitude": 151.2093,
+   "timezone": "Australia/Sydney",
+   "date": "2026-12-31",
+   "next_sunrise": "2026-12-31T18:47:19Z",
+   "moonrise": "2026-12-31T13:48:17Z",
+   "moonset": "2026-12-31T02:22:20Z"
+  }
+ ],
+ "months": [
+  {
+   "instant": "2019-01-01T00:30:00Z",
+   "new_moon_before": "2018-12-07T07:20:21Z",
+   "new_moon_after": "2019-01-06T01:28:11Z",
+   "amanta_index": 8,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 8.7014
+  },
+  {
+   "instant": "2019-01-16T00:30:00Z",
+   "new_moon_before": "2019-01-06T01:28:11Z",
+   "new_moon_after": "2019-02-04T21:03:35Z",
+   "amanta_index": 9,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 8.3666
+  },
+  {
+   "instant": "2019-02-01T00:30:00Z",
+   "new_moon_before": "2019-01-06T01:28:11Z",
+   "new_moon_after": "2019-02-04T21:03:35Z",
+   "amanta_index": 9,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 8.3666
+  },
+  {
+   "instant": "2019-02-16T00:30:00Z",
+   "new_moon_before": "2019-02-04T21:03:35Z",
+   "new_moon_after": "2019-03-06T16:03:58Z",
+   "amanta_index": 10,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 8.3317
+  },
+  {
+   "instant": "2019-03-01T00:30:00Z",
+   "new_moon_before": "2019-02-04T21:03:35Z",
+   "new_moon_after": "2019-03-06T16:03:58Z",
+   "amanta_index": 10,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 8.3317
+  },
+  {
+   "instant": "2019-03-16T00:30:00Z",
+   "new_moon_before": "2019-03-06T16:03:58Z",
+   "new_moon_after": "2019-04-05T08:50:29Z",
+   "amanta_index": 11,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 8.3317
+  },
+  {
+   "instant": "2019-04-01T00:30:00Z",
+   "new_moon_before": "2019-03-06T16:03:58Z",
+   "new_moon_after": "2019-04-05T08:50:29Z",
+   "amanta_index": 11,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 8.3317
+  },
+  {
+   "instant": "2019-04-16T00:30:00Z",
+   "new_moon_before": "2019-04-05T08:50:29Z",
+   "new_moon_after": "2019-05-04T22:45:30Z",
+   "amanta_index": 0,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 8.8348
+  },
+  {
+   "instant": "2019-05-01T00:30:00Z",
+   "new_moon_before": "2019-04-05T08:50:29Z",
+   "new_moon_after": "2019-05-04T22:45:30Z",
+   "amanta_index": 0,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 8.8348
+  },
+  {
+   "instant": "2019-05-16T00:30:00Z",
+   "new_moon_before": "2019-05-04T22:45:30Z",
+   "new_moon_after": "2019-06-03T10:01:57Z",
+   "amanta_index": 1,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 9.9418
+  },
+  {
+   "instant": "2019-06-01T00:30:00Z",
+   "new_moon_before": "2019-05-04T22:45:30Z",
+   "new_moon_after": "2019-06-03T10:01:57Z",
+   "amanta_index": 1,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 9.9418
+  },
+  {
+   "instant": "2019-06-16T00:30:00Z",
+   "new_moon_before": "2019-06-03T10:01:57Z",
+   "new_moon_after": "2019-07-02T19:16:13Z",
+   "amanta_index": 2,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 11.5614
+  },
+  {
+   "instant": "2019-07-01T00:30:00Z",
+   "new_moon_before": "2019-06-03T10:01:57Z",
+   "new_moon_after": "2019-07-02T19:16:13Z",
+   "amanta_index": 2,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 11.5614
+  },
+  {
+   "instant": "2019-07-16T00:30:00Z",
+   "new_moon_before": "2019-07-02T19:16:13Z",
+   "new_moon_after": "2019-08-01T03:11:55Z",
+   "amanta_index": 3,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 13.499
+  },
+  {
+   "instant": "2019-08-01T00:30:00Z",
+   "new_moon_before": "2019-07-02T19:16:13Z",
+   "new_moon_after": "2019-08-01T03:11:55Z",
+   "amanta_index": 3,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 13.499
+  },
+  {
+   "instant": "2019-08-16T00:30:00Z",
+   "new_moon_before": "2019-08-01T03:11:55Z",
+   "new_moon_after": "2019-08-30T10:37:09Z",
+   "amanta_index": 4,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 12.6529
+  },
+  {
+   "instant": "2019-09-01T00:30:00Z",
+   "new_moon_before": "2019-08-30T10:37:09Z",
+   "new_moon_after": "2019-09-28T18:26:22Z",
+   "amanta_index": 5,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 11.2062
+  },
+  {
+   "instant": "2019-09-16T00:30:00Z",
+   "new_moon_before": "2019-08-30T10:37:09Z",
+   "new_moon_after": "2019-09-28T18:26:22Z",
+   "amanta_index": 5,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 11.2062
+  },
+  {
+   "instant": "2019-10-01T00:30:00Z",
+   "new_moon_before": "2019-09-28T18:26:22Z",
+   "new_moon_after": "2019-10-28T03:38:28Z",
+   "amanta_index": 6,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 10.2879
+  },
+  {
+   "instant": "2019-10-16T00:30:00Z",
+   "new_moon_before": "2019-09-28T18:26:22Z",
+   "new_moon_after": "2019-10-28T03:38:28Z",
+   "amanta_index": 6,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 10.2879
+  },
+  {
+   "instant": "2019-11-01T00:30:00Z",
+   "new_moon_before": "2019-10-28T03:38:28Z",
+   "new_moon_after": "2019-11-26T15:05:35Z",
+   "amanta_index": 7,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 9.9201
+  },
+  {
+   "instant": "2019-11-16T00:30:00Z",
+   "new_moon_before": "2019-10-28T03:38:28Z",
+   "new_moon_after": "2019-11-26T15:05:35Z",
+   "amanta_index": 7,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 9.9201
+  },
+  {
+   "instant": "2019-12-01T00:30:00Z",
+   "new_moon_before": "2019-11-26T15:05:35Z",
+   "new_moon_after": "2019-12-26T05:13:08Z",
+   "amanta_index": 8,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 9.9201
+  },
+  {
+   "instant": "2019-12-16T00:30:00Z",
+   "new_moon_before": "2019-11-26T15:05:35Z",
+   "new_moon_after": "2019-12-26T05:13:08Z",
+   "amanta_index": 8,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 9.9201
+  },
+  {
+   "instant": "2020-01-01T00:30:00Z",
+   "new_moon_before": "2019-12-26T05:13:08Z",
+   "new_moon_after": "2020-01-24T21:42:00Z",
+   "amanta_index": 9,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 9.9828
+  },
+  {
+   "instant": "2020-01-16T00:30:00Z",
+   "new_moon_before": "2019-12-26T05:13:08Z",
+   "new_moon_after": "2020-01-24T21:42:00Z",
+   "amanta_index": 9,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 9.9828
+  },
+  {
+   "instant": "2020-02-01T00:30:00Z",
+   "new_moon_before": "2020-01-24T21:42:00Z",
+   "new_moon_after": "2020-02-23T15:32:01Z",
+   "amanta_index": 10,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 10.2265
+  },
+  {
+   "instant": "2020-02-16T00:30:00Z",
+   "new_moon_before": "2020-01-24T21:42:00Z",
+   "new_moon_after": "2020-02-23T15:32:01Z",
+   "amanta_index": 10,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 10.2265
+  },
+  {
+   "instant": "2020-03-01T00:30:00Z",
+   "new_moon_before": "2020-02-23T15:32:01Z",
+   "new_moon_after": "2020-03-24T09:28:13Z",
+   "amanta_index": 11,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 10.0695
+  },
+  {
+   "instant": "2020-03-16T00:30:00Z",
+   "new_moon_before": "2020-02-23T15:32:01Z",
+   "new_moon_after": "2020-03-24T09:28:13Z",
+   "amanta_index": 11,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 10.0695
+  },
+  {
+   "instant": "2020-04-01T00:30:00Z",
+   "new_moon_before": "2020-03-24T09:28:13Z",
+   "new_moon_after": "2020-04-23T02:25:51Z",
+   "amanta_index": 0,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 9.2668
+  },
+  {
+   "instant": "2020-04-16T00:30:00Z",
+   "new_moon_before": "2020-03-24T09:28:13Z",
+   "new_moon_after": "2020-04-23T02:25:51Z",
+   "amanta_index": 0,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 9.2668
+  },
+  {
+   "instant": "2020-05-01T00:30:00Z",
+   "new_moon_before": "2020-04-23T02:25:51Z",
+   "new_moon_after": "2020-05-22T17:38:52Z",
+   "amanta_index": 1,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 7.9408
+  },
+  {
+   "instant": "2020-05-16T00:30:00Z",
+   "new_moon_before": "2020-04-23T02:25:51Z",
+   "new_moon_after": "2020-05-22T17:38:52Z",
+   "amanta_index": 1,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 7.9408
+  },
+  {
+   "instant": "2020-06-01T00:30:00Z",
+   "new_moon_before": "2020-05-22T17:38:52Z",
+   "new_moon_after": "2020-06-21T06:41:27Z",
+   "amanta_index": 2,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 6.2182
+  },
+  {
+   "instant": "2020-06-16T00:30:00Z",
+   "new_moon_before": "2020-05-22T17:38:52Z",
+   "new_moon_after": "2020-06-21T06:41:27Z",
+   "amanta_index": 2,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 6.2182
+  },
+  {
+   "instant": "2020-07-01T00:30:00Z",
+   "new_moon_before": "2020-06-21T06:41:27Z",
+   "new_moon_after": "2020-07-20T17:32:57Z",
+   "amanta_index": 3,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 4.3057
+  },
+  {
+   "instant": "2020-07-16T00:30:00Z",
+   "new_moon_before": "2020-06-21T06:41:27Z",
+   "new_moon_after": "2020-07-20T17:32:57Z",
+   "amanta_index": 3,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 4.3057
+  },
+  {
+   "instant": "2020-08-01T00:30:00Z",
+   "new_moon_before": "2020-07-20T17:32:57Z",
+   "new_moon_after": "2020-08-19T02:41:40Z",
+   "amanta_index": 4,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 2.4455
+  },
+  {
+   "instant": "2020-08-16T00:30:00Z",
+   "new_moon_before": "2020-07-20T17:32:57Z",
+   "new_moon_after": "2020-08-19T02:41:40Z",
+   "amanta_index": 4,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 2.4455
+  },
+  {
+   "instant": "2020-09-01T00:30:00Z",
+   "new_moon_before": "2020-08-19T02:41:40Z",
+   "new_moon_after": "2020-09-17T11:00:13Z",
+   "amanta_index": 5,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 0.8691
+  },
+  {
+   "instant": "2020-09-16T00:30:00Z",
+   "new_moon_before": "2020-08-19T02:41:40Z",
+   "new_moon_after": "2020-09-17T11:00:13Z",
+   "amanta_index": 5,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.8691
+  },
+  {
+   "instant": "2020-10-01T00:30:00Z",
+   "new_moon_before": "2020-09-17T11:00:13Z",
+   "new_moon_after": "2020-10-16T19:31:03Z",
+   "amanta_index": 6,
+   "purnimanta_index": 6,
+   "adhika": true,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 0.2513
+  },
+  {
+   "instant": "2020-10-16T00:30:00Z",
+   "new_moon_before": "2020-09-17T11:00:13Z",
+   "new_moon_after": "2020-10-16T19:31:03Z",
+   "amanta_index": 6,
+   "purnimanta_index": 6,
+   "adhika": true,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.2513
+  },
+  {
+   "instant": "2020-11-01T00:30:00Z",
+   "new_moon_before": "2020-10-16T19:31:03Z",
+   "new_moon_after": "2020-11-15T05:07:11Z",
+   "amanta_index": 6,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.2513
+  },
+  {
+   "instant": "2020-11-16T00:30:00Z",
+   "new_moon_before": "2020-11-15T05:07:11Z",
+   "new_moon_after": "2020-12-14T16:16:35Z",
+   "amanta_index": 7,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 0.8517
+  },
+  {
+   "instant": "2020-12-01T00:30:00Z",
+   "new_moon_before": "2020-11-15T05:07:11Z",
+   "new_moon_after": "2020-12-14T16:16:35Z",
+   "amanta_index": 7,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.8517
+  },
+  {
+   "instant": "2020-12-16T00:30:00Z",
+   "new_moon_before": "2020-12-14T16:16:35Z",
+   "new_moon_after": "2021-01-13T05:00:11Z",
+   "amanta_index": 8,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 0.9234
+  },
+  {
+   "instant": "2021-01-01T00:30:00Z",
+   "new_moon_before": "2020-12-14T16:16:35Z",
+   "new_moon_after": "2021-01-13T05:00:11Z",
+   "amanta_index": 8,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.9234
+  },
+  {
+   "instant": "2021-01-16T00:30:00Z",
+   "new_moon_before": "2021-01-13T05:00:11Z",
+   "new_moon_after": "2021-02-11T19:05:40Z",
+   "amanta_index": 9,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 0.8688
+  },
+  {
+   "instant": "2021-02-01T00:30:00Z",
+   "new_moon_before": "2021-01-13T05:00:11Z",
+   "new_moon_after": "2021-02-11T19:05:40Z",
+   "amanta_index": 9,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.8688
+  },
+  {
+   "instant": "2021-02-16T00:30:00Z",
+   "new_moon_before": "2021-02-11T19:05:40Z",
+   "new_moon_after": "2021-03-13T10:21:10Z",
+   "amanta_index": 10,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 0.8688
+  },
+  {
+   "instant": "2021-03-01T00:30:00Z",
+   "new_moon_before": "2021-02-11T19:05:40Z",
+   "new_moon_after": "2021-03-13T10:21:10Z",
+   "amanta_index": 10,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.8688
+  },
+  {
+   "instant": "2021-03-16T00:30:00Z",
+   "new_moon_before": "2021-03-13T10:21:10Z",
+   "new_moon_after": "2021-04-12T02:30:51Z",
+   "amanta_index": 11,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 1.0893
+  },
+  {
+   "instant": "2021-04-01T00:30:00Z",
+   "new_moon_before": "2021-03-13T10:21:10Z",
+   "new_moon_after": "2021-04-12T02:30:51Z",
+   "amanta_index": 11,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 1.0893
+  },
+  {
+   "instant": "2021-04-16T00:30:00Z",
+   "new_moon_before": "2021-04-12T02:30:51Z",
+   "new_moon_after": "2021-05-11T18:59:48Z",
+   "amanta_index": 0,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 1.7379
+  },
+  {
+   "instant": "2021-05-01T00:30:00Z",
+   "new_moon_before": "2021-04-12T02:30:51Z",
+   "new_moon_after": "2021-05-11T18:59:48Z",
+   "amanta_index": 0,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 1.7379
+  },
+  {
+   "instant": "2021-05-16T00:30:00Z",
+   "new_moon_before": "2021-05-11T18:59:48Z",
+   "new_moon_after": "2021-06-10T10:52:39Z",
+   "amanta_index": 1,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 2.8531
+  },
+  {
+   "instant": "2021-06-01T00:30:00Z",
+   "new_moon_before": "2021-05-11T18:59:48Z",
+   "new_moon_after": "2021-06-10T10:52:39Z",
+   "amanta_index": 1,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 2.8531
+  },
+  {
+   "instant": "2021-06-16T00:30:00Z",
+   "new_moon_before": "2021-06-10T10:52:39Z",
+   "new_moon_after": "2021-07-10T01:16:37Z",
+   "amanta_index": 2,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 4.367
+  },
+  {
+   "instant": "2021-07-01T00:30:00Z",
+   "new_moon_before": "2021-06-10T10:52:39Z",
+   "new_moon_after": "2021-07-10T01:16:37Z",
+   "amanta_index": 2,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 4.367
+  },
+  {
+   "instant": "2021-07-16T00:30:00Z",
+   "new_moon_before": "2021-07-10T01:16:37Z",
+   "new_moon_after": "2021-08-08T13:50:08Z",
+   "amanta_index": 3,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 6.1258
+  },
+  {
+   "instant": "2021-08-01T00:30:00Z",
+   "new_moon_before": "2021-07-10T01:16:37Z",
+   "new_moon_after": "2021-08-08T13:50:08Z",
+   "amanta_index": 3,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 6.1258
+  },
+  {
+   "instant": "2021-08-16T00:30:00Z",
+   "new_moon_before": "2021-08-08T13:50:08Z",
+   "new_moon_after": "2021-09-07T00:51:46Z",
+   "amanta_index": 4,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 7.919
+  },
+  {
+   "instant": "2021-09-01T00:30:00Z",
+   "new_moon_before": "2021-08-08T13:50:08Z",
+   "new_moon_after": "2021-09-07T00:51:46Z",
+   "amanta_index": 4,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 7.919
+  },
+  {
+   "instant": "2021-09-16T00:30:00Z",
+   "new_moon_before": "2021-09-07T00:51:46Z",
+   "new_moon_after": "2021-10-06T11:05:24Z",
+   "amanta_index": 5,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 9.5207
+  },
+  {
+   "instant": "2021-10-01T00:30:00Z",
+   "new_moon_before": "2021-09-07T00:51:46Z",
+   "new_moon_after": "2021-10-06T11:05:24Z",
+   "amanta_index": 5,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 9.5207
+  },
+  {
+   "instant": "2021-10-16T00:30:00Z",
+   "new_moon_before": "2021-10-06T11:05:24Z",
+   "new_moon_after": "2021-11-04T21:14:37Z",
+   "amanta_index": 6,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 10.7423
+  },
+  {
+   "instant": "2021-11-01T00:30:00Z",
+   "new_moon_before": "2021-10-06T11:05:24Z",
+   "new_moon_after": "2021-11-04T21:14:37Z",
+   "amanta_index": 6,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 10.7423
+  },
+  {
+   "instant": "2021-11-16T00:30:00Z",
+   "new_moon_before": "2021-11-04T21:14:37Z",
+   "new_moon_after": "2021-12-04T07:43:02Z",
+   "amanta_index": 7,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 11.4874
+  },
+  {
+   "instant": "2021-12-01T00:30:00Z",
+   "new_moon_before": "2021-11-04T21:14:37Z",
+   "new_moon_after": "2021-12-04T07:43:02Z",
+   "amanta_index": 7,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 11.4874
+  },
+  {
+   "instant": "2021-12-16T00:30:00Z",
+   "new_moon_before": "2021-12-04T07:43:02Z",
+   "new_moon_after": "2022-01-02T18:33:30Z",
+   "amanta_index": 8,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 11.7917
+  },
+  {
+   "instant": "2022-01-01T00:30:00Z",
+   "new_moon_before": "2021-12-04T07:43:02Z",
+   "new_moon_after": "2022-01-02T18:33:30Z",
+   "amanta_index": 8,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 11.7917
+  },
+  {
+   "instant": "2022-01-16T00:30:00Z",
+   "new_moon_before": "2022-01-02T18:33:30Z",
+   "new_moon_after": "2022-02-01T05:46:01Z",
+   "amanta_index": 9,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 11.8235
+  },
+  {
+   "instant": "2022-02-01T00:30:00Z",
+   "new_moon_before": "2022-01-02T18:33:30Z",
+   "new_moon_after": "2022-02-01T05:46:01Z",
+   "amanta_index": 9,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 11.8235
+  },
+  {
+   "instant": "2022-02-16T00:30:00Z",
+   "new_moon_before": "2022-02-01T05:46:01Z",
+   "new_moon_after": "2022-03-02T17:34:47Z",
+   "amanta_index": 10,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 11.8301
+  },
+  {
+   "instant": "2022-03-01T00:30:00Z",
+   "new_moon_before": "2022-02-01T05:46:01Z",
+   "new_moon_after": "2022-03-02T17:34:47Z",
+   "amanta_index": 10,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 11.8301
+  },
+  {
+   "instant": "2022-03-16T00:30:00Z",
+   "new_moon_before": "2022-03-02T17:34:47Z",
+   "new_moon_after": "2022-04-01T06:24:25Z",
+   "amanta_index": 11,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 12.0527
+  },
+  {
+   "instant": "2022-04-01T00:30:00Z",
+   "new_moon_before": "2022-03-02T17:34:47Z",
+   "new_moon_after": "2022-04-01T06:24:25Z",
+   "amanta_index": 11,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 12.0527
+  },
+  {
+   "instant": "2022-04-16T00:30:00Z",
+   "new_moon_before": "2022-04-01T06:24:25Z",
+   "new_moon_after": "2022-04-30T20:28:06Z",
+   "amanta_index": 0,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 12.655
+  },
+  {
+   "instant": "2022-05-01T00:30:00Z",
+   "new_moon_before": "2022-04-30T20:28:06Z",
+   "new_moon_after": "2022-05-30T11:30:17Z",
+   "amanta_index": 1,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 13.6917
+  },
+  {
+   "instant": "2022-05-16T00:30:00Z",
+   "new_moon_before": "2022-04-30T20:28:06Z",
+   "new_moon_after": "2022-05-30T11:30:17Z",
+   "amanta_index": 1,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 13.6917
+  },
+  {
+   "instant": "2022-06-01T00:30:00Z",
+   "new_moon_before": "2022-05-30T11:30:17Z",
+   "new_moon_after": "2022-06-29T02:52:17Z",
+   "amanta_index": 2,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 13.2123
+  },
+  {
+   "instant": "2022-06-16T00:30:00Z",
+   "new_moon_before": "2022-05-30T11:30:17Z",
+   "new_moon_after": "2022-06-29T02:52:17Z",
+   "amanta_index": 2,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 13.2123
+  },
+  {
+   "instant": "2022-07-01T00:30:00Z",
+   "new_moon_before": "2022-06-29T02:52:17Z",
+   "new_moon_after": "2022-07-28T17:55:02Z",
+   "amanta_index": 3,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 11.4765
+  },
+  {
+   "instant": "2022-07-16T00:30:00Z",
+   "new_moon_before": "2022-06-29T02:52:17Z",
+   "new_moon_after": "2022-07-28T17:55:02Z",
+   "amanta_index": 3,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 11.4765
+  },
+  {
+   "instant": "2022-08-01T00:30:00Z",
+   "new_moon_before": "2022-07-28T17:55:02Z",
+   "new_moon_after": "2022-08-27T08:17:08Z",
+   "amanta_index": 4,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 9.8902
+  },
+  {
+   "instant": "2022-08-16T00:30:00Z",
+   "new_moon_before": "2022-07-28T17:55:02Z",
+   "new_moon_after": "2022-08-27T08:17:08Z",
+   "amanta_index": 4,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 9.8902
+  },
+  {
+   "instant": "2022-09-01T00:30:00Z",
+   "new_moon_before": "2022-08-27T08:17:08Z",
+   "new_moon_after": "2022-09-25T21:54:34Z",
+   "amanta_index": 5,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 8.6387
+  },
+  {
+   "instant": "2022-09-16T00:30:00Z",
+   "new_moon_before": "2022-08-27T08:17:08Z",
+   "new_moon_after": "2022-09-25T21:54:34Z",
+   "amanta_index": 5,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 8.6387
+  },
+  {
+   "instant": "2022-10-01T00:30:00Z",
+   "new_moon_before": "2022-09-25T21:54:34Z",
+   "new_moon_after": "2022-10-25T10:48:42Z",
+   "amanta_index": 6,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 7.8296
+  },
+  {
+   "instant": "2022-10-16T00:30:00Z",
+   "new_moon_before": "2022-09-25T21:54:34Z",
+   "new_moon_after": "2022-10-25T10:48:42Z",
+   "amanta_index": 6,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 7.8296
+  },
+  {
+   "instant": "2022-11-01T00:30:00Z",
+   "new_moon_before": "2022-10-25T10:48:42Z",
+   "new_moon_after": "2022-11-23T22:57:14Z",
+   "amanta_index": 7,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 7.4529
+  },
+  {
+   "instant": "2022-11-16T00:30:00Z",
+   "new_moon_before": "2022-10-25T10:48:42Z",
+   "new_moon_after": "2022-11-23T22:57:14Z",
+   "amanta_index": 7,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 7.4529
+  },
+  {
+   "instant": "2022-12-01T00:30:00Z",
+   "new_moon_before": "2022-11-23T22:57:14Z",
+   "new_moon_after": "2022-12-23T10:16:53Z",
+   "amanta_index": 8,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 7.3735
+  },
+  {
+   "instant": "2022-12-16T00:30:00Z",
+   "new_moon_before": "2022-11-23T22:57:14Z",
+   "new_moon_after": "2022-12-23T10:16:53Z",
+   "amanta_index": 8,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 7.3735
+  },
+  {
+   "instant": "2023-01-01T00:30:00Z",
+   "new_moon_before": "2022-12-23T10:16:53Z",
+   "new_moon_after": "2023-01-21T20:53:15Z",
+   "amanta_index": 9,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 7.3673
+  },
+  {
+   "instant": "2023-01-16T00:30:00Z",
+   "new_moon_before": "2022-12-23T10:16:53Z",
+   "new_moon_after": "2023-01-21T20:53:15Z",
+   "amanta_index": 9,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 7.3673
+  },
+  {
+   "instant": "2023-02-01T00:30:00Z",
+   "new_moon_before": "2023-01-21T20:53:15Z",
+   "new_moon_after": "2023-02-20T07:05:51Z",
+   "amanta_index": 10,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 7.1895
+  },
+  {
+   "instant": "2023-02-16T00:30:00Z",
+   "new_moon_before": "2023-01-21T20:53:15Z",
+   "new_moon_after": "2023-02-20T07:05:51Z",
+   "amanta_index": 10,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 7.1895
+  },
+  {
+   "instant": "2023-03-01T00:30:00Z",
+   "new_moon_before": "2023-02-20T07:05:51Z",
+   "new_moon_after": "2023-03-21T17:23:09Z",
+   "amanta_index": 11,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 6.6486
+  },
+  {
+   "instant": "2023-03-16T00:30:00Z",
+   "new_moon_before": "2023-02-20T07:05:51Z",
+   "new_moon_after": "2023-03-21T17:23:09Z",
+   "amanta_index": 11,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 6.6486
+  },
+  {
+   "instant": "2023-04-01T00:30:00Z",
+   "new_moon_before": "2023-03-21T17:23:09Z",
+   "new_moon_after": "2023-04-20T04:12:32Z",
+   "amanta_index": 0,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 5.6568
+  },
+  {
+   "instant": "2023-04-16T00:30:00Z",
+   "new_moon_before": "2023-03-21T17:23:09Z",
+   "new_moon_after": "2023-04-20T04:12:32Z",
+   "amanta_index": 0,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 5.6568
+  },
+  {
+   "instant": "2023-05-01T00:30:00Z",
+   "new_moon_before": "2023-04-20T04:12:32Z",
+   "new_moon_after": "2023-05-19T15:53:17Z",
+   "amanta_index": 1,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 4.2436
+  },
+  {
+   "instant": "2023-05-16T00:30:00Z",
+   "new_moon_before": "2023-04-20T04:12:32Z",
+   "new_moon_after": "2023-05-19T15:53:17Z",
+   "amanta_index": 1,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 4.2436
+  },
+  {
+   "instant": "2023-06-01T00:30:00Z",
+   "new_moon_before": "2023-05-19T15:53:17Z",
+   "new_moon_after": "2023-06-18T04:37:09Z",
+   "amanta_index": 2,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 2.5414
+  },
+  {
+   "instant": "2023-06-16T00:30:00Z",
+   "new_moon_before": "2023-05-19T15:53:17Z",
+   "new_moon_after": "2023-06-18T04:37:09Z",
+   "amanta_index": 2,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 2.5414
+  },
+  {
+   "instant": "2023-07-01T00:30:00Z",
+   "new_moon_before": "2023-06-18T04:37:09Z",
+   "new_moon_after": "2023-07-17T18:31:50Z",
+   "amanta_index": 3,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 0.752
+  },
+  {
+   "instant": "2023-07-16T00:30:00Z",
+   "new_moon_before": "2023-06-18T04:37:09Z",
+   "new_moon_after": "2023-07-17T18:31:50Z",
+   "amanta_index": 3,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.752
+  },
+  {
+   "instant": "2023-08-01T00:30:00Z",
+   "new_moon_before": "2023-07-17T18:31:50Z",
+   "new_moon_after": "2023-08-16T09:38:11Z",
+   "amanta_index": 4,
+   "purnimanta_index": 4,
+   "adhika": true,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 0.752
+  },
+  {
+   "instant": "2023-08-16T00:30:00Z",
+   "new_moon_before": "2023-07-17T18:31:50Z",
+   "new_moon_after": "2023-08-16T09:38:11Z",
+   "amanta_index": 4,
+   "purnimanta_index": 4,
+   "adhika": true,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.752
+  },
+  {
+   "instant": "2023-09-01T00:30:00Z",
+   "new_moon_before": "2023-08-16T09:38:11Z",
+   "new_moon_after": "2023-09-15T01:39:49Z",
+   "amanta_index": 4,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.8976
+  },
+  {
+   "instant": "2023-09-16T00:30:00Z",
+   "new_moon_before": "2023-09-15T01:39:49Z",
+   "new_moon_after": "2023-10-14T17:55:09Z",
+   "amanta_index": 5,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 2.208
+  },
+  {
+   "instant": "2023-10-01T00:30:00Z",
+   "new_moon_before": "2023-09-15T01:39:49Z",
+   "new_moon_after": "2023-10-14T17:55:09Z",
+   "amanta_index": 5,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 2.208
+  },
+  {
+   "instant": "2023-10-16T00:30:00Z",
+   "new_moon_before": "2023-10-14T17:55:09Z",
+   "new_moon_after": "2023-11-13T09:27:24Z",
+   "amanta_index": 6,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 3.061
+  },
+  {
+   "instant": "2023-11-01T00:30:00Z",
+   "new_moon_before": "2023-10-14T17:55:09Z",
+   "new_moon_after": "2023-11-13T09:27:24Z",
+   "amanta_index": 6,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 3.061
+  },
+  {
+   "instant": "2023-11-16T00:30:00Z",
+   "new_moon_before": "2023-11-13T09:27:24Z",
+   "new_moon_after": "2023-12-12T23:32:02Z",
+   "amanta_index": 7,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 3.4565
+  },
+  {
+   "instant": "2023-12-01T00:30:00Z",
+   "new_moon_before": "2023-11-13T09:27:24Z",
+   "new_moon_after": "2023-12-12T23:32:02Z",
+   "amanta_index": 7,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 3.4565
+  },
+  {
+   "instant": "2023-12-16T00:30:00Z",
+   "new_moon_before": "2023-12-12T23:32:02Z",
+   "new_moon_after": "2024-01-11T11:57:25Z",
+   "amanta_index": 8,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 3.4512
+  },
+  {
+   "instant": "2024-01-01T00:30:00Z",
+   "new_moon_before": "2023-12-12T23:32:02Z",
+   "new_moon_after": "2024-01-11T11:57:25Z",
+   "amanta_index": 8,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 3.4512
+  },
+  {
+   "instant": "2024-01-16T00:30:00Z",
+   "new_moon_before": "2024-01-11T11:57:25Z",
+   "new_moon_after": "2024-02-09T22:59:11Z",
+   "amanta_index": 9,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 3.4512
+  },
+  {
+   "instant": "2024-02-01T00:30:00Z",
+   "new_moon_before": "2024-01-11T11:57:25Z",
+   "new_moon_after": "2024-02-09T22:59:11Z",
+   "amanta_index": 9,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 3.4512
+  },
+  {
+   "instant": "2024-02-16T00:30:00Z",
+   "new_moon_before": "2024-02-09T22:59:11Z",
+   "new_moon_after": "2024-03-10T09:00:26Z",
+   "amanta_index": 10,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 3.5105
+  },
+  {
+   "instant": "2024-03-01T00:30:00Z",
+   "new_moon_before": "2024-02-09T22:59:11Z",
+   "new_moon_after": "2024-03-10T09:00:26Z",
+   "amanta_index": 10,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 3.5105
+  },
+  {
+   "instant": "2024-03-16T00:30:00Z",
+   "new_moon_before": "2024-03-10T09:00:26Z",
+   "new_moon_after": "2024-04-08T18:20:52Z",
+   "amanta_index": 11,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 3.914
+  },
+  {
+   "instant": "2024-04-01T00:30:00Z",
+   "new_moon_before": "2024-03-10T09:00:26Z",
+   "new_moon_after": "2024-04-08T18:20:52Z",
+   "amanta_index": 11,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 3.914
+  },
+  {
+   "instant": "2024-04-16T00:30:00Z",
+   "new_moon_before": "2024-04-08T18:20:52Z",
+   "new_moon_after": "2024-05-08T03:21:56Z",
+   "amanta_index": 0,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 4.7942
+  },
+  {
+   "instant": "2024-05-01T00:30:00Z",
+   "new_moon_before": "2024-04-08T18:20:52Z",
+   "new_moon_after": "2024-05-08T03:21:56Z",
+   "amanta_index": 0,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 4.7942
+  },
+  {
+   "instant": "2024-05-16T00:30:00Z",
+   "new_moon_before": "2024-05-08T03:21:56Z",
+   "new_moon_after": "2024-06-06T12:37:44Z",
+   "amanta_index": 1,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 6.1612
+  },
+  {
+   "instant": "2024-06-01T00:30:00Z",
+   "new_moon_before": "2024-05-08T03:21:56Z",
+   "new_moon_after": "2024-06-06T12:37:44Z",
+   "amanta_index": 1,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 6.1612
+  },
+  {
+   "instant": "2024-06-16T00:30:00Z",
+   "new_moon_before": "2024-06-06T12:37:44Z",
+   "new_moon_after": "2024-07-05T22:57:24Z",
+   "amanta_index": 2,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 7.9019
+  },
+  {
+   "instant": "2024-07-01T00:30:00Z",
+   "new_moon_before": "2024-06-06T12:37:44Z",
+   "new_moon_after": "2024-07-05T22:57:24Z",
+   "amanta_index": 2,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 7.9019
+  },
+  {
+   "instant": "2024-07-16T00:30:00Z",
+   "new_moon_before": "2024-07-05T22:57:24Z",
+   "new_moon_after": "2024-08-04T11:13:04Z",
+   "amanta_index": 3,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 9.81
+  },
+  {
+   "instant": "2024-08-01T00:30:00Z",
+   "new_moon_before": "2024-07-05T22:57:24Z",
+   "new_moon_after": "2024-08-04T11:13:04Z",
+   "amanta_index": 3,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 9.81
+  },
+  {
+   "instant": "2024-08-16T00:30:00Z",
+   "new_moon_before": "2024-08-04T11:13:04Z",
+   "new_moon_after": "2024-09-03T01:55:35Z",
+   "amanta_index": 4,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 11.6332
+  },
+  {
+   "instant": "2024-09-01T00:30:00Z",
+   "new_moon_before": "2024-08-04T11:13:04Z",
+   "new_moon_after": "2024-09-03T01:55:35Z",
+   "amanta_index": 4,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 11.6332
+  },
+  {
+   "instant": "2024-09-16T00:30:00Z",
+   "new_moon_before": "2024-09-03T01:55:35Z",
+   "new_moon_after": "2024-10-02T18:49:17Z",
+   "amanta_index": 5,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 13.1315
+  },
+  {
+   "instant": "2024-10-01T00:30:00Z",
+   "new_moon_before": "2024-09-03T01:55:35Z",
+   "new_moon_after": "2024-10-02T18:49:17Z",
+   "amanta_index": 5,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 13.1315
+  },
+  {
+   "instant": "2024-10-16T00:30:00Z",
+   "new_moon_before": "2024-10-02T18:49:17Z",
+   "new_moon_after": "2024-11-01T12:47:09Z",
+   "amanta_index": 6,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 14.1388
+  },
+  {
+   "instant": "2024-11-01T00:30:00Z",
+   "new_moon_before": "2024-10-02T18:49:17Z",
+   "new_moon_after": "2024-11-01T12:47:09Z",
+   "amanta_index": 6,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 14.1388
+  },
+  {
+   "instant": "2024-11-16T00:30:00Z",
+   "new_moon_before": "2024-11-01T12:47:09Z",
+   "new_moon_after": "2024-12-01T06:21:25Z",
+   "amanta_index": 7,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 14.6139
+  },
+  {
+   "instant": "2024-12-01T00:30:00Z",
+   "new_moon_before": "2024-11-01T12:47:09Z",
+   "new_moon_after": "2024-12-01T06:21:25Z",
+   "amanta_index": 7,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 14.6139
+  },
+  {
+   "instant": "2024-12-16T00:30:00Z",
+   "new_moon_before": "2024-12-01T06:21:25Z",
+   "new_moon_after": "2024-12-30T22:26:48Z",
+   "amanta_index": 8,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 14.4784
+  },
+  {
+   "instant": "2025-01-01T00:30:00Z",
+   "new_moon_before": "2024-12-30T22:26:48Z",
+   "new_moon_after": "2025-01-29T12:35:59Z",
+   "amanta_index": 9,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 14.3511
+  },
+  {
+   "instant": "2025-01-16T00:30:00Z",
+   "new_moon_before": "2024-12-30T22:26:48Z",
+   "new_moon_after": "2025-01-29T12:35:59Z",
+   "amanta_index": 9,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 14.3511
+  },
+  {
+   "instant": "2025-02-01T00:30:00Z",
+   "new_moon_before": "2025-01-29T12:35:59Z",
+   "new_moon_after": "2025-02-28T00:44:50Z",
+   "amanta_index": 10,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 14.3511
+  },
+  {
+   "instant": "2025-02-16T00:30:00Z",
+   "new_moon_before": "2025-01-29T12:35:59Z",
+   "new_moon_after": "2025-02-28T00:44:50Z",
+   "amanta_index": 10,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 14.3511
+  },
+  {
+   "instant": "2025-03-01T00:30:00Z",
+   "new_moon_before": "2025-02-28T00:44:50Z",
+   "new_moon_after": "2025-03-29T10:57:50Z",
+   "amanta_index": 11,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 14.5339
+  },
+  {
+   "instant": "2025-03-16T00:30:00Z",
+   "new_moon_before": "2025-02-28T00:44:50Z",
+   "new_moon_after": "2025-03-29T10:57:50Z",
+   "amanta_index": 11,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 14.5339
+  },
+  {
+   "instant": "2025-04-01T00:30:00Z",
+   "new_moon_before": "2025-03-29T10:57:50Z",
+   "new_moon_after": "2025-04-27T19:31:09Z",
+   "amanta_index": 0,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 13.5705
+  },
+  {
+   "instant": "2025-04-16T00:30:00Z",
+   "new_moon_before": "2025-03-29T10:57:50Z",
+   "new_moon_after": "2025-04-27T19:31:09Z",
+   "amanta_index": 0,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 13.5705
+  },
+  {
+   "instant": "2025-05-01T00:30:00Z",
+   "new_moon_before": "2025-04-27T19:31:09Z",
+   "new_moon_after": "2025-05-27T03:02:21Z",
+   "amanta_index": 1,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 11.8822
+  },
+  {
+   "instant": "2025-05-16T00:30:00Z",
+   "new_moon_before": "2025-04-27T19:31:09Z",
+   "new_moon_after": "2025-05-27T03:02:21Z",
+   "amanta_index": 1,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 11.8822
+  },
+  {
+   "instant": "2025-06-01T00:30:00Z",
+   "new_moon_before": "2025-05-27T03:02:21Z",
+   "new_moon_after": "2025-06-25T10:31:37Z",
+   "amanta_index": 2,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 9.9153
+  },
+  {
+   "instant": "2025-06-16T00:30:00Z",
+   "new_moon_before": "2025-05-27T03:02:21Z",
+   "new_moon_after": "2025-06-25T10:31:37Z",
+   "amanta_index": 2,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 9.9153
+  },
+  {
+   "instant": "2025-07-01T00:30:00Z",
+   "new_moon_before": "2025-06-25T10:31:37Z",
+   "new_moon_after": "2025-07-24T19:11:12Z",
+   "amanta_index": 3,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 7.9223
+  },
+  {
+   "instant": "2025-07-16T00:30:00Z",
+   "new_moon_before": "2025-06-25T10:31:37Z",
+   "new_moon_after": "2025-07-24T19:11:12Z",
+   "amanta_index": 3,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 7.9223
+  },
+  {
+   "instant": "2025-08-01T00:30:00Z",
+   "new_moon_before": "2025-07-24T19:11:12Z",
+   "new_moon_after": "2025-08-23T06:06:33Z",
+   "amanta_index": 4,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 6.1668
+  },
+  {
+   "instant": "2025-08-16T00:30:00Z",
+   "new_moon_before": "2025-07-24T19:11:12Z",
+   "new_moon_after": "2025-08-23T06:06:33Z",
+   "amanta_index": 4,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 6.1668
+  },
+  {
+   "instant": "2025-09-01T00:30:00Z",
+   "new_moon_before": "2025-08-23T06:06:33Z",
+   "new_moon_after": "2025-09-21T19:54:08Z",
+   "amanta_index": 5,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 4.8684
+  },
+  {
+   "instant": "2025-09-16T00:30:00Z",
+   "new_moon_before": "2025-08-23T06:06:33Z",
+   "new_moon_after": "2025-09-21T19:54:08Z",
+   "amanta_index": 5,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 4.8684
+  },
+  {
+   "instant": "2025-10-01T00:30:00Z",
+   "new_moon_before": "2025-09-21T19:54:08Z",
+   "new_moon_after": "2025-10-21T12:25:10Z",
+   "amanta_index": 6,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 4.1464
+  },
+  {
+   "instant": "2025-10-16T00:30:00Z",
+   "new_moon_before": "2025-09-21T19:54:08Z",
+   "new_moon_after": "2025-10-21T12:25:10Z",
+   "amanta_index": 6,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 4.1464
+  },
+  {
+   "instant": "2025-11-01T00:30:00Z",
+   "new_moon_before": "2025-10-21T12:25:10Z",
+   "new_moon_after": "2025-11-20T06:47:16Z",
+   "amanta_index": 7,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 3.9789
+  },
+  {
+   "instant": "2025-11-16T00:30:00Z",
+   "new_moon_before": "2025-10-21T12:25:10Z",
+   "new_moon_after": "2025-11-20T06:47:16Z",
+   "amanta_index": 7,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 3.9789
+  },
+  {
+   "instant": "2025-12-01T00:30:00Z",
+   "new_moon_before": "2025-11-20T06:47:16Z",
+   "new_moon_after": "2025-12-20T01:43:21Z",
+   "amanta_index": 8,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 3.9789
+  },
+  {
+   "instant": "2025-12-16T00:30:00Z",
+   "new_moon_before": "2025-11-20T06:47:16Z",
+   "new_moon_after": "2025-12-20T01:43:21Z",
+   "amanta_index": 8,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 3.9789
+  },
+  {
+   "instant": "2026-01-01T00:30:00Z",
+   "new_moon_before": "2025-12-20T01:43:21Z",
+   "new_moon_after": "2026-01-18T19:51:59Z",
+   "amanta_index": 9,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 4.1945
+  },
+  {
+   "instant": "2026-01-16T00:30:00Z",
+   "new_moon_before": "2025-12-20T01:43:21Z",
+   "new_moon_after": "2026-01-18T19:51:59Z",
+   "amanta_index": 9,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 4.1945
+  },
+  {
+   "instant": "2026-02-01T00:30:00Z",
+   "new_moon_before": "2026-01-18T19:51:59Z",
+   "new_moon_after": "2026-02-17T12:01:09Z",
+   "amanta_index": 10,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 4.5092
+  },
+  {
+   "instant": "2026-02-16T00:30:00Z",
+   "new_moon_before": "2026-01-18T19:51:59Z",
+   "new_moon_after": "2026-02-17T12:01:09Z",
+   "amanta_index": 10,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 4.5092
+  },
+  {
+   "instant": "2026-03-01T00:30:00Z",
+   "new_moon_before": "2026-02-17T12:01:09Z",
+   "new_moon_after": "2026-03-19T01:23:29Z",
+   "amanta_index": 11,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 4.2263
+  },
+  {
+   "instant": "2026-03-16T00:30:00Z",
+   "new_moon_before": "2026-02-17T12:01:09Z",
+   "new_moon_after": "2026-03-19T01:23:29Z",
+   "amanta_index": 11,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 4.2263
+  },
+  {
+   "instant": "2026-04-01T00:30:00Z",
+   "new_moon_before": "2026-03-19T01:23:29Z",
+   "new_moon_after": "2026-04-17T11:51:48Z",
+   "amanta_index": 0,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 3.2569
+  },
+  {
+   "instant": "2026-04-16T00:30:00Z",
+   "new_moon_before": "2026-03-19T01:23:29Z",
+   "new_moon_after": "2026-04-17T11:51:48Z",
+   "amanta_index": 0,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 3.2569
+  },
+  {
+   "instant": "2026-05-01T00:30:00Z",
+   "new_moon_before": "2026-04-17T11:51:48Z",
+   "new_moon_after": "2026-05-16T20:01:03Z",
+   "amanta_index": 1,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 1.7344
+  },
+  {
+   "instant": "2026-05-16T00:30:00Z",
+   "new_moon_before": "2026-04-17T11:51:48Z",
+   "new_moon_after": "2026-05-16T20:01:03Z",
+   "amanta_index": 1,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 1.7344
+  },
+  {
+   "instant": "2026-06-01T00:30:00Z",
+   "new_moon_before": "2026-05-16T20:01:03Z",
+   "new_moon_after": "2026-06-15T02:54:10Z",
+   "amanta_index": 2,
+   "purnimanta_index": 2,
+   "adhika": true,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.1784
+  },
+  {
+   "instant": "2026-06-16T00:30:00Z",
+   "new_moon_before": "2026-06-15T02:54:10Z",
+   "new_moon_after": "2026-07-14T09:43:37Z",
+   "amanta_index": 2,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 0.1784
+  },
+  {
+   "instant": "2026-07-01T00:30:00Z",
+   "new_moon_before": "2026-06-15T02:54:10Z",
+   "new_moon_after": "2026-07-14T09:43:37Z",
+   "amanta_index": 2,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.1784
+  },
+  {
+   "instant": "2026-07-16T00:30:00Z",
+   "new_moon_before": "2026-07-14T09:43:37Z",
+   "new_moon_after": "2026-08-12T17:36:45Z",
+   "amanta_index": 3,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 2.2438
+  },
+  {
+   "instant": "2026-08-01T00:30:00Z",
+   "new_moon_before": "2026-07-14T09:43:37Z",
+   "new_moon_after": "2026-08-12T17:36:45Z",
+   "amanta_index": 3,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 2.2438
+  },
+  {
+   "instant": "2026-08-16T00:30:00Z",
+   "new_moon_before": "2026-08-12T17:36:45Z",
+   "new_moon_after": "2026-09-11T03:27:00Z",
+   "amanta_index": 4,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 4.1987
+  },
+  {
+   "instant": "2026-09-01T00:30:00Z",
+   "new_moon_before": "2026-08-12T17:36:45Z",
+   "new_moon_after": "2026-09-11T03:27:00Z",
+   "amanta_index": 4,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 4.1987
+  },
+  {
+   "instant": "2026-09-16T00:30:00Z",
+   "new_moon_before": "2026-09-11T03:27:00Z",
+   "new_moon_after": "2026-10-10T15:50:05Z",
+   "amanta_index": 5,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 5.8008
+  },
+  {
+   "instant": "2026-10-01T00:30:00Z",
+   "new_moon_before": "2026-09-11T03:27:00Z",
+   "new_moon_after": "2026-10-10T15:50:05Z",
+   "amanta_index": 5,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 5.8008
+  },
+  {
+   "instant": "2026-10-16T00:30:00Z",
+   "new_moon_before": "2026-10-10T15:50:05Z",
+   "new_moon_after": "2026-11-09T07:02:07Z",
+   "amanta_index": 6,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 6.8727
+  },
+  {
+   "instant": "2026-11-01T00:30:00Z",
+   "new_moon_before": "2026-10-10T15:50:05Z",
+   "new_moon_after": "2026-11-09T07:02:07Z",
+   "amanta_index": 6,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 6.8727
+  },
+  {
+   "instant": "2026-11-16T00:30:00Z",
+   "new_moon_before": "2026-11-09T07:02:07Z",
+   "new_moon_after": "2026-12-09T00:51:51Z",
+   "amanta_index": 7,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 7.2894
+  },
+  {
+   "instant": "2026-12-01T00:30:00Z",
+   "new_moon_before": "2026-11-09T07:02:07Z",
+   "new_moon_after": "2026-12-09T00:51:51Z",
+   "amanta_index": 7,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 7.2894
+  },
+  {
+   "instant": "2026-12-16T00:30:00Z",
+   "new_moon_before": "2026-12-09T00:51:51Z",
+   "new_moon_after": "2027-01-07T20:24:23Z",
+   "amanta_index": 8,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 6.9333
+  },
+  {
+   "instant": "2027-01-01T00:30:00Z",
+   "new_moon_before": "2026-12-09T00:51:51Z",
+   "new_moon_after": "2027-01-07T20:24:23Z",
+   "amanta_index": 8,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 6.9333
+  },
+  {
+   "instant": "2027-01-16T00:30:00Z",
+   "new_moon_before": "2027-01-07T20:24:23Z",
+   "new_moon_after": "2027-02-06T15:56:07Z",
+   "amanta_index": 9,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 6.612
+  },
+  {
+   "instant": "2027-02-01T00:30:00Z",
+   "new_moon_before": "2027-01-07T20:24:23Z",
+   "new_moon_after": "2027-02-06T15:56:07Z",
+   "amanta_index": 9,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 6.612
+  },
+  {
+   "instant": "2027-02-16T00:30:00Z",
+   "new_moon_before": "2027-02-06T15:56:07Z",
+   "new_moon_after": "2027-03-08T09:29:29Z",
+   "amanta_index": 10,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 6.612
+  },
+  {
+   "instant": "2027-03-01T00:30:00Z",
+   "new_moon_before": "2027-02-06T15:56:07Z",
+   "new_moon_after": "2027-03-08T09:29:29Z",
+   "amanta_index": 10,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 6.612
+  },
+  {
+   "instant": "2027-03-16T00:30:00Z",
+   "new_moon_before": "2027-03-08T09:29:29Z",
+   "new_moon_after": "2027-04-06T23:51:10Z",
+   "amanta_index": 11,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 6.66
+  },
+  {
+   "instant": "2027-04-01T00:30:00Z",
+   "new_moon_before": "2027-03-08T09:29:29Z",
+   "new_moon_after": "2027-04-06T23:51:10Z",
+   "amanta_index": 11,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 6.66
+  },
+  {
+   "instant": "2027-04-16T00:30:00Z",
+   "new_moon_before": "2027-04-06T23:51:10Z",
+   "new_moon_after": "2027-05-06T10:58:38Z",
+   "amanta_index": 0,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 7.2891
+  },
+  {
+   "instant": "2027-05-01T00:30:00Z",
+   "new_moon_before": "2027-04-06T23:51:10Z",
+   "new_moon_after": "2027-05-06T10:58:38Z",
+   "amanta_index": 0,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 7.2891
+  },
+  {
+   "instant": "2027-05-16T00:30:00Z",
+   "new_moon_before": "2027-05-06T10:58:38Z",
+   "new_moon_after": "2027-06-04T19:40:21Z",
+   "amanta_index": 1,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 8.533
+  },
+  {
+   "instant": "2027-06-01T00:30:00Z",
+   "new_moon_before": "2027-05-06T10:58:38Z",
+   "new_moon_after": "2027-06-04T19:40:21Z",
+   "amanta_index": 1,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 8.533
+  },
+  {
+   "instant": "2027-06-16T00:30:00Z",
+   "new_moon_before": "2027-06-04T19:40:21Z",
+   "new_moon_after": "2027-07-04T03:02:05Z",
+   "amanta_index": 2,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 10.2714
+  },
+  {
+   "instant": "2027-07-01T00:30:00Z",
+   "new_moon_before": "2027-06-04T19:40:21Z",
+   "new_moon_after": "2027-07-04T03:02:05Z",
+   "amanta_index": 2,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 10.2714
+  },
+  {
+   "instant": "2027-07-16T00:30:00Z",
+   "new_moon_before": "2027-07-04T03:02:05Z",
+   "new_moon_after": "2027-08-02T10:05:14Z",
+   "amanta_index": 3,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 12.2885
+  },
+  {
+   "instant": "2027-08-01T00:30:00Z",
+   "new_moon_before": "2027-07-04T03:02:05Z",
+   "new_moon_after": "2027-08-02T10:05:14Z",
+   "amanta_index": 3,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 12.2885
+  },
+  {
+   "instant": "2027-08-16T00:30:00Z",
+   "new_moon_before": "2027-08-02T10:05:14Z",
+   "new_moon_after": "2027-08-31T17:41:11Z",
+   "amanta_index": 4,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 13.8569
+  },
+  {
+   "instant": "2027-09-01T00:30:00Z",
+   "new_moon_before": "2027-08-31T17:41:11Z",
+   "new_moon_after": "2027-09-30T02:36:05Z",
+   "amanta_index": 5,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 12.4758
+  },
+  {
+   "instant": "2027-09-16T00:30:00Z",
+   "new_moon_before": "2027-08-31T17:41:11Z",
+   "new_moon_after": "2027-09-30T02:36:05Z",
+   "amanta_index": 5,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 12.4758
+  },
+  {
+   "instant": "2027-10-01T00:30:00Z",
+   "new_moon_before": "2027-09-30T02:36:05Z",
+   "new_moon_after": "2027-10-29T13:36:34Z",
+   "amanta_index": 6,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 11.6545
+  },
+  {
+   "instant": "2027-10-16T00:30:00Z",
+   "new_moon_before": "2027-09-30T02:36:05Z",
+   "new_moon_after": "2027-10-29T13:36:34Z",
+   "amanta_index": 6,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 11.6545
+  },
+  {
+   "instant": "2027-11-01T00:30:00Z",
+   "new_moon_before": "2027-10-29T13:36:34Z",
+   "new_moon_after": "2027-11-28T03:24:27Z",
+   "amanta_index": 7,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 11.4028
+  },
+  {
+   "instant": "2027-11-16T00:30:00Z",
+   "new_moon_before": "2027-10-29T13:36:34Z",
+   "new_moon_after": "2027-11-28T03:24:27Z",
+   "amanta_index": 7,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 11.4028
+  },
+  {
+   "instant": "2027-12-01T00:30:00Z",
+   "new_moon_before": "2027-11-28T03:24:27Z",
+   "new_moon_after": "2027-12-27T20:12:20Z",
+   "amanta_index": 8,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 11.4028
+  },
+  {
+   "instant": "2027-12-16T00:30:00Z",
+   "new_moon_before": "2027-11-28T03:24:27Z",
+   "new_moon_after": "2027-12-27T20:12:20Z",
+   "amanta_index": 8,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 11.4028
+  },
+  {
+   "instant": "2028-01-01T00:30:00Z",
+   "new_moon_before": "2027-12-27T20:12:20Z",
+   "new_moon_after": "2028-01-26T15:12:31Z",
+   "amanta_index": 9,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 11.586
+  },
+  {
+   "instant": "2028-01-16T00:30:00Z",
+   "new_moon_before": "2027-12-27T20:12:20Z",
+   "new_moon_after": "2028-01-26T15:12:31Z",
+   "amanta_index": 9,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 11.586
+  },
+  {
+   "instant": "2028-02-01T00:30:00Z",
+   "new_moon_before": "2028-01-26T15:12:31Z",
+   "new_moon_after": "2028-02-25T10:37:25Z",
+   "amanta_index": 10,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 11.9301
+  },
+  {
+   "instant": "2028-02-16T00:30:00Z",
+   "new_moon_before": "2028-01-26T15:12:31Z",
+   "new_moon_after": "2028-02-25T10:37:25Z",
+   "amanta_index": 10,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 11.9301
+  },
+  {
+   "instant": "2028-03-01T00:30:00Z",
+   "new_moon_before": "2028-02-25T10:37:25Z",
+   "new_moon_after": "2028-03-26T04:31:20Z",
+   "amanta_index": 11,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 11.7904
+  },
+  {
+   "instant": "2028-03-16T00:30:00Z",
+   "new_moon_before": "2028-02-25T10:37:25Z",
+   "new_moon_after": "2028-03-26T04:31:20Z",
+   "amanta_index": 11,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 11.7904
+  },
+  {
+   "instant": "2028-04-01T00:30:00Z",
+   "new_moon_before": "2028-03-26T04:31:20Z",
+   "new_moon_after": "2028-04-24T19:46:56Z",
+   "amanta_index": 0,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 10.8905
+  },
+  {
+   "instant": "2028-04-16T00:30:00Z",
+   "new_moon_before": "2028-03-26T04:31:20Z",
+   "new_moon_after": "2028-04-24T19:46:56Z",
+   "amanta_index": 0,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 10.8905
+  },
+  {
+   "instant": "2028-05-01T00:30:00Z",
+   "new_moon_before": "2028-04-24T19:46:56Z",
+   "new_moon_after": "2028-05-24T08:16:19Z",
+   "amanta_index": 1,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 9.4338
+  },
+  {
+   "instant": "2028-05-16T00:30:00Z",
+   "new_moon_before": "2028-04-24T19:46:56Z",
+   "new_moon_after": "2028-05-24T08:16:19Z",
+   "amanta_index": 1,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 9.4338
+  },
+  {
+   "instant": "2028-06-01T00:30:00Z",
+   "new_moon_before": "2028-05-24T08:16:19Z",
+   "new_moon_after": "2028-06-22T18:27:34Z",
+   "amanta_index": 2,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 7.5873
+  },
+  {
+   "instant": "2028-06-16T00:30:00Z",
+   "new_moon_before": "2028-05-24T08:16:19Z",
+   "new_moon_after": "2028-06-22T18:27:34Z",
+   "amanta_index": 2,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 7.5873
+  },
+  {
+   "instant": "2028-07-01T00:30:00Z",
+   "new_moon_before": "2028-06-22T18:27:34Z",
+   "new_moon_after": "2028-07-22T03:01:43Z",
+   "amanta_index": 3,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 5.5852
+  },
+  {
+   "instant": "2028-07-16T00:30:00Z",
+   "new_moon_before": "2028-06-22T18:27:34Z",
+   "new_moon_after": "2028-07-22T03:01:43Z",
+   "amanta_index": 3,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 5.5852
+  },
+  {
+   "instant": "2028-08-01T00:30:00Z",
+   "new_moon_before": "2028-07-22T03:01:43Z",
+   "new_moon_after": "2028-08-20T10:43:52Z",
+   "amanta_index": 4,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 3.6791
+  },
+  {
+   "instant": "2028-08-16T00:30:00Z",
+   "new_moon_before": "2028-07-22T03:01:43Z",
+   "new_moon_after": "2028-08-20T10:43:52Z",
+   "amanta_index": 4,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 3.6791
+  },
+  {
+   "instant": "2028-09-01T00:30:00Z",
+   "new_moon_before": "2028-08-20T10:43:52Z",
+   "new_moon_after": "2028-09-18T18:23:46Z",
+   "amanta_index": 5,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 2.0965
+  },
+  {
+   "instant": "2028-09-16T00:30:00Z",
+   "new_moon_before": "2028-08-20T10:43:52Z",
+   "new_moon_after": "2028-09-18T18:23:46Z",
+   "amanta_index": 5,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 2.0965
+  },
+  {
+   "instant": "2028-10-01T00:30:00Z",
+   "new_moon_before": "2028-09-18T18:23:46Z",
+   "new_moon_after": "2028-10-18T02:56:49Z",
+   "amanta_index": 6,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 1.0008
+  },
+  {
+   "instant": "2028-10-16T00:30:00Z",
+   "new_moon_before": "2028-09-18T18:23:46Z",
+   "new_moon_after": "2028-10-18T02:56:49Z",
+   "amanta_index": 6,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 1.0008
+  },
+  {
+   "instant": "2028-11-01T00:30:00Z",
+   "new_moon_before": "2028-10-18T02:56:49Z",
+   "new_moon_after": "2028-11-16T13:18:02Z",
+   "amanta_index": 7,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 0.4525
+  },
+  {
+   "instant": "2028-11-16T00:30:00Z",
+   "new_moon_before": "2028-10-18T02:56:49Z",
+   "new_moon_after": "2028-11-16T13:18:02Z",
+   "amanta_index": 7,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.4525
+  },
+  {
+   "instant": "2028-12-01T00:30:00Z",
+   "new_moon_before": "2028-11-16T13:18:02Z",
+   "new_moon_after": "2028-12-16T02:06:20Z",
+   "amanta_index": 8,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 0.3785
+  },
+  {
+   "instant": "2028-12-16T00:30:00Z",
+   "new_moon_before": "2028-11-16T13:18:02Z",
+   "new_moon_after": "2028-12-16T02:06:20Z",
+   "amanta_index": 8,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.3785
+  },
+  {
+   "instant": "2029-01-01T00:30:00Z",
+   "new_moon_before": "2028-12-16T02:06:20Z",
+   "new_moon_after": "2029-01-14T17:24:31Z",
+   "amanta_index": 9,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.3785
+  },
+  {
+   "instant": "2029-01-16T00:30:00Z",
+   "new_moon_before": "2029-01-14T17:24:31Z",
+   "new_moon_after": "2029-02-13T10:31:32Z",
+   "amanta_index": 10,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 0.5715
+  },
+  {
+   "instant": "2029-02-01T00:30:00Z",
+   "new_moon_before": "2029-01-14T17:24:31Z",
+   "new_moon_after": "2029-02-13T10:31:32Z",
+   "amanta_index": 10,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.5715
+  },
+  {
+   "instant": "2029-02-16T00:30:00Z",
+   "new_moon_before": "2029-02-13T10:31:32Z",
+   "new_moon_after": "2029-03-15T04:19:16Z",
+   "amanta_index": 11,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 0.5994
+  },
+  {
+   "instant": "2029-03-01T00:30:00Z",
+   "new_moon_before": "2029-02-13T10:31:32Z",
+   "new_moon_after": "2029-03-15T04:19:16Z",
+   "amanta_index": 11,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.5994
+  },
+  {
+   "instant": "2029-03-16T00:30:00Z",
+   "new_moon_before": "2029-03-15T04:19:16Z",
+   "new_moon_after": "2029-04-13T21:40:11Z",
+   "amanta_index": 0,
+   "purnimanta_index": 0,
+   "adhika": true,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 0.03
+  },
+  {
+   "instant": "2029-04-01T00:30:00Z",
+   "new_moon_before": "2029-03-15T04:19:16Z",
+   "new_moon_after": "2029-04-13T21:40:11Z",
+   "amanta_index": 0,
+   "purnimanta_index": 0,
+   "adhika": true,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.03
+  },
+  {
+   "instant": "2029-04-16T00:30:00Z",
+   "new_moon_before": "2029-04-13T21:40:11Z",
+   "new_moon_after": "2029-05-13T13:42:09Z",
+   "amanta_index": 0,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 0.03
+  },
+  {
+   "instant": "2029-05-01T00:30:00Z",
+   "new_moon_before": "2029-04-13T21:40:11Z",
+   "new_moon_after": "2029-05-13T13:42:09Z",
+   "amanta_index": 0,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.03
+  },
+  {
+   "instant": "2029-05-16T00:30:00Z",
+   "new_moon_before": "2029-05-13T13:42:09Z",
+   "new_moon_after": "2029-06-12T03:50:33Z",
+   "amanta_index": 1,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 1.1889
+  },
+  {
+   "instant": "2029-06-01T00:30:00Z",
+   "new_moon_before": "2029-05-13T13:42:09Z",
+   "new_moon_after": "2029-06-12T03:50:33Z",
+   "amanta_index": 1,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 1.1889
+  },
+  {
+   "instant": "2029-06-16T00:30:00Z",
+   "new_moon_before": "2029-06-12T03:50:33Z",
+   "new_moon_after": "2029-07-11T15:51:04Z",
+   "amanta_index": 2,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 2.7881
+  },
+  {
+   "instant": "2029-07-01T00:30:00Z",
+   "new_moon_before": "2029-06-12T03:50:33Z",
+   "new_moon_after": "2029-07-11T15:51:04Z",
+   "amanta_index": 2,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 2.7881
+  },
+  {
+   "instant": "2029-07-16T00:30:00Z",
+   "new_moon_before": "2029-07-11T15:51:04Z",
+   "new_moon_after": "2029-08-10T01:55:48Z",
+   "amanta_index": 3,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 4.6454
+  },
+  {
+   "instant": "2029-08-01T00:30:00Z",
+   "new_moon_before": "2029-07-11T15:51:04Z",
+   "new_moon_after": "2029-08-10T01:55:48Z",
+   "amanta_index": 3,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 4.6454
+  },
+  {
+   "instant": "2029-08-16T00:30:00Z",
+   "new_moon_before": "2029-08-10T01:55:48Z",
+   "new_moon_after": "2029-09-08T10:44:24Z",
+   "amanta_index": 4,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 6.5293
+  },
+  {
+   "instant": "2029-09-01T00:30:00Z",
+   "new_moon_before": "2029-08-10T01:55:48Z",
+   "new_moon_after": "2029-09-08T10:44:24Z",
+   "amanta_index": 4,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 6.5293
+  },
+  {
+   "instant": "2029-09-16T00:30:00Z",
+   "new_moon_before": "2029-09-08T10:44:24Z",
+   "new_moon_after": "2029-10-07T19:14:34Z",
+   "amanta_index": 5,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 8.2028
+  },
+  {
+   "instant": "2029-10-01T00:30:00Z",
+   "new_moon_before": "2029-09-08T10:44:24Z",
+   "new_moon_after": "2029-10-07T19:14:34Z",
+   "amanta_index": 5,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 8.2028
+  },
+  {
+   "instant": "2029-10-16T00:30:00Z",
+   "new_moon_before": "2029-10-07T19:14:34Z",
+   "new_moon_after": "2029-11-06T04:24:08Z",
+   "amanta_index": 6,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 9.4719
+  },
+  {
+   "instant": "2029-11-01T00:30:00Z",
+   "new_moon_before": "2029-10-07T19:14:34Z",
+   "new_moon_after": "2029-11-06T04:24:08Z",
+   "amanta_index": 6,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 9.4719
+  },
+  {
+   "instant": "2029-11-16T00:30:00Z",
+   "new_moon_before": "2029-11-06T04:24:08Z",
+   "new_moon_after": "2029-12-05T14:52:08Z",
+   "amanta_index": 7,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 10.2351
+  },
+  {
+   "instant": "2029-12-01T00:30:00Z",
+   "new_moon_before": "2029-11-06T04:24:08Z",
+   "new_moon_after": "2029-12-05T14:52:08Z",
+   "amanta_index": 7,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 10.2351
+  },
+  {
+   "instant": "2029-12-16T00:30:00Z",
+   "new_moon_before": "2029-12-05T14:52:08Z",
+   "new_moon_after": "2030-01-04T02:49:34Z",
+   "amanta_index": 8,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 10.5
+  },
+  {
+   "instant": "2030-01-01T00:30:00Z",
+   "new_moon_before": "2029-12-05T14:52:08Z",
+   "new_moon_after": "2030-01-04T02:49:34Z",
+   "amanta_index": 8,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 10.5
+  },
+  {
+   "instant": "2030-01-16T00:30:00Z",
+   "new_moon_before": "2030-01-04T02:49:34Z",
+   "new_moon_after": "2030-02-02T16:07:32Z",
+   "amanta_index": 9,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 10.425
+  },
+  {
+   "instant": "2030-02-01T00:30:00Z",
+   "new_moon_before": "2030-01-04T02:49:34Z",
+   "new_moon_after": "2030-02-02T16:07:32Z",
+   "amanta_index": 9,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 10.425
+  },
+  {
+   "instant": "2030-02-16T00:30:00Z",
+   "new_moon_before": "2030-02-02T16:07:32Z",
+   "new_moon_after": "2030-03-04T06:34:41Z",
+   "amanta_index": 10,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 10.425
+  },
+  {
+   "instant": "2030-03-01T00:30:00Z",
+   "new_moon_before": "2030-02-02T16:07:32Z",
+   "new_moon_after": "2030-03-04T06:34:41Z",
+   "amanta_index": 10,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 10.425
+  },
+  {
+   "instant": "2030-03-16T00:30:00Z",
+   "new_moon_before": "2030-03-04T06:34:41Z",
+   "new_moon_after": "2030-04-02T22:02:33Z",
+   "amanta_index": 11,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 10.5566
+  },
+  {
+   "instant": "2030-04-01T00:30:00Z",
+   "new_moon_before": "2030-03-04T06:34:41Z",
+   "new_moon_after": "2030-04-02T22:02:33Z",
+   "amanta_index": 11,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 10.5566
+  },
+  {
+   "instant": "2030-04-16T00:30:00Z",
+   "new_moon_before": "2030-04-02T22:02:33Z",
+   "new_moon_after": "2030-05-02T14:12:10Z",
+   "amanta_index": 0,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 11.0773
+  },
+  {
+   "instant": "2030-05-01T00:30:00Z",
+   "new_moon_before": "2030-04-02T22:02:33Z",
+   "new_moon_after": "2030-05-02T14:12:10Z",
+   "amanta_index": 0,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 11.0773
+  },
+  {
+   "instant": "2030-05-16T00:30:00Z",
+   "new_moon_before": "2030-05-02T14:12:10Z",
+   "new_moon_after": "2030-06-01T06:21:22Z",
+   "amanta_index": 1,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 12.0564
+  },
+  {
+   "instant": "2030-06-01T00:30:00Z",
+   "new_moon_before": "2030-05-02T14:12:10Z",
+   "new_moon_after": "2030-06-01T06:21:22Z",
+   "amanta_index": 1,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 12.0564
+  },
+  {
+   "instant": "2030-06-16T00:30:00Z",
+   "new_moon_before": "2030-06-01T06:21:22Z",
+   "new_moon_after": "2030-06-30T21:34:30Z",
+   "amanta_index": 2,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 13.4543
+  },
+  {
+   "instant": "2030-07-01T00:30:00Z",
+   "new_moon_before": "2030-06-30T21:34:30Z",
+   "new_moon_after": "2030-07-30T11:11:01Z",
+   "amanta_index": 3,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 13.068
+  },
+  {
+   "instant": "2030-07-16T00:30:00Z",
+   "new_moon_before": "2030-06-30T21:34:30Z",
+   "new_moon_after": "2030-07-30T11:11:01Z",
+   "amanta_index": 3,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 13.068
+  },
+  {
+   "instant": "2030-08-01T00:30:00Z",
+   "new_moon_before": "2030-07-30T11:11:01Z",
+   "new_moon_after": "2030-08-28T23:07:23Z",
+   "amanta_index": 4,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 11.3999
+  },
+  {
+   "instant": "2030-08-16T00:30:00Z",
+   "new_moon_before": "2030-07-30T11:11:01Z",
+   "new_moon_after": "2030-08-28T23:07:23Z",
+   "amanta_index": 4,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 11.3999
+  },
+  {
+   "instant": "2030-09-01T00:30:00Z",
+   "new_moon_before": "2030-08-28T23:07:23Z",
+   "new_moon_after": "2030-09-27T09:54:42Z",
+   "amanta_index": 5,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 10.0559
+  },
+  {
+   "instant": "2030-09-16T00:30:00Z",
+   "new_moon_before": "2030-08-28T23:07:23Z",
+   "new_moon_after": "2030-09-27T09:54:42Z",
+   "amanta_index": 5,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 10.0559
+  },
+  {
+   "instant": "2030-10-01T00:30:00Z",
+   "new_moon_before": "2030-09-27T09:54:42Z",
+   "new_moon_after": "2030-10-26T20:17:01Z",
+   "amanta_index": 6,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 9.1668
+  },
+  {
+   "instant": "2030-10-16T00:30:00Z",
+   "new_moon_before": "2030-09-27T09:54:42Z",
+   "new_moon_after": "2030-10-26T20:17:01Z",
+   "amanta_index": 6,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 9.1668
+  },
+  {
+   "instant": "2030-11-01T00:30:00Z",
+   "new_moon_before": "2030-10-26T20:17:01Z",
+   "new_moon_after": "2030-11-25T06:46:30Z",
+   "amanta_index": 7,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 8.7418
+  },
+  {
+   "instant": "2030-11-16T00:30:00Z",
+   "new_moon_before": "2030-10-26T20:17:01Z",
+   "new_moon_after": "2030-11-25T06:46:30Z",
+   "amanta_index": 7,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 8.7418
+  },
+  {
+   "instant": "2030-12-01T00:30:00Z",
+   "new_moon_before": "2030-11-25T06:46:30Z",
+   "new_moon_after": "2030-12-24T17:32:14Z",
+   "amanta_index": 8,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 8.6512
+  },
+  {
+   "instant": "2030-12-16T00:30:00Z",
+   "new_moon_before": "2030-11-25T06:46:30Z",
+   "new_moon_after": "2030-12-24T17:32:14Z",
+   "amanta_index": 8,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 8.6512
+  },
+  {
+   "instant": "2031-01-01T00:30:00Z",
+   "new_moon_before": "2030-12-24T17:32:14Z",
+   "new_moon_after": "2031-01-23T04:31:01Z",
+   "amanta_index": 9,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 8.6512
+  },
+  {
+   "instant": "2031-01-16T00:30:00Z",
+   "new_moon_before": "2030-12-24T17:32:14Z",
+   "new_moon_after": "2031-01-23T04:31:01Z",
+   "amanta_index": 9,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 8.6512
+  },
+  {
+   "instant": "2031-02-01T00:30:00Z",
+   "new_moon_before": "2031-01-23T04:31:01Z",
+   "new_moon_after": "2031-02-21T15:48:53Z",
+   "amanta_index": 10,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 8.5175
+  },
+  {
+   "instant": "2031-02-16T00:30:00Z",
+   "new_moon_before": "2031-01-23T04:31:01Z",
+   "new_moon_after": "2031-02-21T15:48:53Z",
+   "amanta_index": 10,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 8.5175
+  },
+  {
+   "instant": "2031-03-01T00:30:00Z",
+   "new_moon_before": "2031-02-21T15:48:53Z",
+   "new_moon_after": "2031-03-23T03:49:07Z",
+   "amanta_index": 11,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 8.0261
+  },
+  {
+   "instant": "2031-03-16T00:30:00Z",
+   "new_moon_before": "2031-02-21T15:48:53Z",
+   "new_moon_after": "2031-03-23T03:49:07Z",
+   "amanta_index": 11,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 8.0261
+  },
+  {
+   "instant": "2031-04-01T00:30:00Z",
+   "new_moon_before": "2031-03-23T03:49:07Z",
+   "new_moon_after": "2031-04-21T16:57:06Z",
+   "amanta_index": 0,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 7.1029
+  },
+  {
+   "instant": "2031-04-16T00:30:00Z",
+   "new_moon_before": "2031-03-23T03:49:07Z",
+   "new_moon_after": "2031-04-21T16:57:06Z",
+   "amanta_index": 0,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 7.1029
+  },
+  {
+   "instant": "2031-05-01T00:30:00Z",
+   "new_moon_before": "2031-04-21T16:57:06Z",
+   "new_moon_after": "2031-05-21T07:17:14Z",
+   "amanta_index": 1,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 5.7738
+  },
+  {
+   "instant": "2031-05-16T00:30:00Z",
+   "new_moon_before": "2031-04-21T16:57:06Z",
+   "new_moon_after": "2031-05-21T07:17:14Z",
+   "amanta_index": 1,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 5.7738
+  },
+  {
+   "instant": "2031-06-01T00:30:00Z",
+   "new_moon_before": "2031-05-21T07:17:14Z",
+   "new_moon_after": "2031-06-19T22:24:43Z",
+   "amanta_index": 2,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 4.1528
+  },
+  {
+   "instant": "2031-06-16T00:30:00Z",
+   "new_moon_before": "2031-05-21T07:17:14Z",
+   "new_moon_after": "2031-06-19T22:24:43Z",
+   "amanta_index": 2,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 4.1528
+  },
+  {
+   "instant": "2031-07-01T00:30:00Z",
+   "new_moon_before": "2031-06-19T22:24:43Z",
+   "new_moon_after": "2031-07-19T13:40:16Z",
+   "amanta_index": 3,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 2.4157
+  },
+  {
+   "instant": "2031-07-16T00:30:00Z",
+   "new_moon_before": "2031-06-19T22:24:43Z",
+   "new_moon_after": "2031-07-19T13:40:16Z",
+   "amanta_index": 3,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 2.4157
+  },
+  {
+   "instant": "2031-08-01T00:30:00Z",
+   "new_moon_before": "2031-07-19T13:40:16Z",
+   "new_moon_after": "2031-08-18T04:32:19Z",
+   "amanta_index": 4,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 0.7687
+  },
+  {
+   "instant": "2031-08-16T00:30:00Z",
+   "new_moon_before": "2031-07-19T13:40:16Z",
+   "new_moon_after": "2031-08-18T04:32:19Z",
+   "amanta_index": 4,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.7687
+  },
+  {
+   "instant": "2031-09-01T00:30:00Z",
+   "new_moon_before": "2031-08-18T04:32:19Z",
+   "new_moon_after": "2031-09-16T18:46:55Z",
+   "amanta_index": 5,
+   "purnimanta_index": 5,
+   "adhika": true,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 0.5914
+  },
+  {
+   "instant": "2031-09-16T00:30:00Z",
+   "new_moon_before": "2031-08-18T04:32:19Z",
+   "new_moon_after": "2031-09-16T18:46:55Z",
+   "amanta_index": 5,
+   "purnimanta_index": 5,
+   "adhika": true,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.5914
+  },
+  {
+   "instant": "2031-10-01T00:30:00Z",
+   "new_moon_before": "2031-09-16T18:46:55Z",
+   "new_moon_after": "2031-10-16T08:20:45Z",
+   "amanta_index": 5,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.5914
+  },
+  {
+   "instant": "2031-10-16T00:30:00Z",
+   "new_moon_before": "2031-09-16T18:46:55Z",
+   "new_moon_after": "2031-10-16T08:20:45Z",
+   "amanta_index": 5,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 0.5914
+  },
+  {
+   "instant": "2031-11-01T00:30:00Z",
+   "new_moon_before": "2031-10-16T08:20:45Z",
+   "new_moon_after": "2031-11-14T21:09:39Z",
+   "amanta_index": 6,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 1.5285
+  },
+  {
+   "instant": "2031-11-16T00:30:00Z",
+   "new_moon_before": "2031-11-14T21:09:39Z",
+   "new_moon_after": "2031-12-14T09:05:50Z",
+   "amanta_index": 7,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 2.0136
+  },
+  {
+   "instant": "2031-12-01T00:30:00Z",
+   "new_moon_before": "2031-11-14T21:09:39Z",
+   "new_moon_after": "2031-12-14T09:05:50Z",
+   "amanta_index": 7,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 2.0136
+  },
+  {
+   "instant": "2031-12-16T00:30:00Z",
+   "new_moon_before": "2031-12-14T09:05:50Z",
+   "new_moon_after": "2032-01-12T20:06:44Z",
+   "amanta_index": 8,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 2.1361
+  },
+  {
+   "instant": "2032-01-01T00:30:00Z",
+   "new_moon_before": "2031-12-14T09:05:50Z",
+   "new_moon_after": "2032-01-12T20:06:44Z",
+   "amanta_index": 8,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 2.1361
+  },
+  {
+   "instant": "2032-01-16T00:30:00Z",
+   "new_moon_before": "2032-01-12T20:06:44Z",
+   "new_moon_after": "2032-02-11T06:24:17Z",
+   "amanta_index": 9,
+   "purnimanta_index": 9,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 2.1361
+  },
+  {
+   "instant": "2032-02-01T00:30:00Z",
+   "new_moon_before": "2032-01-12T20:06:44Z",
+   "new_moon_after": "2032-02-11T06:24:17Z",
+   "amanta_index": 9,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 2.1361
+  },
+  {
+   "instant": "2032-02-16T00:30:00Z",
+   "new_moon_before": "2032-02-11T06:24:17Z",
+   "new_moon_after": "2032-03-11T16:24:42Z",
+   "amanta_index": 10,
+   "purnimanta_index": 10,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 2.2323
+  },
+  {
+   "instant": "2032-03-01T00:30:00Z",
+   "new_moon_before": "2032-02-11T06:24:17Z",
+   "new_moon_after": "2032-03-11T16:24:42Z",
+   "amanta_index": 10,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 2.2323
+  },
+  {
+   "instant": "2032-03-16T00:30:00Z",
+   "new_moon_before": "2032-03-11T16:24:42Z",
+   "new_moon_after": "2032-04-10T02:39:32Z",
+   "amanta_index": 11,
+   "purnimanta_index": 11,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 2.652
+  },
+  {
+   "instant": "2032-04-01T00:30:00Z",
+   "new_moon_before": "2032-03-11T16:24:42Z",
+   "new_moon_after": "2032-04-10T02:39:32Z",
+   "amanta_index": 11,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 2.652
+  },
+  {
+   "instant": "2032-04-16T00:30:00Z",
+   "new_moon_before": "2032-04-10T02:39:32Z",
+   "new_moon_after": "2032-05-09T13:35:45Z",
+   "amanta_index": 0,
+   "purnimanta_index": 0,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 3.5164
+  },
+  {
+   "instant": "2032-05-01T00:30:00Z",
+   "new_moon_before": "2032-04-10T02:39:32Z",
+   "new_moon_after": "2032-05-09T13:35:45Z",
+   "amanta_index": 0,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 3.5164
+  },
+  {
+   "instant": "2032-05-16T00:30:00Z",
+   "new_moon_before": "2032-05-09T13:35:45Z",
+   "new_moon_after": "2032-06-08T01:32:08Z",
+   "amanta_index": 1,
+   "purnimanta_index": 1,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 4.8278
+  },
+  {
+   "instant": "2032-06-01T00:30:00Z",
+   "new_moon_before": "2032-05-09T13:35:45Z",
+   "new_moon_after": "2032-06-08T01:32:08Z",
+   "amanta_index": 1,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 4.8278
+  },
+  {
+   "instant": "2032-06-16T00:30:00Z",
+   "new_moon_before": "2032-06-08T01:32:08Z",
+   "new_moon_after": "2032-07-07T14:41:33Z",
+   "amanta_index": 2,
+   "purnimanta_index": 2,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 6.4784
+  },
+  {
+   "instant": "2032-07-01T00:30:00Z",
+   "new_moon_before": "2032-06-08T01:32:08Z",
+   "new_moon_after": "2032-07-07T14:41:33Z",
+   "amanta_index": 2,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 6.4784
+  },
+  {
+   "instant": "2032-07-16T00:30:00Z",
+   "new_moon_before": "2032-07-07T14:41:33Z",
+   "new_moon_after": "2032-08-06T05:11:34Z",
+   "amanta_index": 3,
+   "purnimanta_index": 3,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 8.2808
+  },
+  {
+   "instant": "2032-08-01T00:30:00Z",
+   "new_moon_before": "2032-07-07T14:41:33Z",
+   "new_moon_after": "2032-08-06T05:11:34Z",
+   "amanta_index": 3,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 8.2808
+  },
+  {
+   "instant": "2032-08-16T00:30:00Z",
+   "new_moon_before": "2032-08-06T05:11:34Z",
+   "new_moon_after": "2032-09-04T20:56:39Z",
+   "amanta_index": 4,
+   "purnimanta_index": 4,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 10.0086
+  },
+  {
+   "instant": "2032-09-01T00:30:00Z",
+   "new_moon_before": "2032-08-06T05:11:34Z",
+   "new_moon_after": "2032-09-04T20:56:39Z",
+   "amanta_index": 4,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 10.0086
+  },
+  {
+   "instant": "2032-09-16T00:30:00Z",
+   "new_moon_before": "2032-09-04T20:56:39Z",
+   "new_moon_after": "2032-10-04T13:26:24Z",
+   "amanta_index": 5,
+   "purnimanta_index": 5,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 11.4463
+  },
+  {
+   "instant": "2032-10-01T00:30:00Z",
+   "new_moon_before": "2032-09-04T20:56:39Z",
+   "new_moon_after": "2032-10-04T13:26:24Z",
+   "amanta_index": 5,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 11.4463
+  },
+  {
+   "instant": "2032-10-16T00:30:00Z",
+   "new_moon_before": "2032-10-04T13:26:24Z",
+   "new_moon_after": "2032-11-03T05:44:58Z",
+   "amanta_index": 6,
+   "purnimanta_index": 6,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 12.4432
+  },
+  {
+   "instant": "2032-11-01T00:30:00Z",
+   "new_moon_before": "2032-10-04T13:26:24Z",
+   "new_moon_after": "2032-11-03T05:44:58Z",
+   "amanta_index": 6,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 12.4432
+  },
+  {
+   "instant": "2032-11-16T00:30:00Z",
+   "new_moon_before": "2032-11-03T05:44:58Z",
+   "new_moon_after": "2032-12-02T20:52:54Z",
+   "amanta_index": 7,
+   "purnimanta_index": 7,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 12.9594
+  },
+  {
+   "instant": "2032-12-01T00:30:00Z",
+   "new_moon_before": "2032-11-03T05:44:58Z",
+   "new_moon_after": "2032-12-02T20:52:54Z",
+   "amanta_index": 7,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Krishna",
+   "sun_degrees_from_sign_change": 12.9594
+  },
+  {
+   "instant": "2032-12-16T00:30:00Z",
+   "new_moon_before": "2032-12-02T20:52:54Z",
+   "new_moon_after": "2033-01-01T10:17:03Z",
+   "amanta_index": 8,
+   "purnimanta_index": 8,
+   "adhika": false,
+   "paksha": "Shukla",
+   "sun_degrees_from_sign_change": 13.0106
+  }
+ ]
+}

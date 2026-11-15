@@ -1,7 +1,9 @@
 """Independent panchang reference values for the engine tests (development only, never shipped).
 
 Uses Skyfield (MIT) with NASA JPL's DE421 ephemeris, which share no code or theory with
-Astronomy Engine, the library the site uses. Writes tests/golden/panchang-reference.json.
+Astronomy Engine, the library the site uses. Writes tests/golden/panchang-reference.json
+(sunrise, sunset and the four elements) and tests/golden/panchang-moon-reference.json
+(moonrise, moonset and lunar months).
 
     python -m venv .venv && .venv/Scripts/pip install skyfield==1.53     (or .venv/bin/pip)
     .venv/Scripts/python scripts/reference/panchang_reference.py
@@ -13,6 +15,11 @@ Conventions (the same ones the engine and /how-we-calculate use):
 - Nakshatra and yoga: sidereal longitudes, i.e. apparent longitude minus nutation in longitude
   minus the mean Lahiri ayanamsa (the model checked against tests/golden/vectors.json).
 - Each element is the one in force at sunrise; its end is the first change after sunrise.
+- Moonrise and moonset: the Moon's upper limb on the same horizon, seen from the place itself
+  (so parallax is included), the first of each between sunrise and the next sunrise.
+- Lunar month: from new moon to new moon, named after the sidereal sign the Sun enters during it
+  (index 0 = Chaitra, entered Mesha). Adhika when the Sun is in the same sign at both new moons.
+  Purnimanta: the dark fortnight takes the next month's name, except in an adhika month.
 """
 import json
 import numpy as np
@@ -26,6 +33,7 @@ from skyfield.searchlib import find_discrete
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'tests' / 'golden' / 'panchang-reference.json'
+OUT_MOON = ROOT / 'tests' / 'golden' / 'panchang-moon-reference.json'
 
 CITIES = [
     ('Delhi', 28.6139, 77.2090, 'Asia/Kolkata'),
@@ -124,6 +132,16 @@ def first_event(f, t0, t1):
     return times[0], int(values[0])
 
 
+def sun_sidereal(t):
+    s, _ = longitudes(t)
+    return (s - sidereal_offset(t)) % 360
+
+
+def first_or_none(times):
+    return iso(times[0]) if len(times) else None
+
+
+moon_cases = []
 cases = []
 for name, lat, lon, zone in CITIES:
     place = earth + wgs84.latlon(lat, lon)
@@ -145,7 +163,45 @@ for name, lat, lon, zone in CITIES:
             end, _ = first_event(f, sunrise, later)
             case[key] = {'index_at_sunrise': index, 'ends': iso(end)}
         cases.append(case)
+
+        # Moonrise and moonset between this sunrise and the next one.
+        later_rises, _ = almanac.find_risings(place, sun, ts.tt_jd(sunrise.tt + 0.5), ts.tt_jd(sunrise.tt + 1.5),
+                                              horizon_degrees=-0.8333)
+        next_sunrise = later_rises[0]
+        moonrises, ok_r = almanac.find_risings(place, moon, sunrise, next_sunrise)
+        moonsets, ok_s = almanac.find_settings(place, moon, sunrise, next_sunrise)
+        moon_cases.append({'city': name, 'latitude': lat, 'longitude': lon, 'timezone': zone, 'date': date,
+                           'next_sunrise': iso(next_sunrise),
+                           'moonrise': first_or_none(moonrises[ok_r]), 'moonset': first_or_none(moonsets[ok_s])})
     print(name, 'done')
+
+# Lunar months: the 1st and the 16th of every month from 2019 to 2032 at 00:30 UT (about sunrise
+# in India), which covers the adhika months of 2020, 2023, 2026, 2029 and 2031.
+t_first, t_last = ts.utc(2018, 11, 1), ts.utc(2033, 3, 1)
+phase_times, phases = almanac.find_discrete(t_first, t_last, almanac.moon_phases(eph))
+new_moons = [t for t, p in zip(phase_times, phases) if p == 0]
+new_moon_tt = np.array([t.tt for t in new_moons])
+month_cases = []
+for year in range(2019, 2033):
+    for month in range(1, 13):
+        for day in (1, 16):
+            t = ts.utc(year, month, day, 0, 30)
+            i = int(np.searchsorted(new_moon_tt, t.tt)) - 1
+            start, end = new_moons[i], new_moons[i + 1]
+            lon0, lon1 = float(sun_sidereal(start)), float(sun_sidereal(end))
+            s0, s1 = int(lon0 // 30), int(lon1 // 30)
+            adhika = s0 == s1
+            waning = float(tithi_angle(t)) >= 180
+            amanta = (s0 + 1) % 12
+            purnimanta = (s1 + 1) % 12 if waning and not adhika else amanta
+            margin = min(lon0 % 30, 30 - lon0 % 30, lon1 % 30, 30 - lon1 % 30)
+            month_cases.append({
+                'instant': iso(t), 'new_moon_before': iso(start), 'new_moon_after': iso(end),
+                'amanta_index': amanta, 'purnimanta_index': purnimanta, 'adhika': adhika,
+                'paksha': 'Krishna' if waning else 'Shukla',
+                'sun_degrees_from_sign_change': round(margin, 4),
+            })
+print('lunar months', len(month_cases), 'cases;', sum(c['adhika'] for c in month_cases), 'in an adhika month')
 
 OUT.write_text(json.dumps({
     'meta': {
@@ -160,3 +216,18 @@ OUT.write_text(json.dumps({
     'cases': cases,
 }, indent=1) + '\n', encoding='utf-8')
 print('wrote', OUT, len(cases), 'cases')
+
+OUT_MOON.write_text(json.dumps({
+    'meta': {
+        'generator': 'scripts/reference/panchang_reference.py',
+        'tool': 'Skyfield 1.53 with JPL DE421 (development only, not shipped)',
+        'conventions': 'Moonrise/moonset: upper limb, standard refraction, sea level, from the place itself; the '
+                       'first of each between sunrise and the next sunrise, null when there is none. Lunar month: '
+                       'new moon to new moon, index 0 = Chaitra; adhika when the Sun is in one sidereal sign (mean '
+                       'Lahiri) at both new moons; purnimanta dark fortnight takes the next name. Times are UTC.',
+        'tolerances': {'moonrise_moonset_minutes': 2, 'new_moon_minutes': 2},
+    },
+    'moon': moon_cases,
+    'months': month_cases,
+}, indent=1) + '\n', encoding='utf-8')
+print('wrote', OUT_MOON, len(moon_cases), 'moon cases,', len(month_cases), 'month cases')

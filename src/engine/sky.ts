@@ -7,7 +7,7 @@
  * against tests/golden/vectors.json.
  */
 import {
-  Body, Ecliptic, EclipticGeoMoon, GeoVector, MakeTime, Observer, SearchRiseSet, SunPosition, e_tilt,
+  Body, Ecliptic, EclipticGeoMoon, GeoVector, MakeTime, Observer, SearchMoonPhase, SearchRiseSet, SunPosition, e_tilt,
   type AstroTime,
 } from 'astronomy-engine';
 import { julianDay, norm360, centuries } from './core';
@@ -64,4 +64,28 @@ export function nextSunEvent(fromUtcMs: number, lat: number, lon: number, rise: 
 export function nextMoonrise(fromUtcMs: number, lat: number, lon: number, limitDays = 1): number | null {
   const found = SearchRiseSet(Body.Moon, new Observer(lat, lon, 0), +1, timeOf(fromUtcMs), limitDays);
   return found ? found.date.getTime() : null;
+}
+
+/** Next moonset (upper limb, standard refraction) after `fromUtcMs` within `limitDays`, or null. */
+export function nextMoonset(fromUtcMs: number, lat: number, lon: number, limitDays = 1): number | null {
+  const found = SearchRiseSet(Body.Moon, new Observer(lat, lon, 0), -1, timeOf(fromUtcMs), limitDays);
+  return found ? found.date.getTime() : null;
+}
+
+const DAY_MS = 86400000;
+
+/** The first new moon after `utcMs`: the instant the Moon and Sun share an ecliptic longitude. */
+export function newMoonAfter(utcMs: number): number {
+  const found = SearchMoonPhase(0, timeOf(utcMs), 40);
+  if (!found) throw new RangeError('newMoonAfter: no new moon within 40 days');
+  return found.date.getTime();
+}
+
+/** The last new moon at or before `utcMs`. */
+export function newMoonBefore(utcMs: number): number {
+  const next = newMoonAfter(utcMs);
+  // A lunation lasts between 29.2 and 29.9 days, so the one before lies 27.5 to 31 days earlier.
+  const found = SearchMoonPhase(0, timeOf(next - 31 * DAY_MS), 3.5);
+  if (!found) throw new RangeError('newMoonBefore: no new moon found');
+  return found.date.getTime();
 }

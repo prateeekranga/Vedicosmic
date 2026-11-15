@@ -1,3 +1,5 @@
+import { dateInZone, timeInZone } from '@/engine/time';
+
 export function formatDuration(totalSeconds: number): string {
   if (!isFinite(totalSeconds) || totalSeconds < 0) return '0:00';
   const h = Math.floor(totalSeconds / 3600);
@@ -73,4 +75,31 @@ const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 export function formatLongDate(date: string): string {
   const [y, m, d] = date.split('-').map(Number);
   return `${d} ${MONTHS[m - 1]} ${y}`;
+}
+
+/**
+ * Clock time of an instant in an IANA zone, rounded to the nearest minute: "6:42 am". Built from
+ * numbers, not from the runtime's locale data, so Node and every browser print the same text.
+ */
+export function clockLabel(utcMs: number, zone: string): string {
+  const [h, m] = timeInZone(Math.round(utcMs / 60000) * 60000, zone).split(':').map(Number);
+  return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${h < 12 ? 'am' : 'pm'}`;
+}
+
+const SHORT_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/** Like clockLabel, with the day added ("2:14 am, 16 Nov") when the instant falls on another local date than `date`. */
+export function clockLabelOn(utcMs: number, zone: string, date: string): string {
+  const local = dateInZone(Math.round(utcMs / 60000) * 60000, zone);
+  const label = clockLabel(utcMs, zone);
+  if (local === date) return label;
+  const [, m, d] = local.split('-').map(Number);
+  return `${label}, ${d} ${SHORT_MONTHS[m - 1]}`;
+}
+
+/** A length of time as "10 h 43 min", rounded to the minute. */
+export function durationLabel(ms: number): string {
+  const minutes = Math.round(ms / 60000);
+  const h = Math.floor(minutes / 60);
+  return h ? `${h} h ${minutes % 60} min` : `${minutes} min`;
 }

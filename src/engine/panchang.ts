@@ -6,7 +6,9 @@
  */
 import { NAKSHATRAS, NAKSHATRA_SPAN, angleDiff, norm360 } from './core';
 import { dateInZone, localToUtc } from './time';
-import { nextSunEvent, siderealOffset, sunMoonTropical } from './sky';
+import {
+  newMoonAfter, newMoonBefore, nextMoonrise, nextMoonset, nextSunEvent, siderealLongitude, siderealOffset, sunMoonTropical,
+} from './sky';
 
 export interface Place {
   lat: number;
@@ -187,5 +189,87 @@ export function skyAt(utcMs: number) {
     nakshatra: NAKSHATRAS[elementIndex('nakshatra', utcMs)],
     /** 0 = new moon, 0.5 = full moon. */
     moonPhase: norm360(moon - sun) / 360,
+  };
+}
+
+export interface MoonTimes {
+  /** UTC ms, or null when the Moon does not rise during the panchang day. */
+  moonrise: number | null;
+  /** UTC ms, or null when the Moon does not set during the panchang day. */
+  moonset: number | null;
+}
+
+/**
+ * Moonrise and moonset within a panchang day, which runs from sunrise to the next sunrise. The
+ * Moon rises about fifty minutes later each day, so roughly once a month a day has no moonrise,
+ * and another has no moonset.
+ */
+export function moonTimes(sunrise: number, nextSunrise: number, place: Place): MoonTimes {
+  const days = (nextSunrise - sunrise) / 86400000;
+  return {
+    moonrise: nextMoonrise(sunrise, place.lat, place.lon, days),
+    moonset: nextMoonset(sunrise, place.lat, place.lon, days),
+  };
+}
+
+/** Lunar months in order; Chaitra is the month in which the Sun enters sidereal Mesha (Aries). */
+export const LUNAR_MONTHS = ['Chaitra', 'Vaishakha', 'Jyeshtha', 'Ashadha', 'Shravana', 'Bhadrapada', 'Ashwin', 'Kartika',
+  'Margashirsha', 'Pausha', 'Magha', 'Phalguna'];
+
+export interface MonthName {
+  /** 0 = Chaitra … 11 = Phalguna. */
+  index: number;
+  name: string;
+  /** An extra (intercalary) month: the Sun does not change sign during it. */
+  adhika: boolean;
+}
+
+export interface LunarMonth {
+  /** Month ending at the new moon: the reckoning of the south and west of India. */
+  amanta: MonthName;
+  /** Month ending at the full moon: the reckoning of the north. It differs in the dark fortnight. */
+  purnimanta: MonthName;
+  paksha: 'Shukla' | 'Krishna';
+  /** The new moons that open and close the amanta month, UTC ms. */
+  starts: number;
+  ends: number;
+  /**
+   * True when the Sun is within a quarter of a degree of changing sign at either new moon. A
+   * calendar using a different ayanamsa could then name the month differently.
+   */
+  borderline: boolean;
+  /** The Sun changes sign twice in the month (a kshaya month, last in 1983 and next in 2124). */
+  kshaya: boolean;
+}
+
+const sunSign = (utcMs: number) => Math.floor(siderealLongitude('sun', utcMs) / 30);
+const nearSignChange = (utcMs: number) => {
+  const inSign = siderealLongitude('sun', utcMs) % 30;
+  return Math.min(inSign, 30 - inSign) < 0.25;
+};
+
+/**
+ * The lunar month containing an instant, in both reckonings.
+ *
+ * A lunar month runs from new moon to new moon and takes its name from the sign the Sun enters
+ * during it: Chaitra when the Sun enters Mesha, and so on. If the Sun stays in one sign for the
+ * whole month, that month is adhika (extra) and shares the name of the month after it.
+ *
+ * In the purnimanta count the bright fortnight has the same name, and the dark fortnight takes
+ * the name of the following month. An adhika month keeps its own name in both fortnights.
+ */
+export function lunarMonth(utcMs: number): LunarMonth {
+  const starts = newMoonBefore(utcMs);
+  const ends = newMoonAfter(utcMs);
+  const s0 = sunSign(starts), s1 = sunSign(ends);
+  const adhika = s0 === s1;
+  const month = (index: number, extra: boolean): MonthName => ({ index, name: LUNAR_MONTHS[index], adhika: extra });
+  const amanta = month((s0 + 1) % 12, adhika);
+  const paksha = elementIndex('tithi', utcMs) < 15 ? 'Shukla' : 'Krishna';
+  const purnimanta = paksha === 'Krishna' && !adhika ? month((s1 + 1) % 12, false) : amanta;
+  return {
+    amanta, purnimanta, paksha, starts, ends,
+    borderline: nearSignChange(starts) || nearSignChange(ends),
+    kshaya: (s1 - s0 + 12) % 12 === 2,
   };
 }

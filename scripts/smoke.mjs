@@ -214,7 +214,21 @@ for (const path of ['/', '/tools', '/tools/category/astrology', '/tools/astrolog
   const pairs = await page.locator('[data-testid="mobile-pairs"]').innerText();
   check('mobile-numerology: pairs carry the chart class and their own reading', /Benefic/.test(pairs) && /Malefic/.test(pairs) && /Sun with Ketu a Raj yog/.test(pairs) && /Bandhan yog/.test(pairs));
   check('mobile-numerology: the Raj yog note checks for an 8', /also contains an 8/.test(await page.locator('[data-testid="mobile-raj-yog"]').innerText()));
-  const leaks = requests.filter((r) => /9817145678|98171/.test(r.url + r.body));
+  // Number score: fit −2 gives 10, pairs 17, ending 5678 (root 8, +3 with 5 and 7) 13, balance 10: 50, Low.
+  const score = await page.locator('[data-testid="mobile-score"]').innerText();
+  check('mobile-numerology: shows the Number score with its four parts', /\b50\b/.test(score) && /out of 100/.test(score) && /Low/.test(score)
+    && /Fit with your birth numbers/.test(score) && /Digit balance/.test(score), score.slice(0, 160));
+  check('mobile-numerology: lists the points to watch', /Grahan yog/.test(await page.locator('[data-testid="mobile-cautions"]').innerText()));
+  check('mobile-numerology: reads the last four digits', /root\s*8/.test(await page.locator('[data-testid="mobile-ending"]').innerText()));
+  check('mobile-numerology: draws the Lo Shu grid with the number', (await page.locator('[data-testid="mobile-grid"] table button').count()) === 9);
+  check('mobile-numerology: rates every root from 1 to 9', (await page.locator('[data-testid="mobile-roots"] li').count()) === 9);
+  await page.fill('#compare-0', '99887 66554');
+  await page.fill('#compare-1', '12345');
+  await page.getByRole('button', { name: 'Compare', exact: true }).click();
+  const compare = await page.locator('[data-testid="mobile-compare"]').innerText();
+  check('mobile-numerology: compares numbers and flags one that is too short', /99887 66554/.test(compare) && /highest score/i.test(compare) && /Use 7 to 15 digits/.test(compare), compare.slice(0, 200));
+  check('mobile-numerology: shows the traditional customs', /Phone cover or wallpaper/.test(await page.locator('[data-testid="mobile-remedies"]').innerText()));
+  const leaks = requests.filter((r) => /9817145678|98171|9988766554|99887/.test(r.url + r.body));
   check('mobile-numerology: no request carries the number', leaks.length === 0, leaks.map((r) => r.url).join(', '));
 }
 

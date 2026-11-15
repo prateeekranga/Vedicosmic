@@ -247,8 +247,17 @@ const sections: LegalSection[] = [
           The Mobile Number page turns two of these comparisons into a compatibility level. The root of the phone number
           is compared with the Mulank and with the Bhagyank; each comparison scores from −2 (unfriendly on both sides) to
           +2 (friends on both sides, or the same number), and the total from −4 to +4 is shown as a level from 1 to 5 with
-          its working. No page turns the friendships into a percentage. The two-digit combinations on that page come from
-          a separate chart, the one teachers of mobile numerology use, and are not worked out from this table.
+          its working. If you say the phone is a personal one, the Mulank comparison counts three times and the Bhagyank
+          once; for a business phone it is the other way round. The two-digit combinations on that page come from a
+          separate chart, the one teachers of mobile numerology use, and are not worked out from this table.
+        </p>
+        <p>
+          The same page adds a Number score out of 100 in four parts, each printed with its arithmetic: the fit of the
+          number’s root with your birth numbers (40 points, straight from the level’s total), the two-digit combinations
+          (35 points, with each pair weighted from 1 for the first to 3 for the last, because teachers say the ending
+          matters most), the root of the last four digits against your birth numbers (15 points), and digit balance
+          (10 points, less for a digit used four times or more, three in a row, many zeros or a final zero). The score is
+          a summary of those checks, not a probability, and the points to watch are listed whatever the total.
         </p>
       </>
     ),

@@ -4,7 +4,7 @@
  * check the numbers, the sections and the wording.
  */
 import {
-  LOSHU_LINES, NUMBER_DIRECTION, dashaGrid, dashaYears, favourableDates, formatYMD, mahaDashas, relationTone,
+  DIGITS, LOSHU_LINES, NUMBER_DIRECTION, PURPOSE_WORDS, RELATION_POINTS, dashaGrid, dashaYears, favourableDates, formatYMD, mahaDashas, relationTone,
   relationsOf, type CalcStep, type ChaldeanResult, type CoreNumber, type DashaNow, type Digit, type GridAnalysis,
   type LineId, type LoShuResult, type MobileResult, type NumerologyProfile, type PairRelation, type PersonalCycles,
   type Pinnacle, type YMD,
@@ -23,8 +23,11 @@ import {
   BALANCE_TEXT, EXTRA_ROLE, HIDDEN_PASSION_TEXT, PLANE_TEXT, letterReading, rationalThoughtReading, subconsciousReading,
 } from '@/data/numerology/nameExtraText';
 import { compoundReading } from '@/data/numerology/chaldeanCompounds';
-import { LEVEL_LABEL, LEVEL_TEXT, ROOT_FIT_TEXT, SAME_ROOT_TEXT, TONE_LABEL } from '@/data/numerology/mobileText';
-import { IMPACT_LABEL, IMPACT_NOTE, RAJ_YOG_NOTE, YOGA_LABEL, pairReading } from '@/data/numerology/mobilePairText';
+import {
+  CHECKLIST_INTRO, ENDING_INTRO, ENDING_ZERO, GRID_INTRO, GRID_STATUS_LABEL, LEVEL_LABEL, LEVEL_TEXT, NODE_DAY, PURPOSE_LABEL,
+  REMEDY_INTRO, ROOTS_INTRO, ROOT_FIT_TEXT, SAME_ROOT_TEXT, SCORE_BAND_TEXT, SCORE_NOTE, SCORE_PART_LABEL, TONE_LABEL, cautionText,
+} from '@/data/numerology/mobileText';
+import { IMPACT_LABEL, IMPACT_NOTE, RAJ_YOG_NOTE, YOGA_LABEL, YOGA_NOTE, YOGA_PLANETS, pairReading } from '@/data/numerology/mobilePairText';
 import { coreLabel, coreWorking } from '@/lib/numerologyReport';
 import type { PrintBlock, PrintCard, PrintGrid, PrintReportData, PrintSection, PrintTile } from './types';
 
@@ -570,23 +573,59 @@ function fitCard(label: string, own: Digit, root: Digit, rel: PairRelation, poin
   };
 }
 
+/** "the Sun" and "the Moon" read naturally in a sentence; the other planets take no article. */
+const thePlanet = (d: Digit) => (d === 1 || d === 2 ? `the ${planet(d)}` : planet(d));
+const signedNumber = (n: number) => (n > 0 ? `+${n}` : n < 0 ? `−${Math.abs(n)}` : '0');
+
 /** Mobile Number Numerology. */
 export function mobilePrint(m: MobileResult, dob: YMD | null, today: YMD): PrintReportData {
   const info = NUMBERS[m.root];
   const fit = m.withBirth;
-  const sections: PrintSection[] = [
-    {
-      id: 'root', title: 'The number’s root', summary: true,
-      blocks: [{ kind: 'cards', columns: 1, cards: [{ chip: String(m.root), digit: m.root, title: `Root ${m.root} · ${info.planet} · ${info.keyword}`, meta: `The digits add to ${m.total}`, text: info.strength, extra: 'Tradition does not call any number lucky for everyone. It reads how the number’s planet sits with the planets of your own birth numbers.' }] }],
-    },
-  ];
+  const compound = m.compoundKey ? compoundReading(m.compoundKey) : null;
+  const sections: PrintSection[] = [];
+
   if (fit) {
+    sections.push({
+      id: 'score', title: 'Number score', summary: true,
+      blocks: [
+        { kind: 'meter', level: fit.score.band, max: 5, label: `${fit.score.total} out of 100 · ${LEVEL_LABEL[fit.score.band]}` },
+        { kind: 'text', text: SCORE_BAND_TEXT[fit.score.band] },
+        { kind: 'bars', bars: fit.score.parts.map((p) => ({ label: SCORE_PART_LABEL[p.key], value: p.points / p.max, display: `${p.points} / ${p.max}` })) },
+        { kind: 'text', tone: 'muted', text: `${SCORE_NOTE} The phone is for: ${PURPOSE_LABEL[m.purpose].toLowerCase()}.` },
+      ],
+    });
+  }
+  sections.push({
+    id: 'watch', title: 'Points to watch', summary: true,
+    blocks: m.cautions.length
+      ? m.cautions.map((c) => ({ kind: 'text' as const, text: cautionText(c) }))
+      : [{ kind: 'text', text: 'No malefic yoga, no difficult ending and no overloaded digit: nothing the tradition flags.' }],
+  });
+  sections.push({
+    id: 'root', title: 'The number’s root', summary: true,
+    blocks: [
+      { kind: 'cards', columns: 1, cards: [{ chip: String(m.root), digit: m.root, title: `Root ${m.root} · ${info.planet} · ${info.keyword}`, meta: `The digits add to ${m.total}`, text: info.strength, extra: 'Tradition does not call any number lucky for everyone. It reads how the number’s planet sits with the planets of your own birth numbers.' }] },
+      ...(compound ? [{
+        kind: 'callout' as const, title: `Compound number ${compound.number}${compound.symbol ? `, ${compound.symbol}` : ''}`,
+        text: `${m.compoundKey !== m.total ? `The total ${m.total} is above 52, so it is added down to ${compound.number}. ` : ''}${compound.sameAs ? `Cheiro reads it as ${compound.sameAs}. ` : ''}${compound.text}`,
+      }] : []),
+    ],
+  });
+  if (fit) {
+    const c = fit.compatibility;
     sections.push({
       id: 'fit', title: 'Compatibility with your date of birth', summary: true,
       blocks: [
-        { kind: 'meter', level: fit.compatibility.level, max: 5, label: `${LEVEL_LABEL[fit.compatibility.level]} · level ${fit.compatibility.level} of 5` },
-        { kind: 'text', text: LEVEL_TEXT[fit.compatibility.level] },
-        { kind: 'cards', cards: [fitCard('Mulank (Driver)', fit.driver, m.root, fit.rootToDriver, fit.compatibility.driverPoints), fitCard('Bhagyank (Conductor)', fit.conductor, m.root, fit.rootToConductor, fit.compatibility.conductorPoints)] },
+        { kind: 'meter', level: c.level, max: 5, label: `${LEVEL_LABEL[c.level]} · level ${c.level} of 5` },
+        { kind: 'text', text: LEVEL_TEXT[c.level] },
+        {
+          kind: 'cards', cards: [
+            fitCard('Mulank (Driver)', fit.driver, m.root, fit.rootToDriver, c.driverPoints),
+            fitCard('Bhagyank (Conductor)', fit.conductor, m.root, fit.rootToConductor, c.conductorPoints),
+            ...(m.nameFit ? [fitCard('Name number', m.nameFit.root, m.root, m.nameFit.relation, m.nameFit.root === m.root ? 2 : RELATION_POINTS[m.nameFit.relation.mutual])] : []),
+          ],
+        },
+        ...(c.purpose !== 'both' ? [{ kind: 'text' as const, tone: 'muted' as const, text: `For a ${PURPOSE_WORDS[c.purpose]}, the weighted total is ${signedNumber(c.weighted)} on a scale from −8 to +8.` }] : []),
         {
           kind: 'text', tone: 'muted',
           text: fit.suppliesMissing.length
@@ -596,49 +635,139 @@ export function mobilePrint(m: MobileResult, dob: YMD | null, today: YMD): Print
       ],
     });
   }
+  const last = m.sequence[m.sequence.length - 1];
+  sections.push({
+    id: 'ending', title: 'The last four digits', intro: ENDING_INTRO,
+    blocks: [
+      {
+        kind: 'facts', columns: 4, facts: [
+          { label: 'Digits', value: m.ending.digits.join(' ') },
+          { label: 'Total', value: String(m.ending.total) },
+          { label: 'Root', value: m.ending.root ? `${m.ending.root} · ${planet(m.ending.root)}` : '–' },
+          { label: 'With your birth numbers', value: fit?.endingFit ? LEVEL_LABEL[fit.endingFit.level] : '–' },
+        ],
+      },
+      ...(m.ending.root ? [] : [{ kind: 'text' as const, text: ENDING_ZERO }]),
+      { kind: 'text', text: `Last pair ${m.ending.lastPair.join('')}, ${IMPACT_LABEL[last.impact].toLowerCase()}: ${pairReading(m.ending.lastPair[0], m.ending.lastPair[1])}` },
+    ],
+  });
+  const endingPairs = new Set(m.sequence.filter((x) => x.inEnding).map((x) => x.pair.join('')));
   sections.push(
     {
       id: 'digits', title: 'How often each digit appears',
       blocks: [
         { kind: 'histogram', columns: m.frequency.map((count, digit) => ({ label: String(digit), sub: digit === 0 ? 'Zero' : planet(digit as Digit), count, digit: digit === 0 ? undefined : (digit as Digit) })) },
         { kind: 'text', tone: 'muted', text: m.absent.length ? `Not in the number: ${m.absent.join(', ')}.` : 'Every number from 1 to 9 appears in the number.' },
-        ...(m.heavy.length ? [{ kind: 'text' as const, tone: 'muted' as const, text: `Appearing three times or more: ${m.heavy.map((h) => `${h.digit} (${h.count} times)`).join(', ')}. A heavily repeated digit is read as that planet’s theme sounding strongly in the number.` }] : []),
+        ...(m.heavy.length ? [{ kind: 'text' as const, tone: 'muted' as const, text: `Appearing three times or more: ${m.heavy.map((h) => `${h.digit} (${h.count} times)`).join(', ')}. A heavily repeated digit is read as that planet’s theme sounding strongly in the number; teachers prefer no digit more than three times.` }] : []),
       ],
     },
     {
       id: 'pairs', title: 'Two-digit combinations',
-      intro: `${m.pairs.length} combinations: ${m.pairTally.benefic} benefic, ${m.pairTally.neutral} neutral and ${m.pairTally.malefic} malefic, read against the two-digit combination chart of Indian mobile numerology.`,
+      intro: `${m.pairs.length} combinations: ${m.pairTally.benefic} benefic, ${m.pairTally.neutral} neutral and ${m.pairTally.malefic} malefic, read against the two-digit combination chart of Indian mobile numerology. Pairs in the last four digits weigh most in the score.`,
       blocks: [
         {
           kind: 'table', head: ['Pair', 'Class', 'Reading'], widths: ['16%', '17%', '67%'],
           rows: m.pairs.map((x) => ({
             cells: [
-              `${x.pair.join('')}${x.count > 1 ? ` ×${x.count}` : ''}`,
+              `${x.pair.join('')}${x.count > 1 ? ` ×${x.count}` : ''}${endingPairs.has(x.pair.join('')) ? ' (ending)' : ''}`,
               `${IMPACT_LABEL[x.impact]}${x.yoga ? `, ${YOGA_LABEL[x.yoga]}` : ''}`,
               pairReading(x.pair[0], x.pair[1]),
             ],
             highlight: x.yoga === 'raj',
           })),
         },
+        ...(m.yogas.length ? [{
+          kind: 'cards' as const, columns: 2 as const,
+          cards: m.yogas.map((y) => ({
+            title: YOGA_LABEL[y.yoga], meta: YOGA_PLANETS[y.yoga], badge: y.impact === 'benefic' ? 'Favourable' : 'For care',
+            text: `Written ${y.written.join(', ')} in this number${y.inEnding ? ', in the last four digits' : ''}.`,
+          })),
+        }, { kind: 'text' as const, tone: 'muted' as const, text: YOGA_NOTE }] : []),
         ...(m.rajYog ? [{ kind: 'callout' as const, title: 'Raj yog', text: m.rajYog.weakenedByEight ? RAJ_YOG_NOTE.weakened : RAJ_YOG_NOTE.clear }] : []),
         { kind: 'text', tone: 'muted', text: IMPACT_NOTE },
       ],
     },
-    working(m.steps),
   );
+  if (fit) {
+    const g = fit.grid;
+    const base = printGrid(g.person);
+    const marks: Partial<Record<Digit, string[]>> = {};
+    for (const d of DIGITS) {
+      const letters = [...(base.marks[d] ?? []), ...(g.added[d] ? [`+${g.added[d]}`] : [])];
+      if (letters.length) marks[d] = letters;
+    }
+    const status = (s: keyof typeof GRID_STATUS_LABEL) => DIGITS.filter((d) => g.status[d] === s);
+    sections.push({
+      id: 'grid', title: 'Your Lo Shu grid with this number', intro: GRID_INTRO,
+      blocks: [{
+        kind: 'grid',
+        grid: { counts: g.withNumber.counts, marks, complete: completeIn(g.withNumber), key: `${base.key ? `${base.key} ` : ''}+1 and +2 show how many of that number come from the phone number.` },
+        aside: [
+          {
+            kind: 'text',
+            text: g.newLines.length ? `With this number your grid completes ${list(g.newLines.map(lineName))}.` : 'This number completes no new line of three in your grid.',
+          },
+          {
+            kind: 'facts', columns: 2,
+            facts: (['introduced', 'strengthened', 'missing'] as const).filter((s) => status(s).length).map((s) => ({ label: GRID_STATUS_LABEL[s], value: status(s).join(', ') })),
+          },
+        ],
+      }],
+    });
+    const ch = fit.checklist;
+    const flip = (k: string) => (k[0] === k[1] ? k : `${k}/${k[1]}${k[0]}`);
+    sections.push({
+      id: 'choosing', title: 'Choosing a number', intro: ROOTS_INTRO,
+      blocks: [
+        { kind: 'tiles', tiles: fit.roots.map((r) => tile(planet(r.root), r.root, `${LEVEL_LABEL[r.compatibility.level]}${r.root === m.root ? ' · this number' : ''}`)) },
+        { kind: 'text', text: CHECKLIST_INTRO },
+        { kind: 'text', text: `A total that adds down to ${list(ch.best)}, ${LEVEL_LABEL[ch.bestLevel].toLowerCase()} for you${ch.good.length ? `; or else ${list(ch.good)}` : ''}, with last four digits adding down to one of those as well, and a last digit other than 0.` },
+        ...(ch.include.length ? [{ kind: 'text' as const, text: `${list(ch.include)} somewhere in the number: missing from your Lo Shu grid.` }] : []),
+        { kind: 'text', text: `No digit more than ${ch.maxRepeats} times, and no more than ${ch.maxRun} of one digit in a row.` },
+        { kind: 'text', text: `Avoid the malefic pairs, in either order: ${[...ch.avoidNamed.map((a) => `${flip(a.key)} (${YOGA_LABEL[a.yoga]})`), ...ch.avoidOther.map(flip)].join(', ')}.` },
+      ],
+    });
+    const weak = fit.compatibility.level <= 3;
+    const mulank = NUMBERS[fit.driver];
+    const day = info.day ?? NODE_DAY[m.root] ?? null;
+    const dates = favourableDates(fit.driver);
+    sections.push({
+      id: 'customs', title: weak ? 'If you keep this number' : 'Lucky details for you', intro: weak ? REMEDY_INTRO.weak : REMEDY_INTRO.good,
+      blocks: [
+        {
+          kind: 'cards', columns: weak ? 2 : 1, cards: [
+            { title: 'Phone cover or wallpaper', text: `${list(mulank.colours)}: the colours of ${thePlanet(fit.driver)}, the planet of your Mulank ${fit.driver}.` },
+            ...(weak ? [{ title: 'Mantra', text: `“${info.mantra}”, 108 times${day ? ` on a ${day}` : ''}: the mantra of ${thePlanet(m.root)}, the planet of this number’s root ${m.root}.` }] : []),
+          ],
+        },
+        { kind: 'text', text: 'Dates to start a new number: those carrying your own number and those carrying friendly numbers.' },
+        { kind: 'dates', own: dates.own, friendly: dates.friendly, driver: fit.driver },
+      ],
+    });
+  }
+  sections.push(working([
+    ...m.steps,
+    ...(fit ? [
+      ...fit.score.parts.map((p) => ({ key: `score-${p.key}`, label: SCORE_PART_LABEL[p.key], working: p.working, result: `${p.points} of ${p.max}` })),
+      { key: 'score', label: 'Number score', working: `${fit.score.parts.map((p) => p.points).join(' + ')} = ${fit.score.total}`, result: `${fit.score.total} of 100` },
+    ] : []),
+  ]));
+
   return {
     toolSlug: 'mobile-numerology', title: 'Mobile Number Report',
     subject: { label: 'Mobile number', value: groupedNumber(m.digits) },
-    details: dob ? [`Compared with the date of birth ${formatYMD(dob)}`] : [],
+    details: dob ? [`Compared with the date of birth ${formatYMD(dob)}`, ...(m.purpose !== 'both' ? [`${cap(m.purpose)} phone`] : [])] : [],
     glance: [
+      fit ? { label: 'Number score', value: String(fit.score.total), caption: `${LEVEL_LABEL[fit.score.band]}, out of 100` } : { label: 'Number score', value: '–', caption: 'Needs a date of birth' },
       tile('Root number', m.root, info.planet),
       fit ? { label: 'Compatibility', value: `${fit.compatibility.level} of 5`, caption: LEVEL_LABEL[fit.compatibility.level] } : { label: 'Compatibility', value: '–', caption: 'Needs a date of birth' },
       { label: 'Digit total', value: String(m.total), caption: `Added down to ${m.root}` },
       { label: 'Pairs', value: `${m.pairTally.benefic} · ${m.pairTally.neutral} · ${m.pairTally.malefic}`, caption: 'Benefic · neutral · malefic' },
+      m.ending.root ? tile('Last four digits', m.ending.root, `${m.ending.digits.join('')} adds down to ${m.ending.root}`) : { label: 'Last four digits', value: '–', caption: 'All zeros' },
     ],
     sections,
     link: `${SITE}/tools/mobile-numerology`,
-    method: `The digits are added down to a root; the compatibility level follows the traditional friendships between the planets; pairs follow the two-digit combination chart. ${ENGINE}.`,
+    method: `The digits are added down to a root; the compatibility level and the fit of the ending follow the traditional friendships between the planets; pairs follow the two-digit combination chart; the Number score adds four parts, each with its arithmetic. ${ENGINE}.`,
     preparedOn: formatYMD(today),
     disclaimer: DISCLAIMER,
   };

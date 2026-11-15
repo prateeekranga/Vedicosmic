@@ -150,6 +150,26 @@ describe('the other reports', () => {
     expect(glance(without).Compatibility).toBe('–');
     expect(groupedNumber([9, 8, 7, 6, 5, 4, 3, 2, 1, 0])).toBe('98765 43210');
   });
+
+  it('Mobile Number Report: the score, the ending, the grid with the number, choosing and customs', () => {
+    const m = analyseMobile('98171 45678', { date: ymd(1985, 6, 14), purpose: 'personal', name: 'Asha Rao' })!;
+    const r = mobilePrint(m, ymd(1985, 6, 14), today);
+    expect(ids(r)).toEqual(['score', 'watch', 'root', 'fit', 'ending', 'digits', 'pairs', 'grid', 'choosing', 'customs', 'working']);
+    expect(glance(r)).toMatchObject({ 'Number score': String(m.withBirth!.score.total), 'Last four digits': '8' });
+    expect(r.details).toEqual(['Compared with the date of birth 14 June 1985', 'Personal phone']);
+    const bars = blocks(r).find((b) => b.kind === 'bars');
+    expect(bars?.kind === 'bars' && bars.bars.map((b) => b.display)).toEqual(m.withBirth!.score.parts.map((p) => `${p.points} / ${p.max}`));
+    // The grid shows the phone number's digits as +1 and +2 beside the Driver and Conductor letters.
+    const grid = blocks(r).find((b) => b.kind === 'grid');
+    if (grid?.kind !== 'grid') throw new Error('no grid');
+    for (const d of [1, 2, 3, 4, 5, 6, 7, 8, 9] as const) {
+      expect(grid.grid.counts[d]).toBe(m.withBirth!.grid.withNumber.counts[d]);
+      if (m.withBirth!.grid.added[d]) expect(grid.grid.marks[d]).toContain(`+${m.withBirth!.grid.added[d]}`);
+    }
+    const without = mobilePrint(analyseMobile('9876543210')!, null, today);
+    expect(ids(without)).toEqual(['watch', 'root', 'ending', 'digits', 'pairs', 'working']);
+    expect(glance(without)['Number score']).toBe('–');
+  });
 });
 
 describe('every report', () => {

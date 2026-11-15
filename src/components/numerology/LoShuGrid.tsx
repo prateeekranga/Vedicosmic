@@ -1,6 +1,6 @@
 import { useId, useState } from 'react';
 import { motion } from 'framer-motion';
-import { DIGITS, LOSHU_LAYOUT, formatYMD, type Digit, type GridAnalysis, type LineResult, type LoShuResult } from '@/engine/numerology';
+import { DIGITS, LOSHU_LAYOUT, formatYMD, type Counts, type Digit, type GridAnalysis, type LineResult, type LoShuResult } from '@/engine/numerology';
 import { NUMBERS } from '@/data/numerology/numbers';
 import { LINE_TEXT, MISSING_TEXT, repeatReading } from '@/data/numerology/loshuText';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
@@ -18,10 +18,24 @@ export interface GridPeriod {
   antar: Digit;
 }
 
-type View = 'full' | 'birth' | 'period';
+/**
+ * The full grid with further numbers added, such as the digits of a phone number, for a view of
+ * its own. Each cell shows how many it gained as a gold "+n".
+ */
+export interface GridAddition {
+  grid: GridAnalysis;
+  /** How many of each number 1–9 this view adds. */
+  added: Counts;
+  /** The view's name on its button, e.g. "With this phone number". */
+  label: string;
+  /** What was added, for the caption and cell text: "the phone number". */
+  source: string;
+}
+
+type View = 'full' | 'birth' | 'period' | 'added';
 
 /** Where a number in the grid came from, in words: "twice from the date, once as the Conductor". */
-function sourceWords(result: LoShuResult, d: Digit, view: View, period?: GridPeriod): string {
+function sourceWords(result: LoShuResult, d: Digit, view: View, period?: GridPeriod, addition?: GridAddition): string {
   const s = result.sources[d];
   const parts: string[] = [];
   if (s.birth) parts.push(`${times(s.birth)} from the date`);
@@ -34,6 +48,7 @@ function sourceWords(result: LoShuResult, d: Digit, view: View, period?: GridPer
     if (period.maha === d) parts.push('once for the Maha Dasha');
     if (period.antar === d) parts.push('once for the Antar Dasha');
   }
+  if (view === 'added' && addition && addition.added[d]) parts.push(`${times(addition.added[d])} from ${addition.source}`);
   return listWords(parts);
 }
 
@@ -50,26 +65,32 @@ const ARROW_COLOUR: Record<ArrowKind, string> = { golden: '#FFD24A', silver: '#E
  * list under the grid names each arrow in words, so nothing depends on telling the colours apart.
  *
  * With `period`, a third view shows the grid as teachers read the current year: the numbers of
- * the running Maha Dasha and Antar Dasha added, and the arrows that then appear.
+ * the running Maha Dasha and Antar Dasha added, and the arrows that then appear. With `addition`,
+ * the grid opens on a view with other numbers added, such as the digits of a phone number.
  */
 export function LoShuGrid({
-  result, period, compact = false, className,
-}: { result: LoShuResult; period?: GridPeriod; compact?: boolean; className?: string }) {
-  const [chosen, setChosen] = useState<View>('full');
+  result, period, addition, compact = false, className,
+}: { result: LoShuResult; period?: GridPeriod; addition?: GridAddition; compact?: boolean; className?: string }) {
+  const [chosen, setChosen] = useState<View>(addition ? 'added' : 'full');
   const [selected, setSelected] = useState<Digit | null>(null);
   const reducedMotion = usePrefersReducedMotion();
   const viewName = useId();
-  const view: View = chosen === 'period' && !period ? 'full' : chosen;
-  const grid = view === 'birth' ? result.birth : view === 'period' && period ? period.grid : result.full;
+  const view: View = (chosen === 'period' && !period) || (chosen === 'added' && !addition) ? 'full' : chosen;
+  const grid = view === 'birth' ? result.birth : view === 'period' && period ? period.grid : view === 'added' && addition ? addition.grid : result.full;
   const info = selected ? NUMBERS[selected] : null;
   const selectedCount = selected ? grid.counts[selected] : 0;
   const hasExtras = DIGITS.some((d) => result.sources[d].driver || result.sources[d].conductor || result.sources[d].kua);
   const complete = grid.lines.filter((l) => l.status === 'full').sort((a, b) => ARROW_ORDER[arrowKind(a)] - ARROW_ORDER[arrowKind(b)]);
   const unformedYogs = grid.lines.filter((l) => l.kind === 'diagonal' && l.status !== 'full');
   const lineLabel = (l: LineResult) => `${LINE_TEXT[l.id].name} ${l.cells.join('-')}`;
-  const viewWords = view === 'birth' ? 'date digits only' : view === 'period' ? 'with Driver, Conductor, Kua and the running Maha Dasha and Antar Dasha added' : 'with Driver, Conductor and Kua added';
+  const viewWords = view === 'birth' ? 'date digits only'
+    : view === 'period' ? 'with Driver, Conductor, Kua and the running Maha Dasha and Antar Dasha added'
+    : view === 'added' && addition ? `with Driver, Conductor, Kua and the digits of ${addition.source} added`
+    : 'with Driver, Conductor and Kua added';
+  const plus = (d: Digit) => (view === 'added' && addition ? addition.added[d] : 0);
   const views: { id: View; label: string }[] = [
-    { id: 'full', label: 'All numbers' },
+    ...(addition ? [{ id: 'added' as const, label: addition.label }] : []),
+    { id: 'full', label: addition ? 'Your grid alone' : 'All numbers' },
     { id: 'birth', label: 'Date digits only' },
     ...(period ? [{ id: 'period' as const, label: 'With current dasha' }] : []),
   ];
@@ -125,11 +146,16 @@ export function LoShuGrid({
                           {present ? n.planet : 'missing'}
                         </span>
                         <span className="sr-only">
-                          {present ? `, appears ${times(count)}: ${sourceWords(result, d, view, period)}` : `, ${n.planet}`}
+                          {present ? `, appears ${times(count)}: ${sourceWords(result, d, view, period, addition)}` : `, ${n.planet}`}
                         </span>
                         {marks.length > 0 && (
                           <span aria-hidden="true" className="absolute right-1 top-1 z-20 flex gap-0.5">
                             {marks.map((letter) => <Mark key={letter} letter={letter} period={letter === 'M' || letter === 'A'} />)}
+                          </span>
+                        )}
+                        {plus(d) > 0 && (
+                          <span aria-hidden="true" className="absolute left-1 top-1 z-20 rounded-full bg-gold-bright px-1.5 text-[0.65rem] font-bold leading-4 text-cosmic-darker ring-1 ring-cosmic-darker">
+                            +{plus(d)}
                           </span>
                         )}
                       </button>
@@ -215,6 +241,7 @@ export function LoShuGrid({
         “×3” means the number appears three times. A dashed cell is a missing number.
         {view !== 'birth' && hasExtras && ' D, C and K mark a number added as the Driver, Conductor or Kua.'}
         {view === 'period' && ' M and A mark a number added for the running Maha Dasha and Antar Dasha.'}
+        {view === 'added' && addition && ` A gold +1 or +2 shows how many of that number come from ${addition.source}.`}
       </p>
 
       {!compact && (
@@ -239,7 +266,7 @@ export function LoShuGrid({
                 <p className="font-medium text-white">{selected} · {info.planet} ({info.sanskrit}) · {info.keyword}</p>
                 <p className="mt-1">
                   {selectedCount > 0
-                    ? <>Appears {times(selectedCount)}: {sourceWords(result, selected, view, period)}. {repeatReading(selected, selectedCount)}</>
+                    ? <>Appears {times(selectedCount)}: {sourceWords(result, selected, view, period, addition)}. {repeatReading(selected, selectedCount)}</>
                     : <>{MISSING_TEXT[selected].meaning} {MISSING_TEXT[selected].practice}</>}
                 </p>
               </>

@@ -10,7 +10,7 @@ const TOOL_SPECIFIC_FAQS: Record<string, FAQItem[]> = {
     { id: 'numerology-system', header: 'Which numerology system does the Blueprint use?', body: 'The Numerology Blueprint uses the Pythagorean system for your core numbers (Life Path, Expression, Soul Urge, Personality) and layers in the classical Lo Shu grid and Kua number from Vedic/Chinese numerology — giving you both traditions in one reading.' },
   ],
   'mobile-numerology': [
-    { id: 'mobile-calc', header: "How is a mobile number's numerology calculated?", body: "We sum every digit of your phone number down to a single root number (like a Life Path number), then check for repeating digit pairs and how that root number aligns with your personal Life Path number — all computed instantly in your browser." },
+    { id: 'mobile-calc', header: "How is a mobile number's numerology calculated?", body: "Every digit of the phone number is added down to a single root number, which belongs to a planet. That root is compared with your Mulank and Bhagyank through the friendships between their planets, and each pair of neighbouring digits is read against the two-digit combination chart, all in your browser." },
   ],
   'loshu-grid': [
     { id: 'loshu-arrows', header: 'What do the arrows in a Lo Shu Grid mean?', body: "Certain combinations of filled cells form 'arrows' — straight or diagonal lines of numbers present in your grid — each representing a specific strength (like the Arrow of Determination) or, if the opposite cells are empty, a corresponding weakness to be mindful of." },

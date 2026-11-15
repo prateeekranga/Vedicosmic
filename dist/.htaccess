@@ -13,6 +13,8 @@ RewriteRule ^(.*)$ https://vedicosmic.com/$1 [R=301,L]
 # so these never fire on the internal rewrites below.)
 RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteRule ^tools/category/?$ /tools [R=301,L]
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteRule ^tools/muhurta/?$ /tools/panchang [R=301,L]
 
 # Gone for good.
 RewriteRule ^courses/.+ - [G,L]

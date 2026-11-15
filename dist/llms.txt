@@ -9,7 +9,7 @@ VediCosmic is a free Vedic astrology, panchang, numerology and practice website.
 ### [Numerology Calculators](https://vedicosmic.com/tools/category/numerology)
 
 - [Numerology Calculator](https://vedicosmic.com/tools/numerology): Enter your name and date of birth to get your Life Path, Expression, Soul Urge and Personality numbers, with Mulank, Bhagyank, Kua and a Lo Shu grid.
-- [Mobile Number Numerology](https://vedicosmic.com/tools/mobile-numerology): Check the numerology of a mobile number: its root number, repeated digits and two-digit pairs, and how it sits with your Mulank and Bhagyank. Free.
+- [Mobile Number Numerology](https://vedicosmic.com/tools/mobile-numerology): Check the numerology of a mobile number: its root, its compatibility level with your date of birth, and a reading for every two-digit combination. Free.
 - [Lo Shu Grid Calculator](https://vedicosmic.com/tools/loshu-grid): Make your Lo Shu grid from your date of birth: see missing and repeated numbers, the planes, and your Mulank, Bhagyank and Kua number. Free, no sign-up.
 - [Chaldean Numerology Calculator](https://vedicosmic.com/tools/chaldean): Type a name or a business name to get its Chaldean compound and root numbers, the ruling planet and a letter-by-letter working. Free, in your browser.
 - [Life Path Number Calculator](https://vedicosmic.com/tools/life-path): Work out your Life Path number from your date of birth, with Mulank, Bhagyank, lucky numbers and colours, and your personal day, month and year.
@@ -19,7 +19,7 @@ VediCosmic is a free Vedic astrology, panchang, numerology and practice website.
 - [Kundli (Vedic Birth Chart)](https://vedicosmic.com/tools/astrology): Make a free kundli from your date, time and place of birth: Lagna, Moon sign, nine grahas with nakshatra and pada, houses and Vimshottari dasha.
 - [Hora Calculator](https://vedicosmic.com/tools/planetary-hours): See the hora running now and the planetary hours of the day and night for your city, counted from sunrise, with what each planet traditionally favours.
 - [Navagraha Mandala](https://vedicosmic.com/tools/planet-mandala): Meet the nine grahas, from Surya to Ketu, on an interactive mandala: each one’s nature, colour and symbolism. Illustrative, not live positions.
-- [Rahu Kaal & Muhurat Finder](https://vedicosmic.com/tools/muhurta): Today’s Rahu Kaal, Yamaganda, Gulika Kaal, Abhijit muhurat and Brahma muhurta for any city and date, worked out from that day’s sunrise and sunset.
+- [Panchang & Choghadiya](https://vedicosmic.com/tools/panchang): Today’s panchang for your city: tithi, nakshatra, yoga and karana with end times, sunrise and moonrise, Rahu Kaal, Abhijit muhurat and Choghadiya.
 - [Nakshatra Finder](https://vedicosmic.com/tools/nakshatra): Find your janma nakshatra and pada from your date, time and place of birth, then explore all 27 nakshatras with their deities, symbols and nature.
 
 ### [Practice Tools: Breath, Mantra and Meditation](https://vedicosmic.com/tools/category/energy)

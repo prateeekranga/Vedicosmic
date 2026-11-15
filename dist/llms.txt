@@ -9,7 +9,7 @@ VediCosmic is a free Vedic astrology, panchang, numerology and practice website.
 ### [Numerology Calculators](https://vedicosmic.com/tools/category/numerology)
 
 - [Numerology Calculator](https://vedicosmic.com/tools/numerology): Enter your name and date of birth to get your Life Path, Expression, Soul Urge and Personality numbers, with Mulank, Bhagyank, Kua and a Lo Shu grid.
-- [Mobile Number Numerology](https://vedicosmic.com/tools/mobile-numerology): Check the numerology of a mobile number: its root number, repeated digits and two-digit pairs, and how it sits with your Mulank and Bhagyank. Free.
+- [Mobile Number Numerology](https://vedicosmic.com/tools/mobile-numerology): Check the numerology of a mobile number: its root, its compatibility level with your date of birth, and a reading for every two-digit combination. Free.
 - [Lo Shu Grid Calculator](https://vedicosmic.com/tools/loshu-grid): Make your Lo Shu grid from your date of birth: see missing and repeated numbers, the planes, and your Mulank, Bhagyank and Kua number. Free, no sign-up.
 - [Chaldean Numerology Calculator](https://vedicosmic.com/tools/chaldean): Type a name or a business name to get its Chaldean compound and root numbers, the ruling planet and a letter-by-letter working. Free, in your browser.
 - [Life Path Number Calculator](https://vedicosmic.com/tools/life-path): Work out your Life Path number from your date of birth, with Mulank, Bhagyank, lucky numbers and colours, and your personal day, month and year.

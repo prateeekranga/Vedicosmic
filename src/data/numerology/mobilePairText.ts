@@ -37,16 +37,16 @@ export const PAIR_READING: Readonly<Record<string, string>> = {
   // 1, the Sun.
   '12': 'Sun then Moon is read as a pleasant, attractive presence and careful money habits: spending is planned before it happens.',
   '13': 'Sun with Jupiter is read as learning and good counsel: a well-educated mind that others come to for advice.',
-  '14': 'Sun with Rahu is read as pressure from borrowing and overwork. The chart marks it for care with money owed and with rest.',
-  '15': 'The chart counts Sun with Mercury an auspicious yoga, linked with goodwill and help from a father, an employer or a mentor.',
+  '14': 'Sun with Rahu recalls the Grahan yoga of astrology, the eclipse: it is read as pressure from borrowing and overwork, and the chart marks it for care with money owed and with rest.',
+  '15': 'The chart counts Sun with Mercury the auspicious Budhaditya yoga, linked with goodwill and help from a father, an employer or a mentor.',
   '16': 'Sun with Venus is read as real administrative ability. The chart’s caution is to give a partner time and care, since work easily takes all the attention.',
   '17': 'The chart calls Sun with Ketu a Raj yog, linked with recognition, support from people in authority and chances to travel abroad. Teachers attach one condition: no 8 in the number.',
   '18': 'Sun with Saturn, father and son in the old stories, is the chart’s most cautioned pair: it is read as friction with an employer, a parent or anyone in authority.',
   '19': 'Sun with Mars is read as a freedom-loving, independent leader who would rather set the rules than follow them.',
 
   // 2, the Moon.
-  '23': 'Moon with Jupiter is read as protective: rivals are said to do little harm. The chart’s one caution is that children may be slow to respond.',
-  '24': 'Moon with Rahu is read as an overactive, restless mind. Grounding habits and a fixed routine are the usual advice.',
+  '23': 'Moon with Jupiter recalls the Gajakesari yoga of astrology and is read as protective: rivals are said to do little harm. The chart’s one caution is that children may be slow to respond.',
+  '24': 'Moon with Rahu recalls the Grahan yoga of astrology, the eclipse of the Moon: read as an overactive, restless mind. Grounding habits and a fixed routine are the usual advice.',
   '25': 'Moon with Mercury is read as thoughtful and talkative, though mood and words do not always agree.',
   '26': 'Moon with Venus is read as emotional and artistic, fond of comfort, and inclined to swing between indulgence and self-doubt.',
   '27': 'Moon with Ketu is read as reflective and intuitive, at home in the inner life, with emotional withdrawal the thing to watch.',
@@ -54,7 +54,7 @@ export const PAIR_READING: Readonly<Record<string, string>> = {
   '29': 'Moon with Mars recalls the Chandra-Mangal yoga of astrology: feeling joined to courage, read as resourcefulness and practical grit.',
 
   // 3, Jupiter.
-  '34': 'Jupiter with Rahu is read as a stubborn streak and fixed opinions. The chart marks it for care: stay flexible, and do not let strain build up.',
+  '34': 'Jupiter with Rahu recalls the Guru-Chandal yoga of astrology: a stubborn streak and fixed opinions. The chart marks it for care: stay flexible, and do not let strain build up.',
   '35': 'Jupiter with Mercury is read as wisdom and cleverness pulling different ways, with overthinking as the main lesson.',
   '36': 'Jupiter and Venus are the two teachers of astrology, and the pair is read as principle against pleasure: the lesson is telling a want from a value.',
   '37': 'Jupiter with Ketu is read as a wise, spiritual bent that suits teaching, research or a contemplative path.',
@@ -66,10 +66,10 @@ export const PAIR_READING: Readonly<Record<string, string>> = {
   '46': 'Rahu with Venus is read as ambition and style, linked with material gain and unexpected openings.',
   '47': 'Rahu and Ketu are the two lunar nodes, read as worldly ambition against letting go. The chart’s lesson for the pair is balance.',
   '48': 'Rahu with Saturn recalls the Shrapit yoga of astrology: heavy duties and delay, with results that come through unusually persistent effort.',
-  '49': 'Rahu with Mars is read as impulsive and intense. The chart’s advice is to direct the drive on purpose, before it turns into rash decisions.',
+  '49': 'Rahu with Mars recalls the Angarak yoga of astrology and is read as impulsive and intense. The chart’s advice is to direct the drive on purpose, before it turns into rash decisions.',
 
   // 5, Mercury.
-  '56': 'Mercury with Venus is read as charm and a good head for trade, with one quirk: hesitation in asking for what one is owed, so payments wait.',
+  '56': 'Mercury with Venus recalls the Lakshmi-Narayan yoga of astrology: charm and a good head for trade, with one quirk, hesitation in asking for what one is owed.',
   '57': 'Mercury with Ketu is read as talk and detachment pulling apart: attention scatters and tasks are left half done.',
   '58': 'Mercury with Saturn is read as practical and hardworking: the discipline to carry a clever idea through to the end.',
   '59': 'Mercury with Mars is read as quick thinking that turns into quick words. Pausing before replying is the tradition’s advice.',
@@ -96,7 +96,20 @@ export function pairReading(a: number, b: number): string {
 /** The chart's own words for its three classes, shown as text so they never depend on colour. */
 export const IMPACT_LABEL: Readonly<Record<PairImpact, string>> = { benefic: 'Benefic', neutral: 'Neutral', malefic: 'Malefic' };
 
-export const YOGA_LABEL: Readonly<Record<PairYoga, string>> = { raj: 'Raj yog', bandhan: 'Bandhan yog' };
+export const YOGA_LABEL: Readonly<Record<PairYoga, string>> = {
+  raj: 'Raj yog', bandhan: 'Bandhan yog', budhaditya: 'Budhaditya yog', gajakesari: 'Gajakesari yog',
+  'chandra-mangal': 'Chandra-Mangal yog', 'lakshmi-narayan': 'Lakshmi-Narayan yog', grahan: 'Grahan yog',
+  'guru-chandal': 'Guru-Chandal yog', vish: 'Vish yog', shrapit: 'Shrapit yog', angarak: 'Angarak yog',
+};
+
+/** Which two planets each named yoga joins, for the list of yogas found in a number. */
+export const YOGA_PLANETS: Readonly<Record<PairYoga, string>> = {
+  raj: 'Sun and Ketu', bandhan: 'Rahu and Mercury', budhaditya: 'Sun and Mercury', gajakesari: 'Moon and Jupiter',
+  'chandra-mangal': 'Moon and Mars', 'lakshmi-narayan': 'Mercury and Venus', grahan: 'Sun or Moon with Rahu',
+  'guru-chandal': 'Jupiter and Rahu', vish: 'Moon and Saturn', shrapit: 'Rahu and Saturn', angarak: 'Rahu and Mars',
+};
+
+export const YOGA_NOTE = 'Raj yog and Bandhan yog are the combination chart’s own names. The others are the names astrology gives the same two planets together, which mobile numerology teachers carry over to the digits.';
 
 /** Shown under a number that has 1 and 7 side by side, according to whether it also has an 8. */
 export const RAJ_YOG_NOTE = {

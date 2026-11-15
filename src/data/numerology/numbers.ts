@@ -22,6 +22,8 @@ export interface NumberInfo {
   /** Colours the tradition links with the planet. */
   colours: string[];
   gemstone: string;
+  /** The planet's mantra, as given in the site's navagraha remedies post. */
+  mantra: string;
   strength: string;
   growthEdge: string;
 }
@@ -31,55 +33,55 @@ const INK = '#1A1330';
 export const NUMBERS: Readonly<Record<Digit, NumberInfo>> = {
   1: {
     n: 1, planet: 'Sun', sanskrit: 'Surya', day: 'Sunday', keyword: 'Identity and will', archetype: 'The Pioneer',
-    colour: { name: 'Gold', fill: '#F5B942', ink: INK }, colours: ['Gold', 'Orange', 'Yellow'], gemstone: 'Ruby',
+    colour: { name: 'Gold', fill: '#F5B942', ink: INK }, colours: ['Gold', 'Orange', 'Yellow'], gemstone: 'Ruby', mantra: 'Om Suryaya Namaha',
     strength: 'The Sun’s number is read as self-reliance and initiative: a person who sets a direction, starts things without waiting to be asked, and leads more by example than by instruction.',
     growthEdge: 'The same drive can harden into pride or impatience with slower people. The work is to lead without dominating and to accept help without feeling smaller for it.',
   },
   2: {
     n: 2, planet: 'Moon', sanskrit: 'Chandra', day: 'Monday', keyword: 'Feeling and intuition', archetype: 'The Diplomat',
-    colour: { name: 'Pearl', fill: '#E3EAF5', ink: INK }, colours: ['White', 'Cream', 'Silver'], gemstone: 'Pearl',
+    colour: { name: 'Pearl', fill: '#E3EAF5', ink: INK }, colours: ['White', 'Cream', 'Silver'], gemstone: 'Pearl', mantra: 'Om Chandraya Namaha',
     strength: 'The Moon’s number is read as sensitivity and tact: someone who notices how others feel, eases tension in a group and does their best work alongside people rather than alone.',
     growthEdge: 'Sensitivity can turn into indecision or leaning on others for reassurance. The work is to hold a boundary and to trust one’s own judgement.',
   },
   3: {
     n: 3, planet: 'Jupiter', sanskrit: 'Guru', day: 'Thursday', keyword: 'Learning and expression', archetype: 'The Creator',
-    colour: { name: 'Yellow', fill: '#F2D55C', ink: INK }, colours: ['Yellow', 'Saffron'], gemstone: 'Yellow sapphire',
+    colour: { name: 'Yellow', fill: '#F2D55C', ink: INK }, colours: ['Yellow', 'Saffron'], gemstone: 'Yellow sapphire', mantra: 'Om Gurave Namaha',
     strength: 'Jupiter’s number is read as optimism and a gift for words and teaching: ideas come easily, and so does the wish to share what has been learned.',
     growthEdge: 'Energy can scatter across too many interests, and talk can outrun follow-through. The work is to finish what enthusiasm begins.',
   },
   4: {
     n: 4, planet: 'Rahu', sanskrit: 'Rahu', day: null, keyword: 'Order and method', archetype: 'The Builder',
-    colour: { name: 'Smoke blue', fill: '#A3B6CF', ink: INK }, colours: ['Grey', 'Smoky blue'], gemstone: 'Hessonite (gomed)',
+    colour: { name: 'Smoke blue', fill: '#A3B6CF', ink: INK }, colours: ['Grey', 'Smoky blue'], gemstone: 'Hessonite (gomed)', mantra: 'Om Rahave Namaha',
     strength: 'Rahu’s number is read as discipline with an unconventional streak: a steady worker who builds systems, notices what others overlook and is known for reliability.',
     growthEdge: 'Method can stiffen into resistance to change, and steady work into overwork. The work is to allow flexibility and to count rest as part of the job.',
   },
   5: {
     n: 5, planet: 'Mercury', sanskrit: 'Budha', day: 'Wednesday', keyword: 'Balance and communication', archetype: 'The Explorer',
-    colour: { name: 'Green', fill: '#7FD29B', ink: INK }, colours: ['Green', 'Turquoise'], gemstone: 'Emerald',
+    colour: { name: 'Green', fill: '#7FD29B', ink: INK }, colours: ['Green', 'Turquoise'], gemstone: 'Emerald', mantra: 'Om Budhaya Namaha',
     strength: 'Mercury’s number sits at the centre of the square and is read as adaptability and quick thinking: someone who learns fast, speaks well and connects people and ideas.',
     growthEdge: 'A love of change can become restlessness and trouble committing. The work is to put that freedom into focused, finished things.',
   },
   6: {
     n: 6, planet: 'Venus', sanskrit: 'Shukra', day: 'Friday', keyword: 'Care and harmony', archetype: 'The Nurturer',
-    colour: { name: 'Rose', fill: '#F4B6D2', ink: INK }, colours: ['White', 'Pink', 'Pastel blue'], gemstone: 'Diamond',
+    colour: { name: 'Rose', fill: '#F4B6D2', ink: INK }, colours: ['White', 'Pink', 'Pastel blue'], gemstone: 'Diamond', mantra: 'Om Shukraya Namaha',
     strength: 'Venus’s number is read as warmth and responsibility: a person drawn to beauty and comfort who looks after family and community and makes a place feel settled.',
     growthEdge: 'Care can slide into worry, perfectionism or giving past one’s limits. The work is to look after oneself as generously as one looks after others.',
   },
   7: {
     n: 7, planet: 'Ketu', sanskrit: 'Ketu', day: null, keyword: 'Inquiry and detachment', archetype: 'The Seeker',
-    colour: { name: 'Sand', fill: '#D1C6AC', ink: INK }, colours: ['Smoke grey', 'Off-white'], gemstone: 'Cat’s eye',
+    colour: { name: 'Sand', fill: '#D1C6AC', ink: INK }, colours: ['Smoke grey', 'Off-white'], gemstone: 'Cat’s eye', mantra: 'Om Ketave Namaha',
     strength: 'Ketu’s number is read as depth and inquiry: someone who looks beneath the surface, values quiet and is drawn to study, research and the inner life.',
     growthEdge: 'Reflection can become withdrawal or overthinking. The work is to stay in touch with people; not every question has to be solved alone.',
   },
   8: {
     n: 8, planet: 'Saturn', sanskrit: 'Shani', day: 'Saturday', keyword: 'Patience and structure', archetype: 'The Organiser',
-    colour: { name: 'Blue', fill: '#8FA8E8', ink: INK }, colours: ['Dark blue', 'Black'], gemstone: 'Blue sapphire',
+    colour: { name: 'Blue', fill: '#8FA8E8', ink: INK }, colours: ['Dark blue', 'Black'], gemstone: 'Blue sapphire', mantra: 'Om Shanaye Namaha',
     strength: 'Saturn’s number is read as endurance and organisation: a person who takes responsibility seriously, plans for the long run and earns results slowly and surely.',
     growthEdge: 'Seriousness can grow heavy, and discipline rigid. The work is to let warmth and gratitude sit beside the sense of duty.',
   },
   9: {
     n: 9, planet: 'Mars', sanskrit: 'Mangal', day: 'Tuesday', keyword: 'Energy and courage', archetype: 'The Humanitarian',
-    colour: { name: 'Coral', fill: '#F08F80', ink: INK }, colours: ['Red', 'Coral', 'Maroon'], gemstone: 'Red coral',
+    colour: { name: 'Coral', fill: '#F08F80', ink: INK }, colours: ['Red', 'Coral', 'Maroon'], gemstone: 'Red coral', mantra: 'Om Mangalaya Namaha',
     strength: 'Mars’s number is read as courage and drive: someone energetic and protective who acts on conviction and puts real effort into causes larger than themselves.',
     growthEdge: 'The same fire can show as temper or haste. The work is to slow down before reacting and to give the energy a physical outlet.',
   },

@@ -241,9 +241,9 @@ describe('names and phone numbers', () => {
   it('gives a compatibility level from the two friendship comparisons', () => {
     // 15 August 1990: Driver 6, Conductor 6. A number with root 6 is the same number on both counts.
     const date = { y: 1990, m: 8, d: 15 };
-    expect(analyseMobile('9999999996', { date })!.withBirth!.compatibility).toEqual({ driverPoints: 2, conductorPoints: 2, points: 4, level: 5 });
+    expect(analyseMobile('9999999996', { date })!.withBirth!.compatibility).toMatchObject({ driverPoints: 2, conductorPoints: 2, points: 4, weighted: 8, level: 5 });
     // Root 1 (Sun) and 6 (Venus) are unfriendly on both sides.
-    expect(analyseMobile('9999999991', { date })!.withBirth!.compatibility).toEqual({ driverPoints: -2, conductorPoints: -2, points: -4, level: 1 });
+    expect(analyseMobile('9999999991', { date })!.withBirth!.compatibility).toMatchObject({ driverPoints: -2, conductorPoints: -2, points: -4, weighted: -8, level: 1 });
     expect(analyseMobile('9876543210')!.withBirth).toBeNull();
     expect(analyseMobile('9876543210', { date })!.steps.at(-1)).toMatchObject({ key: 'compatibility' });
 

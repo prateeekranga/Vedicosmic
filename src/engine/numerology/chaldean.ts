@@ -21,6 +21,13 @@ export const CHALDEAN_VALUES: Readonly<Record<string, number>> = {
 export const COMPOUND_MIN = 10;
 export const COMPOUND_MAX = 52;
 
+/** The compound number whose reading applies to a total: the total, added down while above 52; null below 10. */
+export function compoundKeyOf(total: number): number | null {
+  let key = total;
+  while (key > COMPOUND_MAX) key = digitSum(key);
+  return key >= COMPOUND_MIN ? key : null;
+}
+
 export interface ChaldeanWord {
   word: string;
   letters: { ch: string; value: number }[];
@@ -58,9 +65,7 @@ export function chaldeanName(raw: string): ChaldeanResult | null {
 
   const compound = words.reduce((a, w) => a + w.total, 0);
   const root = rootOf(compound);
-  let key = compound;
-  while (key > COMPOUND_MAX) key = digitSum(key);
-  const compoundKey = key >= COMPOUND_MIN ? key : null;
+  const compoundKey = compoundKeyOf(compound);
   const perWordTotal = words.reduce((a, w) => a + w.root, 0);
 
   const reduction = reduce(compound);

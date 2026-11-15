@@ -16,8 +16,18 @@
  */
 
 export type PairImpact = 'benefic' | 'neutral' | 'malefic';
-/** The yogas the chart itself names: Raj yog for 1 with 7, Bandhan yog for 4 with 5. */
-export type PairYoga = 'raj' | 'bandhan';
+/**
+ * Named pairs. Raj yog (1 with 7) and Bandhan yog (4 with 5) are the chart's own names. The rest
+ * are the names astrology gives the same two planets together, which mobile numerology teachers
+ * carry over to the digits: Budhaditya (Sun and Mercury, 15), Gajakesari (Moon and Jupiter, 23),
+ * Chandra-Mangal (Moon and Mars, 29), Lakshmi-Narayan (Mercury and Venus, 56), Grahan (Sun or Moon
+ * with Rahu, 14 and 24), Guru-Chandal (Jupiter and Rahu, 34), Vish (Moon and Saturn, 28), Shrapit
+ * (Rahu and Saturn, 48) and Angarak (Rahu and Mars, 49). Each agrees with the class the chart gives
+ * the pair, which the tests check.
+ */
+export type PairYoga =
+  | 'raj' | 'bandhan' | 'budhaditya' | 'gajakesari' | 'chandra-mangal' | 'lakshmi-narayan'
+  | 'grahan' | 'guru-chandal' | 'vish' | 'shrapit' | 'angarak';
 
 const B: PairImpact = 'benefic';
 const N: PairImpact = 'neutral';
@@ -52,7 +62,17 @@ export const PAIR_IMPACT_AS_WRITTEN: Readonly<Record<string, PairImpact>> = {
 };
 
 /** Pairs that carry the name of a yoga, keyed with the smaller digit first. */
-export const PAIR_YOGA: Readonly<Record<string, PairYoga>> = { '17': 'raj', '45': 'bandhan' };
+export const PAIR_YOGA: Readonly<Record<string, PairYoga>> = {
+  '17': 'raj', '45': 'bandhan',
+  '15': 'budhaditya', '23': 'gajakesari', '29': 'chandra-mangal', '56': 'lakshmi-narayan',
+  '14': 'grahan', '24': 'grahan', '34': 'guru-chandal', '28': 'vish', '48': 'shrapit', '49': 'angarak',
+};
+
+/** Whether a named yoga is one the chart counts in a number's favour or one it marks for care. */
+export function yogaImpact(yoga: PairYoga): Exclude<PairImpact, 'neutral'> {
+  const key = Object.keys(PAIR_YOGA).find((k) => PAIR_YOGA[k] === yoga)!;
+  return PAIR_IMPACT[key] === 'malefic' ? 'malefic' : 'benefic';
+}
 
 /** The key of a pair in the tables above: the two digits, smaller first. */
 export const pairKey = (a: number, b: number): string => (a <= b ? `${a}${b}` : `${b}${a}`);

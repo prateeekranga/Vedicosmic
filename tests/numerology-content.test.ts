@@ -19,16 +19,38 @@ import {
   CHALLENGE_TEXT, CYCLE_TEXT, KARMIC_DEBT_TEXT, KARMIC_LESSON_TEXT, LIFE_PATH_TEXT, NUMBER_TRAIT, PINNACLE_TEXT,
 } from '@/data/numerology/westernText';
 import { compoundReading } from '@/data/numerology/chaldeanCompounds';
-import { LEVEL_LABEL, LEVEL_NEEDS_BIRTH, LEVEL_TEXT, ROOT_FIT_TEXT, SAME_ROOT_TEXT } from '@/data/numerology/mobileText';
 import {
-  IMPACT_NOTE, PAIR_READING, PAIR_READING_AS_WRITTEN, RAJ_YOG_NOTE, pairReading,
+  CHECKLIST_INTRO, COMPARE_INTRO, ENDING_INTRO, ENDING_ZERO, GRID_INTRO, GRID_STATUS_LABEL, LEVEL_LABEL, LEVEL_NEEDS_BIRTH,
+  LEVEL_TEXT, NAME_HELP, PURPOSE_HELP, REMEDY_INTRO, ROOTS_INTRO, ROOT_FIT_TEXT, SAME_ROOT_TEXT, SCORE_BAND_TEXT,
+  SCORE_NEEDS_BIRTH, SCORE_NOTE, cautionText,
+} from '@/data/numerology/mobileText';
+import {
+  IMPACT_NOTE, PAIR_READING, PAIR_READING_AS_WRITTEN, RAJ_YOG_NOTE, YOGA_LABEL, YOGA_NOTE, YOGA_PLANETS, pairReading,
 } from '@/data/numerology/mobilePairText';
+import { PAIR_YOGA, type MobileCaution, type PairYoga } from '@/engine/numerology';
 
 const words = (s: string) => s.trim().split(/\s+/).length;
 
+const YOGAS = [...new Set(Object.values(PAIR_YOGA))] as PairYoga[];
+/** One caution of every kind, so each sentence the page can build is linted. */
+const CAUTIONS: MobileCaution[] = [
+  ...YOGAS.map((yoga) => ({ kind: 'yoga' as const, yoga, written: ['14', '41'] })),
+  { kind: 'ending-pair', pair: '78' }, { kind: 'overloaded', digit: 9, count: 4 }, { kind: 'run', digit: 7, length: 3 },
+  { kind: 'zeros', count: 3 }, { kind: 'ends-in-zero', trailing: 1 },
+];
+/** The mobile number texts beyond the pair readings, with the most words each may have. */
+const MOBILE_TEXT: [string, number][] = [
+  [SCORE_NOTE, 40], [SCORE_NEEDS_BIRTH, 30], [ENDING_INTRO, 40], [ENDING_ZERO, 20], [GRID_INTRO, 35], [ROOTS_INTRO, 40],
+  [CHECKLIST_INTRO, 35], [COMPARE_INTRO, 35], [NAME_HELP, 35], [PURPOSE_HELP, 35], [REMEDY_INTRO.weak, 40],
+  [REMEDY_INTRO.good, 35], [YOGA_NOTE, 40],
+  ...Object.values(SCORE_BAND_TEXT).map((t) => [t, 34] as [string, number]),
+  ...CAUTIONS.map((c) => [cautionText(c), 30] as [string, number]),
+];
+
 /** Every sentence a visitor can be shown, gathered for the lint below. */
 function allText(): string[] {
-  const out: string[] = [SAME_NUMBER_TEXT, SAME_ROOT_TEXT, LEVEL_NEEDS_BIRTH, IMPACT_NOTE, RAJ_YOG_NOTE.clear, RAJ_YOG_NOTE.weakened,
+  const out: string[] = [...MOBILE_TEXT.map(([t]) => t),
+    SAME_NUMBER_TEXT, SAME_ROOT_TEXT, LEVEL_NEEDS_BIRTH, IMPACT_NOTE, RAJ_YOG_NOTE.clear, RAJ_YOG_NOTE.weakened,
     DASHA_INTRO, DASHA_GRID_NONE, NUMERO_VASTU_NOTE, FAVOURABLE_NOTE, ...Object.values(DASHA_ROLE), ...Object.values(EXTRA_ROLE),
     ...Object.values(SUBCONSCIOUS_TEXT), ...Object.values(RATIONAL_THOUGHT_TEXT), ...Object.values(PLANE_TEXT).map((p) => p.text),
     ...Object.keys(LETTER_TEXT).map(letterReading)];
@@ -104,6 +126,20 @@ describe('numerology text: completeness', () => {
       expect(LEVEL_LABEL[level].length).toBeGreaterThan(2);
       expect(words(LEVEL_TEXT[level])).toBeLessThanOrEqual(34);
     }
+  });
+
+  it('labels every named yoga, grid state and caution, and keeps the mobile texts short', () => {
+    for (const yoga of YOGAS) {
+      expect(YOGA_LABEL[yoga]).toMatch(/ yog$/);
+      expect(YOGA_PLANETS[yoga].length).toBeGreaterThan(5);
+    }
+    // A pair that carries a yoga names it in its reading, so the badge and the text agree.
+    for (const [key, yoga] of Object.entries(PAIR_YOGA)) {
+      const name = YOGA_LABEL[yoga].replace(/ yog$/, '');
+      expect(PAIR_READING[key], key).toContain(name);
+    }
+    expect(Object.keys(GRID_STATUS_LABEL).sort()).toEqual(['introduced', 'missing', 'strengthened', 'unchanged']);
+    for (const [text, max] of MOBILE_TEXT) expect(words(text), text).toBeLessThanOrEqual(max);
   });
 
   it('has a reading for every dasha number, name number and letter', () => {

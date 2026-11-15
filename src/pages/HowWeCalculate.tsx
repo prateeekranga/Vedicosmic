@@ -219,8 +219,14 @@ const sections: LegalSection[] = [
         <p>
           For the seven visible planets the table is the natural friendship (naisargika maitri) of the Brihat Parashara
           Hora Shastra. Rahu and Ketu are not in that list, so we follow the convention most teachers use: Rahu sides with
-          Mercury, Venus and Saturn, and Ketu with Mars, Venus and Saturn. No page turns these friendships into a
-          percentage or a single verdict, because the tradition offers no arithmetic for one.
+          Mercury, Venus and Saturn, and Ketu with Mars, Venus and Saturn.
+        </p>
+        <p>
+          The Mobile Number page turns two of these comparisons into a compatibility level. The root of the phone number
+          is compared with the Mulank and with the Bhagyank; each comparison scores from −2 (unfriendly on both sides) to
+          +2 (friends on both sides, or the same number), and the total from −4 to +4 is shown as a level from 1 to 5 with
+          its working. No page turns the friendships into a percentage. The two-digit combinations on that page come from
+          a separate chart, the one teachers of mobile numerology use, and are not worked out from this table.
         </p>
       </>
     ),

@@ -1,34 +1,11 @@
 /**
- * Readings for a mobile number. No number is called lucky or unlucky in itself: a pair of digits
- * is read through how its two planets regard each other, and the number as a whole through how
- * its root sits with the person's own Driver and Conductor.
+ * Readings for how a mobile number sits with a person's own birth numbers. The number's root is
+ * compared with the Driver and the Conductor through the planetary friendship table, and the two
+ * comparisons give one compatibility level from 1 to 5.
+ *
+ * The readings for neighbouring pairs of digits are in mobilePairText.ts.
  */
-import type { Digit, MutualRelation } from '@/engine/numerology';
-
-/** A planetary pair, by how the two planets regard each other. */
-export const PAIR_TEXT: Readonly<Record<MutualRelation, string>> = {
-  'mutual-friends': 'The two planets are friends, so tradition reads this pair as working smoothly together.',
-  friendly: 'One planet is friendly and the other neutral, so tradition reads this pair as easy.',
-  neutral: 'The two planets are neutral to each other; tradition gives this pair no strong reading either way.',
-  mixed: 'One planet is friendly and the other is not, so tradition reads this pair as pulling two ways.',
-  strained: 'One planet is neutral and the other unfriendly, so tradition reads this pair as slightly at odds.',
-  opposed: 'The two planets are unfriendly to each other, so tradition reads this pair as needing patience.',
-};
-
-/** The same digit twice in a row. */
-export const DOUBLE_TEXT: Readonly<Record<Digit, string>> = {
-  1: 'A doubled 1 repeats the Sun’s theme of initiative and self-reliance.',
-  2: 'A doubled 2 repeats the Moon’s theme of sensitivity and attention to others.',
-  3: 'A doubled 3 repeats Jupiter’s theme of learning and expression.',
-  4: 'A doubled 4 repeats Rahu’s theme of method and persistence.',
-  5: 'A doubled 5 repeats Mercury’s theme of communication and quick thinking.',
-  6: 'A doubled 6 repeats Venus’s theme of care, comfort and harmony.',
-  7: 'A doubled 7 repeats Ketu’s theme of reflection and inquiry.',
-  8: 'A doubled 8 repeats Saturn’s theme of patience and responsibility.',
-  9: 'A doubled 9 repeats Mars’s theme of energy and drive.',
-};
-
-export const ZERO_TEXT = 'Zero has no planet and no cell in the Lo Shu grid. Tradition reads it as a pause that mutes the digit beside it, so this pair is given no reading of its own.';
+import type { CompatibilityLevel, MutualRelation } from '@/engine/numerology';
 
 /** How the number's root sits with a person's Driver or Conductor. */
 export const ROOT_FIT_TEXT: Readonly<Record<MutualRelation, string>> = {
@@ -42,5 +19,21 @@ export const ROOT_FIT_TEXT: Readonly<Record<MutualRelation, string>> = {
 
 export const SAME_ROOT_TEXT = 'The number’s root is the same as this number of yours, which tradition counts a natural fit.';
 
-/** Labels shown with a pair or a fit, in words so they never depend on colour. */
+/** Labels shown with a fit, in words so they never depend on colour. */
 export const TONE_LABEL = { supportive: 'Supportive', mixed: 'Mixed', challenging: 'Challenging' } as const;
+
+/** The name of each compatibility level, always shown beside "n of 5". */
+export const LEVEL_LABEL: Readonly<Record<CompatibilityLevel, string>> = {
+  5: 'Excellent', 4: 'Good', 3: 'Moderate', 2: 'Low', 1: 'Very low',
+};
+
+export const LEVEL_TEXT: Readonly<Record<CompatibilityLevel, string>> = {
+  5: 'The number’s planet is on friendly terms with both of your birth numbers. By the tradition’s own measure this is as close a match as a number gets.',
+  4: 'On balance the number’s planet is friendly to your birth numbers. Tradition counts this a number that suits you.',
+  3: 'The friendly and unfriendly sides cancel out, or both are neutral. Tradition counts this number neither for you nor against you.',
+  2: 'On balance the number’s planet is cool towards your birth numbers. If you are choosing a new number, tradition would look for a closer match.',
+  1: 'The number’s planet is unfriendly to both of your birth numbers. This is the weakest match the tradition describes; it is a preference, and nothing more follows from it.',
+};
+
+/** Shown where the level would be, when no date of birth was given. */
+export const LEVEL_NEEDS_BIRTH = 'Add your date of birth above and read the number again to see its compatibility level with you, from 1 to 5.';

@@ -2,13 +2,13 @@ import type { ToolContent } from '@/types/tool.types';
 
 const content: ToolContent = {
   slug: 'loshu-grid',
-  lastReviewed: '2026-11-14',
+  lastReviewed: '2026-11-15',
   lede: 'Enter your date of birth to build your Lo Shu grid, the 3×3 square of Indian numerology. You get your Driver (Mulank), Conductor (Bhagyank) and Kua number, the missing and repeated numbers, and all eight planes and yogs, with the arithmetic shown.',
   toolHeading: 'Make your Lo Shu grid',
   about: {
     heading: 'What the Lo Shu grid is',
     paragraphs: [
-      'The Lo Shu is a square of the numbers 1 to 9 arranged so that every row, column and diagonal adds up to 15. Chinese tradition says it was first seen on the shell of a turtle that rose from the River Luo. Numerologists in India use it as a chart: each number has a fixed cell and a ruling planet, and the digits of a date of birth are written into the cells they belong to.',
+      'The Lo Shu is a square of the numbers 1 to 9 arranged so that every row, column and diagonal adds up to 15. Chinese tradition says it first appeared on the shell of a turtle from the River Luo. Numerologists in India use it as a chart: each number has a fixed cell and a ruling planet, and the digits of a date of birth are written into the cells they belong to.',
       'A cell that fills more than once shows a repeated number, an empty cell shows a missing number, and three filled cells in a line make a plane or a yog. Indian teachers also add three numbers worked out from the date: the Driver, the Conductor and the Kua.',
     ],
   },
@@ -30,8 +30,8 @@ const content: ToolContent = {
       { term: 'Driver and Conductor', text: 'The Driver, or Mulank, comes from the day alone and is read as your everyday nature. The Conductor, or Bhagyank, comes from the whole date and is read as the direction your life takes. The page also shows whether their two planets are friends.' },
       { term: 'Repeated numbers', text: 'A number written twice or more has its planet’s qualities turned up. The reading changes with the count: two is usually read as a strength, four or more as something to keep in balance.' },
       { term: 'Missing numbers', text: 'An empty cell is a quality tradition says you build through effort instead of being born with. Each comes with a simple practice that teachers traditionally suggest.' },
-      { term: 'Planes', text: 'The three rows are the mental, emotional and practical planes; the three columns are the thought, will and action planes. A plane is complete when all three of its numbers are present.' },
-      { term: 'Golden and silver yog', text: 'The two diagonals have their own names. 4-5-6 is the golden yog, traditionally the line of recognition, and 2-5-8 is the silver yog, traditionally linked with property.' },
+      { term: 'Planes', text: 'The three rows are the mental, emotional and practical planes; the three columns are the thought, will and action planes. A plane is complete when all three of its numbers are present, and the grid marks each complete line with an arrow.' },
+      { term: 'Golden and Silver Raj Yog', text: 'The diagonals are named: 4-5-6 is the Golden Raj Yog, traditionally the line of recognition, and 2-5-8 the Silver Raj Yog, traditionally linked with property.' },
       { term: 'Kua directions', text: 'The Kua number comes from the Eight Mansions school of feng shui and gives four favourable compass directions for work, rest, conversation and study.' },
     ],
   },
@@ -56,7 +56,7 @@ const content: ToolContent = {
       { id: 'loshu-kua', header: 'How do I work out my Kua number?', body: 'Add the digits of your year of birth until one digit is left. A man subtracts that digit from 11 and a woman adds 4 to it; if the answer has two digits, add them together. A result of 5 is read as 2 for a man and 8 for a woman.' },
       { id: 'loshu-missing', header: 'What does a missing number mean in the Lo Shu grid?', body: 'It means that number does not appear in your date of birth or among your added numbers, so its cell is empty. Tradition reads it as a quality to develop on purpose, and suggests a simple practice for each one. It is not read as a defect.' },
       { id: 'loshu-zero', header: 'Is zero counted in the Lo Shu grid?', body: 'No. The square contains only the numbers 1 to 9, so a zero in a date has no cell and is left out. It still counts as nothing when the digits are added for the Conductor, which is why it changes no total.' },
-      { id: 'loshu-yog', header: 'What are the golden yog and the silver yog?', body: 'They are the two diagonals of the square. The golden yog is 4, 5 and 6 and the silver yog is 2, 5 and 8. A diagonal counts as complete only when all three of its numbers are in your grid.' },
+      { id: 'loshu-yog', header: 'What is raj yog in the Lo Shu grid?', body: 'Raj yog is a complete diagonal of the square: 4, 5 and 6 is the Golden Raj Yog, and 2, 5 and 8 the Silver Raj Yog. Each needs all three numbers in your grid.' },
       { id: 'loshu-differs', header: 'Why does my grid look different on another website?', body: 'Because methods differ. Some sites use only the date digits, some add the Driver every time, some use the last two digits of the year, and some leave the Kua out. This page lists its rules under the calculator and shows each step of your own working.' },
     ],
   },

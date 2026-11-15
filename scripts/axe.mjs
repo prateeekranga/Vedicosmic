@@ -10,7 +10,7 @@ import { chromium } from 'playwright-core';
 const BASE = (process.argv[2] ?? 'http://localhost:4173').replace(/\/$/, '');
 const OUT = process.argv[3]; // optional: write the full report as JSON here
 const FAIL_ON = new Set(['critical']);
-const PAGES = ['/', '/tools', '/tools/category/numerology', '/tools/loshu-grid', '/tools/life-path', '/tools/sadhana', '/tools/nakshatra', '/tools/planetary-hours', '/tools/astrology',
+const PAGES = ['/', '/tools', '/tools/category/numerology', '/tools/loshu-grid', '/tools/life-path', '/tools/numerology', '/tools/mobile-numerology', '/tools/sadhana', '/tools/nakshatra', '/tools/planetary-hours', '/tools/astrology',
   '/tools/muhurta', '/tools/vrat-calendar', '/blog/best-time-to-meditate-morning-vs-evening', '/about', '/contact',
   '/privacy-policy', '/how-we-calculate'];
 
@@ -23,6 +23,23 @@ const PREPARE = {
     await page.selectOption('#loshu-gender', 'female');
     await page.getByRole('button', { name: 'Make my grid' }).click();
     await page.waitForSelector('#tool table', { timeout: 10000 });
+  },
+  '/tools/numerology': async (page) => {
+    await page.fill('#blueprint-name', 'Asha Rao');
+    await page.selectOption('select[aria-label="Day"]', '14');
+    await page.selectOption('select[aria-label="Month"]', '6');
+    await page.selectOption('select[aria-label="Year"]', '1985');
+    await page.getByRole('button', { name: 'Show my numbers' }).click();
+    await page.waitForSelector('#tool table', { timeout: 10000 });
+  },
+  '/tools/mobile-numerology': async (page) => {
+    await page.fill('#mobile-number', '98171 45678');
+    await page.selectOption('select[aria-label="Day"]', '14');
+    await page.selectOption('select[aria-label="Month"]', '6');
+    await page.selectOption('select[aria-label="Year"]', '1985');
+    await page.getByRole('button', { name: 'Read this number' }).click();
+    await page.waitForSelector('[data-testid="mobile-compatibility"]', { timeout: 10000 });
+    await page.waitForTimeout(1200);
   },
   '/tools/life-path': async (page) => {
     await page.selectOption('select[aria-label="Day"]', '15');

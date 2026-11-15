@@ -18,6 +18,7 @@ export * from './loshu';
 export * from './name';
 export * from './pythagorean';
 export * from './chaldean';
+export * from './mobileChart';
 export * from './mobile';
 
 export { NUMEROLOGY_ENGINE } from './version';

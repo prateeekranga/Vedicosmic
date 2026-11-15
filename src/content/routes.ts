@@ -50,10 +50,10 @@ export const TOOLS: ToolMeta[] = [
   {
     id: 'mobile-numerology', slug: 'mobile-numerology', name: 'Mobile Number Numerology',
     h1: 'Mobile Number Numerology Calculator',
-    subtitle: 'The root, repeats and digit pairs of a phone number',
+    subtitle: 'The root, compatibility level and digit pairs of a phone number',
     seoTitle: 'Mobile Number Numerology Calculator (with Date of Birth)',
-    description: 'Free mobile number numerology calculator: find the root number of a phone number, see which digits repeat, read each neighbouring pair of digits through the planets that rule them, and compare the number with your own Mulank and Bhagyank.',
-    metaDescription: 'Check the numerology of a mobile number: its root number, repeated digits and two-digit pairs, and how it sits with your Mulank and Bhagyank. Free.',
+    description: 'Free mobile number numerology calculator: find the root number of a phone number, get its compatibility level with your date of birth, see which digits repeat, and read every two-digit combination, Raj yog included, against the traditional chart.',
+    metaDescription: 'Check the numerology of a mobile number: its root, its compatibility level with your date of birth, and a reading for every two-digit combination. Free.',
     category: 'numerology', accent: 'cyan', Icon: Smartphone,
     status: 'live', indexable: true,
   },

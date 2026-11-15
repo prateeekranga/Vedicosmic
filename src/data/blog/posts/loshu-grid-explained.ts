@@ -115,8 +115,8 @@ export default {
         '**Thought Plane** (4-3-8, left column): a patient, far-sighted planner when complete; carrying long-term plans through to the end asks for extra focus when empty.',
         '**Will Plane** (9-5-1, centre column): powerful determination when complete; steady self-discipline is worth deliberate practice when empty.',
         '**Action Plane** (2-7-6, right column): capable, active hands when complete; beginning and sustaining practical activity is an area to nurture when empty.',
-        '**Golden Yog** (4-5-6): the diagonal teachers call the success line, read when complete as steady effort that tends to be recognised.',
-        '**Silver Yog** (2-5-8): the other diagonal, traditionally linked with property and with building security patiently.',
+        '**Golden Raj Yog** (4-5-6): the diagonal teachers call the success line, read when complete as steady effort that tends to be recognised.',
+        '**Silver Raj Yog** (2-5-8): the other diagonal, traditionally linked with property and with building security patiently.',
       ],
     },
     {

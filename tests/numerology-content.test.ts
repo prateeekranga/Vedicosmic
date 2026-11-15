@@ -4,7 +4,7 @@
  * readable.
  */
 import { describe, expect, it } from 'vitest';
-import { DIGITS, LOSHU_LINES } from '@/engine/numerology';
+import { DIGITS, LOSHU_LINES, PAIR_IMPACT, PAIR_IMPACT_AS_WRITTEN, pairImpact } from '@/engine/numerology';
 import { MASTER_TEXT, NUMBERS } from '@/data/numerology/numbers';
 import {
   KUA_TEXT, LINE_TEXT, MISSING_TEXT, RELATION_TEXT, REPEAT_TEXT, SAME_NUMBER_TEXT, lineReading, repeatReading,
@@ -13,24 +13,28 @@ import {
   CHALLENGE_TEXT, CYCLE_TEXT, KARMIC_DEBT_TEXT, KARMIC_LESSON_TEXT, LIFE_PATH_TEXT, NUMBER_TRAIT, PINNACLE_TEXT,
 } from '@/data/numerology/westernText';
 import { compoundReading } from '@/data/numerology/chaldeanCompounds';
-import { DOUBLE_TEXT, PAIR_TEXT, ROOT_FIT_TEXT, SAME_ROOT_TEXT, ZERO_TEXT } from '@/data/numerology/mobileText';
+import { LEVEL_LABEL, LEVEL_NEEDS_BIRTH, LEVEL_TEXT, ROOT_FIT_TEXT, SAME_ROOT_TEXT } from '@/data/numerology/mobileText';
+import {
+  IMPACT_NOTE, PAIR_READING, PAIR_READING_AS_WRITTEN, RAJ_YOG_NOTE, pairReading,
+} from '@/data/numerology/mobilePairText';
 
 const words = (s: string) => s.trim().split(/\s+/).length;
 
 /** Every sentence a visitor can be shown, gathered for the lint below. */
 function allText(): string[] {
-  const out: string[] = [SAME_NUMBER_TEXT, SAME_ROOT_TEXT, ZERO_TEXT];
+  const out: string[] = [SAME_NUMBER_TEXT, SAME_ROOT_TEXT, LEVEL_NEEDS_BIRTH, IMPACT_NOTE, RAJ_YOG_NOTE.clear, RAJ_YOG_NOTE.weakened];
   for (const d of DIGITS) {
     const n = NUMBERS[d];
     out.push(n.strength, n.growthEdge, n.keyword, MISSING_TEXT[d].meaning, MISSING_TEXT[d].practice,
-      KARMIC_LESSON_TEXT[d], CYCLE_TEXT[d].year, CYCLE_TEXT[d].short, DOUBLE_TEXT[d], ...REPEAT_TEXT[d]);
+      KARMIC_LESSON_TEXT[d], CYCLE_TEXT[d].year, CYCLE_TEXT[d].short, ...REPEAT_TEXT[d]);
   }
   for (const t of Object.values(MASTER_TEXT)) out.push(t.text);
   for (const t of Object.values(LINE_TEXT)) out.push(t.full, t.partial, t.empty, t.theme);
   for (const t of Object.values(KUA_TEXT)) out.push(t);
   for (const t of Object.values(RELATION_TEXT)) out.push(t.text);
   out.push(...Object.values(LIFE_PATH_TEXT), ...Object.values(NUMBER_TRAIT), ...Object.values(KARMIC_DEBT_TEXT),
-    ...Object.values(PINNACLE_TEXT), ...Object.values(CHALLENGE_TEXT), ...Object.values(PAIR_TEXT), ...Object.values(ROOT_FIT_TEXT));
+    ...Object.values(PINNACLE_TEXT), ...Object.values(CHALLENGE_TEXT), ...Object.values(ROOT_FIT_TEXT),
+    ...Object.values(LEVEL_TEXT), ...Object.values(PAIR_READING), ...Object.values(PAIR_READING_AS_WRITTEN));
   for (let n = 10; n <= 52; n++) out.push(compoundReading(n)!.text);
   return out;
 }
@@ -69,6 +73,27 @@ describe('numerology text: completeness', () => {
     expect(compoundReading(9)).toBeNull();
     expect(compoundReading(53)).toBeNull();
     expect(compoundReading(42)).toMatchObject({ sameAs: 24, text: compoundReading(24)!.text });
+  });
+
+  it('has a class and a reading for every pair of digits from 00 to 99', () => {
+    expect(Object.keys(PAIR_READING).sort()).toEqual(Object.keys(PAIR_IMPACT).sort());
+    expect(Object.keys(PAIR_READING)).toHaveLength(55);
+    expect(Object.keys(PAIR_READING_AS_WRITTEN).sort()).toEqual(Object.keys(PAIR_IMPACT_AS_WRITTEN).sort());
+    for (let a = 0; a <= 9; a++) {
+      for (let b = 0; b <= 9; b++) {
+        expect(['benefic', 'neutral', 'malefic'], `${a}${b}`).toContain(pairImpact(a, b));
+        const text = pairReading(a, b);
+        expect(text?.length, `${a}${b}`).toBeGreaterThan(40);
+        expect(words(text), `${a}${b}`).toBeLessThanOrEqual(34);
+      }
+    }
+    // The chart reads 12 and 21 differently; every other pair reads the same both ways round.
+    expect(pairReading(2, 1)).not.toBe(pairReading(1, 2));
+    expect(pairReading(7, 1)).toBe(pairReading(1, 7));
+    for (const level of [1, 2, 3, 4, 5] as const) {
+      expect(LEVEL_LABEL[level].length).toBeGreaterThan(2);
+      expect(words(LEVEL_TEXT[level])).toBeLessThanOrEqual(34);
+    }
   });
 
   it('keeps each piece short enough to read at a glance', () => {

@@ -96,6 +96,56 @@ for (const path of ['/', '/tools', '/tools/category/astrology', '/tools/astrolog
   const allowed = (url) => url.startsWith(BASE) || /^https:\/\/fonts\.(googleapis|gstatic)\.com\//.test(url);
   const leaks = requests.filter((r) => !allowed(r.url) || /1990|08-15|15-08/.test(r.url + r.body));
   check('loshu-grid: no request carries the date of birth', leaks.length === 0, leaks.map((r) => r.url).join(', '));
+  // K1 fills 9-5-1 and 8-1-6 and no other line, so exactly those two arrows are drawn and named.
+  const arrows = await page.locator('[data-testid="loshu-arrows"] [data-line]').evaluateAll((els) => els.map((e) => e.getAttribute('data-line')).sort());
+  const named = await page.locator('[data-testid="loshu-lines"]').innerText();
+  check('loshu-grid: an arrow is drawn for each complete line and no other', arrows.join(',') === 'practical,will', arrows.join(','));
+  check('loshu-grid: the complete lines are named under the grid', /Will plane/.test(named) && /Practical plane/.test(named) && /Golden Raj Yog \(4-5-6\) is not formed/.test(named), named);
+}
+
+// 2e. Numerology Calculator: a birthday with 4, 5 and 6 (14 June 1985) shows the Golden Raj Yog
+//     with its arrow on the grid.
+{
+  await open(page, '/tools/numerology');
+  await page.waitForSelector('#blueprint-name', { timeout: 15000 });
+  await page.fill('#blueprint-name', 'Asha Rao');
+  await page.selectOption('select[aria-label="Day"]', '14');
+  await page.selectOption('select[aria-label="Month"]', '6');
+  await page.selectOption('select[aria-label="Year"]', '1985');
+  await page.getByRole('button', { name: 'Show my numbers' }).click();
+  await page.waitForSelector('#tool table', { timeout: 10000 });
+  const arrows = await page.locator('[data-testid="loshu-arrows"] [data-line]').evaluateAll((els) => els.map((e) => e.getAttribute('data-line')));
+  const text = await page.locator('#tool').innerText();
+  check('numerology: the completed Golden Raj Yog has an arrow on the grid', arrows.includes('golden'), arrows.join(','));
+  check('numerology: the completed Golden Raj Yog is named and read', /Golden Raj Yog \(4-5-6\)\./.test(text) && /The 4-5-6 diagonal is complete/.test(text));
+}
+
+// 2f. Mobile number with a date of birth: a compatibility level, a reading for every pair, the
+//     Raj yog of 1 and 7, and no request carrying the number.
+{
+  await open(page, '/tools/mobile-numerology');
+  await page.waitForSelector('#mobile-number', { timeout: 15000 });
+  const requests = [];
+  page.on('request', (r) => requests.push({ url: r.url(), body: r.postData() ?? '' }));
+  await page.fill('#mobile-number', '98171 45678');
+  await page.getByRole('button', { name: 'Read this number' }).click();
+  await page.waitForSelector('[data-testid="mobile-pairs"]', { timeout: 10000 });
+  check('mobile-numerology: without a date of birth it asks for one', /Add your date of birth above/.test(await page.locator('#tool').innerText()));
+  await page.selectOption('select[aria-label="Day"]', '14');
+  await page.selectOption('select[aria-label="Month"]', '6');
+  await page.selectOption('select[aria-label="Year"]', '1985');
+  await page.getByRole('button', { name: 'Read this number' }).click();
+  await page.waitForSelector('[data-testid="mobile-compatibility"]', { timeout: 10000 });
+  // Root 2 (Moon) with Mulank 5 (Mercury) is mixed, 0; with Bhagyank 7 (Ketu) unfriendly, −2: level 2.
+  const level = await page.locator('[data-testid="mobile-compatibility"]').innerText();
+  check('mobile-numerology: shows the compatibility level with the date of birth', /Compatibility level/i.test(level) && /Low/.test(level) && /level 2 of 5/.test(level), level.slice(0, 120));
+  const rows = await page.locator('[data-testid="mobile-pairs"] tbody tr').count();
+  check('mobile-numerology: every neighbouring pair has a row', rows === 9, `found ${rows}`);
+  const pairs = await page.locator('[data-testid="mobile-pairs"]').innerText();
+  check('mobile-numerology: pairs carry the chart class and their own reading', /Benefic/.test(pairs) && /Malefic/.test(pairs) && /Sun with Ketu a Raj yog/.test(pairs) && /Bandhan yog/.test(pairs));
+  check('mobile-numerology: the Raj yog note checks for an 8', /also contains an 8/.test(await page.locator('[data-testid="mobile-raj-yog"]').innerText()));
+  const leaks = requests.filter((r) => /9817145678|98171/.test(r.url + r.body));
+  check('mobile-numerology: no request carries the number', leaks.length === 0, leaks.map((r) => r.url).join(', '));
 }
 
 // 3. Removed claims are not on screen.

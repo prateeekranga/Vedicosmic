@@ -6,7 +6,7 @@ import {
   type CalcStep, type CoreNumber, type NumerologyProfile, type PersonalCycles,
 } from '@/engine/numerology';
 import { localDateKey } from '@/engine/time';
-import { KUA_TEXT, MISSING_TEXT } from '@/data/numerology/loshuText';
+import { KUA_TEXT, LINE_TEXT, MISSING_TEXT } from '@/data/numerology/loshuText';
 import { CORE_ROLE, CYCLE_TEXT, KARMIC_DEBT_TEXT, KARMIC_LESSON_TEXT, NUMBER_TRAIT } from '@/data/numerology/westernText';
 import { compoundReading } from '@/data/numerology/chaldeanCompounds';
 import {
@@ -79,6 +79,10 @@ export default function BlueprintTool() {
   const w = result?.profile.western;
   const grid = result?.profile.loShu;
   const ch = result?.profile.chaldean;
+  // The two Raj Yogs first, then the planes, in the order the grid draws their arrows.
+  const completeLines = grid
+    ? [...grid.full.lines.filter((l) => l.status === 'full')].sort((a, b) => Number(b.kind === 'diagonal') - Number(a.kind === 'diagonal'))
+    : [];
 
   useShareResult(w ? `My numerology: Life Path ${coreLabel(w.lifePath)}${w.expression ? `, Expression ${coreLabel(w.expression)}` : ''}.` : null);
 
@@ -183,8 +187,19 @@ export default function BlueprintTool() {
                     ? <>Missing from the grid: {grid.full.missing.join(', ')}. {MISSING_TEXT[grid.full.missing[0]].meaning}</>
                     : 'Every number from 1 to 9 is present in the grid.'}
                 </p>
+                {completeLines.length > 0 ? (
+                  <ul className="space-y-2">
+                    {completeLines.map((l) => (
+                      <li key={l.id} className="rounded-xl border border-white/10 bg-white/[0.03] p-3 text-sm leading-relaxed text-white/70">
+                        <span className="font-medium text-white">{LINE_TEXT[l.id].name} ({l.cells.join('-')}).</span> {LINE_TEXT[l.id].full}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-sm leading-relaxed text-white/70">No line of three is complete in this grid, so it forms no plane or yog yet.</p>
+                )}
                 <p className="text-sm text-white/65">
-                  For the planes, yogs, repeated numbers and Kua directions, open the{' '}
+                  For every plane and yog, the repeated numbers and the Kua directions, open the{' '}
                   <Link to="/tools/loshu-grid" className={LINK}>Lo Shu Grid Calculator</Link>.
                 </p>
               </div>

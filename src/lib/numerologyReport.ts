@@ -17,7 +17,8 @@ import {
   CHALLENGE_TEXT, CORE_ROLE, CYCLE_TEXT, KARMIC_DEBT_TEXT, KARMIC_LESSON_TEXT, LIFE_PATH_TEXT, NUMBER_TRAIT, PINNACLE_TEXT,
 } from '@/data/numerology/westernText';
 import { compoundReading } from '@/data/numerology/chaldeanCompounds';
-import { PAIR_TEXT, ROOT_FIT_TEXT, SAME_ROOT_TEXT, ZERO_TEXT, DOUBLE_TEXT } from '@/data/numerology/mobileText';
+import { LEVEL_LABEL, LEVEL_TEXT, ROOT_FIT_TEXT, SAME_ROOT_TEXT } from '@/data/numerology/mobileText';
+import { IMPACT_LABEL, IMPACT_NOTE, RAJ_YOG_NOTE, YOGA_LABEL, pairReading } from '@/data/numerology/mobilePairText';
 
 export interface ReportSection {
   heading: string;
@@ -192,19 +193,14 @@ export function mobileSections(m: MobileResult): ReportSection[] {
       ...(m.heavy.length ? [`Appearing three times or more: ${m.heavy.map((h) => `${h.digit} (×${h.count})`).join(', ')}.`] : []),
       ...(m.absent.length ? [`Not in the number: ${m.absent.join(', ')}.`] : []),
     ],
-  }, {
-    heading: 'Neighbouring pairs',
-    lines: m.pairs.map((p) => {
-      const text = p.kind === 'zero' ? ZERO_TEXT : p.kind === 'double' ? DOUBLE_TEXT[p.pair[0] as Digit] : PAIR_TEXT[p.relation!];
-      return `${p.pair.join('')}${p.count > 1 ? ` (×${p.count})` : ''}: ${text}`;
-    }),
   }];
   if (m.withBirth) {
     const b = m.withBirth;
     const fit = (own: Digit, rel: typeof b.rootToDriver) => (own === m.root ? SAME_ROOT_TEXT : ROOT_FIT_TEXT[rel.mutual]);
     sections.push({
-      heading: 'With your birth numbers',
+      heading: 'Compatibility with your date of birth',
       lines: [
+        `Compatibility level: ${LEVEL_LABEL[b.compatibility.level]}, level ${b.compatibility.level} of 5. ${LEVEL_TEXT[b.compatibility.level]}`,
         `With your Driver ${b.driver}: ${fit(b.driver, b.rootToDriver)}`,
         `With your Conductor ${b.conductor}: ${fit(b.conductor, b.rootToConductor)}`,
         b.suppliesMissing.length
@@ -213,5 +209,14 @@ export function mobileSections(m: MobileResult): ReportSection[] {
       ],
     });
   }
+  sections.push({
+    heading: 'Two-digit combinations',
+    lines: [
+      ...m.pairs.map((p) => `${p.pair.join('')}${p.count > 1 ? ` (×${p.count})` : ''}, ${IMPACT_LABEL[p.impact].toLowerCase()}${p.yoga ? `, ${YOGA_LABEL[p.yoga]}` : ''}: ${pairReading(p.pair[0], p.pair[1])}`),
+      ...(m.rajYog ? [m.rajYog.weakenedByEight ? RAJ_YOG_NOTE.weakened : RAJ_YOG_NOTE.clear] : []),
+      IMPACT_NOTE,
+    ],
+  });
+  sections.push({ heading: 'How this was calculated', lines: m.steps.map((s) => `${s.label}: ${s.result}. ${s.working}`) });
   return sections;
 }

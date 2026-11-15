@@ -7,8 +7,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
-  DIGITS, LOSHU_INDIAN_STANDARD, RELATION_TABLE, analyseMobile, birthdayNumber, chaldeanName, daysInMonth,
-  expression, gridDigits, isValidYMD, kua, lifePath, loShu, normalizeMobile, normalizeName, pairRelation,
+  DIGITS, LOSHU_INDIAN_STANDARD, RELATION_POINTS, RELATION_TABLE, analyseMobile, birthdayNumber, chaldeanName,
+  compatibilityLevel, daysInMonth, expression, gridDigits, isValidYMD, kua, lifePath, loShu, mobileCompatibility,
+  normalizeMobile, normalizeName, pairImpact, pairRelation,
   parseISODate, personalCycles, pinnacles, profile, reduce, relationsOf, rootOf, soulUrge,
   type Digit, type Gender, type LoShuConfig, type YMD,
 } from '@/engine/numerology';
@@ -203,13 +204,63 @@ describe('names and phone numbers', () => {
     expect(analyseMobile('hello')).toBeNull();
   });
 
-  it('reads neighbouring digit pairs from the friendship table', () => {
+  it('classes neighbouring digit pairs by the two-digit combination chart', () => {
     const r = analyseMobile('9811005566')!;
     expect(r.root).toBe(rootOf(9 + 8 + 1 + 1 + 0 + 0 + 5 + 5 + 6 + 6));
-    expect(r.pairs.find((p) => p.pair.join('') === '98')).toMatchObject({ kind: 'planetary', relation: pairRelation(9, 8).mutual });
-    expect(r.pairs.find((p) => p.pair.join('') === '11')).toMatchObject({ kind: 'double', relation: null });
-    expect(r.pairs.find((p) => p.pair.join('') === '10')).toMatchObject({ kind: 'zero', relation: null });
+    expect(r.pairs.map((p) => p.pair.join(''))).toEqual(['98', '81', '11', '10', '00', '05', '55', '56', '66']);
+    expect(r.pairs.find((p) => p.pair.join('') === '98')).toMatchObject({ kind: 'planetary', impact: 'malefic', yoga: null });
+    expect(r.pairs.find((p) => p.pair.join('') === '11')).toMatchObject({ kind: 'double', impact: 'benefic' });
+    expect(r.pairs.find((p) => p.pair.join('') === '10')).toMatchObject({ kind: 'zero', impact: 'benefic' });
+    expect(r.pairs.find((p) => p.pair.join('') === '00')).toMatchObject({ kind: 'double', impact: 'neutral' });
+    expect(r.pairTally).toEqual({ benefic: 5, neutral: 2, malefic: 2 });
+    expect(r.pairTally.benefic + r.pairTally.neutral + r.pairTally.malefic).toBe(r.pairs.length);
+    expect(r.rajYog).toBeNull();
     expect(r.frequency.reduce((a, b) => a + b, 0)).toBe(10);
+  });
+
+  it('counts a repeated pair once and reads the chart the same both ways round, except 12 and 21', () => {
+    const r = analyseMobile('7171212345')!;
+    expect(r.pairs.find((p) => p.pair.join('') === '71')).toMatchObject({ count: 2, impact: 'benefic', yoga: 'raj' });
+    expect(r.pairs.find((p) => p.pair.join('') === '45')).toMatchObject({ impact: 'malefic', yoga: 'bandhan' });
+    for (let a = 0; a <= 9; a++) {
+      for (let b = 0; b <= 9; b++) {
+        if (`${a}${b}` === '12' || `${a}${b}` === '21') continue;
+        expect(pairImpact(a, b), `${a}${b}`).toBe(pairImpact(b, a));
+      }
+    }
+    expect(pairImpact(1, 2)).toBe('benefic');
+    expect(pairImpact(2, 1)).toBe('neutral');
+  });
+
+  it('flags the Raj yog of 1 and 7, and whether an 8 weakens it', () => {
+    expect(analyseMobile('9417026530')!.rajYog).toEqual({ weakenedByEight: false });
+    expect(analyseMobile('9817145678')!.rajYog).toEqual({ weakenedByEight: true });
+    expect(analyseMobile('9876543210')!.rajYog).toBeNull();
+  });
+
+  it('gives a compatibility level from the two friendship comparisons', () => {
+    // 15 August 1990: Driver 6, Conductor 6. A number with root 6 is the same number on both counts.
+    const date = { y: 1990, m: 8, d: 15 };
+    expect(analyseMobile('9999999996', { date })!.withBirth!.compatibility).toEqual({ driverPoints: 2, conductorPoints: 2, points: 4, level: 5 });
+    // Root 1 (Sun) and 6 (Venus) are unfriendly on both sides.
+    expect(analyseMobile('9999999991', { date })!.withBirth!.compatibility).toEqual({ driverPoints: -2, conductorPoints: -2, points: -4, level: 1 });
+    expect(analyseMobile('9876543210')!.withBirth).toBeNull();
+    expect(analyseMobile('9876543210', { date })!.steps.at(-1)).toMatchObject({ key: 'compatibility' });
+
+    expect([-4, -3, -2, -1, 0, 1, 2, 3, 4].map(compatibilityLevel)).toEqual([1, 1, 2, 2, 3, 4, 4, 5, 5]);
+    for (const root of DIGITS) {
+      for (const driver of DIGITS) {
+        for (const conductor of DIGITS) {
+          const c = mobileCompatibility(root, driver, conductor);
+          expect(c.driverPoints).toBe(RELATION_POINTS[pairRelation(root, driver).mutual]);
+          expect(c.points).toBe(c.driverPoints + c.conductorPoints);
+          expect(c.level).toBe(compatibilityLevel(c.points));
+          // Swapping Driver and Conductor never changes the level: the two count equally.
+          expect(mobileCompatibility(root, conductor, driver).level).toBe(c.level);
+        }
+      }
+      expect(mobileCompatibility(root, root, root).level).toBe(5);
+    }
   });
 });
 

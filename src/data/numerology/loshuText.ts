@@ -54,14 +54,14 @@ export const LINE_TEXT: Readonly<Record<LineId, LineText>> = {
     empty: 'The right column is empty. Tradition reads this as hesitation before starting, eased by beginning with the smallest possible step.',
   },
   golden: {
-    name: 'Golden yog', theme: 'the 4-5-6 diagonal, traditionally called the success line',
-    full: 'The 4-5-6 diagonal is complete. Teachers call this the golden yog or raj yog and read it as steady effort that tends to be noticed and rewarded.',
+    name: 'Golden Raj Yog', theme: 'the 4-5-6 diagonal, traditionally called the success line',
+    full: 'The 4-5-6 diagonal is complete. Teachers call this the Golden Raj Yog, or simply raj yog, and read it as steady effort that tends to be noticed and rewarded.',
     partial: 'Two of the three numbers of the golden diagonal are present. The line is forming; tradition says the missing number is the quality to cultivate to complete it.',
     empty: 'The 4-5-6 diagonal is empty. Tradition reads this only as recognition arriving later and through persistence, not as a lack of ability.',
   },
   silver: {
-    name: 'Silver yog', theme: 'the 2-5-8 diagonal, traditionally linked with property and settled assets',
-    full: 'The 2-5-8 diagonal is complete. Teachers call this the silver yog and associate it with a talent for building security patiently over time.',
+    name: 'Silver Raj Yog', theme: 'the 2-5-8 diagonal, traditionally linked with property and settled assets',
+    full: 'The 2-5-8 diagonal is complete. Teachers call this the Silver Raj Yog and associate it with a talent for building security patiently over time.',
     partial: 'Two of the three numbers of the silver diagonal are present. The line is forming; the missing number names the habit that would steady it.',
     empty: 'The 2-5-8 diagonal is empty. Tradition reads this as security built gradually, with care needed over large commitments.',
   },

@@ -2,13 +2,17 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { RotateCcw, Sparkles } from 'lucide-react';
 import {
-  formatYMD, normalizeName, parseISODate, personalCycles, profile,
-  type CalcStep, type CoreNumber, type NumerologyProfile, type PersonalCycles,
+  compareYMD, dashaOn, formatYMD, normalizeName, parseISODate, personalCycles, profile,
+  type CalcStep, type CoreNumber, type DashaNow, type ExpressionPlane, type NumerologyProfile, type PersonalCycles,
 } from '@/engine/numerology';
 import { localDateKey } from '@/engine/time';
 import { KUA_TEXT, LINE_TEXT, MISSING_TEXT } from '@/data/numerology/loshuText';
 import { CORE_ROLE, CYCLE_TEXT, KARMIC_DEBT_TEXT, KARMIC_LESSON_TEXT, NUMBER_TRAIT } from '@/data/numerology/westernText';
 import { compoundReading } from '@/data/numerology/chaldeanCompounds';
+import { DASHA_ROLE, DASHA_TEXT } from '@/data/numerology/dashaText';
+import {
+  BALANCE_TEXT, EXTRA_ROLE, HIDDEN_PASSION_TEXT, PLANE_TEXT, letterReading, rationalThoughtReading, subconsciousReading,
+} from '@/data/numerology/nameExtraText';
 import {
   REPORT_FOOTER, chaldeanSections, coreLabel, coreWorking, loShuSections, westernSections, type Report,
 } from '@/lib/numerologyReport';
@@ -28,9 +32,10 @@ import { useToast } from '@/contexts/ToastContext';
 const H3 = 'mb-3 font-heading text-h5 text-white';
 const LINK = 'text-brand-cyan-soft underline underline-offset-2 hover:text-white';
 
-interface Result { displayName: string; profile: NumerologyProfile; cycles: PersonalCycles }
+interface Result { displayName: string; profile: NumerologyProfile; cycles: PersonalCycles; now: DashaNow | null }
+const PLANES: readonly ExpressionPlane[] = ['physical', 'mental', 'emotional', 'intuitive'];
 
-function steps(p: NumerologyProfile): CalcStep[] {
+function steps(p: NumerologyProfile, now: DashaNow | null): CalcStep[] {
   const w = p.western;
   const step = (key: string, label: string, n: CoreNumber | null): CalcStep[] =>
     (n ? [{ key, label, working: `${coreWorking(n)}.`, result: coreLabel(n) }] : []);
@@ -40,7 +45,10 @@ function steps(p: NumerologyProfile): CalcStep[] {
     ...step('su', 'Soul Urge (vowels A, E, I, O, U)', w.soulUrge),
     ...step('pe', 'Personality (consonants; Y counts as a consonant)', w.personality),
     ...step('ma', 'Maturity', w.maturity),
+    ...step('rt', 'Rational Thought (first name plus the day of birth)', w.rationalThought),
+    ...(w.balance ? [{ key: 'ba', label: 'Balance (initials)', working: `${w.balance.initials.map((i) => `${i.letter} ${i.value}`).join(' + ')} = ${w.balance.total}.`, result: String(w.balance.value) }] : []),
     ...p.loShu.steps,
+    ...(now?.steps ?? []),
     ...(p.chaldean ? p.chaldean.steps.filter((s) => s.key === 'compound' || s.key === 'root').map((s) => ({ ...s, key: `ch-${s.key}`, label: `Chaldean ${s.label.toLowerCase()}` })) : []),
   ];
 }
@@ -67,10 +75,13 @@ export default function BlueprintTool() {
       return;
     }
     setError('');
+    const today = parseISODate(localDateKey())!;
     setResult({
       displayName: name.trim(),
       profile: profile({ date, gender: gender || null, name }),
-      cycles: personalCycles(date, parseISODate(localDateKey())!),
+      cycles: personalCycles(date, today),
+      // The dasha periods are read for today's date on this device.
+      now: compareYMD(today, date) >= 0 ? dashaOn(date, today) : null,
     });
   };
 
@@ -98,7 +109,7 @@ export default function BlueprintTool() {
   const report: Report | null = result && w && grid ? {
     title: 'Numerology Report',
     subtitle: `${result.displayName} · born ${formatYMD(grid.date)}`,
-    sections: [...westernSections(w), ...loShuSections(grid), ...(ch ? chaldeanSections(ch) : [])],
+    sections: [...westernSections(w), ...loShuSections(grid, result.now), ...(ch ? chaldeanSections(ch) : [])],
     footer: REPORT_FOOTER,
   } : null;
 
@@ -170,6 +181,83 @@ export default function BlueprintTool() {
             </section>
           )}
 
+          {w.hiddenPassion && (
+            <section data-testid="numerology-more">
+              <h3 className={H3}>More from your name</h3>
+              <p className="mb-4 max-w-3xl text-sm leading-relaxed text-white/65">
+                Four further numbers, three letters and the planes of expression, all read from the name as you typed it.
+              </p>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {w.hiddenPassion.numbers.map((d) => (
+                  <NumberCard key={d} label="Hidden Passion" value={d} system="Pythagorean (Western)" note={EXTRA_ROLE.hiddenPassion}>
+                    {HIDDEN_PASSION_TEXT[d]} {w.hiddenPassion!.count} of your {w.planes?.letters ?? ''} letters carry it.
+                  </NumberCard>
+                ))}
+                {w.subconsciousSelf && (
+                  <NumberCard label="Subconscious Self" value={w.subconsciousSelf} system="Pythagorean (Western)" note={EXTRA_ROLE.subconsciousSelf}>
+                    {subconsciousReading(w.subconsciousSelf)}
+                  </NumberCard>
+                )}
+                {w.balance && (
+                  <NumberCard label="Balance" value={w.balance.value} system="Pythagorean (Western)" note={EXTRA_ROLE.balance}>
+                    {BALANCE_TEXT[w.balance.value]}
+                  </NumberCard>
+                )}
+                {w.rationalThought && (
+                  <NumberCard label={`Rational Thought ${w.rationalThought.master ? coreLabel(w.rationalThought) : ''}`.trim()} value={w.rationalThought.value} system="Pythagorean (Western)" note={EXTRA_ROLE.rationalThought}>
+                    {rationalThoughtReading(w.rationalThought.value)}
+                  </NumberCard>
+                )}
+              </div>
+              {w.specialLetters && (
+                <div className="mt-3 grid gap-3 md:grid-cols-3">
+                  <LetterCard label="Cornerstone" letter={w.specialLetters.cornerstone} role={EXTRA_ROLE.cornerstone} />
+                  <LetterCard label="Capstone" letter={w.specialLetters.capstone} role={EXTRA_ROLE.capstone} />
+                  {w.specialLetters.firstVowel
+                    ? <LetterCard label="First Vowel" letter={w.specialLetters.firstVowel} role={EXTRA_ROLE.firstVowel} />
+                    : (
+                      <div className="rounded-xl border border-dashed border-white/20 p-4 text-sm leading-relaxed text-white/65">
+                        <h4 className="font-medium text-white">First Vowel</h4>
+                        <p className="mt-1">Your first name has none of A, E, I, O, U, so it has no First Vowel.</p>
+                      </div>
+                    )}
+                </div>
+              )}
+              {w.planes && (
+                <div className="mt-3 rounded-xl border border-white/10 bg-white/[0.04] p-4">
+                  <h4 className="font-medium text-white">Planes of Expression</h4>
+                  <table className="mt-2 w-full text-sm">
+                    <caption className="sr-only">How many letters of the name fall on each of the four planes of expression</caption>
+                    <thead className="sr-only"><tr><th scope="col">Plane</th><th scope="col">Letters</th></tr></thead>
+                    <tbody>
+                      {PLANES.map((plane) => {
+                        const count = w.planes!.counts[plane];
+                        const top = Math.max(...PLANES.map((k) => w.planes!.counts[k]), 1);
+                        return (
+                          <tr key={plane}>
+                            <th scope="row" className="w-36 py-1.5 pr-3 text-left font-normal align-top">
+                              <span className="block text-white">{PLANE_TEXT[plane].name}</span>
+                              <span className="block text-xs text-white/55">{PLANE_TEXT[plane].letters}</span>
+                            </th>
+                            <td className="py-1.5">
+                              <span className="flex items-center gap-3">
+                                <span aria-hidden="true" className="h-2.5 rounded-full bg-brand-cyan/70" style={{ width: `${(count / top) * 60}%`, minWidth: count ? '0.5rem' : 0 }} />
+                                <span className="text-white/75">{count === 1 ? '1 letter' : `${count} letters`}{w.planes!.strongest.includes(plane) && count > 0 ? ', strongest' : ''}</span>
+                              </span>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                  <p className="mt-3 text-sm leading-relaxed text-white/70">
+                    {w.planes.strongest.map((plane) => `${PLANE_TEXT[plane].name}. ${PLANE_TEXT[plane].text}`).join(' ')}
+                  </p>
+                </div>
+              )}
+            </section>
+          )}
+
           <section>
             <h3 className={H3}>Indian numbers and Lo Shu grid</h3>
             <div className="grid gap-8 lg:grid-cols-[minmax(0,380px)_1fr]">
@@ -206,6 +294,29 @@ export default function BlueprintTool() {
             </div>
           </section>
 
+          {result.now && (
+            <section data-testid="numerology-dasha">
+              <h3 className={H3}>Dasha periods now</h3>
+              <div className="grid gap-3 md:grid-cols-3">
+                <NumberCard label="Maha Dasha" value={result.now.maha.number} system="Indian numerology"
+                  note={`Age ${result.now.maha.fromAge} to ${result.now.maha.toAge}. ${DASHA_ROLE.maha}`}>
+                  {DASHA_TEXT[result.now.maha.number]}
+                </NumberCard>
+                <NumberCard label="Antar Dasha" value={result.now.antar.number} system="Indian numerology"
+                  note={`Until ${formatYMD(result.now.antar.until)}. ${DASHA_ROLE.antar}`}>
+                  {DASHA_TEXT[result.now.antar.number]}
+                </NumberCard>
+                <NumberCard label="Pratyantar Dasha" value={result.now.pratyantar.number} system="Indian numerology"
+                  note={`Until ${formatYMD(result.now.pratyantar.until)}. ${DASHA_ROLE.pratyantar}`}>
+                  {DASHA_TEXT[result.now.pratyantar.number]}
+                </NumberCard>
+              </div>
+              <p className="mt-3 text-sm text-white/65">
+                The <Link to="/tools/loshu-grid" className={LINK}>Lo Shu Grid Calculator</Link> draws your grid with these numbers added and lists the next five years.
+              </p>
+            </section>
+          )}
+
           {ch && (
             <section>
               <h3 className={H3}>Name number (Chaldean)</h3>
@@ -237,15 +348,29 @@ export default function BlueprintTool() {
           </section>
 
           <section className="space-y-4">
-            <HowCalculated steps={steps(result.profile)} />
-            <NumerologyMethodLine method="Western numbers use Pythagorean letter values and the component method; the grid, Mulank and Bhagyank follow the Indian Lo Shu method; the name number uses Cheiro’s Chaldean values." />
+            <HowCalculated steps={steps(result.profile, result.now)} />
+            <NumerologyMethodLine method="Western numbers use Pythagorean letter values and the component method; the grid, Mulank, Bhagyank and dasha follow the Indian Lo Shu method; the name number uses Cheiro’s Chaldean values." />
             <ResultActions toolSlug="numerology" onSave={save} saveLabel="Save this report" />
           </section>
 
           <PrintReport report={report} />
-          <p className="text-xs text-white/55">Printing gives the full report, including every plane, repeated number and missing number in the grid.</p>
+          <p className="text-xs text-white/55">Printing gives the full report, including every plane, repeated number and missing number in the grid, the dasha for the next five years, and the directions and favourable dates.</p>
         </div>
       )}
+    </div>
+  );
+}
+
+/** One of the three special letters of the first name, with its role and reading. */
+function LetterCard({ label, letter, role }: { label: string; letter: string; role: string }) {
+  return (
+    <div className="h-full rounded-xl border border-white/10 bg-white/[0.04] p-4">
+      <div className="flex items-center gap-3">
+        <span className="grid h-12 min-w-12 flex-none place-items-center rounded-lg border border-gold-soft/40 bg-gold-bright/10 px-2 font-heading text-xl font-bold text-gold-pale">{letter}</span>
+        <h4 className="text-sm font-medium text-white">{label}</h4>
+      </div>
+      <p className="mt-2 text-xs leading-snug text-white/60">{role}</p>
+      <p className="mt-2 text-sm leading-relaxed text-white/75">{letterReading(letter)}</p>
     </div>
   );
 }

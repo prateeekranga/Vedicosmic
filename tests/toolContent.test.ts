@@ -83,7 +83,7 @@ describe('tool page content', () => {
         ...(c.method.limits ?? []), ...c.faq.items.flatMap((f) => [f.header, f.body]),
       ].join(' ');
       expect(words(text), `${c.slug} word count`).toBeGreaterThanOrEqual(450);
-      expect(words(text), `${c.slug} word count`).toBeLessThanOrEqual(1200);
+      expect(words(text), `${c.slug} word count`).toBeLessThanOrEqual(1500);
     }
   });
 

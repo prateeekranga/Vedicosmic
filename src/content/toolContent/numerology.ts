@@ -2,8 +2,8 @@ import type { ToolContent } from '@/types/tool.types';
 
 const content: ToolContent = {
   slug: 'numerology',
-  lastReviewed: '2026-11-14',
-  lede: 'Enter your name and date of birth for a full numerology report. It gives the six core numbers of the Western system, your karmic numbers, your Mulank, Bhagyank and Kua with a Lo Shu grid, and your Chaldean name number, each with its working.',
+  lastReviewed: '2026-11-15',
+  lede: 'Enter your name and date of birth for a full numerology report. It gives the six core numbers of the Western system, your karmic numbers, ten more readings from your name, your Mulank, Bhagyank and Kua with a Lo Shu grid, your current dasha, and your Chaldean name number.',
   toolHeading: 'Calculate your numerology report',
   about: {
     heading: 'What this numerology calculator covers',
@@ -29,7 +29,12 @@ const content: ToolContent = {
       { term: 'Soul Urge', text: 'From the vowels. What a person privately wants. Also called Heart’s Desire.' },
       { term: 'Personality', text: 'From the consonants. The first impression a person gives.' },
       { term: 'Karmic debt and karmic lessons', text: 'A debt is a total of 13, 14, 16 or 19 behind one of your numbers. A lesson is a number from 1 to 9 that no letter of your name carries.' },
-      { term: 'Mulank, Bhagyank and the grid', text: 'The Indian reading of the same date, shown with a small Lo Shu grid.' },
+      { term: 'Hidden Passion and Subconscious Self', text: 'Hidden Passion is the number most of your letters carry. Subconscious Self counts how many of the nine numbers your name has at all, and is read as how you meet the unexpected.' },
+      { term: 'Balance and Rational Thought', text: 'Balance adds your initials and is read as the approach to take in a difficult moment. Rational Thought adds your first name to the day you were born and is read as your way of thinking.' },
+      { term: 'Cornerstone, Capstone and First Vowel', text: 'Three letters of your first name: the first letter, the last letter and the first vowel. They are read as how you start, how you finish and what you keep private.' },
+      { term: 'Planes of Expression', text: 'Every letter belongs to one of four planes: physical, mental, emotional or intuitive. The plane with the most letters is read as the way you most naturally work.' },
+      { term: 'Mulank, Bhagyank and the grid', text: 'The Indian reading of the same date, shown with a small Lo Shu grid whose completed lines are marked with arrows.' },
+      { term: 'Dasha periods', text: 'The Maha, Antar and Pratyantar Dasha running today, from the Indian method.' },
       { term: 'Chaldean name number', text: 'The compound and root of your name in the Chaldean system, the one Indian numerologists use when advising on spellings.' },
     ],
   },
@@ -39,6 +44,7 @@ const content: ToolContent = {
     paragraphs: [
       'Name numbers are worked out word by word: each word is added down first, keeping 11, 22 and 33, and the results are then added together. The vowels are A, E, I, O and U; Y is always counted as a consonant. Letters with accents count as the plain letter, and anything outside A to Z is ignored.',
       'The date numbers follow the same rules as the Life Path and Lo Shu calculators, so the three pages always agree.',
+      'The further name numbers are counted the usual Western way. Hidden Passion is the commonest letter value and may be a tie. Balance brings the initials down to a single digit. Rational Thought, Cornerstone, Capstone and First Vowel use the first word you type, so put your given name first.',
     ],
     example: 'For the name John Smith: JOHN is 1 + 6 + 8 + 5 = 20, which reduces to 2, and SMITH is 1 + 4 + 9 + 2 + 8 = 24, which reduces to 6. The Expression number is 2 + 6 = 8. The vowels O and I give 6 + 9 = 15, so the Soul Urge is 6.',
     limits: [
@@ -65,16 +71,16 @@ const content: ToolContent = {
   features: [
     'Six Western core numbers',
     'Karmic debts and lessons',
+    'Hidden Passion, Balance, Rational Thought and Planes of Expression',
     'Mulank, Bhagyank and Kua with a Lo Shu grid',
-    'Chaldean name number',
-    'Printable report',
-    'Step-by-step working',
+    'Current Maha, Antar and Pratyantar Dasha',
+    'Chaldean name number and a printable report',
   ],
   appCategory: 'LifestyleApplication',
   topic: { name: 'Numerology', sameAs: 'https://en.wikipedia.org/wiki/Numerology' },
   aliases: ['Name Numerology Calculator', 'Numerology Report'],
   frame: 'compact',
-  keywords: { primary: 'numerology calculator', secondary: ['numerology by name and date of birth', 'expression number', 'soul urge number', 'name numerology'] },
+  keywords: { primary: 'numerology calculator', secondary: ['numerology by name and date of birth', 'expression number', 'soul urge number', 'name numerology', 'free numerology report', 'hidden passion number'] },
 };
 
 export default content;

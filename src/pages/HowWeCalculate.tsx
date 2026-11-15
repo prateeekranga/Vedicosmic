@@ -165,12 +165,24 @@ const sections: LegalSection[] = [
           <li>Kua: the digits of the calendar year of birth added down to one digit; 11 minus that digit for a man, 4 plus that digit for a woman, added down again. A result of 5 is read as 2 for a man and 8 for a woman.</li>
           <li>Lines: the three rows, three columns and two diagonals are each reported as complete, two of three, one of three or empty.</li>
           <li>Kua directions: the four favourable directions of the Eight Mansions school of feng shui for each Kua number.</li>
+          <li>Arrows: a line with all three of its numbers is drawn as an arrow on the grid. 4-5-6 is the Golden Raj Yog and 2-5-8 the Silver Raj Yog.</li>
+          <li>Maha Dasha: it starts at birth with the Driver. Each number runs for as many years as the number, and the numbers follow in order, 1 coming after 9.</li>
+          <li>Antar Dasha: one year, from birthday to birthday. The birth day, the birth month, the last two digits of that year and the number of the weekday on which the birthday falls are added down to one digit. Weekday numbers are Sunday 1, Monday 2, Tuesday 9, Wednesday 5, Thursday 3, Friday 6 and Saturday 8.</li>
+          <li>Pratyantar Dasha: nine parts of the year, starting with the Antar Dasha number. Number n lasts 8 times n days, the longer ones a day more so that the nine fill 365 days; the last one ends on the next birthday.</li>
+          <li>Dasha grid: the Maha Dasha and Antar Dasha numbers are added to the grid for as long as they run, and the page lists any line this completes.</li>
+          <li>Numero Vastu: with South at the top of the square, 1 is North, 2 South-West, 3 East, 4 South-East, 5 the centre, 6 North-West, 7 West, 8 North-East and 9 South.</li>
         </ul>
         <p>
           Other teachers fill the grid from the date digits alone, write the Driver every time, use only the last two
           digits of the year, or leave the Kua out. Feng shui teachers who count the Chinese solar year use the previous
           year for births before 4 February; the Lo Shu page tells you when that would change your Kua. Each of these is
           one setting in our code, so a rule can be changed and re-tested in one place.
+        </p>
+        <p>
+          The dasha here is numerology’s own, counted from the date of birth. It is separate from the Vimshottari dasha
+          of a birth chart. Teachers differ on whether the year enters the Antar Dasha as two digits or four, on where
+          the year turns for a 29 February birthday (we use 28 February), and on whether the short periods are exactly
+          8 days per number; those three are settings too.
         </p>
       </>
     ),
@@ -184,6 +196,10 @@ const sections: LegalSection[] = [
         <li>Name numbers use the Pythagorean letter values (A, J, S = 1 through I, R = 9), word by word. Expression takes every letter, Soul Urge the vowels A, E, I, O and U, and Personality the consonants. Y is always a consonant.</li>
         <li>Personal year: the birth month and day added to the calendar year, reduced to one digit; it changes on 1 January. Personal month adds the calendar month, and personal day the day of the month.</li>
         <li>Pinnacles: month plus day, day plus year, the sum of those two, and month plus year, each from single digits. The first ends at 36 minus the Life Path digit and the next two last nine years each. Challenges are the differences between the same pairs.</li>
+        <li>Hidden Passion: the number carried by the most letters of the name; a tie is shown as a tie. Subconscious Self: how many of the nine numbers the name carries at all.</li>
+        <li>Balance: the first letter of each word of the name, added down to one digit. Rational Thought: the letters of the first word plus the day of birth, reduced with 11 and 22 kept.</li>
+        <li>Cornerstone, Capstone and First Vowel: the first letter, last letter and first vowel of the first word of the name.</li>
+        <li>Planes of Expression: D, E, M, W are physical; A, G, H, J, L, N, P mental; B, I, O, R, S, T, X, Z emotional; C, F, K, Q, U, V, Y intuitive.</li>
       </ul>
     ),
   },

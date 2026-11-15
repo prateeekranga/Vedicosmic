@@ -101,6 +101,19 @@ for (const path of ['/', '/tools', '/tools/category/astrology', '/tools/astrolog
   const named = await page.locator('[data-testid="loshu-lines"]').innerText();
   check('loshu-grid: an arrow is drawn for each complete line and no other', arrows.join(',') === 'practical,will', arrows.join(','));
   check('loshu-grid: the complete lines are named under the grid', /Will plane/.test(named) && /Practical plane/.test(named) && /Golden Raj Yog \(4-5-6\) is not formed/.test(named), named);
+  // Dasha: which numbers are running depends on today's date, so only the structure is checked here
+  // (the numbers themselves are fixed by hand-worked cases in tests/numerology-depth.test.ts).
+  const dasha = await page.locator('[data-testid="loshu-dasha"]').innerText();
+  check('loshu-grid: shows the Maha, Antar and Pratyantar Dasha running today', /Maha Dasha/i.test(dasha) && /Antar Dasha/i.test(dasha) && /Pratyantar Dasha/i.test(dasha) && /Your grid in this period/i.test(dasha));
+  const yearRows = await page.locator('[data-testid="loshu-dasha"] details').first().locator('tbody tr').count();
+  check('loshu-grid: lists five dasha years', yearRows === 5, `found ${yearRows}`);
+  await page.getByText('With current dasha', { exact: true }).click();
+  await page.waitForTimeout(400);
+  const periodArrows = await page.locator('[data-testid="loshu-arrows"] [data-line]').evaluateAll((els) => els.map((e) => e.getAttribute('data-line')));
+  check('loshu-grid: the dasha view keeps the birth arrows and may add more', periodArrows.includes('will') && periodArrows.includes('practical'), periodArrows.join(','));
+  check('loshu-grid: the dasha view marks the added numbers', /M and A mark a number added/.test(await page.locator('#tool').innerText()));
+  const directions = await page.locator('[data-testid="loshu-directions"]').innerText();
+  check('loshu-grid: missing numbers are given their directions', /South-West \(2\), East \(3\), South-East \(4\), West \(7\)/.test(directions), directions.slice(0, 200));
 }
 
 // 2e. Numerology Calculator: a birthday with 4, 5 and 6 (14 June 1985) shows the Golden Raj Yog
@@ -118,6 +131,11 @@ for (const path of ['/', '/tools', '/tools/category/astrology', '/tools/astrolog
   const text = await page.locator('#tool').innerText();
   check('numerology: the completed Golden Raj Yog has an arrow on the grid', arrows.includes('golden'), arrows.join(','));
   check('numerology: the completed Golden Raj Yog is named and read', /Golden Raj Yog \(4-5-6\)\./.test(text) && /The 4-5-6 diagonal is complete/.test(text));
+  // ASHA RAO: four of seven letters carry 1; initials A + R = 10, so Balance 1; planes 4 mental, 3 emotional.
+  const more = await page.locator('[data-testid="numerology-more"]').innerText();
+  check('numerology: further name numbers are shown', /Hidden Passion/i.test(more) && /4 of your 7 letters carry it/.test(more) && /Balance 1:/.test(more) && /Subconscious Self/i.test(more) && /Rational Thought/i.test(more));
+  check('numerology: special letters and planes of expression are shown', /Cornerstone/i.test(more) && /Capstone/i.test(more) && /First Vowel/i.test(more) && /4 letters, strongest/.test(more));
+  check('numerology: the running dasha is shown', /Maha Dasha/i.test(await page.locator('[data-testid="numerology-dasha"]').innerText()));
 }
 
 // 2f. Mobile number with a date of birth: a compatibility level, a reading for every pair, the

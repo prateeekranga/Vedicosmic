@@ -166,3 +166,24 @@ violations. The remaining serious ones are the site-wide low-contrast patterns o
 Checks added this round: 83 unit tests (331 → 414), of which 55 are numerology (hand-worked cases, every date
 1900–2099, a lint of the reading text), 19 cover tool-page content and 7 the chakra scoring; tool-page guards in
 `scripts/verify-prerender.mjs`; and 14 new smoke checks (54 → 68).
+
+## After the numerology fixes and additions (15 November 2026, `upgrade/tools-1-fixes`)
+
+Two commits on top of tools round 1. The first puts back three things the rebuild dropped: arrows on the Lo Shu
+grid for complete lines, a compatibility level on the Mobile Number page, and a reading for every two-digit
+pair. The second adds what the paid numerology suites show and this site did not: Maha, Antar and Pratyantar
+Dasha with the grid read for the running period, Numero Vastu directions, favourable days and dates, and six
+further name numbers (Hidden Passion, Subconscious Self, Balance, Rational Thought, the Cornerstone, Capstone
+and First Vowel, and the Planes of Expression).
+
+axe (18 pages; the Numerology Calculator and Mobile Number results are now scanned as well): 0 critical, 9
+serious, the same nine as after round 1. Lo Shu Grid, Life Path, Numerology Calculator and Mobile Number have no
+violations with their results on screen.
+
+Checks added: 24 unit tests (414 → 438): the two-digit chart and compatibility level, hand-worked dasha cases,
+every calendar day from 1900 to 2100 for the weekday arithmetic, the further name numbers, and the reading text
+under the claims lint. 18 smoke checks (68 → 86) cover the arrows, the compatibility level, the pair chart, the
+dasha section and the name numbers in a real browser.
+
+Lighthouse was not re-run for these two commits. They add no fonts, images or site-wide scripts; the Lo Shu and
+Numerology Calculator chunks grew by the new sections.

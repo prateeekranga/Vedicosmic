@@ -4,7 +4,12 @@
  * readable.
  */
 import { describe, expect, it } from 'vitest';
-import { DIGITS, LOSHU_LINES, PAIR_IMPACT, PAIR_IMPACT_AS_WRITTEN, pairImpact } from '@/engine/numerology';
+import { DIGITS, LOSHU_LINES, PAIR_IMPACT, PAIR_IMPACT_AS_WRITTEN, PYTHAGOREAN_VALUES, pairImpact } from '@/engine/numerology';
+import { DASHA_GRID_NONE, DASHA_INTRO, DASHA_ROLE, DASHA_TEXT, FAVOURABLE_NOTE, NUMERO_VASTU_NOTE } from '@/data/numerology/dashaText';
+import {
+  BALANCE_TEXT, EXTRA_ROLE, HIDDEN_PASSION_TEXT, LETTER_TEXT, PLANE_TEXT, RATIONAL_THOUGHT_TEXT, SUBCONSCIOUS_TEXT,
+  letterReading, rationalThoughtReading, subconsciousReading,
+} from '@/data/numerology/nameExtraText';
 import { MASTER_TEXT, NUMBERS } from '@/data/numerology/numbers';
 import {
   KUA_TEXT, LINE_TEXT, MISSING_TEXT, RELATION_TEXT, REPEAT_TEXT, SAME_NUMBER_TEXT, lineReading, repeatReading,
@@ -22,11 +27,15 @@ const words = (s: string) => s.trim().split(/\s+/).length;
 
 /** Every sentence a visitor can be shown, gathered for the lint below. */
 function allText(): string[] {
-  const out: string[] = [SAME_NUMBER_TEXT, SAME_ROOT_TEXT, LEVEL_NEEDS_BIRTH, IMPACT_NOTE, RAJ_YOG_NOTE.clear, RAJ_YOG_NOTE.weakened];
+  const out: string[] = [SAME_NUMBER_TEXT, SAME_ROOT_TEXT, LEVEL_NEEDS_BIRTH, IMPACT_NOTE, RAJ_YOG_NOTE.clear, RAJ_YOG_NOTE.weakened,
+    DASHA_INTRO, DASHA_GRID_NONE, NUMERO_VASTU_NOTE, FAVOURABLE_NOTE, ...Object.values(DASHA_ROLE), ...Object.values(EXTRA_ROLE),
+    ...Object.values(SUBCONSCIOUS_TEXT), ...Object.values(RATIONAL_THOUGHT_TEXT), ...Object.values(PLANE_TEXT).map((p) => p.text),
+    ...Object.keys(LETTER_TEXT).map(letterReading)];
   for (const d of DIGITS) {
     const n = NUMBERS[d];
     out.push(n.strength, n.growthEdge, n.keyword, MISSING_TEXT[d].meaning, MISSING_TEXT[d].practice,
-      KARMIC_LESSON_TEXT[d], CYCLE_TEXT[d].year, CYCLE_TEXT[d].short, ...REPEAT_TEXT[d]);
+      KARMIC_LESSON_TEXT[d], CYCLE_TEXT[d].year, CYCLE_TEXT[d].short, ...REPEAT_TEXT[d],
+      DASHA_TEXT[d], HIDDEN_PASSION_TEXT[d], BALANCE_TEXT[d]);
   }
   for (const t of Object.values(MASTER_TEXT)) out.push(t.text);
   for (const t of Object.values(LINE_TEXT)) out.push(t.full, t.partial, t.empty, t.theme);
@@ -94,6 +103,23 @@ describe('numerology text: completeness', () => {
       expect(LEVEL_LABEL[level].length).toBeGreaterThan(2);
       expect(words(LEVEL_TEXT[level])).toBeLessThanOrEqual(34);
     }
+  });
+
+  it('has a reading for every dasha number, name number and letter', () => {
+    for (const d of DIGITS) {
+      expect(words(DASHA_TEXT[d]), `dasha ${d}`).toBeLessThanOrEqual(32);
+      expect(DASHA_TEXT[d]).toMatch(/^A period of /);
+      expect(HIDDEN_PASSION_TEXT[d]).toContain(` ${d} `);
+      expect(BALANCE_TEXT[d]).toMatch(new RegExp(`^Balance ${d}:`));
+      expect(rationalThoughtReading(d)).toMatch(new RegExp(`^Rational Thought ${d} `));
+    }
+    for (const master of [11, 22]) expect(rationalThoughtReading(master)).toContain(`Rational Thought ${master}`);
+    expect(rationalThoughtReading(33)).toBe(RATIONAL_THOUGHT_TEXT[6]);
+    for (let count = 1; count <= 9; count++) expect(subconsciousReading(count).length).toBeGreaterThan(40);
+    expect(subconsciousReading(2)).toBe(SUBCONSCIOUS_TEXT[3]);
+    expect(Object.keys(LETTER_TEXT).sort()).toEqual(Object.keys(PYTHAGOREAN_VALUES).sort());
+    for (const letter of Object.keys(LETTER_TEXT)) expect(words(letterReading(letter))).toBeLessThanOrEqual(16);
+    expect(Object.keys(PLANE_TEXT).sort()).toEqual(['emotional', 'intuitive', 'mental', 'physical']);
   });
 
   it('keeps each piece short enough to read at a glance', () => {

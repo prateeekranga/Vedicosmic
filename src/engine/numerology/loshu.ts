@@ -281,3 +281,12 @@ export function loShu(date: YMD, gender: Gender | null, config: LoShuConfig = LO
     relation: pairRelation(driver, conductor), steps,
   };
 }
+
+/**
+ * Numero Vastu: the direction each number of the square stands for. The Lo Shu is traditionally
+ * drawn with South at the top, so the top row 4 9 2 is South-East, South, South-West, and 5 is
+ * the centre of the home.
+ */
+export const NUMBER_DIRECTION: Readonly<Record<Digit, Direction | 'centre'>> = {
+  1: 'N', 2: 'SW', 3: 'E', 4: 'SE', 5: 'centre', 6: 'NW', 7: 'W', 8: 'NE', 9: 'S',
+};

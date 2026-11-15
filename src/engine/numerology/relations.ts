@@ -11,7 +11,7 @@
  * and each planet returns the same regard to them. Schools differ on these details, so a change
  * of school means editing this one table.
  */
-import { DIGITS, type Digit } from './core';
+import { DIGITS, rootOf, type Digit } from './core';
 
 export type Relation = 'friend' | 'neutral' | 'enemy';
 
@@ -80,4 +80,14 @@ export function relationTone(m: MutualRelation): 'supportive' | 'mixed' | 'chall
   if (m === 'mutual-friends' || m === 'friendly') return 'supportive';
   if (m === 'neutral' || m === 'mixed') return 'mixed';
   return 'challenging';
+}
+
+/**
+ * Dates of the month traditionally counted favourable for a Driver: those that add down to the
+ * Driver itself, and those that add down to a number its planet counts as a friend.
+ */
+export function favourableDates(driver: Digit): { own: number[]; friendly: number[] } {
+  const friends = new Set<Digit>(relationsOf(driver).friends);
+  const days = Array.from({ length: 31 }, (_, i) => i + 1);
+  return { own: days.filter((d) => rootOf(d) === driver), friendly: days.filter((d) => friends.has(rootOf(d))) };
 }

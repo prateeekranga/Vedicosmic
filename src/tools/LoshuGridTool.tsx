@@ -1,11 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Grid3x3, RotateCcw } from 'lucide-react';
-import { loShu, parseISODate, relationsOf, toISODate, type LineStatus, type LoShuResult } from '@/engine/numerology';
+import {
+  LOSHU_LAYOUT, LOSHU_LINES, NUMBER_DIRECTION, compareYMD, dashaGrid, dashaOn, dashaYears, favourableDates, formatYMD, loShu, mahaDashas,
+  parseISODate, relationsOf, toISODate, type DashaNow, type Digit, type LineId, type LineStatus, type LoShuResult,
+} from '@/engine/numerology';
+import { localDateKey } from '@/engine/time';
 import { NUMBERS } from '@/data/numerology/numbers';
 import {
   DIRECTION_NAME, KUA_DIRECTION_TEXT, KUA_GROUP_TEXT, KUA_TEXT, LINE_STATUS_LABEL, LINE_TEXT, MISSING_TEXT,
   RELATION_TEXT, SAME_NUMBER_TEXT, lineReading, repeatReading,
 } from '@/data/numerology/loshuText';
+import { DASHA_GRID_NONE, DASHA_INTRO, DASHA_ROLE, DASHA_TEXT, FAVOURABLE_NOTE, NUMERO_VASTU_NOTE } from '@/data/numerology/dashaText';
 import { loShuReport } from '@/lib/numerologyReport';
 import { takeResultLink } from '@/lib/resultLink';
 import { Button } from '@/components/ui/Button';
@@ -24,11 +29,19 @@ import { useToast } from '@/contexts/ToastContext';
 const STATUS_ORDER: Record<LineStatus, number> = { full: 0, partial: 1, single: 2, empty: 3 };
 const STATUS_TONE: Record<LineStatus, 'gold' | 'cyan' | 'neutral'> = { full: 'gold', partial: 'cyan', single: 'neutral', empty: 'neutral' };
 const H3 = 'mb-3 font-heading text-h5 text-white';
+const TABLE = 'w-full text-left text-sm';
+const TH = 'p-2.5 text-xs font-medium uppercase tracking-wide text-white/55';
+const TD = 'p-2.5 align-top text-white/75';
+const SUMMARY = 'cursor-pointer list-none px-4 py-3 text-sm font-medium text-white [&::-webkit-details-marker]:hidden';
+
+const directionOf = (d: Digit) => (NUMBER_DIRECTION[d] === 'centre' ? 'Centre' : DIRECTION_NAME[NUMBER_DIRECTION[d] as keyof typeof DIRECTION_NAME]);
+const lineNames = (ids: LineId[]) => ids.map((id) => `${LINE_TEXT[id].name} (${LOSHU_LINES.find((l) => l.id === id)!.cells.join('-')})`).join(', ');
 
 export default function LoshuGridTool() {
   const [dob, setDob] = useState('');
   const [gender, setGender] = useState<GenderChoice>('');
   const [result, setResult] = useState<LoShuResult | null>(null);
+  const [now, setNow] = useState<DashaNow | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const { saveReading } = useDeviceStore();
   const { notify } = useToast();
@@ -37,6 +50,9 @@ export default function LoshuGridTool() {
     const date = parseISODate(iso);
     if (!date) return;
     setResult(loShu(date, g || null));
+    // The dasha periods are read for today's date on this device.
+    const today = parseISODate(localDateKey());
+    setNow(today && compareYMD(today, date) >= 0 ? dashaOn(date, today) : null);
   };
 
   // A shared link reopens the tool with its result.
@@ -57,18 +73,23 @@ export default function LoshuGridTool() {
     () => (result ? [...result.full.lines].sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status]) : []),
     [result],
   );
+  const period = useMemo(() => (result && now ? dashaGrid(result, [now.maha.number, now.antar.number]) : null), [result, now]);
+  const years = useMemo(() => (result && now ? dashaYears(result, now.antar.year, 5) : []), [result, now]);
+  const mahas = useMemo(() => (result ? mahaDashas(result.date, 90) : []), [result]);
 
   const save = () => {
     if (!result) return;
     const kua = result.kua ? ` · Kua ${result.kua.mansion}` : '';
+    const dasha = now ? ` · Maha Dasha ${now.maha.number}, Antar Dasha ${now.antar.number}` : '';
     saveReading({
       toolId: 'loshu-grid', toolName: 'Lo Shu Grid',
-      summary: `Driver ${result.driver} (${NUMBERS[result.driver].planet}) · Conductor ${result.conductor} (${NUMBERS[result.conductor].planet})${kua} · Missing: ${result.full.missing.length ? result.full.missing.join(', ') : 'none'}`,
+      summary: `Driver ${result.driver} (${NUMBERS[result.driver].planet}) · Conductor ${result.conductor} (${NUMBERS[result.conductor].planet})${kua} · Missing: ${result.full.missing.length ? result.full.missing.join(', ') : 'none'}${dasha}`,
     });
     notify('Lo Shu grid saved on this device');
   };
 
   const friends = result ? relationsOf(result.driver) : null;
+  const dates = result ? favourableDates(result.driver) : null;
 
   return (
     <div className="space-y-10">
@@ -81,7 +102,7 @@ export default function LoshuGridTool() {
             <Grid3x3 className="mr-2 h-4 w-4" /> Make my grid
           </Button>
           {result && (
-            <Button variant="ghost" onClick={() => { setResult(null); setDob(''); setGender(''); }}>
+            <Button variant="ghost" onClick={() => { setResult(null); setNow(null); setDob(''); setGender(''); }}>
               <RotateCcw className="mr-2 h-4 w-4" /> Start again
             </Button>
           )}
@@ -93,7 +114,7 @@ export default function LoshuGridTool() {
           <div className="grid gap-8 lg:grid-cols-[minmax(0,420px)_1fr]">
             <Card className="p-5 sm:p-7">
               <h3 ref={heading} tabIndex={-1} className={`${H3} outline-none`}>Your Lo Shu grid</h3>
-              <LoShuGrid result={result} />
+              <LoShuGrid result={result} period={period && now ? { grid: period.grid, maha: now.maha.number, antar: now.antar.number } : undefined} />
             </Card>
 
             <div className="space-y-8">
@@ -135,18 +156,20 @@ export default function LoshuGridTool() {
                 </div>
               </section>
 
-              {friends && (
+              {friends && dates && (
                 <section>
-                  <h3 className={H3}>Friendly numbers and colours for Driver {result.driver}</h3>
+                  <h3 className={H3}>Friendly numbers, days and colours for Driver {result.driver}</h3>
                   <div className="grid gap-3 sm:grid-cols-2">
                     <Fact label="Friendly numbers" value={friends.friends.join(', ') || 'None'} />
                     <Fact label="Neutral numbers" value={friends.neutral.join(', ') || 'None'} />
                     <Fact label="Numbers its planet is cool towards" value={friends.enemies.join(', ') || 'None'} />
                     <Fact label={`Colours linked with ${NUMBERS[result.driver].planet}`} value={NUMBERS[result.driver].colours.join(', ')} />
+                    <Fact label="Favourable day" value={NUMBERS[result.driver].day ?? 'None of its own'} />
+                    <Fact label={`Gemstone linked with ${NUMBERS[result.driver].planet}`} value={NUMBERS[result.driver].gemstone} />
+                    <Fact label={`Dates that add down to ${result.driver}`} value={dates.own.join(', ')} />
+                    <Fact label="Dates of friendly numbers" value={dates.friendly.join(', ') || 'None'} small />
                   </div>
-                  <p className="mt-3 text-xs leading-relaxed text-white/60">
-                    Often called lucky and unlucky numbers. They follow the traditional friendships between the planets that rule each number, and are a matter of preference, not of fortune.
-                  </p>
+                  <p className="mt-3 text-xs leading-relaxed text-white/60">{FAVOURABLE_NOTE}</p>
                 </section>
               )}
             </div>
@@ -187,6 +210,109 @@ export default function LoshuGridTool() {
             )}
           </section>
 
+          {now && period && (
+            <section data-testid="loshu-dasha">
+              <h3 className={H3}>Your dasha periods now</h3>
+              <p className="mb-4 max-w-3xl text-sm leading-relaxed text-white/65">{DASHA_INTRO}</p>
+              <div className="grid gap-3 md:grid-cols-3">
+                <NumberCard label="Maha Dasha" value={now.maha.number} system="Indian numerology"
+                  note={`Age ${now.maha.fromAge} to ${now.maha.toAge}, until ${formatYMD(now.maha.until)}. ${DASHA_ROLE.maha}`}>
+                  {DASHA_TEXT[now.maha.number]}
+                </NumberCard>
+                <NumberCard label="Antar Dasha" value={now.antar.number} system="Indian numerology"
+                  note={`${formatYMD(now.antar.from)} until ${formatYMD(now.antar.until)}. ${DASHA_ROLE.antar}`}>
+                  {DASHA_TEXT[now.antar.number]}
+                </NumberCard>
+                <NumberCard label="Pratyantar Dasha" value={now.pratyantar.number} system="Indian numerology"
+                  note={`${formatYMD(now.pratyantar.from)} until ${formatYMD(now.pratyantar.until)}. ${DASHA_ROLE.pratyantar}`}>
+                  {DASHA_TEXT[now.pratyantar.number]}
+                </NumberCard>
+              </div>
+
+              <div className="mt-4 rounded-xl border border-gold-soft/30 bg-gold-bright/[0.07] p-4 text-sm leading-relaxed text-white/80">
+                <h4 className="font-medium text-gold-pale">Your grid in this period</h4>
+                <p className="mt-1">
+                  Until {formatYMD(now.antar.until)} the grid is read with {now.maha.number} (Maha Dasha) and {now.antar.number} (Antar Dasha) added.{' '}
+                  {period.newlyComplete.length
+                    ? `That completes, for the time being: ${lineNames(period.newlyComplete)}.`
+                    : DASHA_GRID_NONE}{' '}
+                  Choose “With current dasha” under the grid to see it drawn.
+                </p>
+              </div>
+
+              <div className="mt-4 space-y-3">
+                <details className="group rounded-xl border border-white/10 bg-white/[0.03]" open>
+                  <summary className={SUMMARY}><Chevron />Year by year: the next five dasha years</summary>
+                  <div role="region" aria-label="Dasha, year by year" tabIndex={0} className="overflow-x-auto border-t border-white/10 p-2">
+                    <table className={TABLE}>
+                      <caption className="sr-only">Maha Dasha and Antar Dasha for five years, each from one birthday to the next, with the lines they complete</caption>
+                      <thead><tr><th scope="col" className={TH}>Birthday to birthday</th><th scope="col" className={TH}>Maha</th><th scope="col" className={TH}>Antar</th><th scope="col" className={TH}>Lines completed for the year</th></tr></thead>
+                      <tbody>
+                        {years.map((y) => (
+                          <tr key={y.antar.year} className="border-t border-white/5">
+                            <th scope="row" className={`${TD} font-normal text-white`}>
+                              {formatYMD(y.antar.from)} to {y.antar.until.y}{y.antar.year === now.antar.year && <span className="ml-2 text-xs text-gold-pale">now</span>}
+                            </th>
+                            <td className={TD}>{y.maha.number} · {NUMBERS[y.maha.number].planet}</td>
+                            <td className={TD}>{y.antar.number} · {NUMBERS[y.antar.number].planet}</td>
+                            <td className={TD}>{y.grid.newlyComplete.length ? y.grid.newlyComplete.map((id) => LINE_TEXT[id].name).join(', ') : 'None added'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </details>
+
+                <details className="group rounded-xl border border-white/10 bg-white/[0.03]">
+                  <summary className={SUMMARY}><Chevron />Maha Dasha through life</summary>
+                  <div role="region" aria-label="Maha Dasha through life" tabIndex={0} className="overflow-x-auto border-t border-white/10 p-2">
+                    <table className={TABLE}>
+                      <caption className="sr-only">Every Maha Dasha from birth, with the ages and years it covers</caption>
+                      <thead><tr><th scope="col" className={TH}>Ages</th><th scope="col" className={TH}>Years</th><th scope="col" className={TH}>Number</th><th scope="col" className={TH}>Theme</th></tr></thead>
+                      <tbody>
+                        {mahas.map((m) => (
+                          <tr key={m.fromAge} className="border-t border-white/5">
+                            <th scope="row" className={`${TD} whitespace-nowrap font-normal text-white`}>
+                              {m.fromAge} to {m.toAge}{m.fromAge === now.maha.fromAge && <span className="ml-2 text-xs text-gold-pale">now</span>}
+                            </th>
+                            <td className={`${TD} whitespace-nowrap`}>{m.from.y} to {m.until.y}</td>
+                            <td className={`${TD} whitespace-nowrap`}>{m.number} · {NUMBERS[m.number].planet}</td>
+                            <td className={TD}>{NUMBERS[m.number].keyword}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </details>
+
+                <details className="group rounded-xl border border-white/10 bg-white/[0.03]">
+                  <summary className={SUMMARY}><Chevron />Pratyantar Dasha within this year</summary>
+                  <div role="region" aria-label="Pratyantar Dasha within this year" tabIndex={0} className="overflow-x-auto border-t border-white/10 p-2">
+                    <table className={TABLE}>
+                      <caption className="sr-only">The nine Pratyantar Dashas of the current dasha year, with their dates</caption>
+                      <thead><tr><th scope="col" className={TH}>From</th><th scope="col" className={TH}>Until</th><th scope="col" className={TH}>Number</th><th scope="col" className={TH}>Days</th></tr></thead>
+                      <tbody>
+                        {now.pratyantars.map((p) => (
+                          <tr key={p.number} className="border-t border-white/5">
+                            <th scope="row" className={`${TD} whitespace-nowrap font-normal text-white`}>
+                              {formatYMD(p.from)}{p.number === now.pratyantar.number && <span className="ml-2 text-xs text-gold-pale">now</span>}
+                            </th>
+                            <td className={`${TD} whitespace-nowrap`}>{formatYMD(p.until)}</td>
+                            <td className={`${TD} whitespace-nowrap`}>{p.number} · {NUMBERS[p.number].planet}</td>
+                            <td className={TD}>{p.days}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </details>
+              </div>
+              <p className="mt-3 max-w-3xl text-xs leading-relaxed text-white/55">
+                This is numerology’s own dasha, counted from your date of birth and today’s date on this device. It is not the Vimshottari dasha of a birth chart, which starts from the Moon’s nakshatra.
+              </p>
+            </section>
+          )}
+
           <div className="grid gap-10 lg:grid-cols-2">
             <section>
               <h3 className={H3}>Repeated numbers</h3>
@@ -225,6 +351,39 @@ export default function LoshuGridTool() {
             </section>
           </div>
 
+          <section data-testid="loshu-directions">
+            <h3 className={H3}>Directions of your numbers (Numero Vastu)</h3>
+            <div className="grid gap-6 md:grid-cols-[minmax(0,320px)_1fr] md:items-start">
+              <table className="w-full table-fixed border-separate border-spacing-1.5 text-center">
+                <caption className="sr-only">The direction each number of the square stands for, and whether the number is in your grid</caption>
+                <tbody>
+                  {LOSHU_LAYOUT.map((row) => (
+                    <tr key={row.join('')}>
+                      {row.map((d) => {
+                        const present = result.full.counts[d] > 0;
+                        return (
+                          <td key={d} className={`rounded-lg border p-2 ${present ? 'border-white/15 bg-white/[0.05]' : 'border-dashed border-white/40'}`}>
+                            <span className="block text-[0.7rem] font-medium uppercase tracking-wide text-white/65">{directionOf(d)}</span>
+                            <span className="block font-heading text-xl text-white">{d}</span>
+                            <span className="block text-[0.7rem] text-white/60">{present ? 'present' : 'missing'}</span>
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="text-sm leading-relaxed text-white/70">
+                <p>
+                  {result.full.missing.length
+                    ? `Your missing numbers point to: ${result.full.missing.map((d) => `${directionOf(d)} (${d})`).join(', ')}.`
+                    : 'No number is missing, so no direction is marked for attention.'}
+                </p>
+                <p className="mt-2 text-white/60">{NUMERO_VASTU_NOTE}</p>
+              </div>
+            </div>
+          </section>
+
           {result.kua && (
             <section>
               <h3 className={H3}>Kua {result.kua.mansion}: favourable directions</h3>
@@ -254,23 +413,27 @@ export default function LoshuGridTool() {
           )}
 
           <section className="space-y-4">
-            <HowCalculated steps={result.steps} />
-            <NumerologyMethodLine method="Date digits with the Driver, Conductor and Kua added to the grid; zeros have no cell." />
+            <HowCalculated steps={[...result.steps, ...(now?.steps ?? [])]} />
+            <NumerologyMethodLine method="Date digits with the Driver, Conductor and Kua added to the grid; zeros have no cell. Dasha periods start with the Driver and turn on the birthday." />
             <ResultActions toolSlug="loshu-grid" link={{ dob: toISODate(result.date), gender: result.gender }} onSave={save} saveLabel="Save this grid" />
           </section>
 
-          <PrintReport report={loShuReport(result)} />
+          <PrintReport report={loShuReport(result, now)} />
         </div>
       )}
     </div>
   );
 }
 
-function Fact({ label, value }: { label: string; value: string }) {
+function Chevron() {
+  return <span className="mr-2 inline-block transition-transform group-open:rotate-90" aria-hidden="true">›</span>;
+}
+
+function Fact({ label, value, small = false }: { label: string; value: string; small?: boolean }) {
   return (
     <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
       <h4 className="text-xs uppercase tracking-wide text-white/55">{label}</h4>
-      <p className="mt-1 font-heading text-lg text-white">{value}</p>
+      <p className={`mt-1 text-white ${small ? 'text-sm leading-relaxed' : 'font-heading text-lg'}`}>{value}</p>
     </div>
   );
 }

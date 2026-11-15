@@ -166,3 +166,111 @@ export function personalCycles(birth: YMD, on: YMD): PersonalCycles {
   const day = rootOf(month + digitSum(on.d));
   return { year, month, day, age: ageOn(birth, on) };
 }
+
+/** How many letters of the name carry each number 1–9. */
+export function letterCounts(name: NameInput): Readonly<Record<Digit, number>> {
+  const counts: Record<Digit, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 };
+  for (const ch of name.letters) {
+    const v = PYTHAGOREAN_VALUES[ch] as Digit | undefined;
+    if (v) counts[v] += 1;
+  }
+  return counts;
+}
+
+export interface HiddenPassion {
+  /** The number carried by the most letters; more than one when they tie. */
+  numbers: Digit[];
+  /** How many letters carry it. */
+  count: number;
+}
+
+/** Hidden Passion: the number that the most letters of the name carry. Null when the name has no letters. */
+export function hiddenPassion(name: NameInput): HiddenPassion | null {
+  const counts = letterCounts(name);
+  const count = Math.max(...DIGITS.map((d) => counts[d]));
+  return count > 0 ? { numbers: DIGITS.filter((d) => counts[d] === count), count } : null;
+}
+
+/** Subconscious Self: how many of the nine numbers the name carries, which is 9 minus the karmic lessons. */
+export function subconsciousSelf(name: NameInput): number | null {
+  const counts = letterCounts(name);
+  const present = DIGITS.filter((d) => counts[d] > 0).length;
+  return present > 0 ? present : null;
+}
+
+export interface BalanceNumber { value: Digit; initials: { letter: string; value: number }[]; total: number }
+
+/** Balance number: the first letter of each word of the name, added and brought down to one digit. */
+export function balanceNumber(name: NameInput): BalanceNumber | null {
+  const initials = name.words
+    .map((w) => w.split('').find(isLetter))
+    .filter((ch): ch is string => !!ch)
+    .map((letter) => ({ letter, value: PYTHAGOREAN_VALUES[letter] }));
+  if (!initials.length) return null;
+  const total = initials.reduce((a, i) => a + i.value, 0);
+  return { value: rootOf(total), initials, total };
+}
+
+/** The first word of the name that has a letter in it: the name a person is called by. */
+function firstName(name: NameInput): string | null {
+  return name.words.map((w) => w.split('').filter(isLetter).join('')).find((w) => w.length > 0) ?? null;
+}
+
+/** Rational Thought number: the letters of the first name plus the day of birth, reduced (masters kept). */
+export function rationalThought(name: NameInput, date: YMD): CoreNumber | null {
+  requireDate(date);
+  const first = firstName(name);
+  if (!first) return null;
+  const nameTotal = letterTotal(first, isLetter);
+  return {
+    ...reduce(nameTotal + date.d, 'keep'),
+    parts: [{ label: first, total: nameTotal, reduced: nameTotal }, { label: 'Day', total: date.d, reduced: date.d }],
+    alternative: null,
+  };
+}
+
+export interface SpecialLetters {
+  /** The first letter of the first name. */
+  cornerstone: string;
+  /** The last letter of the first name. */
+  capstone: string;
+  /** The first of A, E, I, O, U in the first name; null when it has none. */
+  firstVowel: string | null;
+}
+
+/** Cornerstone, Capstone and First Vowel, all read from the first name. */
+export function specialLetters(name: NameInput): SpecialLetters | null {
+  const first = firstName(name);
+  if (!first) return null;
+  return { cornerstone: first[0], capstone: first[first.length - 1], firstVowel: first.split('').find((ch) => VOWELS.has(ch)) ?? null };
+}
+
+export type ExpressionPlane = 'physical' | 'mental' | 'emotional' | 'intuitive';
+
+/** The plane each letter belongs to in the Planes of Expression. */
+export const LETTER_PLANE: Readonly<Record<string, ExpressionPlane>> = {
+  D: 'physical', E: 'physical', M: 'physical', W: 'physical',
+  A: 'mental', G: 'mental', H: 'mental', J: 'mental', L: 'mental', N: 'mental', P: 'mental',
+  B: 'emotional', I: 'emotional', O: 'emotional', R: 'emotional', S: 'emotional', T: 'emotional', X: 'emotional', Z: 'emotional',
+  C: 'intuitive', F: 'intuitive', K: 'intuitive', Q: 'intuitive', U: 'intuitive', V: 'intuitive', Y: 'intuitive',
+};
+
+export interface PlanesOfExpression {
+  counts: Readonly<Record<ExpressionPlane, number>>;
+  /** The plane with the most letters; more than one when they tie. */
+  strongest: ExpressionPlane[];
+  letters: number;
+}
+
+/** Planes of Expression: how the letters of the whole name divide between four ways of working. */
+export function planesOfExpression(name: NameInput): PlanesOfExpression | null {
+  const counts: Record<ExpressionPlane, number> = { physical: 0, mental: 0, emotional: 0, intuitive: 0 };
+  let letters = 0;
+  for (const ch of name.letters) {
+    const plane = LETTER_PLANE[ch];
+    if (plane) { counts[plane] += 1; letters += 1; }
+  }
+  if (!letters) return null;
+  const top = Math.max(...Object.values(counts));
+  return { counts, strongest: (Object.keys(counts) as ExpressionPlane[]).filter((p) => counts[p] === top), letters };
+}

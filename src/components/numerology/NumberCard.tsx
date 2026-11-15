@@ -3,7 +3,7 @@ import { rootOf } from '@/engine/numerology';
 import { NUMBERS } from '@/data/numerology/numbers';
 
 /** Which tradition a number belongs to; shown on every number so two systems are never confused. */
-export type NumberSystem = 'Lo Shu (Indian)' | 'Pythagorean (Western)' | 'Chaldean' | 'Eight Mansions';
+export type NumberSystem = 'Lo Shu (Indian)' | 'Indian numerology' | 'Pythagorean (Western)' | 'Chaldean' | 'Eight Mansions';
 
 /**
  * One number with its name, the system it comes from and a short note. The chip takes the

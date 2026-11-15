@@ -7,8 +7,9 @@ import { chaldeanName, type ChaldeanResult } from './chaldean';
 import { LOSHU_INDIAN_STANDARD, loShu, type LoShuConfig, type LoShuResult } from './loshu';
 import { normalizeName, type NameInput } from './name';
 import {
-  birthdayNumber, expression, karmicDebts, karmicLessons, lifePath, maturity, personality, pinnacles, soulUrge,
-  type CoreNumber, type Pinnacle,
+  balanceNumber, birthdayNumber, expression, hiddenPassion, karmicDebts, karmicLessons, lifePath, maturity, personality,
+  pinnacles, planesOfExpression, rationalThought, soulUrge, specialLetters, subconsciousSelf,
+  type BalanceNumber, type CoreNumber, type HiddenPassion, type Pinnacle, type PlanesOfExpression, type SpecialLetters,
 } from './pythagorean';
 import type { Digit } from './core';
 
@@ -20,6 +21,7 @@ export * from './pythagorean';
 export * from './chaldean';
 export * from './mobileChart';
 export * from './mobile';
+export * from './numeroDasha';
 
 export { NUMEROLOGY_ENGINE } from './version';
 
@@ -34,6 +36,14 @@ export interface WesternProfile {
   karmicDebts: { debt: 13 | 14 | 16 | 19; from: string }[];
   karmicLessons: Digit[];
   pinnacles: Pinnacle[];
+  /** Six further numbers read from the name; each is null when no name was given. */
+  hiddenPassion: HiddenPassion | null;
+  /** How many of the nine numbers the name carries. */
+  subconsciousSelf: number | null;
+  balance: BalanceNumber | null;
+  rationalThought: CoreNumber | null;
+  specialLetters: SpecialLetters | null;
+  planes: PlanesOfExpression | null;
 }
 
 export interface NumerologyProfile {
@@ -66,6 +76,12 @@ export function profile(
       ]),
       karmicLessons: name && name.letters ? karmicLessons(name) : [],
       pinnacles: pinnacles(input.date),
+      hiddenPassion: name ? hiddenPassion(name) : null,
+      subconsciousSelf: name ? subconsciousSelf(name) : null,
+      balance: name ? balanceNumber(name) : null,
+      rationalThought: name ? rationalThought(name, input.date) : null,
+      specialLetters: name ? specialLetters(name) : null,
+      planes: name ? planesOfExpression(name) : null,
     },
     chaldean: input.name?.trim() ? chaldeanName(input.name) : null,
   };

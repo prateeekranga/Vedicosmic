@@ -3,7 +3,7 @@ import type { ToolContent } from '@/types/tool.types';
 const content: ToolContent = {
   slug: 'loshu-grid',
   lastReviewed: '2026-11-15',
-  lede: 'Enter your date of birth to build your Lo Shu grid, the 3×3 square of Indian numerology. You get your Driver (Mulank), Conductor (Bhagyank) and Kua number, the missing and repeated numbers, and all eight planes and yogs, with the arithmetic shown.',
+  lede: 'Enter your date of birth to build your Lo Shu grid, the 3×3 square of Indian numerology. You get your Driver (Mulank), Conductor (Bhagyank) and Kua number, the missing and repeated numbers, all eight planes and yogs, and the dasha periods you are in now, with the arithmetic shown.',
   toolHeading: 'Make your Lo Shu grid',
   about: {
     heading: 'What the Lo Shu grid is',
@@ -32,6 +32,8 @@ const content: ToolContent = {
       { term: 'Missing numbers', text: 'An empty cell is a quality tradition says you build through effort instead of being born with. Each comes with a simple practice that teachers traditionally suggest.' },
       { term: 'Planes', text: 'The three rows are the mental, emotional and practical planes; the three columns are the thought, will and action planes. A plane is complete when all three of its numbers are present, and the grid marks each complete line with an arrow.' },
       { term: 'Golden and Silver Raj Yog', text: 'The diagonals are named: 4-5-6 is the Golden Raj Yog, traditionally the line of recognition, and 2-5-8 the Silver Raj Yog, traditionally linked with property.' },
+      { term: 'Dasha periods', text: 'Maha Dasha runs for years, Antar Dasha from one birthday to the next and Pratyantar Dasha for a few weeks. Their numbers join the grid while they last. Choose “With current dasha” to see which lines that completes, and read the table for the next five years.' },
+      { term: 'Directions and favourable dates', text: 'Numero Vastu gives every number of the square a direction, so a missing number points to a part of the home. The page also lists the weekday, dates, colours and gemstone traditionally linked with your Driver.' },
       { term: 'Kua directions', text: 'The Kua number comes from the Eight Mansions school of feng shui and gives four favourable compass directions for work, rest, conversation and study.' },
     ],
   },
@@ -40,11 +42,13 @@ const content: ToolContent = {
     anchor: 'numerology-loshu',
     paragraphs: [
       'Teachers do not all fill the grid the same way, so here is exactly what this page does. It writes every non-zero digit of the day, month and four-digit year. It adds the Conductor and the Kua number as extra entries, and adds the Driver unless the birth day is a single digit or ends in zero. The Kua uses the calendar year of birth, and a Kua of 5 is read as 2 for a man and 8 for a woman.',
+      'The dasha follows the rule most Indian teachers give. Maha Dasha begins at birth with the Driver, and each number runs for as many years as the number. Antar Dasha adds the birth day, the birth month, the last two digits of the year and the number of the weekday on which that year’s birthday falls.',
       'If you compare with another calculator and a cell differs, one of those rules is the reason. Turn on “Show the date digits only” to see the grid without the added numbers.',
     ],
     example: 'For a woman born on 15 August 1990 the date digits are 1, 5, 8, 1, 9, 9. The Driver is 6 and the Conductor is 6. The year adds to 1, and 4 + 1 = 5, which is read as Kua 8. The grid then holds 1 twice, 5 once, 6 twice, 8 twice and 9 twice, and 2, 3, 4 and 7 are missing.',
     limits: [
       'Numerology is a tradition, not a science. The readings describe what the tradition associates with a number; they are not predictions.',
+      'Teachers differ over the dasha too, chiefly on the year digits used and the length of the short periods. The working for your own dates is shown.',
       'People born from 1 January to 3 February may get a different Kua from feng shui teachers who count the Chinese solar year. The page tells you when that applies.',
     ],
   },
@@ -53,7 +57,7 @@ const content: ToolContent = {
     items: [
       { id: 'loshu-how', header: 'How is the Lo Shu grid calculated from a date of birth?', body: 'Write the digits of the day, month and year, leave out any zeros, and place each digit in its fixed cell of the square: 4, 9, 2 on top, 3, 5, 7 in the middle and 8, 1, 6 at the bottom. This calculator then adds your Conductor and Kua numbers, and your Driver when the birth day has two digits and does not end in zero.' },
       { id: 'loshu-driver', header: 'What are the Driver and Conductor numbers?', body: 'The Driver, called Mulank in Hindi, is the day of birth added down to one digit. The Conductor, called Bhagyank, is every digit of the full date added down to one digit. Someone born on 23 November 1990 has Driver 5 (2 + 3) and Conductor 8.' },
-      { id: 'loshu-kua', header: 'How do I work out my Kua number?', body: 'Add the digits of your year of birth until one digit is left. A man subtracts that digit from 11 and a woman adds 4 to it; if the answer has two digits, add them together. A result of 5 is read as 2 for a man and 8 for a woman.' },
+      { id: 'loshu-dasha', header: 'How is the numerology dasha calculated?', body: 'Maha Dasha starts with your Driver and gives each number as many years as the number: a Driver of 5 has 5 for five years, then 6 for six. Antar Dasha lasts from birthday to birthday and is the birth day plus the birth month plus the last two digits of that year plus the weekday number of the birthday, added down to one digit.' },
       { id: 'loshu-missing', header: 'What does a missing number mean in the Lo Shu grid?', body: 'It means that number does not appear in your date of birth or among your added numbers, so its cell is empty. Tradition reads it as a quality to develop on purpose, and suggests a simple practice for each one. It is not read as a defect.' },
       { id: 'loshu-zero', header: 'Is zero counted in the Lo Shu grid?', body: 'No. The square contains only the numbers 1 to 9, so a zero in a date has no cell and is left out. It still counts as nothing when the digits are added for the Conductor, which is why it changes no total.' },
       { id: 'loshu-yog', header: 'What is raj yog in the Lo Shu grid?', body: 'Raj yog is a complete diagonal of the square: 4, 5 and 6 is the Golden Raj Yog, and 2, 5 and 8 the Silver Raj Yog. Each needs all three numbers in your grid.' },
@@ -70,15 +74,15 @@ const content: ToolContent = {
     'Lo Shu grid from a date of birth',
     'Driver (Mulank), Conductor (Bhagyank) and Kua numbers',
     'Missing and repeated numbers with readings',
-    'All eight planes and yogs',
-    'Kua directions',
-    'Step-by-step working',
+    'All eight planes and yogs, with arrows',
+    'Maha, Antar and Pratyantar Dasha',
+    'Kua directions and Numero Vastu',
   ],
   appCategory: 'LifestyleApplication',
   topic: { name: 'Lo Shu Square', sameAs: 'https://en.wikipedia.org/wiki/Lo_Shu_Square' },
   aliases: ['Lo Shu Grid', 'Loshu Grid Calculator'],
   frame: 'compact',
-  keywords: { primary: 'lo shu grid calculator', secondary: ['lo shu grid by date of birth', 'missing numbers in lo shu grid', 'driver conductor kua number', 'mulank bhagyank'] },
+  keywords: { primary: 'lo shu grid calculator', secondary: ['lo shu grid by date of birth', 'missing numbers in lo shu grid', 'driver conductor kua number', 'mulank bhagyank', 'numerology dasha', 'raj yog in lo shu grid'] },
 };
 
 export default content;

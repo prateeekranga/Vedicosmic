@@ -4,9 +4,9 @@
  * same person.
  */
 import {
-  DIGITS, LOSHU_LAYOUT, NUMEROLOGY_ENGINE, formatYMD, relationsOf,
-  type ChaldeanResult, type CoreNumber, type Digit, type LoShuResult, type MobileResult, type PersonalCycles, type Pinnacle,
-  type WesternProfile, type YMD,
+  DIGITS, LOSHU_LAYOUT, LOSHU_LINES, NUMBER_DIRECTION, NUMEROLOGY_ENGINE, dashaGrid, dashaYears, favourableDates, formatYMD, relationsOf,
+  type ChaldeanResult, type CoreNumber, type DashaNow, type Digit, type LineId, type LoShuResult, type MobileResult,
+  type PersonalCycles, type Pinnacle, type WesternProfile, type YMD,
 } from '@/engine/numerology';
 import { NUMBERS } from '@/data/numerology/numbers';
 import {
@@ -17,6 +17,10 @@ import {
   CHALLENGE_TEXT, CORE_ROLE, CYCLE_TEXT, KARMIC_DEBT_TEXT, KARMIC_LESSON_TEXT, LIFE_PATH_TEXT, NUMBER_TRAIT, PINNACLE_TEXT,
 } from '@/data/numerology/westernText';
 import { compoundReading } from '@/data/numerology/chaldeanCompounds';
+import { DASHA_GRID_NONE, DASHA_TEXT, FAVOURABLE_NOTE, NUMERO_VASTU_NOTE } from '@/data/numerology/dashaText';
+import {
+  BALANCE_TEXT, EXTRA_ROLE, HIDDEN_PASSION_TEXT, PLANE_TEXT, letterReading, rationalThoughtReading, subconsciousReading,
+} from '@/data/numerology/nameExtraText';
 import { LEVEL_LABEL, LEVEL_TEXT, ROOT_FIT_TEXT, SAME_ROOT_TEXT } from '@/data/numerology/mobileText';
 import { IMPACT_LABEL, IMPACT_NOTE, RAJ_YOG_NOTE, YOGA_LABEL, pairReading } from '@/data/numerology/mobilePairText';
 
@@ -47,7 +51,32 @@ export function luckyNumberLines(d: Digit): string[] {
   ];
 }
 
-export function loShuSections(r: LoShuResult): ReportSection[] {
+/** "Golden Raj Yog (4-5-6)". */
+export const lineWithCells = (id: LineId) => `${LINE_TEXT[id].name} (${LOSHU_LINES.find((l) => l.id === id)!.cells.join('-')})`;
+
+/** The direction a number stands for in Numero Vastu, in words. */
+export const directionName = (d: Digit) => (NUMBER_DIRECTION[d] === 'centre' ? 'Centre' : DIRECTION_NAME[NUMBER_DIRECTION[d] as keyof typeof DIRECTION_NAME]);
+
+/** The running dasha periods and the next few years, as report lines. */
+export function dashaSections(r: LoShuResult, now: DashaNow): ReportSection[] {
+  const period = dashaGrid(r, [now.maha.number, now.antar.number]);
+  const planet = (d: Digit) => NUMBERS[d].planet;
+  return [{
+    heading: `Dasha periods on ${formatYMD(now.on)}`,
+    lines: [
+      `Maha Dasha ${now.maha.number} (${planet(now.maha.number)}), age ${now.maha.fromAge} to ${now.maha.toAge}, until ${formatYMD(now.maha.until)}. ${DASHA_TEXT[now.maha.number]}`,
+      `Antar Dasha ${now.antar.number} (${planet(now.antar.number)}), ${formatYMD(now.antar.from)} until ${formatYMD(now.antar.until)}. ${DASHA_TEXT[now.antar.number]}`,
+      `Pratyantar Dasha ${now.pratyantar.number} (${planet(now.pratyantar.number)}), ${formatYMD(now.pratyantar.from)} until ${formatYMD(now.pratyantar.until)}.`,
+      `Grid in this period, with ${now.maha.number} and ${now.antar.number} added: ${period.newlyComplete.length ? `completes ${period.newlyComplete.map(lineWithCells).join(', ')}.` : DASHA_GRID_NONE}`,
+    ],
+  }, {
+    heading: 'Dasha, year by year',
+    lines: dashaYears(r, now.antar.year, 5).map((y) =>
+      `${formatYMD(y.antar.from)} to ${formatYMD(y.antar.until)}: Maha Dasha ${y.maha.number}, Antar Dasha ${y.antar.number}; ${y.grid.newlyComplete.length ? `completes ${y.grid.newlyComplete.map(lineWithCells).join(', ')}` : 'no line added'}.`),
+  }];
+}
+
+export function loShuSections(r: LoShuResult, now?: DashaNow | null): ReportSection[] {
   const sections: ReportSection[] = [];
   sections.push({
     heading: 'Your numbers',
@@ -87,12 +116,33 @@ export function loShuSections(r: LoShuResult): ReportSection[] {
       ],
     });
   }
-  sections.push({ heading: 'How this was calculated', lines: r.steps.map((s) => `${s.label}: ${s.result}. ${s.working}`) });
+  if (now) sections.push(...dashaSections(r, now));
+  const dates = favourableDates(r.driver);
+  sections.push({
+    heading: 'Favourable days, dates and colours',
+    lines: [
+      ...luckyNumberLines(r.driver),
+      `Favourable day: ${NUMBERS[r.driver].day ?? 'none of its own'}.`,
+      `Dates that add down to ${r.driver}: ${dates.own.join(', ')}.`,
+      `Dates of friendly numbers: ${dates.friendly.length ? dates.friendly.join(', ') : 'none'}.`,
+      `Colours linked with ${NUMBERS[r.driver].planet}: ${NUMBERS[r.driver].colours.join(', ')}. Gemstone: ${NUMBERS[r.driver].gemstone}.`,
+      FAVOURABLE_NOTE,
+    ],
+  });
+  sections.push({
+    heading: 'Directions of the numbers (Numero Vastu)',
+    lines: [
+      DIGITS.map((d) => `${d} ${directionName(d)}`).join(', ') + '.',
+      r.full.missing.length ? `Your missing numbers point to: ${r.full.missing.map((d) => `${directionName(d)} (${d})`).join(', ')}.` : 'No number is missing, so no direction is marked for attention.',
+      NUMERO_VASTU_NOTE,
+    ],
+  });
+  sections.push({ heading: 'How this was calculated', lines: [...r.steps, ...(now?.steps ?? [])].map((s) => `${s.label}: ${s.result}. ${s.working}`) });
   return sections;
 }
 
-export function loShuReport(r: LoShuResult): Report {
-  return { title: 'Lo Shu Grid', subtitle: `Date of birth: ${formatYMD(r.date)}`, sections: loShuSections(r), footer: REPORT_FOOTER };
+export function loShuReport(r: LoShuResult, now?: DashaNow | null): Report {
+  return { title: 'Lo Shu Grid', subtitle: `Date of birth: ${formatYMD(r.date)}`, sections: loShuSections(r, now), footer: REPORT_FOOTER };
 }
 
 /** "Month 8 + Day 6 + Year 1 = 15, then 1 + 5 = 6". */
@@ -170,7 +220,28 @@ export function westernSections(w: WesternProfile): ReportSection[] {
       ],
     });
   }
+  const more = moreFromNameLines(w);
+  if (more.length) sections.push({ heading: 'More from your name', lines: more });
   return sections;
+}
+
+/** Hidden Passion, Subconscious Self, Balance, Rational Thought, the special letters and the planes, one line each. */
+export function moreFromNameLines(w: WesternProfile): string[] {
+  const lines: string[] = [];
+  if (w.hiddenPassion) lines.push(...w.hiddenPassion.numbers.map((d) => `Hidden Passion ${d}: ${HIDDEN_PASSION_TEXT[d]}`));
+  if (w.subconsciousSelf) lines.push(`Subconscious Self ${w.subconsciousSelf}: ${subconsciousReading(w.subconsciousSelf)}`);
+  if (w.balance) lines.push(`${BALANCE_TEXT[w.balance.value]} (Initials ${w.balance.initials.map((i) => `${i.letter} ${i.value}`).join(' + ')} = ${w.balance.total}.)`);
+  if (w.rationalThought) lines.push(`${rationalThoughtReading(w.rationalThought.value)} (${coreWorking(w.rationalThought)}.)`);
+  if (w.specialLetters) {
+    lines.push(`Cornerstone ${w.specialLetters.cornerstone}: ${EXTRA_ROLE.cornerstone} ${letterReading(w.specialLetters.cornerstone)}`);
+    lines.push(`Capstone ${w.specialLetters.capstone}: ${EXTRA_ROLE.capstone} ${letterReading(w.specialLetters.capstone)}`);
+    if (w.specialLetters.firstVowel) lines.push(`First Vowel ${w.specialLetters.firstVowel}: ${EXTRA_ROLE.firstVowel} ${letterReading(w.specialLetters.firstVowel)}`);
+  }
+  if (w.planes) {
+    const p = w.planes;
+    lines.push(`Planes of Expression: ${(Object.keys(p.counts) as (keyof typeof p.counts)[]).map((k) => `${PLANE_TEXT[k].name} ${p.counts[k]}`).join(', ')}. Strongest: ${p.strongest.map((k) => `${PLANE_TEXT[k].name}. ${PLANE_TEXT[k].text}`).join(' ')}`);
+  }
+  return lines;
 }
 
 export function chaldeanSections(c: ChaldeanResult): ReportSection[] {

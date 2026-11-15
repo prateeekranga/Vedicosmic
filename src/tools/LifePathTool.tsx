@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Compass, RotateCcw } from 'lucide-react';
 import {
@@ -10,7 +10,8 @@ import { NUMBERS, masterNote } from '@/data/numerology/numbers';
 import {
   CHALLENGE_TEXT, CORE_ROLE, CYCLE_TEXT, KARMIC_DEBT_TEXT, LIFE_PATH_TEXT, NUMBER_TRAIT, PINNACLE_TEXT,
 } from '@/data/numerology/westernText';
-import { REPORT_FOOTER, coreLabel, coreWorking, lifePathSections, type Report } from '@/lib/numerologyReport';
+import { coreLabel, coreWorking } from '@/lib/numerologyReport';
+import { lifePathPrint } from '@/lib/print/numerologyPrint';
 import { takeResultLink } from '@/lib/resultLink';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -97,11 +98,7 @@ export default function LifePathTool() {
   const master = lp ? masterNote(lp.value) : null;
   const friends = result ? relationsOf(result.grid.driver) : null;
   const current = result ? pinnacleAt(result.pinnacles, result.cycles.age) : null;
-  const report: Report | null = result ? {
-    title: 'Life Path Report', subtitle: `Date of birth: ${formatYMD(result.date)}`,
-    sections: lifePathSections(result.date, result.lifePath, result.birthday, result.grid, result.pinnacles, result.cycles, result.today),
-    footer: REPORT_FOOTER,
-  } : null;
+  const report = useMemo(() => (result ? lifePathPrint({ ...result, steps: steps(result) }) : null), [result]);
 
   return (
     <div className="space-y-10">

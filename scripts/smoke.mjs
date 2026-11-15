@@ -116,6 +116,58 @@ for (const path of ['/', '/tools', '/tools/category/astrology', '/tools/astrolog
   check('loshu-grid: missing numbers are given their directions', /South-West \(2\), East \(3\), South-East \(4\), West \(7\)/.test(directions), directions.slice(0, 200));
 }
 
+// 2d-print. Printing the same Lo Shu result: the button opens the print options, the browser's
+//           print is started once, only the report is printed, the one-page summary is one page,
+//           the full report has no trailing blank pages, and the PDF is named after the report.
+{
+  const pdfPages = async () => ((await page.pdf({ preferCSSPageSize: true })).toString('latin1').match(/\/Type\s*\/Page[^s]/g) ?? []).length;
+  const printWith = async (choice, name) => {
+    await page.getByRole('button', { name: /Print or save PDF/ }).click();
+    await page.getByRole('dialog').waitFor({ timeout: 5000 });
+    if (name) await page.getByLabel('Name on the report').fill(name);
+    await page.getByText(choice, { exact: true }).click();
+    await page.getByRole('button', { name: 'Print or save as PDF' }).click();
+    await page.waitForTimeout(400);
+  };
+  await page.evaluate(() => { window.__printed = 0; window.print = () => { window.__printed += 1; }; });
+
+  await page.getByRole('button', { name: /Print or save PDF/ }).click();
+  check('print: the Print button opens the print options', await page.getByRole('dialog').isVisible().catch(() => false));
+  // Cancelling forgets what was typed.
+  await page.getByLabel('Name on the report').fill('Not kept');
+  await page.keyboard.press('Escape');
+  const closed = await page.getByRole('dialog').waitFor({ state: 'hidden', timeout: 3000 }).then(() => true, () => false);
+  check('print: cancelling closes the options without printing', closed && (await page.evaluate(() => window.__printed)) === 0);
+  await printWith('One-page summary', 'Smoke Test');
+  check('print: the browser print is started once', (await page.evaluate(() => window.__printed)) === 1);
+
+  await page.emulateMedia({ media: 'print' });
+  const shown = await page.evaluate(() => {
+    const doc = document.querySelector('body > .pd');
+    return {
+      doc: doc ? getComputedStyle(doc).display : 'missing',
+      root: getComputedStyle(document.getElementById('root')).display,
+      named: !!doc?.textContent?.includes('Smoke Test'),
+    };
+  });
+  check('print: only the report is printed, with the name on it', shown.doc === 'block' && shown.root === 'none' && shown.named, JSON.stringify(shown));
+  const summary = await pdfPages();
+  check('print: the one-page summary prints on one page', summary === 1, `${summary} pages`);
+  await page.emulateMedia({ media: 'screen' });
+
+  await printWith('Full report');
+  await page.emulateMedia({ media: 'print' });
+  const full = await pdfPages();
+  check('print: the full Lo Shu report has no blank pages', full >= 3 && full <= 6, `${full} pages`);
+  await page.emulateMedia({ media: 'screen' });
+
+  await page.evaluate(() => window.dispatchEvent(new Event('beforeprint')));
+  const title = await page.title();
+  await page.evaluate(() => window.dispatchEvent(new Event('afterprint')));
+  check('print: the PDF is named after the report and the person', title === 'Lo Shu Grid Report - Smoke Test - VediCosmic', title);
+  check('print: the page title comes back after printing', !/Smoke Test/.test(await page.title()));
+}
+
 // 2e. Numerology Calculator: a birthday with 4, 5 and 6 (14 June 1985) shows the Golden Raj Yog
 //     with its arrow on the grid.
 {

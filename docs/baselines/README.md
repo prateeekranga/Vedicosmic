@@ -214,3 +214,32 @@ five limbs, Sun and Moon times, Rahu Kaal and the muhurtas, both Choghadiya tabl
 Panchang page, and the Hora page opening on a date from the address. Tool pages with their own copy: 5 → 11.
 
 Lighthouse was not re-run locally for this round; CI runs it on every push.
+
+## Printed numerology reports (15 November 2026, `upgrade/print`)
+
+Printing a numerology result used to give plain black-on-white text, and because the page behind it was only
+made invisible, not removed, Chrome followed every report with blank pages: a three-page Lo Shu report came out
+as 11 pages. The report is now its own document under `<body>`, shown alone in print:
+
+| Report (test person) | Pages before | Pages now | One-page summary |
+|---|---|---|---|
+| Lo Shu Grid (14 June 1985, male) | 11 | 4 | 1 |
+| Numerology Calculator (Asha Rao, 15 August 1990, female) | 10 | 4 | 1 |
+| Life Path (29 November 1987) | 7 | 2 | 1 |
+| Chaldean (Narendra Modi) | 5 | 1 | 1 |
+| Mobile Number (98171 45678, with 14 June 1985) | 8 | 2 | 1 |
+
+Measured with Chrome 157's own PDF output (A4, `preferCSSPageSize`); "before" is commit 43bc978 printed the
+same way. Each report has a branded heading, the
+numbers at a glance, numbered sections, the Lo Shu grid drawn with its arrows, a running header and
+"Page x of y" footer, and an appendix with the working; an options dialog chooses sections, a name, a
+consultant's details, notes, a cover page, colour or ink saver, and A4 or US Letter. While printing, the page
+title becomes the report's name, which browsers use as the PDF file name.
+
+Checks added: 15 unit tests (1,030 → 1,045) build every report for 200+ people and check the numbers, the
+sections and the wording (the claims lint now covers printed text too), and render the document with each
+option. Smoke checks 91 → 99 print real PDFs: the options open and cancel, only the report prints, the summary is
+one page, the full Lo Shu report has no blank pages, and the PDF is named after the report and the person.
+
+axe (18 pages): 0 critical, 8 serious, unchanged; Lo Shu, Life Path, Numerology Calculator and Mobile Number
+have no violations.

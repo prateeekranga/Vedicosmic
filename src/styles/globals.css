@@ -105,23 +105,3 @@ body {
   border-radius: 4px;
 }
 
-/* Printing a numerology report: only the plain report block is printed, in black on white.
-   The on-screen cards are dark and animated, so they are hidden rather than restyled. */
-@media print {
-  body:has(.print-report) * { visibility: hidden !important; }
-  body:has(.print-report) .print-report,
-  body:has(.print-report) .print-report * { visibility: visible !important; }
-  body:has(.print-report) .print-report {
-    display: block !important;
-    position: absolute; left: 0; top: 0; width: 100%;
-    padding: 0 1rem; background: #fff; color: #000;
-    font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-height: 1.45;
-  }
-  .print-report h1 { font-size: 18pt; margin: 0 0 0.3rem; }
-  .print-report h2 { font-size: 13pt; margin: 1rem 0 0.3rem; border-bottom: 1px solid #999; }
-  .print-report p, .print-report li { margin: 0.2rem 0; }
-  .print-report ul { padding-left: 1.2rem; list-style: disc; }
-  .print-report table { border-collapse: collapse; margin: 0.4rem 0; }
-  .print-report td { border: 1px solid #000; width: 3.2rem; height: 3.2rem; text-align: center; font-size: 14pt; }
-  .print-report .print-note { font-size: 9pt; color: #333; margin-top: 1rem; }
-}

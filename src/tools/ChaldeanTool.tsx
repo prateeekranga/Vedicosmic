@@ -3,7 +3,10 @@ import { X } from 'lucide-react';
 import { chaldeanName, expression, normalizeName, type ChaldeanResult } from '@/engine/numerology';
 import { NUMBERS } from '@/data/numerology/numbers';
 import { COMPOUND_SOURCE, compoundReading } from '@/data/numerology/chaldeanCompounds';
-import { REPORT_FOOTER, chaldeanSections, coreLabel } from '@/lib/numerologyReport';
+import { coreLabel } from '@/lib/numerologyReport';
+import { chaldeanPrint } from '@/lib/print/numerologyPrint';
+import { parseISODate } from '@/engine/numerology';
+import { localDateKey } from '@/engine/time';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Field';
 import { HowCalculated, NumerologyMethodLine } from '@/components/numerology/HowCalculated';
@@ -54,6 +57,10 @@ export default function ChaldeanTool() {
   const second = useMemo(() => chaldeanName(other), [other]);
   const name = useMemo(() => normalizeName(raw), [raw]);
   const western = useMemo(() => (name.letters ? expression(name) : null), [name]);
+  const printable = useMemo(
+    () => (result ? chaldeanPrint({ entry: raw, result, second, secondEntry: other, western, today: parseISODate(localDateKey())! }) : null),
+    [raw, result, second, other, western],
+  );
   const { saveReading } = useDeviceStore();
   const { notify } = useToast();
 
@@ -155,7 +162,7 @@ export default function ChaldeanTool() {
             <ResultActions toolSlug="chaldean" onSave={save} saveLabel="Save these numbers" />
           </section>
 
-          <PrintReport report={{ title: 'Chaldean Name Number', subtitle: `Entry: ${raw.trim()}`, sections: chaldeanSections(result), footer: REPORT_FOOTER }} />
+          {printable && <PrintReport report={printable} />}
         </div>
       )}
     </div>

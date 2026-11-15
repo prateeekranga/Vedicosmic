@@ -4,13 +4,14 @@ import { Button } from '@/components/ui/Button';
 import { SaveOnDeviceButton } from '@/components/device/SaveOnDeviceButton';
 import { useToast } from '@/contexts/ToastContext';
 import { buildResultLink, type ResultLinkData } from '@/lib/resultLink';
+import { requestPrintOptions } from '@/lib/print/printSettings';
 import { trackEvent } from '@/lib/analytics';
 
 /**
  * Save, copy-link and print for a numerology result.
  * - Save keeps a short summary of numbers on this device (after consent), never the birth date.
  * - Copy link builds a link containing the date of birth only when pressed, and says so.
- * - Print uses the plain report block rendered by PrintReport.
+ * - Print opens the report's print options (PrintReport), where a PDF can also be saved.
  */
 export function ResultActions({
   toolSlug, link, onSave, saveLabel = 'Save this result', printable = true,
@@ -49,8 +50,8 @@ export function ResultActions({
           </Button>
         )}
         {printable && (
-          <Button variant="ghost" size="sm" onClick={() => window.print()}>
-            <Printer className="h-4 w-4" /> Print
+          <Button variant="ghost" size="sm" onClick={() => { if (!requestPrintOptions()) window.print(); }}>
+            <Printer className="h-4 w-4" /> Print or save PDF
           </Button>
         )}
       </div>

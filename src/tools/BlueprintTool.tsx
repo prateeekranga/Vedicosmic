@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { RotateCcw, Sparkles } from 'lucide-react';
 import {
   compareYMD, dashaOn, formatYMD, normalizeName, parseISODate, personalCycles, profile,
-  type CalcStep, type CoreNumber, type DashaNow, type ExpressionPlane, type NumerologyProfile, type PersonalCycles,
+  type CalcStep, type CoreNumber, type DashaNow, type YMD, type ExpressionPlane, type NumerologyProfile, type PersonalCycles,
 } from '@/engine/numerology';
 import { localDateKey } from '@/engine/time';
 import { KUA_TEXT, LINE_TEXT, MISSING_TEXT } from '@/data/numerology/loshuText';
@@ -13,9 +13,8 @@ import { DASHA_ROLE, DASHA_TEXT } from '@/data/numerology/dashaText';
 import {
   BALANCE_TEXT, EXTRA_ROLE, HIDDEN_PASSION_TEXT, PLANE_TEXT, letterReading, rationalThoughtReading, subconsciousReading,
 } from '@/data/numerology/nameExtraText';
-import {
-  REPORT_FOOTER, chaldeanSections, coreLabel, coreWorking, loShuSections, westernSections, type Report,
-} from '@/lib/numerologyReport';
+import { coreLabel, coreWorking } from '@/lib/numerologyReport';
+import { numerologyPrint } from '@/lib/print/numerologyPrint';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Field';
@@ -32,7 +31,7 @@ import { useToast } from '@/contexts/ToastContext';
 const H3 = 'mb-3 font-heading text-h5 text-white';
 const LINK = 'text-brand-cyan-soft underline underline-offset-2 hover:text-white';
 
-interface Result { displayName: string; profile: NumerologyProfile; cycles: PersonalCycles; now: DashaNow | null }
+interface Result { displayName: string; profile: NumerologyProfile; cycles: PersonalCycles; now: DashaNow | null; today: YMD }
 const PLANES: readonly ExpressionPlane[] = ['physical', 'mental', 'emotional', 'intuitive'];
 
 function steps(p: NumerologyProfile, now: DashaNow | null): CalcStep[] {
@@ -79,7 +78,7 @@ export default function BlueprintTool() {
     setResult({
       displayName: name.trim(),
       profile: profile({ date, gender: gender || null, name }),
-      cycles: personalCycles(date, today),
+      cycles: personalCycles(date, today), today,
       // The dasha periods are read for today's date on this device.
       now: compareYMD(today, date) >= 0 ? dashaOn(date, today) : null,
     });
@@ -106,12 +105,10 @@ export default function BlueprintTool() {
     notify('Numerology report saved on this device');
   };
 
-  const report: Report | null = result && w && grid ? {
-    title: 'Numerology Report',
-    subtitle: `${result.displayName} · born ${formatYMD(grid.date)}`,
-    sections: [...westernSections(w), ...loShuSections(grid, result.now), ...(ch ? chaldeanSections(ch) : [])],
-    footer: REPORT_FOOTER,
-  } : null;
+  const report = useMemo(
+    () => (result ? numerologyPrint({ ...result, steps: steps(result.profile, result.now) }) : null),
+    [result],
+  );
 
   const cards: { label: string; role: string; n: CoreNumber | null }[] = w ? [
     { label: 'Life Path', role: CORE_ROLE.lifePath, n: w.lifePath },
@@ -354,7 +351,7 @@ export default function BlueprintTool() {
           </section>
 
           <PrintReport report={report} />
-          <p className="text-xs text-white/55">Printing gives the full report, including every plane, repeated number and missing number in the grid, the dasha for the next five years, and the directions and favourable dates.</p>
+          <p className="text-xs text-white/55">The printed report has every number above with its working. Choose the sections, add a name, notes and a cover page, and print in colour or black and white, or save it as a PDF.</p>
         </div>
       )}
     </div>

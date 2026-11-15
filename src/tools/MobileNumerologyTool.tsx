@@ -1,14 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { RotateCcw, Smartphone } from 'lucide-react';
 import {
-  analyseMobile, normalizeMobile, parseISODate, relationTone,
+  analyseMobile, normalizeMobile, parseISODate, relationTone, type YMD,
   type CompatibilityLevel, type Digit, type MobilePair, type MobileResult, type PairImpact, type PairRelation,
 } from '@/engine/numerology';
 import { NUMBERS } from '@/data/numerology/numbers';
 import { LEVEL_LABEL, LEVEL_NEEDS_BIRTH, LEVEL_TEXT, ROOT_FIT_TEXT, SAME_ROOT_TEXT, TONE_LABEL } from '@/data/numerology/mobileText';
 import { IMPACT_LABEL, IMPACT_NOTE, RAJ_YOG_NOTE, YOGA_LABEL, pairReading } from '@/data/numerology/mobilePairText';
-import { REPORT_FOOTER, mobileSections } from '@/lib/numerologyReport';
+import { mobilePrint } from '@/lib/print/numerologyPrint';
+import { localDateKey } from '@/engine/time';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -38,6 +39,8 @@ export default function MobileNumerologyTool() {
   const [number, setNumber] = useState('');
   const [dob, setDob] = useState('');
   const [result, setResult] = useState<MobileResult | null>(null);
+  /** The date of birth the result was read with, which can differ from the field once edited. */
+  const [resultDob, setResultDob] = useState<YMD | null>(null);
   const [error, setError] = useState('');
   const heading = useRef<HTMLHeadingElement>(null);
   const reducedMotion = usePrefersReducedMotion();
@@ -53,9 +56,12 @@ export default function MobileNumerologyTool() {
     setError('');
     const date = dob ? parseISODate(dob) : null;
     setResult(analyseMobile(number, date ? { date } : undefined));
+    setResultDob(date);
   };
 
   useEffect(() => { if (result) heading.current?.focus(); }, [result]);
+
+  const printable = useMemo(() => (result ? mobilePrint(result, resultDob, parseISODate(localDateKey())!) : null), [result, resultDob]);
 
   const fit = result?.withBirth ?? null;
   const level = fit?.compatibility.level ?? null;
@@ -249,7 +255,7 @@ export default function MobileNumerologyTool() {
             <ResultActions toolSlug="mobile-numerology" onSave={save} />
           </section>
 
-          <PrintReport report={{ title: 'Mobile Number Numerology', subtitle: `Number: ${result.digits.join('')}`, sections: mobileSections(result), footer: REPORT_FOOTER }} />
+          {printable && <PrintReport report={printable} />}
         </div>
       )}
     </div>

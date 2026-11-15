@@ -11,7 +11,7 @@ import {
   RELATION_TEXT, SAME_NUMBER_TEXT, lineReading, repeatReading,
 } from '@/data/numerology/loshuText';
 import { DASHA_GRID_NONE, DASHA_INTRO, DASHA_ROLE, DASHA_TEXT, FAVOURABLE_NOTE, NUMERO_VASTU_NOTE } from '@/data/numerology/dashaText';
-import { loShuReport } from '@/lib/numerologyReport';
+import { loShuPrint } from '@/lib/print/numerologyPrint';
 import { takeResultLink } from '@/lib/resultLink';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -76,6 +76,7 @@ export default function LoshuGridTool() {
   const period = useMemo(() => (result && now ? dashaGrid(result, [now.maha.number, now.antar.number]) : null), [result, now]);
   const years = useMemo(() => (result && now ? dashaYears(result, now.antar.year, 5) : []), [result, now]);
   const mahas = useMemo(() => (result ? mahaDashas(result.date, 90) : []), [result]);
+  const printable = useMemo(() => (result ? loShuPrint(result, now, parseISODate(localDateKey())!) : null), [result, now]);
 
   const save = () => {
     if (!result) return;
@@ -418,7 +419,7 @@ export default function LoshuGridTool() {
             <ResultActions toolSlug="loshu-grid" link={{ dob: toISODate(result.date), gender: result.gender }} onSave={save} saveLabel="Save this grid" />
           </section>
 
-          <PrintReport report={loShuReport(result, now)} />
+          {printable && <PrintReport report={printable} />}
         </div>
       )}
     </div>

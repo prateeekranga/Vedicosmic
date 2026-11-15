@@ -15,6 +15,8 @@ export type AnalyticsEvent =
   | 'waitlist_submit' | 'match_started' | 'match_result_viewed' | 'pwa_installed' | 'language_switched'
   // Any tool: first interaction with it, and the first result it shows (once per visit each)
   | 'tool_used' | 'result_viewed'
+  // Numerology reports: printed or saved as PDF, with the tool and the choice of sections
+  | 'report_printed'
   // Chakra Frequency Player
   | 'player_play' | 'player_pause' | 'player_stop' | 'player_timer_set' | 'player_record_download';
 

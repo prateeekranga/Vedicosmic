@@ -38,7 +38,11 @@ body {
   color: #e7e7f4;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* clip, not hidden: hidden turns the body into a scroll box that never scrolls, which
+     silently stops every position: sticky element on the site (side menus, the Chakra
+     Player's sidebar) from sticking. Browsers without clip fall back to hidden. */
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 @layer base {
@@ -68,8 +72,17 @@ body {
   .eyebrow {
     @apply inline-flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-gold-soft/80;
   }
+  /* The page frame. Wide screens use most of their width (up to 1600px) instead of leaving
+     broad empty margins; the side padding grows with the screen. Reading text keeps its own
+     narrower measure inside this frame. */
   .container-vc {
-    @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
+    @apply mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-10 2xl:px-12;
+  }
+  /* A sticky side column (page menu, related links) that scrolls on its own if it is taller
+     than the screen. Only sticky where the side columns are shown. */
+  .side-sticky {
+    @apply xl:sticky xl:top-24 xl:max-h-[calc(100vh-7rem)] xl:overflow-y-auto xl:pb-4;
+    scrollbar-width: thin;
   }
 }
 

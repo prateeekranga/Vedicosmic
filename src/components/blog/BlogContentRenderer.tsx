@@ -38,19 +38,21 @@ function InlineCta({
   to, icon, eyebrow, title, subtitle, ctaLabel,
 }: { to: string; icon?: ReactNode; eyebrow?: string; title: string; subtitle: string; ctaLabel: string }) {
   return (
-    <Link to={to} className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-cosmic-light/40 p-6 transition-colors hover:border-gold-soft/30">
+    // A long link label wraps inside its own share of the row (or onto a line of its own on a
+    // phone) instead of squeezing the title into a narrow strip.
+    <Link to={to} className="group flex flex-wrap items-center gap-x-4 gap-y-3 rounded-2xl border border-white/10 bg-cosmic-light/40 p-6 transition-colors hover:border-gold-soft/30">
       {icon && (
         <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gold-bright/10 text-gold-soft">
           {icon}
         </span>
       )}
-      <div className="min-w-0 flex-1">
-        {eyebrow && <p className="text-xs uppercase tracking-wide text-white/40">{eyebrow}</p>}
+      <div className="min-w-[12rem] flex-1">
+        {eyebrow && <p className="text-xs uppercase tracking-wide text-white/55">{eyebrow}</p>}
         <p className="font-medium text-white">{title}</p>
         <p className="truncate text-sm text-white/50">{subtitle}</p>
       </div>
-      <span className="flex shrink-0 items-center gap-1 text-sm text-brand-cyan-soft">
-        {ctaLabel} <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+      <span className="max-w-full text-sm leading-snug text-brand-cyan-soft sm:max-w-[40%] sm:text-right">
+        {ctaLabel} <ArrowRight className="inline h-3.5 w-3.5 align-[-2px] transition-transform group-hover:translate-x-1" />
       </span>
     </Link>
   );

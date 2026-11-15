@@ -13,7 +13,7 @@ import { TrustBadgesRow } from './chakra-player/TrustBadgesRow';
  * navigating to other pages, backing the sitewide docked mini player), all visual regions
  * are decomposed into src/tools/chakra-player/*. Responsive: lg:grid-cols-[240px_1fr] for
  * the sidebar split, nested xl:grid-cols-[1fr_300px] for hero-vs-right-rail — the one width
- * where three real columns fit inside the site's existing max-w-7xl container. Below lg,
+ * where three real columns fit inside the site's page container. Below lg,
  * the sidebar collapses to a horizontal chip row and the right-rail panels stack below.
  */
 export default function ChakraFrequencyPlayerTool() {

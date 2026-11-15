@@ -76,7 +76,7 @@ function ToolCard({ tool }: { tool: ToolMeta }) {
 
 function ToolGrid({ tools }: { tools: ToolMeta[] }) {
   return (
-    <ul className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <ul className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
       {tools.map((t) => <li key={t.id}><ToolCard tool={t} /></li>)}
     </ul>
   );
@@ -157,15 +157,18 @@ function IndexPage() {
         ))
       )}
 
-      <section id="faq" className="mx-auto mt-20 max-w-3xl">
-        <h2 className={H2}>{TOOLS_INDEX.faqHeading}</h2>
-        <div className="mt-6">
+      {/* Wide screens: the heading and note to the left, the questions to the right. */}
+      <section id="faq" className="mx-auto mt-20 max-w-3xl lg:grid lg:max-w-none lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-12 xl:gap-16">
+        <div>
+          <h2 className={H2}>{TOOLS_INDEX.faqHeading}</h2>
+          <p className="mt-4 text-sm leading-relaxed text-white/60 lg:mt-5 lg:max-w-sm">
+            The methods behind the astrology and calendar tools are written up on the{' '}
+            <Link to="/how-we-calculate" className="text-brand-cyan-soft underline underline-offset-2 hover:text-white">How we calculate</Link> page.
+          </p>
+        </div>
+        <div className="mt-6 lg:mt-0">
           <Accordion items={TOOLS_INDEX.faqs} defaultOpen={TOOLS_INDEX.faqs[0]?.id} />
         </div>
-        <p className="mt-6 text-sm text-white/60">
-          The methods behind the astrology and calendar tools are written up on the{' '}
-          <Link to="/how-we-calculate" className="text-brand-cyan-soft underline underline-offset-2 hover:text-white">How we calculate</Link> page.
-        </p>
       </section>
     </div>
   );
@@ -202,9 +205,9 @@ function HubPage({ hub }: { hub: ToolHub }) {
 
       <HubChips current={hub.id} />
 
-      <section className="mt-12 max-w-3xl">
+      <section className="mt-12">
         <h2 className={H2}>{hub.guide.heading}</h2>
-        <ul className="mt-5 space-y-4">
+        <ul className="mt-5 grid gap-4 lg:grid-cols-2">
           {hub.guide.items.map((item) => {
             const tool = getTool(item.toolSlug);
             if (!tool) return null;

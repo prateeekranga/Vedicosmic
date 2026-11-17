@@ -69,7 +69,8 @@ describe('Lo Shu report', () => {
     expect(glance(report)).toMatchObject({
       'Driver · Mulank': '5', 'Conductor · Bhagyank': '7', 'Kua number': '6', 'Missing numbers': '2, 3', 'Complete lines': '3', 'Antar Dasha now': '2',
     });
-    expect(ids(report)).toEqual(['grid', 'lines', 'numbers', 'dasha', 'favourable', 'directions', 'working']);
+    // The foundation (lines, number by number) comes before what is built on it (areas, periods, remedies).
+    expect(ids(report)).toEqual(['grid', 'lines', 'numbers', 'areas', 'dasha', 'outlook', 'remedies', 'repeats', 'favourable', 'careful', 'directions', 'working']);
     expect(report.sections.filter((s) => s.summary).map((s) => s.id)).toEqual(['grid']);
     expect(report.subject).toEqual({ label: 'Date of birth', value: '14 June 1985' });
   });
@@ -93,10 +94,49 @@ describe('Lo Shu report', () => {
     expect(table && table.kind === 'table' && table.rows.filter((r) => r.highlight)).toHaveLength(1);
   });
 
+  it('says each thing once: one year table in words, each missing number read in one place, no scores', () => {
+    const yearTables = blocks(report).filter((b) => b.kind === 'table' && b.head[0].startsWith('Year from'));
+    expect(yearTables).toHaveLength(1);
+    // The one table gives how the year's planet sits beside the person's numbers, and the lines the year completes.
+    expect(yearTables[0].kind === 'table' && yearTables[0].head).toEqual(['Year from 14 June', 'Maha · Antar', 'How your Driver’s and Conductor’s planets regard the year’s planet', 'Lines added']);
+    // A missing number's meaning is in "Number by number"; the remedies give the habit and customs without repeating it.
+    const numbers = strings(report.sections.find((s) => s.id === 'numbers')!).join(' ');
+    expect(numbers).toContain('A missing 2 is read as');
+    expect(numbers).toContain('A missing 3 is read as');
+    const remedies = strings(report.sections.find((s) => s.id === 'remedies')!).join(' ');
+    expect(remedies).not.toContain('A missing 2 is read as');
+    expect(remedies).toContain('Daily life:');
+    // Scores belong to the screen's fold, not to the printed report.
+    const outlook = strings(report.sections.find((s) => s.id === 'outlook')!).join(' ');
+    expect(outlook).not.toMatch(/[+−]\d|Needs care|Favourable|Even\b/);
+  });
+
+  it('gives numbers held more than once their own section, with the balancing customs', () => {
+    // 14 June 1985: 1, 5 and 6 each appear twice, so each gets a card, and none is yet "worth balancing".
+    const repeats = report.sections.find((s) => s.id === 'repeats')!;
+    const text = strings(repeats).join(' ');
+    for (const planetName of ['Sun', 'Mercury', 'Venus']) expect(text).toContain(`${planetName} held twice`);
+    expect(text).toContain('Balance:');
+    expect(text).toContain('Colours:');
+    expect(text).toContain('Speak and act:');
+    expect(text).toContain('go lighter on 1 in a phone, house or vehicle number');
+    // A grid with no number held twice has no such section.
+    const none = loShuReport(ymd(1953, 6, 28), 'female');
+    expect(ids(none).includes('repeats')).toBe(loShu(ymd(1953, 6, 28), 'female').full.repeated.length > 0);
+  });
+
+  it('names the planets by their friendship to the Driver and Conductor, for 14 June 1985 (Mercury and Ketu)', () => {
+    const outlook = report.sections.find((s) => s.id === 'outlook')!;
+    const table = outlook.blocks.find((b) => b.kind === 'table');
+    if (table?.kind !== 'table') throw new Error('no table');
+    // Antar 2 (Moon): both Mercury (Driver 5) and Ketu (Conductor 7) regard the Moon as unfriendly, said in that direction.
+    expect(table.rows[0].cells[2]).toBe('Mercury (Driver) and Ketu (Conductor) both regard the Moon as unfriendly');
+  });
+
   it('leaves out the Kua when no gender is given', () => {
     const r = loShuReport(ymd(1985, 6, 14), null);
     expect(glance(r)['Kua number']).toBe('–');
-    expect(r.sections.find((s) => s.id === 'directions')!.title).toBe('Directions (Numero Vastu)');
+    expect(r.sections.find((s) => s.id === 'directions')!.title).toBe('Lo Shu directions');
     expect(r.details).toEqual([]);
   });
 

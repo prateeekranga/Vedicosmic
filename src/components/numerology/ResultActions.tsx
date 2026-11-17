@@ -14,7 +14,7 @@ import { trackEvent } from '@/lib/analytics';
  * - Print opens the report's print options (PrintReport), where a PDF can also be saved.
  */
 export function ResultActions({
-  toolSlug, link, onSave, saveLabel = 'Save this result', printable = true,
+  toolSlug, link, onSave, saveLabel = 'Save this result', printable = true, compact = false,
 }: {
   toolSlug: string;
   /** Omit for results that depend on a name or phone number, which are never put in a link. */
@@ -22,6 +22,8 @@ export function ResultActions({
   onSave: () => void;
   saveLabel?: string;
   printable?: boolean;
+  /** A shorter label on the link button, for a header where space is tight. */
+  compact?: boolean;
 }) {
   const { notify } = useToast();
   const [copied, setCopied] = useState(false);
@@ -46,7 +48,7 @@ export function ResultActions({
         <SaveOnDeviceButton label={saveLabel} size="sm" saved={saved} onSave={() => { onSave(); setSaved(true); }} />
         {link && (
           <Button variant="ghost" size="sm" onClick={copy}>
-            {copied ? <Check className="h-4 w-4" /> : <LinkIcon className="h-4 w-4" />} Copy link with my birth date
+            {copied ? <Check className="h-4 w-4" /> : <LinkIcon className="h-4 w-4" />} {compact ? 'Copy link' : 'Copy link with my birth date'}
           </Button>
         )}
         {printable && (
@@ -56,7 +58,7 @@ export function ResultActions({
         )}
       </div>
       {link && (
-        <p className="text-xs text-white/55">
+        <p className={`text-xs text-white/55 ${compact ? 'hidden sm:block' : ''}`}>
           The link includes your date of birth, so share it only with people you are happy to tell. Nothing is sent to us.
         </p>
       )}

@@ -25,12 +25,12 @@ export const DASHA_ROLE = {
   pratyantar: 'The short period within the year, a few weeks long. It is read as the mood of the moment.',
 } as const;
 
-export const DASHA_INTRO = 'Indian numerology divides a life into periods ruled by the nine numbers. The numbers of the running periods are added to your grid for as long as they last, so a line that is one number short can be complete for a time.';
+export const DASHA_INTRO = 'Indian numerology, by one commonly taught method, divides a life into periods ruled by the nine numbers. The numbers of the running periods are added to your grid for as long as they last, so a line that is one number short can be complete for a time.';
 
 export const DASHA_GRID_NONE = 'Adding these numbers completes no new line in your grid.';
 
 /** Under the list of directions. */
-export const NUMERO_VASTU_NOTE = 'Numero Vastu gives each number of the square a direction, with South at the top as the Lo Shu is traditionally drawn. Teachers read a missing number as the direction of a home or room to keep clear, clean and well lit.';
+export const NUMERO_VASTU_NOTE = 'Numero Vastu, better called the Lo Shu directions, gives each number of the square a compass point, with South at the top as the square is traditionally drawn. It is not the planet-direction scheme of Vastu Shastra, which assigns the points differently. Teachers read a missing number as the point of a home or room to keep clear, clean and well lit.';
 
 /** Under the favourable days and dates. */
-export const FAVOURABLE_NOTE = 'Often called lucky days and dates. They are the weekday of your Driver’s planet and the dates that add down to your Driver or to a number its planet counts as a friend: a preference of the tradition, not a forecast.';
+export const FAVOURABLE_NOTE = 'Often called lucky days and dates. They are the weekday of your Driver’s planet and the dates that add down to your Driver or to a number its planet counts as a friend: a preference of the tradition, not a forecast. Published lists of friendly numbers differ between teachers; this one follows the friendship table of the Brihat Parashara Hora Shastra.';

@@ -10,6 +10,9 @@ import { cn } from '@/lib/cn';
 const times = (n: number) => (n === 1 ? 'once' : n === 2 ? 'twice' : `${n} times`);
 const listWords = (parts: string[]) => (parts.length > 1 ? `${parts.slice(0, -1).join(', ')} and ${parts[parts.length - 1]}` : parts[0] ?? '');
 
+/** The size of a cell's digits: the longer the run (22, 222, 2222), the smaller each digit, so that it always fits its cell. */
+const digitSize = (count: number) => (count <= 2 ? 'text-2xl sm:text-3xl' : count === 3 ? 'text-2xl sm:text-[1.7rem]' : count <= 5 ? 'text-xl sm:text-2xl' : 'text-lg sm:text-xl');
+
 /** The grid with the numbers of the running dasha periods added, for the "current dasha" view. */
 export interface GridPeriod {
   grid: GridAnalysis;
@@ -58,7 +61,8 @@ const ARROW_COLOUR: Record<ArrowKind, string> = { golden: '#FFD24A', silver: '#E
 /**
  * The Lo Shu square as a real table, so a screen reader announces three rows of three cells.
  * Each cell is a button that opens a short explanation below the grid. Present, repeated and
- * missing numbers differ in text and border as well as colour, and repeats are written "9 ×3".
+ * missing numbers differ in text and border as well as colour, and a number that repeats is written as
+ * many times as it appears: 99 for two 9s, 999 for three.
  *
  * Every complete line of three gets an arrow drawn across it: gold for the Golden Raj Yog
  * (4-5-6), silver for the Silver Raj Yog (2-5-8), blue for a row and violet for a column. The
@@ -69,8 +73,8 @@ const ARROW_COLOUR: Record<ArrowKind, string> = { golden: '#FFD24A', silver: '#E
  * the grid opens on a view with other numbers added, such as the digits of a phone number.
  */
 export function LoShuGrid({
-  result, period, addition, compact = false, className,
-}: { result: LoShuResult; period?: GridPeriod; addition?: GridAddition; compact?: boolean; className?: string }) {
+  result, period, addition, compact = false, wide = false, className,
+}: { result: LoShuResult; period?: GridPeriod; addition?: GridAddition; compact?: boolean; wide?: boolean; className?: string }) {
   const [chosen, setChosen] = useState<View>(addition ? 'added' : 'full');
   const [selected, setSelected] = useState<Digit | null>(null);
   const reducedMotion = usePrefersReducedMotion();
@@ -79,6 +83,9 @@ export function LoShuGrid({
   const grid = view === 'birth' ? result.birth : view === 'period' && period ? period.grid : view === 'added' && addition ? addition.grid : result.full;
   const info = selected ? NUMBERS[selected] : null;
   const selectedCount = selected ? grid.counts[selected] : 0;
+  const repeatedDigit = DIGITS.find((d) => grid.counts[d] > 1);
+  const firstRepeat = repeatedDigit ? grid.counts[repeatedDigit] : 0;
+  const anyMissing = DIGITS.some((d) => grid.counts[d] === 0);
   const hasExtras = DIGITS.some((d) => result.sources[d].driver || result.sources[d].conductor || result.sources[d].kua);
   const complete = grid.lines.filter((l) => l.status === 'full').sort((a, b) => ARROW_ORDER[arrowKind(a)] - ARROW_ORDER[arrowKind(b)]);
   const unformedYogs = grid.lines.filter((l) => l.kind === 'diagonal' && l.status !== 'full');
@@ -95,14 +102,17 @@ export function LoShuGrid({
     ...(period ? [{ id: 'period' as const, label: 'With current dasha' }] : []),
   ];
 
+  // With `wide`, a large screen puts the square on the left and everything that explains it on the right, so a wide card is not a tall one with an empty side.
+  const narrow = cn('mx-auto max-w-[380px]', wide && 'lg:mx-0 lg:max-w-none');
+
   return (
-    <div className={className}>
+    <div className={cn(className, wide && 'lg:grid lg:grid-cols-[380px_minmax(0,1fr)] lg:items-start lg:gap-x-10')}>
       <div className="relative isolate mx-auto w-full max-w-[380px]">
         <table className="w-full table-fixed border-separate border-spacing-2">
           <caption className="sr-only">
             Lo Shu grid for {formatYMD(result.date)}, {viewWords}.
             Rows read 4 9 2, 3 5 7 and 8 1 6.
-            {complete.length ? ` Complete lines, each marked with an arrow: ${complete.map(lineLabel).join(', ')}.` : ' No line of three is complete.'}
+            {complete.length ? ` Complete lines, each drawn across the grid: ${complete.map(lineLabel).join(', ')}.` : ' No line of three is complete.'}
           </caption>
           <tbody>
             {LOSHU_LAYOUT.map((row) => (
@@ -138,8 +148,10 @@ export function LoShuGrid({
                         )}
                         style={present ? { background: n.colour.fill, color: n.colour.ink } : undefined}
                       >
-                        <span className={cn('relative z-20 font-heading text-2xl font-bold leading-none sm:text-3xl', !present && 'text-white/70')}>
-                          {d}{count > 1 && <span className="ml-1 text-base font-semibold sm:text-lg">×{count}</span>}
+                        {/* The arrows run the full length of each line on a layer behind the cell text, uncropped; the numbers sit on top of them. */}
+                        {/* A repeated number is written as many times as it appears (22, 222), a little smaller as the run grows. The digit is also given once, for a screen reader. */}
+                        <span className={cn('relative z-20 font-heading font-bold leading-none tracking-tight', digitSize(count), !present && 'text-white/70')}>
+                          {present ? <><span aria-hidden="true">{String(d).repeat(count)}</span>{count > 1 && <span className="sr-only">{d}</span>}</> : d}
                         </span>
                         {' '}
                         <span className={cn('relative z-20 mt-1 text-[0.65rem] font-medium uppercase tracking-wide', !present && 'text-white/60')}>
@@ -207,11 +219,14 @@ export function LoShuGrid({
         )}
       </div>
 
-      <div className="mx-auto mt-3 max-w-[380px]" data-testid="loshu-lines">
+      {/* From a wide screen the right-hand side has two columns: the legend and notes, then the view choice and the cell reading. */}
+      <div className={wide ? 'min-w-0 xl:grid xl:grid-cols-2 xl:items-start xl:gap-x-8' : undefined}>
+      <div>
+      <div className={cn(narrow, 'mt-3', wide && 'lg:mt-0')} data-testid="loshu-lines">
         {complete.length > 0 ? (
           <>
             <p className="text-xs font-medium text-white/75">
-              {complete.length === 1 ? 'One line is complete, marked with an arrow:' : `${complete.length} lines are complete, each marked with an arrow:`}
+              {complete.length === 1 ? 'One line is complete, drawn across the grid:' : `${complete.length} lines are complete, each drawn across the grid:`}
             </p>
             <ul className="mt-2 flex flex-wrap gap-2">
               {complete.map((l) => {
@@ -228,25 +243,27 @@ export function LoShuGrid({
             </ul>
           </>
         ) : (
-          <p className="text-xs text-white/65">No line of three is complete in this grid, so no arrow is drawn.</p>
+          <p className="text-xs text-white/65">No line of three is complete in this grid, so no line is drawn.</p>
         )}
-        {unformedYogs.length > 0 && (
+        {!compact && unformedYogs.length > 0 && (
           <p className="mt-2 text-xs leading-relaxed text-white/60">
             {unformedYogs.map((l) => `${LINE_TEXT[l.id].name} (${l.cells.join('-')}) is not formed: ${l.absent.join(' and ')} ${l.absent.length === 1 ? 'is' : 'are'} missing.`).join(' ')}
           </p>
         )}
       </div>
 
-      <p className="mx-auto mt-3 max-w-[380px] text-xs leading-relaxed text-white/60">
-        “×3” means the number appears three times. A dashed cell is a missing number.
+      <p className={cn(narrow, 'mt-3 text-xs leading-relaxed text-white/60')}>
+        {repeatedDigit && `A number is written as often as it appears: “${String(repeatedDigit).repeat(firstRepeat)}” means ${repeatedDigit} appears ${times(firstRepeat)}. `}
+        {anyMissing && 'A dashed cell is a missing number: a quality to build, not a fault.'}
         {view !== 'birth' && hasExtras && ' D, C and K mark a number added as the Driver, Conductor or Kua.'}
         {view === 'period' && ' M and A mark a number added for the running Maha Dasha and Antar Dasha.'}
         {view === 'added' && addition && ` A gold +1 or +2 shows how many of that number come from ${addition.source}.`}
       </p>
+      </div>
 
       {!compact && (
-        <>
-          <fieldset className="mx-auto mt-4 max-w-[380px]">
+        <div>
+          <fieldset className={cn(narrow, 'mt-4', wide && 'lg:mt-5 xl:mt-0')}>
             <legend className="mb-2 text-xs font-medium uppercase tracking-wide text-white/60">Numbers shown in the grid</legend>
             <div className="flex flex-wrap gap-2">
               {views.map((v) => (
@@ -260,7 +277,7 @@ export function LoShuGrid({
             </div>
           </fieldset>
 
-          <div aria-live="polite" className="mx-auto mt-4 min-h-[5.5rem] max-w-[380px] rounded-xl border border-white/10 bg-white/[0.03] p-4 text-sm leading-relaxed text-white/75">
+          <div aria-live="polite" className={cn(narrow, 'mt-4 min-h-[5.5rem] rounded-xl border border-white/10 bg-white/[0.03] p-4 text-sm leading-relaxed text-white/75')}>
             {info && selected ? (
               <>
                 <p className="font-medium text-white">{selected} · {info.planet} ({info.sanskrit}) · {info.keyword}</p>
@@ -274,8 +291,9 @@ export function LoShuGrid({
               <p>Choose any cell to read what its number means in this grid.</p>
             )}
           </div>
-        </>
+        </div>
       )}
+      </div>
     </div>
   );
 }

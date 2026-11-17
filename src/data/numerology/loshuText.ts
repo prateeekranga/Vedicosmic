@@ -54,8 +54,8 @@ export const LINE_TEXT: Readonly<Record<LineId, LineText>> = {
     empty: 'The right column is empty. Tradition reads this as hesitation before starting, eased by beginning with the smallest possible step.',
   },
   golden: {
-    name: 'Golden Raj Yog', theme: 'the 4-5-6 diagonal, traditionally called the success line',
-    full: 'The 4-5-6 diagonal is complete. Teachers call this the Golden Raj Yog, or simply raj yog, and read it as steady effort that tends to be noticed and rewarded.',
+    name: 'Golden Raj Yog', theme: 'the 4-5-6 diagonal, traditionally linked with recognition',
+    full: 'The 4-5-6 diagonal is complete. Teachers call this the Golden Raj Yog, or simply raj yog, and read it as steady effort that tends to be noticed.',
     partial: 'Two of the three numbers of the golden diagonal are present. The line is forming; tradition says the missing number is the quality to cultivate to complete it.',
     empty: 'The 4-5-6 diagonal is empty. Tradition reads this only as recognition arriving later and through persistence, not as a lack of ability.',
   },
@@ -132,7 +132,7 @@ export const REPEAT_TEXT: Readonly<Record<Digit, readonly [string, string, strin
     'Four or more 8s are read as a need for movement and change of scene.',
   ],
   9: [
-    'One 9 is read as ambition joined to ideals. Everyone born in the twentieth century has at least one.',
+    'One 9 is read as ambition joined to ideals. Everyone born from 1900 to 1999 has at least one from the year alone.',
     'Two 9s are read as high ideals and a critical eye, first of all for oneself.',
     'Three 9s are read as intense idealism that can overstate a case.',
     'Four or more 9s are read as being wrapped up in one’s own ideals; listening is the balancing habit.',
@@ -173,7 +173,7 @@ export const MISSING_TEXT: Readonly<Record<Digit, MissingText>> = {
     practice: 'Traditionally suggested: a few minutes of steady breathing each day, and writing down one aim for the week.',
   },
   6: {
-    meaning: 'A missing 6 is read as keeping one’s deeper feelings from family.',
+    meaning: 'A missing 6 is read as affection and the comforts of home needing deliberate care.',
     practice: 'Traditionally suggested: time around music, art or a well-kept home, and letting yourself receive care as well as give it.',
   },
   7: {
@@ -196,10 +196,10 @@ export const DIRECTION_NAME: Readonly<Record<Direction, string>> = {
 
 /** The four favourable directions of Eight Mansions, with what each is traditionally used for. */
 export const KUA_DIRECTION_TEXT = {
-  shengQi: { name: 'Sheng Qi', use: 'growth and new undertakings; traditionally the direction to face when working' },
-  tianYi: { name: 'Tian Yi', use: 'rest and recovery; traditionally the direction for the head of the bed' },
-  yanNian: { name: 'Yan Nian', use: 'relationships and agreement; traditionally the direction for conversation' },
-  fuWei: { name: 'Fu Wei', use: 'steadiness and study; traditionally the direction for reading or meditation' },
+  shengQi: { name: 'Sheng Qi', english: 'success', use: 'growth and new undertakings; traditionally the direction to face when working' },
+  tianYi: { name: 'Tian Yi', english: 'health', use: 'rest and recovery; traditionally the direction for the head of the bed' },
+  yanNian: { name: 'Yan Nian', english: 'relationships', use: 'relationships and agreement; traditionally the direction for conversation' },
+  fuWei: { name: 'Fu Wei', english: 'stability', use: 'steadiness and study; traditionally the direction for reading or meditation' },
 } as const;
 
 export const KUA_TEXT: Readonly<Record<KuaMansion, string>> = {

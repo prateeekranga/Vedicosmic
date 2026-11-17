@@ -22,6 +22,7 @@ export * from './chaldean';
 export * from './mobileChart';
 export * from './mobile';
 export * from './numeroDasha';
+export * from './lifeAreas';
 
 export { NUMEROLOGY_ENGINE } from './version';
 

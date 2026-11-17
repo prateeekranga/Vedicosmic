@@ -4,18 +4,31 @@
  * check the numbers, the sections and the wording.
  */
 import {
-  DIGITS, LOSHU_LINES, NUMBER_DIRECTION, PURPOSE_WORDS, RELATION_POINTS, dashaGrid, dashaYears, favourableDates, formatYMD, mahaDashas, relationTone,
-  relationsOf, type CalcStep, type ChaldeanResult, type CoreNumber, type DashaNow, type Digit, type GridAnalysis,
+  AREA_IDS, AREA_KEYS, DIGITS, LOSHU_LINES, NUMBER_DIRECTION, PURPOSE_WORDS, RELATION_POINTS, carefulNumbers, dashaGrid,
+  favourableDates, formatYMD, lifeAreaSteps, lifeAreas, mahaDashas, regardOf, relationTone, relationsOf, remedyPriorities, repeatedForRemedy,
+  yearOutlook, type CarefulTier, type CalcStep, type ChaldeanResult, type CoreNumber, type DashaNow, type Digit, type GridAnalysis,
   type LineId, type LoShuResult, type MobileResult, type NumerologyProfile, type PairRelation, type PersonalCycles,
   type Pinnacle, type YMD,
 } from '@/engine/numerology';
 import { NUMEROLOGY_ENGINE } from '@/engine/numerology/version';
+import { toISODate } from '@/engine/numerology/core';
+import { SITE_URL } from '@/config/site';
+import { buildResultLink } from '@/lib/resultLink';
 import { NUMBERS, masterNote } from '@/data/numerology/numbers';
 import {
   DIRECTION_NAME, KUA_DIRECTION_TEXT, KUA_GROUP_TEXT, KUA_TEXT, LINE_STATUS_LABEL, LINE_TEXT, MISSING_TEXT, RELATION_TEXT,
   SAME_NUMBER_TEXT, lineReading, repeatReading,
 } from '@/data/numerology/loshuText';
 import { DASHA_GRID_NONE, DASHA_INTRO, DASHA_ROLE, DASHA_TEXT, FAVOURABLE_NOTE, NUMERO_VASTU_NOTE } from '@/data/numerology/dashaText';
+import {
+  AREAS_INTRO, AREA_BAND_TEXT, AREA_NUMBER_TEXT, AREA_TEXT, CAREFUL_DATES_LABEL, CAREFUL_DAYS_LABEL, CAREFUL_INTRO, CAREFUL_NONE, CAREFUL_NOTE,
+  CAREFUL_TIER_TEXT, CAREFUL_USE, GEM_NOTE, HEALTH_NOTE, OUTLOOK_NOTE, PERIOD_AREA_TEXT,
+  REMEDY_NONE, REMEDY_PAGE_INTRO, REMEDY_PRIORITY_INTRO, REMEDY_TEXT, STONE_LINE, DASHA_NOTE,
+  mantraLine, placeAdvice, priorityWhy, weekdaysOf, yearRegard,
+} from '@/data/numerology/lifeAreaText';
+import {
+  EXCESS_REMEDY, MISSING_REMEDY, REMEDY_PROVENANCE, REPEAT_INTRO, REPEAT_OFTEN, REPEAT_TWICE, excessNumbersAdvice, missingNumbersAdvice,
+} from '@/data/numerology/remedyText';
 import {
   CHALLENGE_TEXT, CORE_ROLE, CYCLE_TEXT, KARMIC_DEBT_TEXT, KARMIC_LESSON_TEXT, LIFE_PATH_TEXT, NUMBER_TRAIT, PINNACLE_TEXT,
 } from '@/data/numerology/westernText';
@@ -32,6 +45,8 @@ import { coreLabel, coreWorking } from '@/lib/numerologyReport';
 import type { PrintBlock, PrintCard, PrintGrid, PrintReportData, PrintSection, PrintTile } from './types';
 
 const SITE = 'vedicosmic.com';
+/** The QR code for a tool that cannot be reopened from a link: it opens the tool itself. */
+const toolQr = (slug: string) => ({ url: `${SITE_URL}/tools/${slug}`, reopens: false });
 const DISCLAIMER = 'Numerology is a tradition offered for reflection, not a prediction or advice.';
 const ENGINE = `${NUMEROLOGY_ENGINE.name} ${NUMEROLOGY_ENGINE.version}`;
 
@@ -96,26 +111,20 @@ function linesSection(g: GridAnalysis, id = 'lines'): PrintSection {
 }
 
 function numbersSection(g: GridAnalysis): PrintSection {
-  const repeated: PrintCard[] = g.repeated.map(({ digit, count }) => ({
-    chip: `${digit} ×${count}`, digit, title: `${planet(digit)} repeated`, text: repeatReading(digit, count),
-  }));
-  const missing: PrintCard[] = g.missing.map((d) => ({
-    chip: String(d), title: `${planet(d)} missing`, meta: `Points to the ${directionOf(d)}`, text: MISSING_TEXT[d].meaning, extra: MISSING_TEXT[d].practice,
-  }));
-  return {
-    id: 'numbers', title: 'Repeated and missing numbers',
-    blocks: [{
-      kind: 'columns', columns: [
-        [{ kind: 'text', tone: 'lead', text: 'Repeated' }, repeated.length ? { kind: 'cards', cards: repeated, columns: 1 } : { kind: 'text', tone: 'muted', text: 'No number appears more than once.' }],
-        [{ kind: 'text', tone: 'lead', text: 'Missing' }, missing.length ? { kind: 'cards', cards: missing, columns: 1 } : { kind: 'text', tone: 'muted', text: 'Every number from 1 to 9 is present.' }],
-      ],
-    }],
-  };
+  const order: readonly Digit[] = DIGITS;
+  const cards: PrintCard[] = order.map((d) => {
+    const count = g.counts[d];
+    return {
+      chip: count > 1 ? `${d} ×${count}` : String(d), digit: count > 0 ? d : undefined,
+      title: planet(d), meta: count === 0 ? 'Missing' : count === 1 ? 'Present once' : `Present ${count} times`,
+      text: count === 0 ? MISSING_TEXT[d].meaning : repeatReading(d, count),
+    };
+  });
+  return { id: 'numbers', title: 'Number by number', intro: 'What each number says in your grid. The planet is the number’s ruler in Indian numerology; the reading is what the number means when it sits in the grid, a tradition of its own.', blocks: [{ kind: 'cards', cards, columns: 3 }] };
 }
 
 function dashaSection(r: LoShuResult, now: DashaNow): PrintSection {
   const added = dashaGrid(r, [now.maha.number, now.antar.number]);
-  const years = dashaYears(r, now.antar.year, 5);
   const mahas = mahaDashas(r.date, 90);
   const age = now.antar.year - r.date.y;
   return {
@@ -135,14 +144,6 @@ function dashaSection(r: LoShuResult, now: DashaNow): PrintSection {
           {
             kind: 'callout', title: 'This period',
             text: `With ${now.maha.number} (Maha Dasha) and ${now.antar.number} (Antar Dasha) added, ${added.newlyComplete.length ? `the grid also completes the ${list(added.newlyComplete.map(lineName))} for the time being.` : DASHA_GRID_NONE.charAt(0).toLowerCase() + DASHA_GRID_NONE.slice(1)}`,
-          },
-          {
-            kind: 'table', head: [`Year from ${r.date.d} ${MONTHS[r.date.m - 1]}`, 'Maha', 'Antar', 'Lines added'], widths: ['27%', '19%', '19%', '35%'],
-            rows: years.map((y) => ({
-              cells: [`${y.antar.from.y} to ${y.antar.until.y}`, `${y.maha.number} ${planet(y.maha.number)}`, `${y.antar.number} ${planet(y.antar.number)}`,
-                y.grid.newlyComplete.length ? y.grid.newlyComplete.map((id) => LINE_TEXT[id].name).join(', ') : 'None'],
-              highlight: y.antar.year === now.antar.year,
-            })),
           },
         ],
       },
@@ -178,36 +179,175 @@ function favourableSection(driver: Digit, id = 'favourable'): PrintSection {
   };
 }
 
+function luckySection(r: LoShuResult): PrintSection {
+  const rel = relationsOf(r.driver);
+  const dates = favourableDates(r.driver);
+  const n = NUMBERS[r.driver];
+  return {
+    id: 'favourable', title: `What suits you: Driver ${r.driver}`,
+    blocks: [
+      {
+        kind: 'facts', columns: 3, facts: [
+          { label: 'Friendly numbers', value: rel.friends.join(', ') || 'None' },
+          { label: `Colours of ${n.planet}`, value: n.colours.join(', ') },
+          { label: 'Favourable day', value: n.day ?? 'None of its own' },
+        ],
+      },
+      { kind: 'text', text: `Dates of any month that add down to ${r.driver}: ${dates.own.join(', ')}.` },
+      { kind: 'text', tone: 'muted', text: FAVOURABLE_NOTE },
+      { kind: 'text', tone: 'muted', text: `${STONE_LINE} It is ${n.gemstone}.` },
+    ],
+  };
+}
+
 function directionsSection(r: LoShuResult): PrintSection {
-  const vastu: PrintBlock[] = [
-    { kind: 'vastu', counts: r.full.counts },
-    {
-      kind: 'text',
-      text: r.full.missing.length
-        ? `Your missing numbers point to: ${r.full.missing.map((d) => `${directionOf(d)} (${d})`).join(', ')}.`
-        : 'No number is missing, so no direction is marked for attention.',
-    },
+  const lead: PrintBlock[] = [
+    { kind: 'text', text: r.full.missing.length
+      ? `Your missing numbers point to: ${r.full.missing.map((d) => `${directionOf(d)} (${d})`).join(', ')}.`
+      : 'No number is missing, so no direction is marked for attention.' },
+    { kind: 'text', tone: 'muted', text: `All nine: ${DIGITS.map((d) => `${d} ${directionOf(d)}`).join(' · ')}.` },
     { kind: 'text', tone: 'muted', text: NUMERO_VASTU_NOTE },
   ];
-  if (!r.kua) return { id: 'directions', title: 'Directions (Numero Vastu)', blocks: vastu };
+  if (!r.kua) return { id: 'directions', title: 'Lo Shu directions', blocks: lead };
   const k = r.kua;
   return {
-    id: 'directions', title: 'Directions: Numero Vastu and Kua',
-    blocks: [{
-      kind: 'columns', columns: [
-        vastu,
-        [
-          { kind: 'text', tone: 'lead', text: `Kua ${k.mansion}: favourable directions` },
-          {
-            kind: 'table', head: ['Direction', 'Name', 'Traditionally used for'], widths: ['26%', '22%', '52%'],
-            rows: (['shengQi', 'tianYi', 'yanNian', 'fuWei'] as const).map((key) => ({
-              cells: [DIRECTION_NAME[k.directions[key]], KUA_DIRECTION_TEXT[key].name, cap(KUA_DIRECTION_TEXT[key].use.split(';')[0])],
-            })),
-          },
-          { kind: 'text', tone: 'muted', text: `${KUA_TEXT[k.mansion]} ${KUA_GROUP_TEXT[k.group]}` },
-        ],
-      ],
-    }],
+    id: 'directions', title: 'Lo Shu directions and Kua',
+    blocks: [
+      ...lead,
+      { kind: 'text', tone: 'lead', text: `Kua ${k.mansion}: favourable directions` },
+      {
+        kind: 'table', head: ['Direction', 'Name', 'Traditionally used for'], widths: ['26%', '30%', '44%'],
+        rows: (['shengQi', 'tianYi', 'yanNian', 'fuWei'] as const).map((key) => ({
+          cells: [DIRECTION_NAME[k.directions[key]], `${KUA_DIRECTION_TEXT[key].name} (${KUA_DIRECTION_TEXT[key].english})`, cap(KUA_DIRECTION_TEXT[key].use.split(';')[0])],
+        })),
+      },
+      { kind: 'text', tone: 'muted', text: `${KUA_TEXT[k.mansion]} ${KUA_GROUP_TEXT[k.group]}` },
+    ],
+  };
+}
+
+function areasSection(r: LoShuResult): PrintSection {
+  const support = lifeAreas(r);
+  const blocks: PrintBlock[] = AREA_IDS.flatMap((id): PrintBlock[] => {
+    const s = support[id];
+    const text = AREA_NUMBER_TEXT[id];
+    const cards: PrintCard[] = s.keys.map((k) => ({
+      chip: k.present && k.count > 1 ? `${k.digit} ×${k.count}` : String(k.digit),
+      digit: k.present ? k.digit : undefined,
+      title: text[k.digit]!.role, meta: `${planet(k.digit)} · ${k.present ? 'present' : 'missing'}`,
+      text: k.present ? text[k.digit]!.gives : text[k.digit]!.gap,
+      extra: k.present ? undefined : `Try: ${text[k.digit]!.habit}`,
+    }));
+    return [
+      { kind: 'meter', level: s.presentCount, max: s.keyCount, label: `${AREA_TEXT[id].name} · ${s.presentCount} of ${s.keyCount} key numbers present${s.missingKeys.length ? `; to build: ${s.missingKeys.join(', ')}` : ''}` },
+      { kind: 'text', text: AREA_BAND_TEXT[id][s.band] },
+      ...(id === 'health' ? [{ kind: 'text', tone: 'muted', text: HEALTH_NOTE } as PrintBlock] : []),
+      { kind: 'cards', cards, columns: 2 },
+    ];
+  });
+  return { id: 'areas', title: 'Career, relationships and health', intro: AREAS_INTRO, blocks };
+}
+
+function outlookSection(r: LoShuResult, now: DashaNow): PrintSection {
+  const years = yearOutlook(r, now.antar.year, 5);
+  return {
+    id: 'outlook', title: 'The years ahead, in words',
+    intro: 'How each year’s planet sits beside your Driver and Conductor in the traditional table of friendships, and what the year’s number is read to bring to work, relationships and health.',
+    blocks: [
+      {
+        kind: 'table', head: [`Year from ${r.date.d} ${MONTHS[r.date.m - 1]}`, 'Maha · Antar', 'How your Driver’s and Conductor’s planets regard the year’s planet', 'Lines added'], widths: ['16%', '19%', '43%', '22%'],
+        rows: years.map((y) => {
+          const regard = regardOf(r, y.year.antar.number);
+          return {
+            cells: [
+              `${y.year.antar.from.y} to ${y.year.antar.until.y}`,
+              `${y.year.maha.number} ${planet(y.year.maha.number)} · ${y.year.antar.number} ${planet(y.year.antar.number)}`,
+              yearRegard(r.driver, r.conductor, y.year.antar.number, regard.driver, regard.conductor),
+              y.year.grid.newlyComplete.length ? y.year.grid.newlyComplete.map((id) => LINE_TEXT[id].name).join(', ') : 'None',
+            ],
+            highlight: y.year.antar.year === now.antar.year,
+          };
+        }),
+      },
+      { kind: 'text', tone: 'lead', text: `This year: Antar Dasha ${now.antar.number} (${planet(now.antar.number)}), ${formatYMD(now.antar.from)} until ${formatYMD(now.antar.until)}` },
+      { kind: 'cards', columns: 3, cards: AREA_IDS.map((id) => ({ title: AREA_TEXT[id].name, text: PERIOD_AREA_TEXT[now.antar.number][id] })) },
+      { kind: 'text', tone: 'muted', text: OUTLOOK_NOTE },
+      { kind: 'text', tone: 'muted', text: DASHA_NOTE },
+    ],
+  };
+}
+
+function remediesSection(r: LoShuResult): PrintSection {
+  const priorities = remedyPriorities(r);
+  const first = new Set(priorities.map((p) => p.digit));
+  const byDigit = new Map(priorities.map((p) => [p.digit, p]));
+  const order = [...priorities.map((p) => p.digit), ...r.full.missing.filter((d) => !first.has(d))];
+  const areasOf = (d: Digit) => AREA_IDS.filter((id) => AREA_KEYS[id].numbers.some((k) => k.digit === d));
+  const cards: PrintCard[] = order.map((d) => {
+    const rem = REMEDY_TEXT[d];
+    const m = MISSING_REMEDY[d];
+    const p = byDigit.get(d);
+    return {
+      chip: String(d), title: `${planet(d)} missing`, meta: p ? priorityWhy(p) : (areasOf(d).map((id) => AREA_TEXT[id].name).join(', ') || 'Counts in none of the three areas'),
+      badge: first.has(d) ? 'Start here' : undefined,
+      text: `Daily life: ${m.daily.join(' ')}`,
+      extra: `${m.offering} ${mantraLine(d)} Colours: ${m.wear} Everyday items: ${m.items.join(' ')} Wallpaper: ${m.wallpaper} Use: ${m.use} Gift: ${rem.charity} ${missingNumbersAdvice(d)} ${placeAdvice(d)} ${rem.observance} Stone: ${NUMBERS[d].gemstone}.`,
+      highlight: first.has(d),
+    };
+  });
+  const begin: PrintBlock = priorities.length
+    ? { kind: 'callout', title: 'Where to begin', text: `${REMEDY_PRIORITY_INTRO} ${priorities.map((p, i) => `${i + 1}. ${planet(p.digit)} (${p.digit}): ${priorityWhy(p)}`).join(' ')}` }
+    : { kind: 'callout', title: 'Where to begin', text: REMEDY_NONE };
+  return {
+    id: 'remedies', title: 'Missing numbers and their remedies', intro: REMEDY_PAGE_INTRO,
+    blocks: r.full.missing.length
+      ? [begin, { kind: 'cards', cards, columns: 1 }, { kind: 'text', tone: 'muted', text: GEM_NOTE }]
+      : [{ kind: 'text', text: 'Every number from 1 to 9 is present in this grid, so there is no missing number to work on.' }],
+  };
+}
+
+/** Numbers held more than once, with the customs that balance them. */
+function repeatsSection(r: LoShuResult): PrintSection | null {
+  const repeated = repeatedForRemedy(r);
+  if (!repeated.length) return null;
+  const cards: PrintCard[] = repeated.map(({ digit: d, count, often }) => {
+    const e = EXCESS_REMEDY[d];
+    return {
+      chip: `${d} ×${count}`, digit: d, title: `${planet(d)} held ${count === 2 ? 'twice' : `${count} times`}`, meta: often ? REPEAT_OFTEN : REPEAT_TWICE,
+      badge: often ? 'Worth balancing' : undefined,
+      text: e.signs,
+      extra: `Balance: ${e.balance.join(' ')} Colours: ${e.colour} Items to swap: ${e.items.join(' ')} Wallpaper: ${e.wallpaper} Give: ${e.give} Speak and act: ${e.speak} ${excessNumbersAdvice(d)} ${placeAdvice(d)}`,
+      highlight: often,
+    };
+  });
+  return {
+    id: 'repeats', title: 'Numbers you hold more than once', intro: REPEAT_INTRO,
+    blocks: [{ kind: 'cards', cards, columns: 1 }, { kind: 'text', tone: 'muted', text: REMEDY_PROVENANCE }],
+  };
+}
+
+/** Numbers whose planets are unfriendly to the Driver or the Conductor, with their dates and weekdays. */
+function carefulSection(r: LoShuResult): PrintSection {
+  const c = carefulNumbers(r.driver, r.conductor);
+  const cards: PrintCard[] = (['challenging', 'mixed', 'careful'] as CarefulTier[]).flatMap((tier) => {
+    const members = c.numbers.filter((n) => n.tier === tier).map((n) => n.digit);
+    if (!members.length) return [];
+    const days = weekdaysOf(members);
+    return [{
+      chip: members.join(' · '), digit: members.length === 1 ? members[0] : undefined,
+      title: CAREFUL_TIER_TEXT[tier].label, meta: members.map(planet).join(', '), text: CAREFUL_TIER_TEXT[tier].text,
+      extra: `${CAREFUL_DATES_LABEL}: ${c.dates[tier].join(', ')}.${days.length ? ` ${CAREFUL_DAYS_LABEL}: ${days.join(', ')}.` : ''}`,
+    }];
+  });
+  return {
+    id: 'careful', title: 'Numbers and dates to go carefully with', intro: CAREFUL_INTRO,
+    blocks: cards.length
+      ? [
+        { kind: 'cards', cards, columns: 1 },
+        { kind: 'text', text: CAREFUL_USE },
+        { kind: 'text', tone: 'muted', text: `Worked out from your Driver ${r.driver} and Conductor ${r.conductor}. ${CAREFUL_NOTE}` },
+      ]
+      : [{ kind: 'text', text: CAREFUL_NONE }],
   };
 }
 
@@ -235,10 +375,14 @@ export function loShuPrint(r: LoShuResult, now: DashaNow | null, today: YMD): Pr
     },
     linesSection(r.full),
     numbersSection(r.full),
-    ...(now ? [dashaSection(r, now)] : []),
-    favourableSection(r.driver),
+    areasSection(r),
+    ...(now ? [dashaSection(r, now), outlookSection(r, now)] : []),
+    remediesSection(r),
+    ...(repeatsSection(r) ? [repeatsSection(r)!] : []),
+    luckySection(r),
+    carefulSection(r),
     directionsSection(r),
-    working([...r.steps, ...(now?.steps ?? [])]),
+    working([...r.steps, ...(now?.steps ?? []), ...lifeAreaSteps(r, now)]),
   ];
   return {
     toolSlug: 'loshu-grid', title: 'Lo Shu Grid Report',
@@ -254,6 +398,7 @@ export function loShuPrint(r: LoShuResult, now: DashaNow | null, today: YMD): Pr
     ],
     sections,
     link: `${SITE}/tools/loshu-grid`,
+    qr: { url: buildResultLink('loshu-grid', { dob: toISODate(r.date), gender: r.gender }), reopens: true },
     method: `Date digits with the Driver, Conductor and Kua added to the grid; zeros have no cell. Dasha periods start with the Driver and turn on the birthday. ${ENGINE}.`,
     preparedOn: formatYMD(today),
     disclaimer: DISCLAIMER,
@@ -337,6 +482,7 @@ export function lifePathPrint(p: {
       working(p.steps),
     ],
     link: `${SITE}/tools/life-path`,
+    qr: { url: buildResultLink('life-path', { dob: toISODate(p.date), gender: null }), reopens: true },
     method: `Life Path by the component method: month, day and year are each added down first, keeping 11, 22 and 33. ${ENGINE}.`,
     preparedOn: formatYMD(p.today),
     disclaimer: DISCLAIMER,
@@ -480,6 +626,7 @@ export function numerologyPrint(p: {
     ],
     sections,
     link: `${SITE}/tools/numerology`,
+    qr: toolQr('numerology'),
     method: `Western numbers use Pythagorean letter values and the component method; the grid, Mulank, Bhagyank and dasha follow the Indian Lo Shu method; the name number uses Cheiro’s Chaldean values. ${ENGINE}.`,
     preparedOn: formatYMD(p.today),
     disclaimer: DISCLAIMER,
@@ -551,6 +698,7 @@ export function chaldeanPrint(p: { entry: string; result: ChaldeanResult; second
     ],
     sections,
     link: `${SITE}/tools/chaldean`,
+    qr: toolQr('chaldean'),
     method: `Cheiro’s Chaldean letter values, 1 to 8; no letter is 9. ${ENGINE}.`,
     preparedOn: formatYMD(p.today),
     disclaimer: DISCLAIMER,
@@ -767,6 +915,7 @@ export function mobilePrint(m: MobileResult, dob: YMD | null, today: YMD): Print
     ],
     sections,
     link: `${SITE}/tools/mobile-numerology`,
+    qr: toolQr('mobile-numerology'),
     method: `The digits are added down to a root; the compatibility level and the fit of the ending follow the traditional friendships between the planets; pairs follow the two-digit combination chart; the Number score adds four parts, each with its arithmetic. ${ENGINE}.`,
     preparedOn: formatYMD(today),
     disclaimer: DISCLAIMER,

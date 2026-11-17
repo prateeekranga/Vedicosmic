@@ -69,8 +69,8 @@ for (const path of ['/', '/tools', '/tools/category/astrology', '/tools/astrolog
   check('/tools/not-a-tool: the address is not rewritten', new URL(page.url()).pathname === '/tools/not-a-tool', page.url());
 }
 
-// 2d. Lo Shu grid: hand-worked case K1 (15 August 1990, female), an impossible date is refused,
-//     and no request leaves the page carrying the date of birth.
+// 2d. Lo Shu report: hand-worked case K1 (15 August 1990, female: grid 1 x2, 5, 6 x2, 8 x2, 9 x2; 2, 3, 4 and 7 missing; Driver 6,
+//     Conductor 6, Kua 8). An impossible date is refused, no request carries the date of birth, and every tab says what it should.
 {
   await open(page, '/tools/loshu-grid');
   await page.waitForSelector('select[aria-label="Day"]', { timeout: 15000 });
@@ -85,35 +85,200 @@ for (const path of ['/', '/tools', '/tools/category/astrology', '/tools/astrolog
   await page.selectOption('select[aria-label="Month"]', '8');
   await page.selectOption('#loshu-gender', 'female');
   await page.getByRole('button', { name: 'Make my grid' }).click();
-  await page.waitForSelector('#tool table', { timeout: 10000 });
-  const cells = await page.locator('#tool table button').evaluateAll((els) => els.map((e) => e.textContent.replace(/\s+/g, ' ').trim()));
+  await page.waitForSelector('[data-testid="loshu-summary"]', { timeout: 10000 });
+  const tool = page.locator('#tool');
+  const panel = (id) => page.locator(`#loshu-panel-${id}`);
+  const showTab = async (name) => { await page.getByRole('tab', { name }).click(); await page.waitForTimeout(150); };
+
+  // --- the report opens on its summary, with the form folded away and save, link and print up front
+  check('loshu-report: the form folds away and the report names the person', !(await page.locator('select[aria-label="Day"]').isVisible().catch(() => false))
+    && /Born 15 August 1990 · Female/.test(await page.locator('[data-testid="loshu-subject"]').innerText()));
+  const order = await tool.evaluate((el) => {
+    const q = (sel) => el.querySelector(sel);
+    const before = (a, b) => !!(a && b && (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING));
+    const print = [...el.querySelectorAll('button')].find((b) => /Print or save PDF/.test(b.textContent));
+    return { printBeforeTabs: before(print, q('[role="tablist"]')), editButton: !![...el.querySelectorAll('button')].find((b) => /Edit details/.test(b.textContent)) };
+  });
+  check('loshu-report: print and save sit above the tabs, and details can be edited', order.printBeforeTabs && order.editButton, JSON.stringify(order));
+  const tabNames = (await page.getByRole('tab').allInnerTexts()).map((t) => t.trim());
+  check('loshu-report: seven tabs, in the order a reading is explained', tabNames.join(' | ') === 'Summary | Grid reading | Career, love, health | Years ahead | Remedies | Numbers and dates | Reference', tabNames.join(' | '));
+
+  // --- Summary
+  const summary = page.locator('[data-testid="loshu-summary"]');
+  const cells = await summary.locator('table button').evaluateAll((els) => els.map((e) => e.textContent.replace(/\s+/g, ' ').trim()));
   const cell = (n) => cells.find((c) => c.startsWith(String(n))) ?? '';
-  check('loshu-grid: 6 appears twice (Driver and Conductor added)', /appears twice: once as the Driver and once as the Conductor/.test(cell(6)), cell(6));
-  check('loshu-grid: 8 appears twice (date and Kua)', /appears twice: once from the date and once as the Kua number/.test(cell(8)), cell(8));
-  check('loshu-grid: 2, 3, 4 and 7 are missing', [2, 3, 4, 7].every((n) => / missing,/.test(cell(n))) && [1, 5, 6, 8, 9].every((n) => !/ missing,/.test(cell(n))));
-  const text = await page.evaluate(() => document.body.innerText);
-  check('loshu-grid: method line names the numerology engine', /Engine: VediCosmic numerology \d/.test(text));
+  check('loshu-summary: 6 appears twice (Driver and Conductor added)', /appears twice: once as the Driver and once as the Conductor/.test(cell(6)), cell(6));
+  check('loshu-summary: 8 appears twice (date and Kua)', /appears twice: once from the date and once as the Kua number/.test(cell(8)), cell(8));
+  check('loshu-summary: 2, 3, 4 and 7 are missing', [2, 3, 4, 7].every((n) => / missing,/.test(cell(n))) && [1, 5, 6, 8, 9].every((n) => !/ missing,/.test(cell(n))));
+  const arrows = await summary.locator('[data-testid="loshu-arrows"] [data-line]').evaluateAll((els) => els.map((e) => e.getAttribute('data-line')).sort());
+  check('loshu-summary: an arrow is drawn for each complete line and no other', arrows.join(',') === 'practical,will', arrows.join(','));
+  const named = await summary.locator('[data-testid="loshu-lines"]').innerText();
+  check('loshu-summary: the complete lines are named under the grid, without a list of what is not formed', /Will plane/.test(named) && /Practical plane/.test(named) && !/is not formed/.test(named), named);
+  const legend = await summary.locator('table').first().locator('xpath=ancestor::div[contains(@class,"max-w-[380px]")]/following-sibling::p').last().innerText().catch(() => '');
+  const summaryText = await summary.innerText();
+  check('loshu-summary: a number that repeats is written as many times as it appears, and the legend says so with a real example',
+    /A number is written as often as it appears: “11” means 1 appears twice/.test(summaryText) && !/(^|\s)×\d/.test(summaryText), legend);
+  const digitRuns = await summary.locator('table button span[aria-hidden="true"]').allInnerTexts();
+  check('loshu-summary: the repeated cells read 11, 66, 88 and 99, and the single ones 5 (no “×2” in any cell)',
+    ['11', '66', '88', '99', '5'].every((t) => digitRuns.includes(t)) && !digitRuns.some((t) => /×/.test(t)), digitRuns.join('|'));
+  const geometry = await page.evaluate(() => {
+    const header = document.querySelector('[data-testid="loshu-subject"]').closest('div[class*="rounded"]');
+    const tiles = [...document.querySelectorAll('[data-testid="loshu-summary"] .grid-cols-3 > div')];
+    const top = header.getBoundingClientRect().top;
+    return { tiles: tiles.length, sameRow: new Set(tiles.map((t) => Math.round(t.getBoundingClientRect().top))).size === 1, coreBottom: Math.round(tiles[0].getBoundingClientRect().bottom - top) };
+  });
+  check('loshu-summary: the three numbers sit in one row, within about one screen of the top of the report', geometry.tiles === 3 && geometry.sameRow && geometry.coreBottom < 640, JSON.stringify(geometry));
+  check('loshu-summary: says what a Lo Shu grid is, in a line above it', /3×3 arrangement of the numbers 1 to 9/.test(await summary.innerText()));
+  check('loshu-summary: the 15th is shown as 15/6, as an analyst writes it', /Day 15: 15\/6/.test(await summary.innerText()));
+  // The arrows run the full length of each line on a layer behind the cell text: the arrow layer sits below the numbers, and no patch crops it.
+  const layers = await summary.locator('table button', { hasText: /^6/ }).first().evaluate((el) => {
+    const text = el.querySelector('span');
+    const svg = el.closest('div').querySelector('svg[data-testid="loshu-arrows"]');
+    return { textBg: getComputedStyle(text).backgroundColor, textZ: Number(getComputedStyle(text).zIndex), svgZ: Number(getComputedStyle(svg).zIndex) };
+  });
+  check('loshu-summary: arrows run behind the numbers, uncropped (arrow layer under the text, no patch on the text)',
+    layers.textBg === 'rgba(0, 0, 0, 0)' && layers.svgZ < layers.textZ, JSON.stringify(layers));
+  const glance = await summary.innerText();
+  check('loshu-summary: the core numbers are shown at once', /Mulank · Driver/.test(glance) && /Bhagyank · Conductor/.test(glance) && /Kua/.test(glance));
+  check('loshu-summary: at a glance, in plain words: what is strong, held often, missing, the areas, the year',
+    /Practical plane \(getting things done\) and Will plane \(strong willpower\)/.test(glance) && /1 \(Sun, twice\), 6 \(Venus, twice\), 8 \(Saturn, twice\) and 9 \(Mars, twice\)/.test(glance)
+    && /2 \(feeling and intuition\), 3 \(learning and expression\), 4 \(order and method\) and 7 \(inquiry and detachment\)/.test(glance)
+    && /Health and energy has the most of its five key numbers present\./.test(glance) && /The year of \w+ \(Antar Dasha \d\): Venus, the planet of your Driver and Conductor, (regards \w+ as (a friend|neutral|unfriendly)|is your own number)|The year of Venus \(Antar Dasha 6\): Venus is your own number/.test(glance), glance.slice(0, 900));
+  check('loshu-summary: the three areas are counts of key numbers present, with no score or point total',
+    /3 of 5 present/.test(glance) && /4 of 5 present/.test(glance) && /To build: 3, 4/.test(glance) && /To build: 2, 3/.test(glance) && !/\d of 10|\d of 8|[+−]\d|supported|Room to build/.test(glance));
+  check('loshu-summary: where to start names the yog a missing number would complete', /Completes the Silver Raj Yog \(2-5-8\)/.test(glance) && /Completes the Golden Raj Yog \(4-5-6\)/.test(glance));
+  check('loshu-summary: says once that it is tradition and not prediction, and that nothing leaves the device', /not a prediction or advice/.test(glance) && /nothing is sent anywhere/.test(glance));
+
+  // --- Your grid
+  await showTab('Grid reading');
+  const gridTab = await panel('grid').innerText();
+  check('loshu-grid: the full grid says what is not formed, and how close it is', /Golden Raj Yog \(4-5-6\) is not formed/.test(await panel('grid').locator('[data-testid="loshu-lines"]').innerText()));
+  check('loshu-grid: the eight lines are one table, with prose for complete lines and lines one number short',
+    (await panel('grid').locator('[data-testid="loshu-lines-table"] tbody tr').count()) === 8 && /Complete/.test(gridTab) && /One number short: \d completes it/.test(gridTab));
+  const numberRows = await panel('grid').locator('[data-testid="loshu-numbers"] li').allInnerTexts();
+  check('loshu-grid: number by number lists all nine in order 1 to 9, repeated and missing together', numberRows.length === 9 && numberRows.every((t, i) => t.trim().startsWith(String(i + 1))) && /A missing 2 is read as/.test(gridTab), numberRows.map((t) => t.slice(0, 6)).join('|'));
+  check('loshu-grid: the planet is named but the planet’s keyword is not set beside a reading from the grid', !/Identity and will|Patience and structure/.test(await panel('grid').locator('[data-testid="loshu-numbers"]').innerText())
+    && /ruler in Indian numerology/.test(await panel('grid').locator('[data-testid="loshu-numbers"]').innerText()));
+  await page.getByText('With current dasha', { exact: true }).click();
+  await page.waitForTimeout(400);
+  const periodArrows = await panel('grid').locator('[data-testid="loshu-arrows"] [data-line]').evaluateAll((els) => els.map((e) => e.getAttribute('data-line')));
+  check('loshu-grid: the dasha view keeps the birth arrows and may add more', periodArrows.includes('will') && periodArrows.includes('practical'), periodArrows.join(','));
+  check('loshu-grid: the dasha view marks the added numbers', /M and A mark a number added/.test(await panel('grid').innerText()));
+
+  // --- Career, love, health
+  await showTab('Career, love, health');
+  const areas = page.locator('[data-testid="loshu-areas"]');
+  const career = await areas.locator('[data-testid="area-career"]').innerText();
+  const relationships = await areas.locator('[data-testid="area-relationships"]').innerText();
+  const health = await areas.locator('[data-testid="area-health"]').innerText();
+  check('loshu-areas: each area says how many of its five key numbers are present, in words and a count',
+    /3 of 5 key numbers present/.test(career) && /To build: 3, 4/.test(career) && /3 of 5 key numbers present/.test(relationships) && /4 of 5 key numbers present/.test(health) && /To build: 2/.test(health)
+    && !/supported|Room to build/.test(career + relationships + health));
+  check('loshu-areas: each gap gets one step', /Try: /.test(career) && /Try: /.test(relationships));
+  check('loshu-areas: Health says it is habits and energy, not medical advice', /not medical advice/.test(health));
+  check('loshu-areas: the years ahead are not repeated here', !/This dasha year|Best short period/.test(await areas.innerText()));
+  const working = areas.locator('[data-testid="area-working"]');
+  check('loshu-areas: the points arithmetic is folded away and labelled as this page’s own method',
+    (await working.getAttribute('open')) === null && /own method/.test(await working.locator('summary').innerText()) && /of 10/.test(await working.evaluate((e) => e.textContent)));
+
+  // --- Years ahead
+  await showTab('Years ahead');
+  const years = page.locator('[data-testid="loshu-years"]');
+  const dasha = await page.locator('[data-testid="loshu-dasha"]').innerText();
+  check('loshu-years: shows the Maha, Antar and Pratyantar Dasha running today', /Maha Dasha/i.test(dasha) && /Antar Dasha/i.test(dasha) && /Pratyantar Dasha/i.test(dasha) && /Your grid in this period/i.test(dasha));
+  check('loshu-years: the dasha section has no table of its own', (await page.locator('[data-testid="loshu-dasha"] table').count()) === 0);
+  const firstYear = await page.locator('[data-testid="loshu-outlook"] tbody tr').first().evaluate((e) => e.textContent);
+  check('loshu-years: five dasha years, each saying which planet regards which, in that direction',
+    (await page.locator('[data-testid="loshu-outlook"] tbody tr').count()) === 5 && /(Venus, the planet of your Driver and Conductor, regards \w+ as (a friend|neutral|unfriendly)|Venus is your own number)/.test(firstYear), firstYear);
+  const yearsOrder = await years.evaluate((el) => {
+    const a = el.querySelector('[data-testid="loshu-outlook"]'); const b = el.querySelector('[data-testid="loshu-dasha"]');
+    return !!(a && b && (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING));
+  });
+  check('loshu-years: the years in words come before the running periods', yearsOrder);
+  check('loshu-years: says it cannot time a job change or a marriage', /does not time a change of job or a marriage/.test(await years.innerText()));
+  check('loshu-years: each area has a reading for this year, in words', (await page.locator('[data-testid="loshu-outlook"] h4').first().innerText()) !== '' && /Career/.test(await years.innerText()));
+  const scores = years.locator('[data-testid="loshu-scores"]');
+  check('loshu-years: every score is folded away and labelled as this page’s own method',
+    (await scores.getAttribute('open')) === null && /own method/.test(await scores.locator('summary').innerText()));
+  await scores.locator('summary').click();
+  const scoreText = await scores.innerText();
+  check('loshu-years: the fold holds the scored tones, nine short periods and the rule', (await scores.locator('tbody tr').count()) === 14 && /Favourable|Neutral|Needs care/.test(scoreText) && /A total of \+2 or more reads favourable/.test(scoreText));
+  check('loshu-years: says plainly it is a way of reading and not a forecast', /cannot say what will happen/.test(await years.innerText()));
+
+  // --- Remedies
+  await showTab('Remedies');
+  const remedy2 = page.locator('[data-testid="remedy-2"]');
+  const remedy2Text = await remedy2.innerText();
+  check('loshu-remedies: the first priority (2, the Moon) is open, with daily life, offering and mantra, colours, things to use, a gift, numbers around you and the home',
+    (await remedy2.getAttribute('open')) !== null && /Completes the Silver Raj Yog/.test(remedy2Text) && /Om Chandraya Namaha/.test(remedy2Text)
+    && ['Daily life', 'Offering and mantra', 'Colours to wear', 'Everyday items', 'Phone and laptop wallpaper', 'Things to use', 'Give', 'Numbers around you', 'Home'].every((l) => new RegExp(l, 'i').test(remedy2Text)), remedy2Text.slice(0, 300));
+  check('loshu-remedies: the Moon’s five everyday items and its wallpaper (a full Moon over calm water)', /watch with a white or silver dial/.test(remedy2Text) && /white or silver pen/.test(remedy2Text) && /silver-toned bottle or mug/.test(remedy2Text) && /white, cream or silver wallet/.test(remedy2Text) && /white, cream or pale silver phone cover/.test(remedy2Text) && /full Moon over calm water/.test(remedy2Text));
+  check('loshu-remedies: the Moon’s everyday items are practical objects (a silver strap, a white handkerchief, a pearl-white keychain)', /silver-toned or white strap/.test(remedy2Text) && /white or silver pen/.test(remedy2Text) && /phone cover/.test(remedy2Text));
+  check('loshu-remedies: the Moon’s remedies are the Moon’s (milk and water to Shiva on Monday, white and silver, the South-West)', /milk and water to Shiva/.test(remedy2Text) && /white, cream or silver/.test(remedy2Text) && /Lo Shu direction: South-West/.test(remedy2Text));
+  await remedy2.locator('details summary').click();
+  check('loshu-remedies: the weekly observance and the stone are one fold away', /Weekly observance/.test(await remedy2.evaluate((e) => e.textContent)) && /Stone: Pearl/.test(await remedy2.evaluate((e) => e.textContent)));
+  const remediesText = await page.locator('#loshu-panel-remedies').evaluate((e) => e.textContent);
+  check('loshu-remedies: 4 and 7 are listed too, and gemstones are never advised',
+    (await page.locator('[data-testid="remedy-4"]').count()) === 1 && (await page.locator('[data-testid="remedy-7"]').count()) === 1
+    && /never suggests buying/.test(remediesText) && /hessonite/.test(remediesText));
+  check('loshu-remedies: nothing on the page borrows a planet’s colour for a Lo Shu direction', !/touch of/.test(remediesText));
+  // 15 August 1990 holds 1, 6, 8 and 9 twice each: each gets a card of balancing customs, closed because twice is usually a strength.
+  const repeatCards = page.locator('[data-testid="loshu-repeats"] [data-testid^="repeat-"]');
+  check('loshu-repeats: every number held twice has a card, closed, saying twice is usually a strength',
+    (await repeatCards.count()) === 4 && (await repeatCards.first().getAttribute('open')) === null && /Held twice: usually a strength/.test(await repeatCards.first().evaluate((e) => e.textContent)));
+  check('loshu-repeats: the page says which of these customs are traditional and which are its own arrangement', /no classical text lists them/.test(await page.locator('#loshu-panel-remedies').evaluate((e) => e.textContent)));
+
+  // --- Lucky and careful
+  await showTab('Numbers and dates');
+  const lucky = await page.locator('[data-testid="loshu-lucky"]').innerText();
+  check('loshu-lucky: friendly numbers, colours and the favourable day come first', /4, 5, 7, 8/.test(lucky) && /White, Pink, Pastel blue/.test(lucky) && /Friday/.test(lucky));
+  check('loshu-lucky: the stone is a quiet optional line, not a headline fact', /optional/.test(lucky) && !/GEMSTONE/i.test(lucky.split('\n').slice(0, 8).join(' ')));
+  const datesText = await page.locator('[data-testid="loshu-dates"]').innerText();
+  check('loshu-lucky: coming dates are laid out on the calendar as best and good, with no list of days to go carefully on',
+    /(Mon|Tue|Wed|Thu|Fri|Sat|Sun) \d+ \w{3}/.test(datesText) && /best: your own number/i.test(datesText) && /good: a friendly number/i.test(datesText) && !/go carefully/i.test(datesText), datesText.slice(0, 200));
+  check('loshu-lucky: one link to the phone-number tool, not two', (await page.locator('#loshu-panel-lucky').getByRole('link', { name: /Mobile Number Numerology/ }).count()) === 1);
+  const challenging = await page.locator('[data-testid="careful-challenging"]').innerText();
+  check('loshu-careful: 1 and 2 are the numbers to go carefully with, with their dates and weekdays',
+    /1, 2, 10, 11, 19, 20, 28, 29/.test(challenging) && /Sunday, Monday/.test(challenging), challenging.replace(/\s+/g, ' '));
+  const carefulText = await page.locator('[data-testid="loshu-careful"]').innerText();
+  check('loshu-careful: never lists the Driver or Conductor, and says it is preference, not fortune', !/Venus/.test(challenging.split('Dates')[0]) && /not of fortune/.test(carefulText));
+  await page.fill('#tool [data-testid="loshu-check"] input', '9876543210');
+  check('loshu-check: a number is added down and given a plain verdict (45, then 9: neutral for Venus)', /Neutral/.test(await page.locator('[data-testid="loshu-check"]').innerText()) && /= 45, then 4 \+ 5 = 9/.test(await page.locator('[data-testid="loshu-check"]').innerText()));
+  await page.fill('#tool [data-testid="loshu-check"] input', 'MH 12 AB 1234');
+  check('loshu-check: letters are ignored (MH 12 AB 1234 adds to 13, then 4: friendly)', /Friendly/.test(await page.locator('[data-testid="loshu-check"]').innerText()));
+
+  // --- More
+  await showTab('Reference');
+  const more = await panel('more').innerText();
+  const directions = await page.locator('[data-testid="loshu-directions"]').innerText();
+  check('loshu-more: missing numbers are given their Lo Shu directions, and it says this is not Vastu Shastra',
+    /South-West \(2\), East \(3\), South-East \(4\), West \(7\)/.test(directions) && /not the planet-direction scheme of Vastu Shastra/.test(directions), directions.slice(0, 200));
+  check('loshu-more: the Kua directions carry their plain English names', /Sheng Qi · success/i.test(more) && /Fu Wei · stability/i.test(more));
+  check('loshu-more: eight words are explained, and the words come first', (await page.locator('[data-testid="loshu-glossary"] dt').count()) === 8
+    && await panel('more').evaluate((el) => { const g = el.querySelector('[data-testid="loshu-glossary"]'); const d = el.querySelector('[data-testid="loshu-directions"]'); return !!(g && d && (g.compareDocumentPosition(d) & Node.DOCUMENT_POSITION_FOLLOWING)); }));
+  check('loshu-more: names the directions to go gently with (Kua 8 is the west group)', /Directions to go gently with: North, South, East and South-East/.test(more));
+  check('loshu-more: method line names the numerology engine', /Engine: VediCosmic numerology \d/.test(more));
+  check('loshu-more: points to the name, Chaldean, mobile and Life Path tools', (await panel('more').getByRole('link', { name: /Numerology Calculator|Chaldean|Mobile Number|Life Path/ }).count()) >= 4);
+
+  // --- keyboard and layout
+  await page.getByRole('tab', { name: 'Summary' }).focus();
+  await page.keyboard.press('ArrowRight');
+  check('loshu-report: the arrow key moves between tabs', (await page.getByRole('tab', { name: 'Grid reading' }).getAttribute('aria-selected')) === 'true');
+  await page.keyboard.press('End');
+  check('loshu-report: End jumps to the last tab', (await page.getByRole('tab', { name: 'Reference' }).getAttribute('aria-selected')) === 'true');
+  check('loshu-report: the tab bar stays in view while a tab is read', await page.getByRole('tablist').locator('xpath=ancestor::div[contains(@class,"sticky")]').first().evaluate((e) => getComputedStyle(e).position === 'sticky'));
+  let widest = 0;
+  for (const name of tabNames) {
+    await showTab(name);
+    widest = Math.max(widest, await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth));
+  }
+  check('loshu-report: no tab scrolls sideways at phone width', widest <= 1, `${widest}px over`);
   const allowed = (url) => url.startsWith(BASE) || /^https:\/\/fonts\.(googleapis|gstatic)\.com\//.test(url);
   const leaks = requests.filter((r) => !allowed(r.url) || /1990|08-15|15-08/.test(r.url + r.body));
   check('loshu-grid: no request carries the date of birth', leaks.length === 0, leaks.map((r) => r.url).join(', '));
-  // K1 fills 9-5-1 and 8-1-6 and no other line, so exactly those two arrows are drawn and named.
-  const arrows = await page.locator('[data-testid="loshu-arrows"] [data-line]').evaluateAll((els) => els.map((e) => e.getAttribute('data-line')).sort());
-  const named = await page.locator('[data-testid="loshu-lines"]').innerText();
-  check('loshu-grid: an arrow is drawn for each complete line and no other', arrows.join(',') === 'practical,will', arrows.join(','));
-  check('loshu-grid: the complete lines are named under the grid', /Will plane/.test(named) && /Practical plane/.test(named) && /Golden Raj Yog \(4-5-6\) is not formed/.test(named), named);
-  // Dasha: which numbers are running depends on today's date, so only the structure is checked here
-  // (the numbers themselves are fixed by hand-worked cases in tests/numerology-depth.test.ts).
-  const dasha = await page.locator('[data-testid="loshu-dasha"]').innerText();
-  check('loshu-grid: shows the Maha, Antar and Pratyantar Dasha running today', /Maha Dasha/i.test(dasha) && /Antar Dasha/i.test(dasha) && /Pratyantar Dasha/i.test(dasha) && /Your grid in this period/i.test(dasha));
-  const yearRows = await page.locator('[data-testid="loshu-dasha"] details').first().locator('tbody tr').count();
-  check('loshu-grid: lists five dasha years', yearRows === 5, `found ${yearRows}`);
-  await page.getByText('With current dasha', { exact: true }).click();
-  await page.waitForTimeout(400);
-  const periodArrows = await page.locator('[data-testid="loshu-arrows"] [data-line]').evaluateAll((els) => els.map((e) => e.getAttribute('data-line')));
-  check('loshu-grid: the dasha view keeps the birth arrows and may add more', periodArrows.includes('will') && periodArrows.includes('practical'), periodArrows.join(','));
-  check('loshu-grid: the dasha view marks the added numbers', /M and A mark a number added/.test(await page.locator('#tool').innerText()));
-  const directions = await page.locator('[data-testid="loshu-directions"]').innerText();
-  check('loshu-grid: missing numbers are given their directions', /South-West \(2\), East \(3\), South-East \(4\), West \(7\)/.test(directions), directions.slice(0, 200));
+  check('loshu-report: the page is far shorter than before (the whole report is at most 10 phone screens on a tab)',
+    (await page.evaluate(() => Math.max(...[...document.querySelectorAll('[role="tabpanel"]:not([hidden])')].map((p) => p.getBoundingClientRect().height)))) < 8440);
+  await showTab('Summary');
 }
 
 // 2d-print. Printing the same Lo Shu result: the button opens the print options, the browser's
@@ -158,7 +323,9 @@ for (const path of ['/', '/tools', '/tools/category/astrology', '/tools/astrolog
   await printWith('Full report');
   await page.emulateMedia({ media: 'print' });
   const full = await pdfPages();
-  check('print: the full Lo Shu report has no blank pages', full >= 3 && full <= 6, `${full} pages`);
+  // 11 sections since the life-area, outlook, remedies and careful-number sections were added (9 pages on A4;
+  // every page was checked to carry content). More than 11 would mean a section is spilling onto an empty page.
+  check('print: the full Lo Shu report has no blank pages', full >= 6 && full <= 11, `${full} pages`);
   await page.emulateMedia({ media: 'screen' });
 
   await page.evaluate(() => window.dispatchEvent(new Event('beforeprint')));
@@ -166,6 +333,25 @@ for (const path of ['/', '/tools', '/tools/category/astrology', '/tools/astrolog
   await page.evaluate(() => window.dispatchEvent(new Event('afterprint')));
   check('print: the PDF is named after the report and the person', title === 'Lo Shu Grid Report - Smoke Test - VediCosmic', title);
   check('print: the page title comes back after printing', !/Smoke Test/.test(await page.title()));
+
+  // --- a number held often (1 January 2011: four 1s): the card is open, says it is worth balancing, and carries the Sun's customs
+  await page.getByRole('button', { name: /Start again/ }).click();
+  await page.waitForSelector('select[aria-label="Day"]', { timeout: 10000 });
+  await page.selectOption('select[aria-label="Day"]', '1');
+  await page.selectOption('select[aria-label="Month"]', '1');
+  await page.selectOption('select[aria-label="Year"]', '2011');
+  await page.getByRole('button', { name: 'Make my grid' }).click();
+  await page.waitForSelector('[data-testid="loshu-summary"]', { timeout: 10000 });
+  await page.getByRole('tab', { name: 'Remedies' }).click();
+  const often = page.locator('[data-testid="repeat-1"]');
+  const oftenText = await often.evaluate((e) => e.textContent);
+  check('loshu-repeats: the Sun held often is open and worth balancing, with the signs, the colours, the gift and the speaking',
+    (await often.getAttribute('open')) !== null && /worth balancing/i.test(oftenText) && /stubbornness, ego or unbalanced energy/.test(oftenText) && /Go easy on strong red, gold and ruby/.test(oftenText)
+    && /Donate red-coloured items/.test(oftenText) && /active listening/.test(oftenText) && /go lighter on 1 in a phone, house or vehicle number/.test(oftenText) && /Lo Shu direction: North/.test(oftenText) && /Items to swap/i.test(oftenText) && /Swap a red or gold watch strap, phone cover or wallet/.test(oftenText) && /calm green forest or a soft blue sky, rather than a strong red or gold sunrise/.test(oftenText), oftenText.slice(0, 200));
+  check('loshu-repeats: a grid with a number held often still lists the remedies for what it lacks', (await page.locator('[data-testid^="remedy-"]').count()) >= 1);
+  await page.getByRole('tab', { name: 'Summary' }).click();
+  const runs = await page.locator('[data-testid="loshu-summary"] table button span[aria-hidden="true"]').allInnerTexts();
+  check('loshu-summary: four 1s are written 1111, in a smaller size so that they fit the cell', runs.some((t) => /^1{4,}$/.test(t)), runs.join('|'));
 }
 
 // 2e. Numerology Calculator: a birthday with 4, 5 and 6 (14 June 1985) shows the Golden Raj Yog

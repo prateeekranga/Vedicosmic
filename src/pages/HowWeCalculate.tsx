@@ -171,12 +171,16 @@ const sections: LegalSection[] = [
           <li>Kua: the digits of the calendar year of birth added down to one digit; 11 minus that digit for a man, 4 plus that digit for a woman, added down again. A result of 5 is read as 2 for a man and 8 for a woman.</li>
           <li>Lines: the three rows, three columns and two diagonals are each reported as complete, two of three, one of three or empty.</li>
           <li>Kua directions: the four favourable directions of the Eight Mansions school of feng shui for each Kua number.</li>
-          <li>Arrows: a line with all three of its numbers is drawn as an arrow on the grid. 4-5-6 is the Golden Raj Yog and 2-5-8 the Silver Raj Yog.</li>
+          <li>Complete lines: a line with all three of its numbers is drawn across the grid with an arrowhead. A row or column is a plane; a diagonal is a yog, 4-5-6 the Golden Raj Yog and 2-5-8 the Silver Raj Yog (not the Raj Yoga of a birth chart).</li>
           <li>Maha Dasha: it starts at birth with the Driver. Each number runs for as many years as the number, and the numbers follow in order, 1 coming after 9.</li>
           <li>Antar Dasha: one year, from birthday to birthday. The birth day, the birth month, the last two digits of that year and the number of the weekday on which the birthday falls are added down to one digit. Weekday numbers are Sunday 1, Monday 2, Tuesday 9, Wednesday 5, Thursday 3, Friday 6 and Saturday 8.</li>
           <li>Pratyantar Dasha: nine parts of the year, starting with the Antar Dasha number. Number n lasts 8 times n days, the longer ones a day more so that the nine fill 365 days; the last one ends on the next birthday.</li>
           <li>Dasha grid: the Maha Dasha and Antar Dasha numbers are added to the grid for as long as they run, and the page lists any line this completes.</li>
           <li>Numero Vastu: with South at the top of the square, 1 is North, 2 South-West, 3 East, 4 South-East, 5 the centre, 6 North-West, 7 West, 8 North-East and 9 South.</li>
+          <li>Career, relationships, health and energy: each area counts five numbers whose planets the tradition links with it. Career: 8, 1 and 5 earn 2 points each, 3 and 4 one each, and a complete Golden Raj Yog or Practical plane one each. Relationships: 6 and 2 earn 2 each, 5, 3 and 9 one each, and a complete Emotional plane one. Health and energy: 1, 2 and 9 earn 2 each, 8 and 5 one each, and a complete Will plane one. Each area shows how many of its five key numbers are in the grid, and its sentence comes from that count alone: four or five, three, or two or fewer. The points are shown only in a fold, so that the arithmetic can be checked; they do not set the sentence.</li>
+          <li>Year-ahead tone: the planet of a Maha, Antar or Pratyantar Dasha number is set beside the planets of the Driver and the Conductor in the friendship table: +1 for a friend, 0 for neutral, −1 for unfriendly. Work counts the Conductor twice, relationships and health count the Driver twice. One point is added when the number is one the area counts and the grid lacks it, or when adding it completes a line that supports the area, and one is taken away when the grid already holds it three times or more. A total of +2 or more is called favourable, −2 or less needing care, anything between neutral. These scores sit in a fold on the page and are labelled as this page’s own method; the main view shows only how each year’s planet sits beside the Driver and the Conductor.</li>
+          <li>Remedies: for each missing number, daily-life habits, an offering and the planet’s mantra, colours, a gift, how a phone, house or vehicle number carrying that digit adds to the grid, and the Lo Shu direction at home. A number held three or more times gets balancing customs instead: what too much of it can look like, balancing habits, colours to go easy on, a gift, and how to speak and act. The habits are ordinary advice set in the planet’s frame; the offerings, mantras, colours, days and gifts are customs common among Indian numerology and Jyotish teachers; the balancing customs apply the same planetary logic and are our own arrangement, since no classical text lists them.</li>
+          <li>Numbers to go carefully with: a number is listed when the Driver’s planet or the Conductor’s counts its planet as unfriendly. Unfriendly to both is “most care”, unfriendly to one and friendly to the other “split pull”, unfriendly to one and neutral to the other “mild care”. The person’s own Driver and Conductor are never listed. Dates are the days of the month that add down to the listed numbers.</li>
         </ul>
         <p>
           Other teachers fill the grid from the date digits alone, write the Driver every time, use only the last two
@@ -189,6 +193,12 @@ const sections: LegalSection[] = [
           of a birth chart. Teachers differ on whether the year enters the Antar Dasha as two digits or four, on where
           the year turns for a 29 February birthday (we use 28 February), and on whether the short periods are exactly
           8 days per number; those three are settings too.
+        </p>
+        <p>
+          The planets of the numbers and the table of friendships follow the Brihat Parashara Hora Shastra. No classical
+          text gives a rule for judging a year from a Lo Shu grid, so the weights, points and tones above are our own
+          method, built from those tables and written out so that you can check each step. They describe what the
+          tradition associates with a period; they do not predict, and the health reading covers habits and energy only.
         </p>
       </>
     ),

@@ -118,12 +118,17 @@ export function PrintDialog({ open, report, initial, onCancel, onPrint }: {
             </div>
             <div className={`${BOX} space-y-4`}>
               <Check checked={draft.cover} onChange={(v) => set({ cover: v })}>Add a cover page with the name and the VediCosmic emblem</Check>
+              <Check checked={draft.qr} onChange={(v) => set({ qr: v })}>
+                {report.qr.reopens
+                  ? 'Add a QR code that opens this result again (it holds the date of birth, never the name)'
+                  : 'Add a QR code that opens this tool (names and numbers are never put in it)'}
+              </Check>
               <Choices legend="Colour" name={`${id}-colour`} value={draft.colour} onChange={(v) => set({ colour: v })}
                 options={[{ value: 'colour', label: 'Colour' }, { value: 'ink', label: 'Ink saver (black and white)' }]} />
               <Choices legend="Paper" name={`${id}-paper`} value={draft.paper} onChange={(v) => set({ paper: v })}
                 options={[{ value: 'A4', label: 'A4' }, { value: 'letter', label: 'US Letter' }]} />
               <Check checked={draft.remember} onChange={(v) => set({ remember: v })}>
-                Remember “Prepared by”, cover, colour and paper on this device
+                Remember “Prepared by”, cover, QR code, colour and paper on this device
               </Check>
             </div>
           </div>

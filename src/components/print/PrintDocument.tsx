@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { pageCss, pdfTitle, type PrintOptions } from '@/lib/print/printSettings';
 import type { PrintReportData, PrintSection } from '@/lib/print/types';
 import { Block, Tiles } from './PrintBlocks';
-import { Emblem } from './PrintGraphics';
+import { Emblem, QrCode } from './PrintGraphics';
 
 const two = (n: number) => String(n).padStart(2, '0');
 
@@ -122,8 +122,17 @@ export function PrintDocumentBody({ report, options }: { report: PrintReportData
         <div>
           {appendix.length === 0 && <p>{report.method}</p>}
           <p>Prepared on {report.preparedOn} at vedicosmic.com and calculated in the browser; nothing in it was sent to VediCosmic. To work it out again, open {report.link}.</p>
+          {options.qr && report.qr.reopens && (
+            <p>The QR code holds the date of birth after the “#” in its link, a part that browsers do not send, so the date stays on the phone that scans it.</p>
+          )}
           <p className="pd-about-disclaimer">{report.disclaimer}</p>
         </div>
+        {options.qr && (
+          <figure className="pd-qr">
+            <QrCode url={report.qr.url} />
+            <figcaption>{report.qr.reopens ? 'Scan to open this result again' : 'Scan to open this tool'}</figcaption>
+          </figure>
+        )}
       </footer>
     </div>
   );

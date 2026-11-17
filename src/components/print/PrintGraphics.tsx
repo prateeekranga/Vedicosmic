@@ -3,11 +3,12 @@
  * styled through classes so the ink-saving mode can turn colour fills into outlines and dash
  * patterns. Each drawing is decorative or repeats information that is also given in words.
  */
-import { LOSHU_LAYOUT, LOSHU_LINES, NUMBER_DIRECTION, type Digit } from '@/engine/numerology';
+import { DIGITS, LOSHU_LAYOUT, LOSHU_LINES, NUMBER_DIRECTION, type Digit } from '@/engine/numerology';
 import { NUMBERS } from '@/data/numerology/numbers';
 import { DIRECTION_NAME, LINE_TEXT } from '@/data/numerology/loshuText';
 import { arrowGeometry, arrowKind, inArrowOrder, type ArrowKind } from '@/components/numerology/loshuGeometry';
 import type { PrintGrid, TimelineSegment } from '@/lib/print/types';
+import { encode } from 'uqr';
 
 /**
  * The VediCosmic print emblem: the Lo Shu square inside an eight-petalled lotus, ringed by 108
@@ -50,7 +51,8 @@ export function Emblem({ className }: { className?: string }) {
   );
 }
 
-const times = (n: number) => (n > 1 ? `×${n}` : '');
+/** The size of a cell's digits on paper: the longer the run (22, 222, 2222), the smaller each digit. */
+const digitPx = (count: number) => (count <= 2 ? 44 : count === 3 ? 38 : count <= 5 ? 30 : 24);
 
 /** The Lo Shu grid with arrows across its complete lines, as in the tool, sized for paper. */
 export function PrintLoShu({ grid }: { grid: PrintGrid }) {
@@ -80,8 +82,9 @@ export function PrintLoShu({ grid }: { grid: PrintGrid }) {
       })}
       {cells.map(({ d, count, present, x, y, fill }) => (
         <g key={d}>
-          <text className={present ? 'pd-cell-digit' : 'pd-cell-digit pd-cell-digit--off'} x={x + 46} y={y + 50} textAnchor="middle" stroke={fill}>
-            {d}{count > 1 && <tspan className="pd-cell-times" dx="3">{times(count)}</tspan>}
+          <text className={present ? 'pd-cell-digit' : 'pd-cell-digit pd-cell-digit--off'} x={x + 46} y={y + 50} textAnchor="middle" stroke={fill}
+            style={count > 2 ? { fontSize: `${digitPx(count)}px` } : undefined}>
+            {String(d).repeat(Math.max(count, 1))}
           </text>
           <text className={present ? 'pd-cell-planet' : 'pd-cell-planet pd-cell-planet--off'} x={x + 46} y={y + 79} textAnchor="middle" stroke={fill}>
             {present ? NUMBERS[d].planet.toUpperCase() : 'MISSING'}
@@ -115,6 +118,7 @@ export function ArrowKey({ kind }: { kind: ArrowKind }) {
 /** Lines under a grid naming each arrow, so the drawing never depends on colour alone. */
 export function GridLegend({ grid }: { grid: PrintGrid }) {
   const complete = inArrowOrder(LOSHU_LINES.filter((l) => grid.complete.includes(l.id)));
+  const repeatedDigit = DIGITS.find((d) => grid.counts[d] > 1);
   return (
     <div className="pd-legend">
       {complete.length ? (
@@ -123,8 +127,11 @@ export function GridLegend({ grid }: { grid: PrintGrid }) {
             <li key={l.id}><ArrowKey kind={arrowKind(l)} /><strong>{LINE_TEXT[l.id].name}</strong><span>{l.cells.join('-')}</span></li>
           ))}
         </ul>
-      ) : <p>No line of three is complete, so no arrow is drawn.</p>}
-      <p className="pd-legend-note">“×2” means a number appears twice; a dashed cell is a missing number.{grid.key ? ` ${grid.key}` : ''}</p>
+      ) : <p>No line of three is complete, so no line is drawn.</p>}
+      <p className="pd-legend-note">
+        {repeatedDigit ? `A number is written as often as it appears: “${String(repeatedDigit).repeat(grid.counts[repeatedDigit])}” means ${repeatedDigit} appears ${grid.counts[repeatedDigit] === 2 ? 'twice' : `${grid.counts[repeatedDigit]} times`}. ` : ''}
+        {DIGITS.some((d) => grid.counts[d] === 0) ? 'A dashed cell is a missing number.' : ''}{grid.key ? ` ${grid.key}` : ''}
+      </p>
     </div>
   );
 }
@@ -236,5 +243,34 @@ export function Meter({ level, max }: { level: number; max: number }) {
     <span className="pd-meter" aria-hidden="true">
       {Array.from({ length: max }, (_, i) => <span key={i} className={i < level ? 'pd-meter-step pd-meter-step--on' : 'pd-meter-step'} />)}
     </span>
+  );
+}
+
+/**
+ * The dark squares of a QR code as one path, one run of squares per rectangle, in units of one
+ * square. Medium error correction still scans with a fold or a smudge across the code.
+ */
+export function qrPath(url: string): { size: number; d: string } {
+  const { size, data } = encode(url, { ecc: 'M', border: 0 });
+  let d = '';
+  data.forEach((row, y) => {
+    for (let x = 0; x < size; x++) {
+      if (!row[x]) continue;
+      let w = 1;
+      while (x + w < size && row[x + w]) w++;
+      d += `M${x} ${y}h${w}v1h-${w}z`;
+      x += w - 1;
+    }
+  });
+  return { size, d };
+}
+
+/** A QR code drawn in black on the white paper; the light margin around it comes from print.css. */
+export function QrCode({ url }: { url: string }) {
+  const { size, d } = qrPath(url);
+  return (
+    <svg className="pd-qr-code" viewBox={`0 0 ${size} ${size}`} shapeRendering="crispEdges" aria-hidden="true">
+      <path d={d} />
+    </svg>
   );
 }

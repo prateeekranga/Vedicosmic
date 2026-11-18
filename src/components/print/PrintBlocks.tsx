@@ -9,12 +9,12 @@ const chipStyle = (digit?: number): CSSProperties | undefined =>
 
 export function Tiles({ tiles }: { tiles: PrintTile[] }) {
   return (
-    <div className="pd-tiles" style={{ '--n': Math.min(tiles.length, 3) } as CSSProperties}>
+    <div className="pd-tiles" style={{ '--n': tiles.length > 6 ? 4 : Math.min(tiles.length, 3) } as CSSProperties}>
       {tiles.map((t) => (
         <div key={t.label} className="pd-tile">
-          <span className={t.digit ? 'pd-tile-value pd-tile-value--digit' : 'pd-tile-value'} style={chipStyle(t.digit)}>{t.value}</span>
-          <span className="pd-tile-text">
-            <span className="pd-tile-label">{t.label}</span>
+          <span className="pd-tile-label">{t.label}</span>
+          <span className="pd-tile-row">
+            <span className={t.digit ? 'pd-tile-value pd-tile-value--digit' : 'pd-tile-value'} style={chipStyle(t.digit)}>{t.value}</span>
             {t.caption && <span className="pd-tile-caption">{t.caption}</span>}
           </span>
         </div>
@@ -25,7 +25,7 @@ export function Tiles({ tiles }: { tiles: PrintTile[] }) {
 
 function Card({ card }: { card: PrintCard }) {
   return (
-    <div className="pd-card" data-highlight={card.highlight || undefined}>
+    <div className="pd-card" data-highlight={card.highlight || undefined} data-rows={card.rows?.length ? '' : undefined}>
       <div className="pd-card-head">
         {card.chip && <span className="pd-chip" data-digit={card.digit ? '' : undefined} style={chipStyle(card.digit)}>{card.chip}</span>}
         <span className="pd-card-titles">
@@ -36,6 +36,11 @@ function Card({ card }: { card: PrintCard }) {
       </div>
       <p className="pd-card-text">{card.text}</p>
       {card.extra && <p className="pd-card-extra">{card.extra}</p>}
+      {card.rows?.length ? (
+        <dl className="pd-card-rows">
+          {card.rows.map((r) => <div key={r.label} className="pd-card-row"><dt>{r.label}</dt><dd>{r.value}</dd></div>)}
+        </dl>
+      ) : null}
     </div>
   );
 }

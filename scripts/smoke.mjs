@@ -101,7 +101,7 @@ for (const path of ['/', '/tools', '/tools/category/astrology', '/tools/astrolog
   });
   check('loshu-report: print and save sit above the tabs, and details can be edited', order.printBeforeTabs && order.editButton, JSON.stringify(order));
   const tabNames = (await page.getByRole('tab').allInnerTexts()).map((t) => t.trim());
-  check('loshu-report: seven tabs, in the order a reading is explained', tabNames.join(' | ') === 'Summary | Grid reading | Career, love, health | Years ahead | Remedies | Numbers and dates | Reference', tabNames.join(' | '));
+  check('loshu-report: nine tabs, in the order a reading is explained', tabNames.join(' | ') === 'Summary | Grid reading | Career, money, love, health | Years ahead | Marriage years | Remedies | Name and mobile | Numbers and dates | Reference', tabNames.join(' | '));
 
   // --- Summary
   const summary = page.locator('[data-testid="loshu-summary"]');
@@ -165,17 +165,31 @@ for (const path of ['/', '/tools', '/tools/category/astrology', '/tools/astrolog
   check('loshu-grid: the dasha view keeps the birth arrows and may add more', periodArrows.includes('will') && periodArrows.includes('practical'), periodArrows.join(','));
   check('loshu-grid: the dasha view marks the added numbers', /M and A mark a number added/.test(await panel('grid').innerText()));
 
-  // --- Career, love, health
-  await showTab('Career, love, health');
+  // --- Career, money, love, health
+  await showTab('Career, money, love, health');
+  // 15 August 1990 holds 5 once and 6 twice: both money numbers present.
+  const moneyCard = await page.locator('[data-testid="area-money"]').innerText();
+  check('loshu-money: money is read through 5 and 6, in words and a count', /2\s*\/\s*2/.test(moneyCard) && /Both 5 and 6 are in your grid/.test(moneyCard), moneyCard.slice(0, 160));
+  check('loshu-money: says it is not financial advice', /not financial advice/.test(await page.locator('[data-testid="loshu-areas"]').innerText()));
+  // The cards stand side by side from a tablet up; measure there, then return to the phone width.
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.waitForTimeout(200);
+  const rowTops = await page.evaluate(() => ['area-career', 'area-relationships'].map((id) => {
+    const card = document.querySelector(`[data-testid="${id}"]`);
+    return [...card.children].map((c) => Math.round(c.getBoundingClientRect().top));
+  }));
+  await page.setViewportSize({ width: 390, height: 844 });
+  check('loshu-areas: cards side by side share their rows (count, numbers, reading, step and fold line up)',
+    rowTops[0].length === 7 && rowTops[0].every((t, i) => Math.abs(t - rowTops[1][i]) <= 1), JSON.stringify(rowTops));
   const areas = page.locator('[data-testid="loshu-areas"]');
   const career = await areas.locator('[data-testid="area-career"]').innerText();
   const relationships = await areas.locator('[data-testid="area-relationships"]').innerText();
   const health = await areas.locator('[data-testid="area-health"]').innerText();
   check('loshu-areas: each area says how many of its five key numbers are present, in words and a count',
-    /3 of 5 key numbers present/.test(career) && /To build: 3, 4/.test(career) && /3 of 5 key numbers present/.test(relationships) && /4 of 5 key numbers present/.test(health) && /To build: 2/.test(health)
+    /3\s*\/\s*5/.test(career) && /To build: 3, 4/.test(career) && /3\s*\/\s*5/.test(relationships) && /4\s*\/\s*5/.test(health) && /To build: 2/.test(health)
     && !/supported|Room to build/.test(career + relationships + health));
   check('loshu-areas: each gap gets one step', /Try: /.test(career) && /Try: /.test(relationships));
-  check('loshu-areas: Health says it is habits and energy, not medical advice', /not medical advice/.test(health));
+  check('loshu-areas: says health is habits and energy, not medical advice', /not medical advice/.test(await areas.innerText()) && /Health and energy/i.test(health));
   check('loshu-areas: the years ahead are not repeated here', !/This dasha year|Best short period/.test(await areas.innerText()));
   const working = areas.locator('[data-testid="area-working"]');
   check('loshu-areas: the points arithmetic is folded away and labelled as this page’s own method',
@@ -195,7 +209,7 @@ for (const path of ['/', '/tools', '/tools/category/astrology', '/tools/astrolog
     return !!(a && b && (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING));
   });
   check('loshu-years: the years in words come before the running periods', yearsOrder);
-  check('loshu-years: says it cannot time a job change or a marriage', /does not time a change of job or a marriage/.test(await years.innerText()));
+  check('loshu-years: says it cannot time a job change, and points to Marriage years', /does not time a change of job/.test(await years.innerText()) && /under Marriage years/.test(await years.innerText()));
   check('loshu-years: each area has a reading for this year, in words', (await page.locator('[data-testid="loshu-outlook"] h4').first().innerText()) !== '' && /Career/.test(await years.innerText()));
   const scores = years.locator('[data-testid="loshu-scores"]');
   check('loshu-years: every score is folded away and labelled as this page’s own method',
@@ -228,18 +242,35 @@ for (const path of ['/', '/tools', '/tools/category/astrology', '/tools/astrolog
     (await repeatCards.count()) === 4 && (await repeatCards.first().getAttribute('open')) === null && /Held twice: usually a strength/.test(await repeatCards.first().evaluate((e) => e.textContent)));
   check('loshu-repeats: the page says which of these customs are traditional and which are its own arrangement', /no classical text lists them/.test(await page.locator('#loshu-panel-remedies').evaluate((e) => e.textContent)));
 
-  // --- Lucky and careful
+  // --- Marriage years: born 15 August 1990, Mulank 6, Mulank Maha 6 + 8 = 14, then 5.
+  await showTab('Marriage years');
+  const marriage = await panel('marriage').innerText();
+  check('loshu-marriage: shows the Mulank Maha with its working, and the Vivah Mulanks that suit Mulank 6', /Mulank 6 \+ month 8 = 14, then 1 \+ 4 = 5/.test(marriage) && /1, 2, 3, 5, 6 or 9 favour marriage/.test(marriage), marriage.slice(0, 300));
+  check('loshu-marriage: twelve coming years, the ones that favour marriage marked in words', (await panel('marriage').locator('[data-testid^="marriage-year-"]').count()) === 12
+    && (await panel('marriage').locator('[data-testid="marriage-year-yes"]').count()) > 0 && /Favours marriage/.test(marriage));
+  await panel('marriage').locator('[data-testid="marriage-check"] input').fill('2027');
+  check('loshu-marriage: a year can be checked, with its working (2027 + 5 = 2032, Vivah Mulank 7, not for Mulank 6)',
+    /2027 \+ 5 = 2032/.test(await panel('marriage').locator('[data-testid="marriage-check"]').innerText()) && /Not by this method/.test(await panel('marriage').locator('[data-testid="marriage-check"]').innerText()));
+  check('loshu-marriage: says where the method comes from, and that a year is not a promise', /lineage teaching/.test(marriage) && /not a promise/.test(marriage));
+
+  // --- Name and mobile: none given, so the tab offers to add them.
+  await showTab('Name and mobile');
+  check('loshu-person: with no name or number, the tab says how to add them', /Add your name, your mobile number or both under Edit details/.test(await panel('person').innerText()));
+
+  // --- Lucky and careful: the pair tables for Mulank 6 with Bhagyank 6.
   await showTab('Numbers and dates');
   const lucky = await page.locator('[data-testid="loshu-lucky"]').innerText();
-  check('loshu-lucky: friendly numbers, colours and the favourable day come first', /4, 5, 7, 8/.test(lucky) && /White, Pink, Pastel blue/.test(lucky) && /Friday/.test(lucky));
-  check('loshu-lucky: the stone is a quiet optional line, not a headline fact', /optional/.test(lucky) && !/GEMSTONE/i.test(lucky.split('\n').slice(0, 8).join(' ')));
+  check('loshu-lucky: the pair tables for 6 & 6 come first: lucky numbers, dates, colours, work and name totals',
+    /Mulank 6 with Bhagyank 6/.test(lucky) && /1, 6, 10, 15, 19, 24, 28/.test(lucky) && /Green, Light blue/.test(lucky) && /Friday/.test(lucky) && /Fancy and luxury goods/.test(lucky), lucky.slice(0, 300));
+  check('loshu-lucky: the stones carry the astrologer note', /qualified astrologer/.test(lucky));
   const datesText = await page.locator('[data-testid="loshu-dates"]').innerText();
-  check('loshu-lucky: coming dates are laid out on the calendar as best and good, with no list of days to go carefully on',
-    /(Mon|Tue|Wed|Thu|Fri|Sat|Sun) \d+ \w{3}/.test(datesText) && /best: your own number/i.test(datesText) && /good: a friendly number/i.test(datesText) && !/go carefully/i.test(datesText), datesText.slice(0, 200));
+  check('loshu-lucky: coming dates are laid out on the calendar as best, good and go carefully',
+    /(Mon|Tue|Wed|Thu|Fri|Sat|Sun) \d+ \w{3}/.test(datesText) && /best: your own number/i.test(datesText) && /good: other dates that suit/i.test(datesText) && /go carefully/i.test(datesText), datesText.slice(0, 200));
   check('loshu-lucky: one link to the phone-number tool, not two', (await page.locator('#loshu-panel-lucky').getByRole('link', { name: /Mobile Number Numerology/ }).count()) === 1);
   const challenging = await page.locator('[data-testid="careful-challenging"]').innerText();
-  check('loshu-careful: 1 and 2 are the numbers to go carefully with, with their dates and weekdays',
-    /1, 2, 10, 11, 19, 20, 28, 29/.test(challenging) && /Sunday, Monday/.test(challenging), challenging.replace(/\s+/g, ' '));
+  check('loshu-careful: 1 and 2 are the numbers to go carefully with; 1 is marked lucky for the pair and its dates left out',
+    /2, 11, 20, 29/.test(challenging) && /1, 10, 19, 28 left out/.test(challenging) && /lucky for your pair/.test(challenging) && /Sunday, Monday/.test(challenging), challenging.replace(/\s+/g, ' '));
+  check('loshu-careful: says once where the pair tables and the friendship table differ', /Here that is 1 \(Sun\)/.test(await page.locator('[data-testid="pair-differs"]').innerText()));
   const carefulText = await page.locator('[data-testid="loshu-careful"]').innerText();
   check('loshu-careful: never lists the Driver or Conductor, and says it is preference, not fortune', !/Venus/.test(challenging.split('Dates')[0]) && /not of fortune/.test(carefulText));
   await page.fill('#tool [data-testid="loshu-check"] input', '9876543210');
@@ -254,7 +285,7 @@ for (const path of ['/', '/tools', '/tools/category/astrology', '/tools/astrolog
   check('loshu-more: missing numbers are given their Lo Shu directions, and it says this is not Vastu Shastra',
     /South-West \(2\), East \(3\), South-East \(4\), West \(7\)/.test(directions) && /not the planet-direction scheme of Vastu Shastra/.test(directions), directions.slice(0, 200));
   check('loshu-more: the Kua directions carry their plain English names', /Sheng Qi · success/i.test(more) && /Fu Wei · stability/i.test(more));
-  check('loshu-more: eight words are explained, and the words come first', (await page.locator('[data-testid="loshu-glossary"] dt').count()) === 8
+  check('loshu-more: nine words are explained, and the words come first', (await page.locator('[data-testid="loshu-glossary"] dt').count()) === 9
     && await panel('more').evaluate((el) => { const g = el.querySelector('[data-testid="loshu-glossary"]'); const d = el.querySelector('[data-testid="loshu-directions"]'); return !!(g && d && (g.compareDocumentPosition(d) & Node.DOCUMENT_POSITION_FOLLOWING)); }));
   check('loshu-more: names the directions to go gently with (Kua 8 is the west group)', /Directions to go gently with: North, South, East and South-East/.test(more));
   check('loshu-more: method line names the numerology engine', /Engine: VediCosmic numerology \d/.test(more));
@@ -323,9 +354,9 @@ for (const path of ['/', '/tools', '/tools/category/astrology', '/tools/astrolog
   await printWith('Full report');
   await page.emulateMedia({ media: 'print' });
   const full = await pdfPages();
-  // 11 sections since the life-area, outlook, remedies and careful-number sections were added (9 pages on A4;
-  // every page was checked to carry content). More than 11 would mean a section is spilling onto an empty page.
-  check('print: the full Lo Shu report has no blank pages', full >= 6 && full <= 11, `${full} pages`);
+  // 12 pages on A4 since marriage years were added and remedies print as labelled rows (every page checked to carry
+  // content, 18 November 2026). More than 13 would mean a section is spilling onto an empty page.
+  check('print: the full Lo Shu report has no blank pages', full >= 6 && full <= 13, `${full} pages`);
   await page.emulateMedia({ media: 'screen' });
 
   await page.evaluate(() => window.dispatchEvent(new Event('beforeprint')));

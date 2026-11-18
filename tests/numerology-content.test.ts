@@ -285,7 +285,9 @@ describe('career, relationships and health text', () => {
     }
     expect(LIFE.OUTLOOK_NOTE).toMatch(/cannot say what will happen/);
     expect(LIFE.GEM_NOTE).toMatch(/never suggests buying/);
-    expect(LIFE.YEARS_LIMITS).toMatch(/does not time a change of job or a marriage/);
+    // The dasha outlook still times nothing; marriage years come only from the Vivah Mulank, on their own tab.
+    expect(LIFE.YEARS_LIMITS).toMatch(/does not time a change of job/);
+    expect(LIFE.YEARS_LIMITS).toMatch(/under Marriage years/);
     for (const stone of ['blue sapphire', 'cat’s eye', 'hessonite', 'red coral']) expect(LIFE.GEM_NOTE).toContain(stone);
   });
 

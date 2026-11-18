@@ -28,6 +28,8 @@ export interface PrintCard {
   text: string;
   /** A second, quieter paragraph. */
   extra?: string;
+  /** Labelled lines under the text (a remedy's habits, offering, colours…), set as a two-column list. */
+  rows?: { label: string; value: string }[];
   highlight?: boolean;
 }
 

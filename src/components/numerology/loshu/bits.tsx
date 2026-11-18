@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Minus, TrendingUp, TriangleAlert } from 'lucide-react';
+import { Info, Minus, TrendingUp, TriangleAlert } from 'lucide-react';
 import type { Digit, SupportBand, Tone } from '@/engine/numerology';
 import { NUMBERS } from '@/data/numerology/numbers';
 import { OUTLOOK_TONE_LABEL } from '@/data/numerology/lifeAreaText';
@@ -60,10 +60,14 @@ export function PanelSection({
   id, title, lede, children, className, testId,
 }: { id?: string; title: string; lede?: ReactNode; children: ReactNode; className?: string; testId?: string }) {
   return (
-    <section id={id} data-testid={testId} className={cn('scroll-mt-24', className)}>
-      <h3 className="font-heading text-h5 text-white">{title}</h3>
-      {lede && <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-white/70">{lede}</p>}
-      <div className="mt-4">{children}</div>
+    <section id={id} data-testid={testId} className={cn('scroll-mt-28', className)}>
+      <header className="border-b border-white/10 pb-3">
+        <h3 className="flex items-center gap-2.5 font-heading text-h5 text-white">
+          <span aria-hidden="true" className="h-4 w-1 flex-none rounded-full bg-gold-soft/80" />{title}
+        </h3>
+        {lede && <p className="mt-1.5 max-w-4xl text-sm leading-relaxed text-white/70">{lede}</p>}
+      </header>
+      <div className="mt-5">{children}</div>
     </section>
   );
 }
@@ -79,5 +83,34 @@ export function Fold({
       </summary>
       <div className="border-t border-white/10 p-4">{children}</div>
     </details>
+  );
+}
+
+/** The small print of a section, gathered into one box at its foot, so notes never float loose under cards. */
+export function Notes({ items, className }: { items: readonly ReactNode[]; className?: string }) {
+  const shown = items.filter(Boolean);
+  if (!shown.length) return null;
+  return (
+    <div className={cn('flex gap-3 rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3 text-xs leading-relaxed text-white/65', className)}>
+      <Info className="mt-0.5 h-4 w-4 flex-none text-white/45" aria-hidden="true" />
+      <div className="space-y-1.5">{shown.map((t, i) => <p key={i}>{t}</p>)}</div>
+    </div>
+  );
+}
+
+/**
+ * Labelled rows: the label in a fixed column and the content beside it, one rule between rows.
+ * Used for remedies, where a two-column card grid left uneven gaps between short and long items.
+ */
+export function Rows({ rows, className }: { rows: readonly { label: string; content: ReactNode }[]; className?: string }) {
+  return (
+    <dl className={cn('divide-y divide-white/[0.07]', className)}>
+      {rows.map((r) => (
+        <div key={r.label} className="grid gap-1 py-3 first:pt-0 last:pb-0 md:grid-cols-[11rem_minmax(0,1fr)] md:gap-6">
+          <dt className="text-xs font-medium uppercase tracking-wide text-white/60 md:pt-0.5">{r.label}</dt>
+          <dd className="text-sm leading-relaxed text-white/85">{r.content}</dd>
+        </div>
+      ))}
+    </dl>
   );
 }

@@ -1,6 +1,7 @@
-import { Briefcase, CalendarClock, CheckCircle2, Compass, Heart, HeartPulse, Plus, Repeat } from 'lucide-react';
-import type { AreaId, AreaSupport, DashaNow, LoShuResult, ReadingSummary, RemedyPriority } from '@/engine/numerology';
-import { AREA_IDS, regardOf } from '@/engine/numerology';
+import { Briefcase, CalendarClock, CheckCircle2, Compass, Heart, HeartPulse, Plus, Repeat, Sparkles, Wallet } from 'lucide-react';
+import type { AreaId, AreaSupport, DashaNow, LoShuResult, MoneyReading, ReadingSummary, RemedyPriority } from '@/engine/numerology';
+import { AREA_IDS, regardOf, sevensCaution } from '@/engine/numerology';
+import { MONEY_COUNT, MONEY_STATE_TEXT, MONEY_TEXT, SEVENS_SHORT, marriageSummary } from '@/data/numerology/extrasText';
 import { NUMBERS } from '@/data/numerology/numbers';
 import { RELATION_TEXT, SAME_NUMBER_TEXT } from '@/data/numerology/loshuText';
 import {
@@ -13,14 +14,17 @@ import { CountDots, DigitChip, PanelSection } from './bits';
 
 const ICON = { career: Briefcase, relationships: Heart, health: HeartPulse } as const;
 
-export type TabId = 'summary' | 'grid' | 'areas' | 'years' | 'remedies' | 'lucky' | 'more';
+export type TabId = 'summary' | 'grid' | 'areas' | 'years' | 'marriage' | 'remedies' | 'person' | 'lucky' | 'more';
 
 interface Props {
   result: LoShuResult;
   now: DashaNow | null;
   support: Record<AreaId, AreaSupport>;
+  money: MoneyReading;
   summary: ReadingSummary;
   priorities: RemedyPriority[];
+  /** The next years that favour marriage by the Vivah Mulank. */
+  marriage: number[];
   /** Opens a tab, and scrolls to a part of it when an anchor is given. */
   onGo: (tab: TabId, anchor?: string) => void;
 }
@@ -46,19 +50,24 @@ function CoreNumber({ label, value, note, planet, extra = false }: { label: stri
  * what is strong, what is missing and where the year stands, the three life areas as a count of key
  * numbers present, and where to start. Everything else in the report is one tap away.
  */
-export function SummaryPanel({ result, now, support, summary, priorities, onGo }: Props) {
+export function SummaryPanel({ result, now, support, money, summary, priorities, marriage, onGo }: Props) {
   const day = result.date.d;
   const dayNote = day < 10 ? `Born on day ${day}` : `Day ${day}: ${day}/${result.driver}`;
   const relation = result.driver === result.conductor
     ? SAME_NUMBER_TEXT.split('.')[0]
     : `${NUMBERS[result.driver].planet} and ${NUMBERS[result.conductor].planet}: ${RELATION_TEXT[result.relation.mutual].label.toLowerCase()}`;
   const regard = now ? regardOf(result, now.antar.number) : null;
+  const sevens = sevensCaution(result);
+  // The first sentence of the money reading is the plain fact; the rest is on the areas tab.
+  const moneyLine = MONEY_STATE_TEXT[money.state].split('. ')[0] + '.';
 
   const rows: { key: keyof typeof SUMMARY_LABEL; icon: typeof CheckCircle2; text: string }[] = [
     { key: 'strong', icon: CheckCircle2, text: summaryStrong(summary.completeLines, summary.mostHeld) },
-    { key: 'repeated', icon: Repeat, text: summaryRepeated(summary.repeated) },
+    { key: 'repeated', icon: Repeat, text: `${summaryRepeated(summary.repeated)}${sevens ? ` ${SEVENS_SHORT}` : ''}` },
     { key: 'build', icon: Plus, text: summaryBuild(summary.missing) },
     { key: 'areas', icon: Compass, text: summaryAreas(summary.strongestArea, summary.weakestArea) },
+    { key: 'money', icon: Wallet, text: moneyLine },
+    { key: 'marriage', icon: Sparkles, text: marriageSummary(marriage) },
     ...(now && regard
       ? [{ key: 'year' as const, icon: CalendarClock, text: summaryYear(now.antar.number, yearRegard(result.driver, result.conductor, now.antar.number, regard.driver, regard.conductor)) }]
       : []),
@@ -96,8 +105,8 @@ export function SummaryPanel({ result, now, support, summary, priorities, onGo }
           <p className="mt-4 border-t border-white/10 pt-3 text-xs leading-relaxed text-white/65">{SUMMARY_LEDE}</p>
         </div>
         <div className="order-4 max-lg:mt-3 lg:col-span-2 lg:row-start-3 lg:mt-3 xl:col-span-1 xl:col-start-2 xl:mt-0">
-        <PanelSection title="Career, relationships and health" lede="How many of the five numbers the tradition links with each area are in your grid, and which are to build.">
-          <ul className="grid gap-3 md:grid-cols-3">
+        <PanelSection title="Career, money, relationships and health" lede="How many of the numbers the tradition links with each area are in your grid, and which are to build.">
+          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-2 2xl:grid-cols-4">
             {AREA_IDS.map((id) => {
               const s = support[id];
               const Icon = ICON[id];
@@ -112,6 +121,14 @@ export function SummaryPanel({ result, now, support, summary, priorities, onGo }
                 </li>
               );
             })}
+            <li>
+              <button type="button" onClick={() => onGo('areas', 'loshu-money')}
+                className="h-full w-full rounded-xl border border-white/10 bg-white/[0.03] p-4 text-left transition-colors hover:border-gold-soft/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-bright">
+                <span className="flex items-center gap-2 font-medium text-white"><Wallet className="h-4 w-4 text-gold-soft" aria-hidden="true" />{MONEY_TEXT.name}</span>
+                <span className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1"><CountDots value={money.present} max={2} band={money.present === 2 ? 'strong' : money.present === 1 ? 'mixed' : 'thin'} small /><span className="text-xs text-white/75">{MONEY_COUNT(money.present)}</span></span>
+                <span className="mt-1.5 block text-sm text-white/80">{money.missing.length ? `To build: ${money.missing.join(', ')}` : 'Both 5 and 6 present'}</span>
+              </button>
+            </li>
           </ul>
         </PanelSection>
         </div>

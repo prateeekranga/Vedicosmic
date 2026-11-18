@@ -23,6 +23,8 @@ export * from './mobileChart';
 export * from './mobile';
 export * from './numeroDasha';
 export * from './lifeAreas';
+export * from './vivah';
+export * from './nameFit';
 
 export { NUMEROLOGY_ENGINE } from './version';
 

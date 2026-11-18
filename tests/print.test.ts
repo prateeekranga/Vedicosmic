@@ -7,7 +7,7 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import {
-  analyseMobile, birthdayNumber, chaldeanName, dashaOn, expression, lifePath, loShu, normalizeName, personalCycles,
+  analyseMobile, birthdayNumber, chaldeanName, dashaOn, expression, lifePath, loShu, nameReading, normalizeName, personalCycles,
   pinnacles, profile, type Gender, type YMD,
 } from '@/engine/numerology';
 import {
@@ -70,7 +70,7 @@ describe('Lo Shu report', () => {
       'Driver · Mulank': '5', 'Conductor · Bhagyank': '7', 'Kua number': '6', 'Missing numbers': '2, 3', 'Complete lines': '3', 'Antar Dasha now': '2',
     });
     // The foundation (lines, number by number) comes before what is built on it (areas, periods, remedies).
-    expect(ids(report)).toEqual(['grid', 'lines', 'numbers', 'areas', 'dasha', 'outlook', 'remedies', 'repeats', 'favourable', 'careful', 'directions', 'working']);
+    expect(ids(report)).toEqual(['grid', 'lines', 'numbers', 'areas', 'dasha', 'outlook', 'marriage', 'remedies', 'repeats', 'favourable', 'careful', 'directions', 'working']);
     expect(report.sections.filter((s) => s.summary).map((s) => s.id)).toEqual(['grid']);
     expect(report.subject).toEqual({ label: 'Date of birth', value: '14 June 1985' });
   });
@@ -116,9 +116,9 @@ describe('Lo Shu report', () => {
     const repeats = report.sections.find((s) => s.id === 'repeats')!;
     const text = strings(repeats).join(' ');
     for (const planetName of ['Sun', 'Mercury', 'Venus']) expect(text).toContain(`${planetName} held twice`);
-    expect(text).toContain('Balance:');
-    expect(text).toContain('Colours:');
-    expect(text).toContain('Speak and act:');
+    // The customs are labelled rows on each card.
+    const rowLabels = repeats.blocks.flatMap((b) => (b.kind === 'cards' ? b.cards.flatMap((c) => (c.rows ?? []).map((r) => r.label)) : []));
+    for (const label of ['Balance', 'Colours', 'Speak and act', 'Home']) expect(rowLabels).toContain(label);
     expect(text).toContain('go lighter on 1 in a phone, house or vehicle number');
     // A grid with no number held twice has no such section.
     const none = loShuReport(ymd(1953, 6, 28), 'female');
@@ -138,6 +138,30 @@ describe('Lo Shu report', () => {
     expect(glance(r)['Kua number']).toBe('–');
     expect(r.sections.find((s) => s.id === 'directions')!.title).toBe('Lo Shu directions');
     expect(r.details).toEqual([]);
+  });
+
+  it('adds the marriage years, money, and the name and mobile number when given', () => {
+    // Born 14 June 1985: Mulank 5, Mulank Maha 5 + 6 = 11, then 2. 2026 + 2 = 2028, which adds down to 3: a marriage year for Mulank 5 (2, 3, 5, 7, 9).
+    const marriage = report.sections.find((s) => s.id === 'marriage')!;
+    const table = marriage.blocks.find((b) => b.kind === 'table');
+    if (table?.kind !== 'table') throw new Error('no table');
+    expect(table.rows[0].cells.slice(0, 4)).toEqual(['2026', '41', '2026 + 2 = 2028, then 2 + 0 + 2 + 8 = 12, then 1 + 2 = 3', '3']);
+    expect(table.rows[0].highlight).toBe(true);
+    expect(glance(report)['Next marriage year']).toBe('2026');
+    expect(strings(report.sections.find((s) => s.id === 'areas')!).join(' ')).toContain('Money');
+    const named = loShu(ymd(1985, 6, 14), 'male');
+    const r = loShuPrint(named, dashaOn(ymd(1985, 6, 14), today), today, {
+      name: 'Asha Rao', named: nameReading('Asha Rao', named), mobile: analyseMobile('98765 43210', { date: named.date, gender: named.gender }),
+    });
+    expect(r.subject).toEqual({ label: 'Name', value: 'Asha Rao' });
+    expect(r.details.slice(0, 2)).toEqual(['Born 14 June 1985', 'Male']);
+    expect(r.details[2]).toMatch(/^Name number \d+\/\d \(/);
+    expect(r.details[3]).toMatch(/^Mobile fit [1-5] of 5, score \d+ of 100$/);
+    expect(r.glance.length).toBeLessThanOrEqual(8);
+    expect(ids(r)).toContain('person');
+    expect(ids(report)).not.toContain('person');
+    // The QR code never carries the name or the number.
+    expect(r.qr.url).not.toMatch(/Asha|98765/);
   });
 
   it('has no dasha section for a date of birth after the day it is printed', () => {

@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { AREA_IDS, AREA_KEYS, repeatedForRemedy, type Digit, type LoShuResult, type RemedyPriority } from '@/engine/numerology';
 import { NUMBERS } from '@/data/numerology/numbers';
@@ -10,10 +9,11 @@ import {
   EXCESS_LABEL, EXCESS_REMEDY, MISSING_LABEL, MISSING_REMEDY, REMEDY_PROVENANCE, REPEAT_HEADING, REPEAT_INTRO, REPEAT_OFTEN, REPEAT_TWICE,
   excessNumbersAdvice, missingNumbersAdvice,
 } from '@/data/numerology/remedyText';
+import {
+  GAYATRI, SEVENS_DOCTOR, SEVENS_HABITS, SEVENS_REMEDIES, SEVENS_REMEDY_INTRO, SEVENS_TITLE, sevensText,
+} from '@/data/numerology/extrasText';
 import { Badge } from '@/components/ui/Badge';
-import { DigitChip, Fold, PanelSection } from './bits';
-
-const H5 = 'text-xs font-medium uppercase tracking-wide text-white/65';
+import { DigitChip, Fold, Notes, PanelSection, Rows } from './bits';
 
 /** The areas a number counts in, with its weight in each. */
 const areasOf = (d: Digit) => AREA_IDS.flatMap((area) => {
@@ -21,20 +21,13 @@ const areasOf = (d: Digit) => AREA_IDS.flatMap((area) => {
   return key ? [{ area, weight: key.weight }] : [];
 });
 
-function Block({ label, children }: { label: string; children: ReactNode }) {
-  return (
-    <div>
-      <h4 className={H5}>{label}</h4>
-      <div className="mt-1.5 text-sm leading-relaxed text-white/80">{children}</div>
-    </div>
-  );
-}
-
 const List = ({ items }: { items: readonly string[] }) => (
   <ul className="list-disc space-y-1 pl-5 marker:text-gold-soft">{items.map((t) => <li key={t}>{t}</li>)}</ul>
 );
 
 const times = (n: number) => (n === 2 ? 'twice' : `${n} times`);
+/** The row that opens a remedy: the chip in a fixed column, so every title starts at the same place. */
+const SUMMARY = 'grid cursor-pointer list-none grid-cols-[1rem_3.25rem_minmax(0,1fr)] items-center gap-x-3 gap-y-1 px-4 py-3.5 [&::-webkit-details-marker]:hidden sm:grid-cols-[1rem_3.25rem_minmax(0,1fr)_auto]';
 
 /**
  * Remedies for the grid, in two parts. For each number the grid lacks: daily-life habits, an
@@ -49,7 +42,8 @@ export function LoShuRemedies({ result, priorities }: { result: LoShuResult; pri
   const order = [...priorities.map((p) => p.digit), ...result.full.missing.filter((d) => !first.has(d))];
   const byDigit = new Map(priorities.map((p) => [p.digit, p]));
   const repeated = repeatedForRemedy(result);
-  const firstOften = repeated.find((r) => r.often)?.digit;
+  // The several-7s care is opened first when it applies; otherwise the first number held often.
+  const firstOpen = repeated.find((r) => r.sevens)?.digit ?? repeated.find((r) => r.often)?.digit;
 
   return (
     <div className="space-y-10">
@@ -69,30 +63,32 @@ export function LoShuRemedies({ result, priorities }: { result: LoShuResult; pri
                 const areaHabits = areas.map((a) => `${AREA_TEXT[a.area].name}: ${AREA_NUMBER_TEXT[a.area][d]!.habit}`);
                 return (
                   <details key={d} className="group rounded-xl border border-white/10 bg-white/[0.03]" open={d === priorities[0]?.digit} data-testid={`remedy-${d}`}>
-                    <summary className="flex cursor-pointer list-none flex-wrap items-center gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden">
-                      <span className="inline-block text-white/60 transition-transform group-open:rotate-90" aria-hidden="true">›</span>
+                    <summary className={SUMMARY}>
+                      <span className="text-white/60 transition-transform group-open:rotate-90" aria-hidden="true">›</span>
                       <DigitChip digit={d} missing />
                       <span className="font-medium text-white">{n.planet} · {n.keyword}</span>
-                      {p && <Badge tone="gold">{priorityWhy(p).replace(/\.$/, '')}</Badge>}
+                      {p && <span className="col-start-3 sm:col-start-4 sm:justify-self-end"><Badge tone="gold">{priorityWhy(p).replace(/\.$/, '')}</Badge></span>}
                     </summary>
                     <div className="space-y-4 border-t border-white/10 p-4 sm:p-5">
                       <p className="text-sm leading-relaxed text-white/85">{MISSING_TEXT[d].meaning}</p>
-                      <div className="grid gap-4 md:grid-cols-2">
-                        <Block label={MISSING_LABEL.daily}><List items={m.daily} /></Block>
-                        <Block label={MISSING_LABEL.offering}>
-                          <p>{m.offering}</p>
-                          <p className="mt-1.5">{mantraLine(d)}{' '}
-                            <Link to="/tools/mantra-timer" className="text-brand-cyan-soft underline underline-offset-2 hover:text-white">Keep count with the Japa Counter</Link>
-                          </p>
-                        </Block>
-                        <Block label={MISSING_LABEL.wear}><p>{m.wear}</p></Block>
-                        <Block label={MISSING_LABEL.items}><List items={m.items} /></Block>
-                        <Block label={MISSING_LABEL.wallpaper}><p>{m.wallpaper}</p></Block>
-                        <Block label={MISSING_LABEL.use}><p>{m.use}</p></Block>
-                        <Block label={MISSING_LABEL.give}><p>{r.charity}</p></Block>
-                        <Block label={MISSING_LABEL.numbers}><p>{missingNumbersAdvice(d)}</p></Block>
-                        <Block label={MISSING_LABEL.home}><p>{placeAdvice(d)}</p></Block>
-                      </div>
+                      <Rows rows={[
+                        { label: MISSING_LABEL.daily, content: <List items={m.daily} /> },
+                        { label: MISSING_LABEL.offering, content: (
+                          <>
+                            <p>{m.offering}</p>
+                            <p className="mt-1.5">{mantraLine(d)}{' '}
+                              <Link to="/tools/mantra-timer" className="text-brand-cyan-soft underline underline-offset-2 hover:text-white">Keep count with the Japa Counter</Link>
+                            </p>
+                          </>
+                        ) },
+                        { label: MISSING_LABEL.wear, content: m.wear },
+                        { label: MISSING_LABEL.items, content: <List items={m.items} /> },
+                        { label: MISSING_LABEL.wallpaper, content: m.wallpaper },
+                        { label: MISSING_LABEL.use, content: m.use },
+                        { label: MISSING_LABEL.give, content: r.charity },
+                        { label: MISSING_LABEL.numbers, content: missingNumbersAdvice(d) },
+                        { label: MISSING_LABEL.home, content: placeAdvice(d) },
+                      ]} />
                       <Fold title={FOLD_MORE_CUSTOMS} className="!bg-transparent">
                         <dl className="space-y-2 text-sm leading-relaxed text-white/75">
                           {areaHabits.map((h) => <div key={h}><dt className="inline font-medium text-white">Habit · </dt><dd className="inline">{h}</dd></div>)}
@@ -113,29 +109,43 @@ export function LoShuRemedies({ result, priorities }: { result: LoShuResult; pri
       {repeated.length > 0 && (
         <PanelSection title={REPEAT_HEADING} lede={REPEAT_INTRO} id="loshu-repeats" testId="loshu-repeats">
           <div className="space-y-3">
-            {repeated.map(({ digit: d, count, often }) => {
+            {repeated.map(({ digit: d, count, often, sevens }) => {
               const n = NUMBERS[d];
               const e = EXCESS_REMEDY[d];
               return (
-                <details key={d} className="group rounded-xl border border-white/10 bg-white/[0.03]" open={d === firstOften} data-testid={`repeat-${d}`}>
-                  <summary className="flex cursor-pointer list-none flex-wrap items-center gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden">
-                    <span className="inline-block text-white/60 transition-transform group-open:rotate-90" aria-hidden="true">›</span>
+                <details key={d} className="group rounded-xl border border-white/10 bg-white/[0.03]" open={d === firstOpen} data-testid={`repeat-${d}`}>
+                  <summary className={SUMMARY}>
+                    <span className="text-white/60 transition-transform group-open:rotate-90" aria-hidden="true">›</span>
                     <DigitChip digit={d} count={count} />
                     <span className="font-medium text-white">{n.planet} · held {times(count)}</span>
-                    <Badge tone={often ? 'warning' : 'neutral'}>{often ? REPEAT_OFTEN : REPEAT_TWICE}</Badge>
+                    <span className="col-start-3 sm:col-start-4 sm:justify-self-end">
+                      <Badge tone={often || sevens ? 'warning' : 'neutral'}>{sevens ? 'Several 7s: take care' : often ? REPEAT_OFTEN : REPEAT_TWICE}</Badge>
+                    </span>
                   </summary>
                   <div className="space-y-4 border-t border-white/10 p-4 sm:p-5">
-                    <div className="grid gap-4 md:grid-cols-2">
-                      <Block label={often ? EXCESS_LABEL.signs : EXCESS_LABEL.signsTwice}><p>{e.signs}</p></Block>
-                      <Block label={EXCESS_LABEL.balance}><List items={e.balance} /></Block>
-                      <Block label={EXCESS_LABEL.colour}><p>{e.colour}</p></Block>
-                      <Block label={EXCESS_LABEL.items}><List items={e.items} /></Block>
-                      <Block label={EXCESS_LABEL.wallpaper}><p>{e.wallpaper}</p></Block>
-                      <Block label={EXCESS_LABEL.give}><p>{e.give}</p></Block>
-                      <Block label={EXCESS_LABEL.speak}><p>{e.speak}</p></Block>
-                      <Block label={EXCESS_LABEL.numbers}><p>{excessNumbersAdvice(d)}</p></Block>
-                      <Block label={EXCESS_LABEL.home}><p>{placeAdvice(d)}</p></Block>
-                    </div>
+                    {sevens && (
+                      <div className="rounded-xl border border-warning/40 bg-warning/[0.07] p-4 sm:p-5" data-testid="sevens-remedies">
+                        <h4 className="font-medium text-white">{SEVENS_TITLE}</h4>
+                        <p className="mt-1 text-sm leading-relaxed text-white/80">{sevensText(count)}</p>
+                        <Rows className="mt-4" rows={[
+                          { label: SEVENS_REMEDY_INTRO.replace(/:$/, ''), content: <List items={SEVENS_REMEDIES} /> },
+                          { label: 'Gayatri mantra', content: <span lang="sa-Latn">{GAYATRI}</span> },
+                          { label: 'Day to day', content: <List items={SEVENS_HABITS} /> },
+                        ]} />
+                        <p className="mt-3 text-xs text-white/65">{SEVENS_DOCTOR}</p>
+                      </div>
+                    )}
+                    <Rows rows={[
+                      { label: often ? EXCESS_LABEL.signs : EXCESS_LABEL.signsTwice, content: e.signs },
+                      { label: EXCESS_LABEL.balance, content: <List items={e.balance} /> },
+                      { label: EXCESS_LABEL.colour, content: e.colour },
+                      { label: EXCESS_LABEL.items, content: <List items={e.items} /> },
+                      { label: EXCESS_LABEL.wallpaper, content: e.wallpaper },
+                      { label: EXCESS_LABEL.give, content: e.give },
+                      { label: EXCESS_LABEL.speak, content: e.speak },
+                      { label: EXCESS_LABEL.numbers, content: excessNumbersAdvice(d) },
+                      { label: EXCESS_LABEL.home, content: placeAdvice(d) },
+                    ]} />
                   </div>
                 </details>
               );
@@ -144,10 +154,7 @@ export function LoShuRemedies({ result, priorities }: { result: LoShuResult; pri
         </PanelSection>
       )}
 
-      <div className="space-y-2">
-        <p className="max-w-3xl text-xs leading-relaxed text-white/65">{REMEDY_PROVENANCE}</p>
-        <p className="max-w-3xl text-xs leading-relaxed text-white/65">{GEM_NOTE}</p>
-      </div>
+      <Notes items={[REMEDY_PROVENANCE, GEM_NOTE]} />
     </div>
   );
 }

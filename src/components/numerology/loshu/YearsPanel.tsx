@@ -10,7 +10,7 @@ import {
   TONE_TEXT, WINDOWS_INTRO, WINDOW_LABEL, WINDOW_NONE, YEARS_LIMITS, yearRegard,
 } from '@/data/numerology/lifeAreaText';
 import { NumberCard } from '@/components/numerology/NumberCard';
-import { Fold, PanelSection, ToneChip } from './bits';
+import { Fold, Notes, PanelSection, ToneChip } from './bits';
 
 const TABLE = 'w-full text-left text-sm';
 const TH = 'p-2.5 text-xs font-medium uppercase tracking-wide text-white/65';
@@ -105,7 +105,7 @@ export function YearsPanel({ result, now, period, years, windows, focus }: Props
             </li>
           ))}
         </ul>
-        <p className="mt-3 max-w-3xl text-xs leading-relaxed text-white/65">{OUTLOOK_NOTE}</p>
+        <Notes className="mt-4" items={[OUTLOOK_NOTE]} />
       </PanelSection>
 
       <PanelSection title="Running now" lede={DASHA_INTRO} testId="loshu-dasha">
@@ -131,7 +131,7 @@ export function YearsPanel({ result, now, period, years, windows, focus }: Props
             Choose “With current dasha” under the grid on the Your grid tab to see it drawn.
           </p>
         </div>
-        <p className="mt-3 max-w-3xl text-xs leading-relaxed text-white/65">{DASHA_NOTE}</p>
+        <Notes className="mt-4" items={[DASHA_NOTE]} />
       </PanelSection>
 
       <div className="space-y-3">

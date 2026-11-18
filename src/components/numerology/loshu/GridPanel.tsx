@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
 import { LoShuGrid } from '@/components/numerology/LoShuGrid';
 import { NumberCard } from '@/components/numerology/NumberCard';
-import { DigitChip, PanelSection } from './bits';
+import { DigitChip, Notes, PanelSection } from './bits';
 
 const ORDER: Record<LineStatus, number> = { full: 0, partial: 1, single: 2, empty: 3 };
 const TONE: Record<LineStatus, 'gold' | 'cyan' | 'neutral'> = { full: 'gold', partial: 'cyan', single: 'neutral', empty: 'neutral' };
@@ -43,13 +43,23 @@ export function GridPanel({ result, now, period }: { result: LoShuResult; now: D
               {KUA_TEXT[result.kua.mansion]}
             </NumberCard>
           )}
-          <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 text-sm leading-relaxed text-white/75">
-            {result.driver === result.conductor ? <p>{SAME_NUMBER_TEXT}</p> : (
-              <>
-                <p className="font-medium text-white">{NUMBERS[result.driver].planet} and {NUMBERS[result.conductor].planet}: {RELATION_TEXT[result.relation.mutual].label}</p>
-                <p className="mt-1">{RELATION_TEXT[result.relation.mutual].text}</p>
-              </>
-            )}
+          {/* Laid out like the number cards beside it: the two numbers as chips, a title, a line, then the reading. */}
+          <div className="h-full rounded-xl border border-white/10 bg-white/[0.04] p-4">
+            <div className="flex items-center gap-3">
+              <span className="flex flex-none gap-1">
+                {[result.driver, result.conductor].map((d, i) => (
+                  <span key={i} className="grid h-12 w-9 place-items-center rounded-lg font-heading text-lg font-bold"
+                    style={{ background: NUMBERS[d].colour.fill, color: NUMBERS[d].colour.ink }}>{d}</span>
+                ))}
+              </span>
+              <div className="min-w-0">
+                <h4 className="text-sm font-medium text-white">Driver and Conductor</h4>
+                <p className="text-xs text-white/60">
+                  {NUMBERS[result.driver].planet} and {NUMBERS[result.conductor].planet} · {result.driver === result.conductor ? 'the same number' : RELATION_TEXT[result.relation.mutual].label.toLowerCase()}
+                </p>
+              </div>
+            </div>
+            <p className="mt-2 text-sm leading-relaxed text-white/75">{result.driver === result.conductor ? SAME_NUMBER_TEXT : RELATION_TEXT[result.relation.mutual].text}</p>
           </div>
         </div>
       </PanelSection>
@@ -110,7 +120,7 @@ export function GridPanel({ result, now, period }: { result: LoShuResult; now: D
           {order.map((d) => {
             const count = result.full.counts[d];
             return (
-              <li key={d} className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3.5">
+              <li key={d} className="grid grid-cols-[3.25rem_minmax(0,1fr)] items-start gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3.5">
                 <DigitChip digit={d} count={count} missing={count === 0} />
                 <div className="text-sm leading-relaxed text-white/75">
                   <p className="font-medium text-white">{NUMBERS[d].planet}</p>
@@ -120,7 +130,7 @@ export function GridPanel({ result, now, period }: { result: LoShuResult; now: D
             );
           })}
         </ul>
-        <p className="mt-3 max-w-3xl text-xs leading-relaxed text-white/65">{NUMBERS_NOTE}</p>
+        <Notes className="mt-4" items={[NUMBERS_NOTE]} />
       </PanelSection>
     </div>
   );

@@ -388,6 +388,29 @@ export function upcomingDates(result: LoShuResult, today: YMD, limit = 4, horizo
   return out;
 }
 
+export interface UpcomingFromList { own: UpcomingDate[]; other: UpcomingDate[]; careful: UpcomingDate[] }
+
+/**
+ * The next dates, from `today`, whose day of the month is in a given list: those that add down to the
+ * Driver first (own), the rest of the list (other), and the dates of a careful list. Used with the pair
+ * tables, whose dates are written out rather than worked out from the friendship table.
+ */
+export function upcomingFromList(
+  today: YMD, driver: Digit, dates: readonly number[], careful: readonly number[], limit = 4, horizon = 62,
+): UpcomingFromList {
+  const out: UpcomingFromList = { own: [], other: [], careful: [] };
+  const start = dayNumber(today);
+  for (let i = 0; i < horizon; i++) {
+    const date = fromDayNumber(start + i);
+    const entry = { date, weekday: WEEKDAYS[weekdayOf(date)] };
+    if (dates.includes(date.d)) {
+      const bucket = rootOf(date.d) === driver ? out.own : out.other;
+      if (bucket.length < limit) bucket.push(entry);
+    } else if (careful.includes(date.d) && out.careful.length < limit) out.careful.push(entry);
+  }
+  return out;
+}
+
 export type NumberFit = 'yours' | 'friendly' | 'neutral' | CarefulTier;
 export interface NumberCheck {
   /** The digits that were counted (letters, spaces and signs are ignored). */
@@ -407,18 +430,76 @@ export function checkNumber(text: string, result: LoShuResult): NumberCheck | nu
   const total = [...digits].reduce((a, c) => a + Number(c), 0);
   if (total === 0) return null;
   const root = rootOf(total);
-  if (root === result.driver || root === result.conductor) return { digits, total, root, fit: 'yours' };
-  const tier = carefulNumbers(result.driver, result.conductor).numbers.find((n) => n.digit === root)?.tier;
-  if (tier) return { digits, total, root, fit: tier };
-  const friend = RELATION_TABLE[result.driver][root] === 'friend' || RELATION_TABLE[result.conductor][root] === 'friend';
-  return { digits, total, root, fit: friend ? 'friendly' : 'neutral' };
+  return { digits, total, root, fit: fitOf(root, result) };
 }
 
-export interface RepeatedNumber { digit: Digit; count: number; /** Held three or more times: worth balancing, not only a strength. */ often: boolean }
+/** How one root number sits beside the Driver and Conductor: the verdict of "Check a number", also used for the name number. */
+export function fitOf(root: Digit, result: LoShuResult): NumberFit {
+  if (root === result.driver || root === result.conductor) return 'yours';
+  const tier = carefulNumbers(result.driver, result.conductor).numbers.find((n) => n.digit === root)?.tier;
+  if (tier) return tier;
+  const friend = RELATION_TABLE[result.driver][root] === 'friend' || RELATION_TABLE[result.conductor][root] === 'friend';
+  return friend ? 'friendly' : 'neutral';
+}
+
+/** Several 7s in the grid: the teaching this page follows reads it as a call for care with the stomach and with injuries. */
+export const SEVENS_AT = 2;
+
+export interface RepeatedNumber {
+  digit: Digit; count: number;
+  /** Held three or more times: worth balancing, not only a strength. */
+  often: boolean;
+  /** 7 held twice or more: the care the teaching asks for, with its own remedies. */
+  sevens: boolean;
+}
 
 /** The numbers held more than once, the most often first and then by number. */
 export function repeatedForRemedy(result: LoShuResult): RepeatedNumber[] {
   return [...result.full.repeated]
     .sort((a, b) => b.count - a.count || a.digit - b.digit)
-    .map((r) => ({ digit: r.digit, count: r.count, often: r.count >= 3 }));
+    .map((r) => ({ digit: r.digit, count: r.count, often: r.count >= 3, sevens: r.digit === 7 && r.count >= SEVENS_AT }));
+}
+
+/** How many 7s the grid holds, when there are enough for the care note; null otherwise. */
+export function sevensCaution(result: LoShuResult): { count: number } | null {
+  const count = result.full.counts[7];
+  return count >= SEVENS_AT ? { count } : null;
+}
+
+// ---------------------------------------------------------------------------------------------
+// Money, through 5 and 6
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * Money is read through 5 (Mercury: trade, earning and the flow of money) and 6 (Venus: comfort,
+ * saving and what money buys), as the teaching this page follows has it. The Golden Raj Yog 4-5-6
+ * holds both, and is noted when it is complete.
+ */
+export const MONEY_NUMBERS: readonly [Digit, Digit] = [5, 6];
+export type MoneyState = 'both' | 'five' | 'six' | 'none';
+
+export interface MoneyReading {
+  five: number;
+  six: number;
+  state: MoneyState;
+  /** How many of the two are present. */
+  present: 0 | 1 | 2;
+  missing: Digit[];
+  /** 5 or 6 held three times or more. */
+  heavy: Digit[];
+  /** The Golden Raj Yog 4-5-6 is complete. */
+  golden: boolean;
+}
+
+export function moneyReading(result: LoShuResult): MoneyReading {
+  const five = result.full.counts[5];
+  const six = result.full.counts[6];
+  const state: MoneyState = five && six ? 'both' : five ? 'five' : six ? 'six' : 'none';
+  return {
+    five, six, state,
+    present: ((five ? 1 : 0) + (six ? 1 : 0)) as 0 | 1 | 2,
+    missing: MONEY_NUMBERS.filter((d) => result.full.counts[d] === 0),
+    heavy: MONEY_NUMBERS.filter((d) => result.full.counts[d] >= 3),
+    golden: result.full.lines.find((l) => l.id === 'golden')!.status === 'full',
+  };
 }

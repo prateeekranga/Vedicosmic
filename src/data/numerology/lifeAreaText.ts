@@ -18,7 +18,7 @@ export const AREA_TEXT: Readonly<Record<AreaId, { name: string; blurb: string }>
   health: { name: 'Health and energy', blurb: 'Daily energy, rest and routine' },
 };
 
-export const AREAS_INTRO = 'For each of three parts of life this shows how many of the numbers the tradition links with it are in your grid, which are missing, and one practical step for each gap. It is a reading for reflection, not a measure of how your life will go.';
+export const AREAS_INTRO = 'For career, relationships, health and money this shows which of the numbers the tradition links with each are in your grid, which are missing, and one practical step for each gap. It is a reading for reflection, not a measure of how your life will go.';
 
 /** Under the health reading: habits and energy only. */
 export const HEALTH_NOTE = 'This is about habits and energy, drawn from what the tradition links with each planet. It is not medical advice and cannot assess your health; please see a qualified doctor about any concern.';
@@ -406,7 +406,7 @@ export function summaryYear(antar: Digit, regard: string): string {
   return `The year of ${the(NUMBERS[antar].planet)} (Antar Dasha ${antar}): ${regard}.`;
 }
 
-export const SUMMARY_LABEL = { strong: 'Complete lines', repeated: 'Held more than once', build: 'Missing', areas: 'Life areas', year: 'This year' } as const;
+export const SUMMARY_LABEL = { strong: 'Complete lines', repeated: 'Held more than once', build: 'Missing', areas: 'Life areas', money: 'Money', marriage: 'Marriage years', year: 'This year' } as const;
 export const START_HEADING = 'Where to start';
 export const START_NONE = 'None of the numbers that count most across career, relationships and health is missing from your grid.';
 
@@ -448,6 +448,7 @@ export const GLOSSARY: readonly { term: string; text: string }[] = [
   { term: 'Kua', text: 'A direction number from the Chinese Eight Mansions school of feng shui, worked out from your birth year and gender. It is an extra beside your two core numbers, not part of core Indian numerology; writing it into the grid is one convention among several.' },
   { term: 'Line, plane and yog', text: 'A line is any of the eight rows, columns and diagonals of the square. A row or column is a plane; a diagonal is a yog, and 4-5-6 and 2-5-8 are the Golden and Silver Raj Yog, which are not the Raj Yoga of a birth chart.' },
   { term: 'Missing number', text: 'A number from 1 to 9 that is not in your grid. Tradition reads it as a quality to build through effort, and not as a fault.' },
+  { term: 'Mulank Maha and Vivah Mulank', text: 'Mulank Maha is your Mulank plus your birth month, added down to one digit. A year plus the Mulank Maha, added down, is that year’s Vivah Mulank, which the Marriage years tab sets against your Mulank.' },
   { term: 'Dasha', text: 'A period of life ruled by a number: Maha lasts years, Antar one year from birthday to birthday, Pratyantar a few weeks. This is numerology’s own scheme, not the Vimshottari dasha of a birth chart.' },
   { term: 'Lo Shu directions', text: 'The compass point each number holds on the square, often called Numero Vastu. It is not the planet-direction scheme of Vastu Shastra.' },
   { term: 'Friendly and careful numbers', text: 'The traditional table of planetary friendships decides which numbers suit your Driver and Conductor and which call for more care.' },
@@ -461,7 +462,7 @@ export const PANEL_TEXT = {
   meaning: 'What your core numbers say, and how the two main ones sit beside each other.',
   lines: 'The square has eight lines: three rows, three columns and two diagonals. A line is complete when all three of its numbers are in your grid; the readings below are for complete lines and for lines one number short.',
   numbers: 'What each number of the square says in your grid, in the order the square lays them out. A number held more than once is read more strongly; a missing number is a quality to build, and its remedies are under Remedies.',
-  areas: 'Each area has five numbers the tradition links with it. The chips show which of them are in your grid, and one step is given for each that is not. It is a reading for reflection, not a measure of how your life will go.',
+  areas: 'Career, relationships and health each have five numbers the tradition links with them; money is read through 5 and 6. The chips show which are in your grid, and one step is given for each that is not. It is a reading for reflection, not a measure of how your life will go.',
   words: 'How each year’s planet sits beside your Driver and Conductor in the traditional table of friendships, and what the year’s number is read to bring to work, relationships and health.',
   more: 'Directions, the words used on this page, and how every number was worked out.',
   remedies: 'Start with the first one or two and keep them up for a month. Each is a habit first, then the customs of its planet.',
@@ -479,7 +480,7 @@ export const GRID_WHAT = 'The Lo Shu square is a 3×3 arrangement of the numbers
 export const WORDS_LINK = 'What do these words mean?';
 export const START_LEDE = 'A missing number that would complete a line of the square comes first; then the ones that count most across the three areas.';
 export const KUA_NOTE = 'A direction number from feng shui, an extra';
-export const YEARS_LIMITS = 'This reading does not time a change of job or a marriage, and no method on this page can. It describes how each period sits beside your numbers, nothing more.';
+export const YEARS_LIMITS = 'This reading does not time a change of job. It describes how each period sits beside your numbers, nothing more; years that favour marriage are worked out separately, under Marriage years.';
 export const NUMBERS_NOTE = 'The planet is the number’s ruler in Indian numerology; the reading is what the number means when it sits in the grid, a tradition of its own.';
 
 /** The four directions of the other group: the ones Eight Mansions teachers advise going gently with. */

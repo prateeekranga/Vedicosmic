@@ -5,6 +5,7 @@ import {
 } from '@/data/numerology/loshuText';
 import { NUMERO_VASTU_NOTE } from '@/data/numerology/dashaText';
 import { GENTLE_DIRECTIONS, GENTLE_LABEL, GLOSSARY, GLOSSARY_INTRO, PANEL_TEXT, SOURCES_INTRO, SOURCE_OWN, SOURCE_TRADITION } from '@/data/numerology/lifeAreaText';
+import { SOURCE_LINEAGE, SOURCE_LINEAGE_INTRO } from '@/data/numerology/extrasText';
 import { HowCalculated, NumerologyMethodLine } from '@/components/numerology/HowCalculated';
 import { Fold, PanelSection } from './bits';
 
@@ -83,9 +84,14 @@ export function MorePanel({ result, steps }: { result: LoShuResult; steps: CalcS
                 <h4 className="font-medium text-white">This page’s own method</h4>
                 <ul className="mt-1 list-disc space-y-1 pl-5">{SOURCE_OWN.map((t) => <li key={t}>{t}</li>)}</ul>
               </div>
+              <div>
+                <h4 className="font-medium text-white">The founder’s lineage</h4>
+                <p className="mt-1">{SOURCE_LINEAGE_INTRO}</p>
+                <ul className="mt-1 list-disc space-y-1 pl-5">{SOURCE_LINEAGE.map((t) => <li key={t}>{t}</li>)}</ul>
+              </div>
             </div>
           </Fold>
-          <NumerologyMethodLine method="Date digits with the Driver, Conductor and Kua added to the grid; zeros have no cell. Dasha periods start with the Driver and turn on the birthday." />
+          <NumerologyMethodLine method="Date digits with the Driver, Conductor and Kua added to the grid; zeros have no cell. Dasha periods start with the Driver and turn on the birthday. Marriage years: the year plus the Mulank Maha, added down to the Vivah Mulank." />
         </div>
       </PanelSection>
 
